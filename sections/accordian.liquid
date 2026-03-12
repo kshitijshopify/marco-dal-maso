@@ -1,0 +1,242 @@
+{%- style -%}
+  .testimonials-{{ section.id }} {
+    background-color: {{ section.settings.color_background }};
+    color: {{ section.settings.color_text }};padding-top:0px;
+  }
+}
+{%- endstyle -%}
+<div
+  class="testimonials--section testimonials-{{ section.id }}{% if section.settings.color_background == settings.color_body_bg %} testimonials-section--with-divider{% endif %} text-{{ section.settings.align_text }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="testimonials"
+  data-aos>
+  {%- if section.settings.title != blank -%}
+    <div class="page-width">
+      <div class="section-header">
+        <h2>{{ section.settings.title | escape }}</h2>
+      </div>
+    </div>
+  {%- endif -%}
+
+
+  <div class="grid grid--uniform" style="position:relative;padding-top: 0px;">
+    <div class="stick_it grid__item small-one-whole medium-up--one-quarter" style="">
+      <div class="mobile_dropdown medium-up--hide"><span class="txt">Select option</span>  <span class="right"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 8" aria-hidden="true" class="w-4 transition-transform group-aria-expanded/item:rotate-180"><path fill="currentColor" fill-rule="evenodd" d="M.833.793 0 1.71l4.167 4.582.833.916.833-.916L10 1.709 9.167.793 5 5.374z" clip-rule="evenodd"></path></svg></span></div>
+        {%- if section.blocks.size > 0 -%}
+          <ul class="sidebar_list">
+            {%- for block in section.blocks -%}
+              {% if block.type == 'heading' %}
+                <li><a class="hash {% if forloop.first %} active{% endif %}"  href="#{{ block.settings.title | handle }}">{{ block.settings.title | escape  }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="grid__item small-one-whole  medium-up--three-quarters">
+        {% if section.settings.text != blank %}
+          <div class="grid ">     
+            <div class="grid__item small-one-whole medium-up--four-fifths"  style="float:none;margin:0px auto;">
+              {{ section.settings.text }}
+            </div>
+          </div>
+        {% endif %}
+        <div class="grid ">     
+          <div class="cst grid__item small-one-whole medium-up--four-fifths"  style="float:none;margin:0px auto;">
+            {%- if section.blocks.size > 0 -%}
+              {%- for block in section.blocks -%}
+                {% if block.type == 'accordian' %}
+                  <div class="accordian_title">
+                    <div class="atc">{{ block.settings.title }} <span class="right"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 8" aria-hidden="true" class="w-4 transition-transform group-aria-expanded/item:rotate-180"><path fill="currentColor" fill-rule="evenodd" d="M.833.793 0 1.71l4.167 4.582.833.916.833-.916L10 1.709 9.167.793 5 5.374z" clip-rule="evenodd"></path></svg></span></div>
+                    <div class="accordian_content">
+                      {% if block.settings.Answer != blank %}{{ block.settings.Answer }}{% else %}{{ block.settings.Answerr }}{% endif %}
+                    </div>
+                  </div>
+                  {% if forloop.last %}</div>{% endif %}
+                {% else %}
+                  {% if forloop.first %}{% else %} </div>{% endif %}
+                  <div id="{{ block.settings.title | handle }}" class="block_start_acc  {% if forloop.first %}active{% endif %}">
+                    <h2  class="heading_for_q {{ block.type }}">{{ block.settings.title | escape }}</h2>
+                    {% if block.settings.title == 'Returns' %}                      
+                      <div class="accordian_title">
+                        <div class="atc">Can I exchange full-price items purchased during November and December? <span class="right"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 8" aria-hidden="true" class="w-4 transition-transform group-aria-expanded/item:rotate-180"><path fill="currentColor" fill-rule="evenodd" d="M.833.793 0 1.71l4.167 4.582.833.916.833-.916L10 1.709 9.167.793 5 5.374z" clip-rule="evenodd"></path></svg></span></div>
+                        <div class="accordian_content">
+                          Yes, full-price orders placed in November or December can be exchanged for store credit until January 9th. This gives you extra time for holiday gifting (and returns).
+                        </div>
+                      </div>
+                      <div class="accordian_title">
+                        <div class="atc">Can I return or exchange items purchased during the Annual Event? <span class="right"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 8" aria-hidden="true" class="w-4 transition-transform group-aria-expanded/item:rotate-180"><path fill="currentColor" fill-rule="evenodd" d="M.833.793 0 1.71l4.167 4.582.833.916.833-.916L10 1.709 9.167.793 5 5.374z" clip-rule="evenodd"></path></svg></span></div>
+                        <div class="accordian_content">
+                          We accept exchanges or returns for store credit only. Extended returns apply to orders placed in November and December and are available until January 9th.
+                        </div>
+                      </div>
+                      {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </div>
+      </div>        
+    </div>
+  </div>
+</div>
+<script type="load">
+  $('.accordian_title').on('click', function() {
+    $('.accordian_title').toggleClass('active');
+    $(this).find('.accordian_content').toggle();
+  });
+</script>
+<style>
+  .block_start_acc{display:none;}
+  .block_start_acc.active{display:block;}
+  a.hash.active {
+    text-decoration: underline;
+    font-weight: bold;
+}
+  .page-width.page-width--narrow{padding-bottom:0px;}
+  .accordian_title.active  span.right svg{transform:rotate(180deg);}
+  .accordian_content{display:none;}
+  span.right svg {width: 10px;height: 10px;}
+  .accordian_title{ border-bottom: 1px solid #ccc;border-left: 0px;border-right: 0px;padding: 25px 0px;}
+  .atc:hover{text-decoration:underline;}
+  .atc {text-transform: uppercase;font-weight: 600;font-size: 15px;cursor:pointer;display: flex;align-items: center;justify-content: space-between;}
+  .accordian_content {padding-top:20px;font-size: 14px;}
+  h2.heading_for_q {margin-top: 70px; font-weight: 500;}
+  h2.heading_for_q:first-child {margin-top: 0px;padding-top:30px;}
+  .sidebar_list{list-style-type:none;}
+  .sidebar_list li a{margin:10px;color: #2c2c2c;font-size: 16px;}
+  .sidebar_list li a:hover{text-decoration:underline;}
+  .sidebar_list li{padding:5px;}
+  .stick_it{background: rgba(0,0,0,0.03);padding-top: 30px;} 
+  
+@media only screen and (min-width:769px){
+  .stick_it{height:100vh;} 
+  .stick_it .sidebar_list {
+    position: sticky;
+    top: 80px;
+    left: 0;
+}
+}
+@media only screen and (max-width:768px){
+  .cst.grid__item.small-one-whole.medium-up--four-fifths{max-width: calc(100% - 80px);}
+  .stick_it{padding-bottom:30px;}
+  .sidebar_list{display:none;} 
+  .sidebar_list.active{display:block;} 
+  .mobile_dropdown {display: flex;align-items: center;justify-content: space-between;}
+}
+   .mobile_dropdown {
+    margin: 10px 40px;
+    border: 1px solid #000;
+    padding: 10px;
+    background: #fff;
+}
+  body .testimonials--section{opacity:0;}
+</style>
+<script type="load">  
+  $(document).ready(function() {
+	$('a.hash').click(function(){
+     
+      $('a.hash').removeClass('active');
+      $('.block_start_acc').removeClass('active');
+      $(this).addClass('active');
+      var id= $(this).attr('href');
+      console.log(id);
+      $(id).addClass('active'); 
+     
+        if ($(window).width() < 960) { 
+         
+      	    $('html, body').animate({
+      	        scrollTop: $( $.attr(this, 'href') ).offset().top + 220
+      	    }, 500);
+         
+       } else {
+         
+      	    $('html, body').animate({
+      	        scrollTop: $( $.attr(this, 'href') ).offset().top - 120
+      	    }, 500);
+               
+        }
+      
+	    return false;
+      
+	}); 
+
+    
+	$('.mobile_dropdown').click(function(){
+      $('.sidebar_list').toggleClass('active');
+    });
+    
+	$('.sidebar_list li a').click(function(){
+      var tv = $(this).text();
+      console.log(tv);
+      $('.mobile_dropdown span.txt').text(tv); 
+      $('.sidebar_list').removeClass('active');
+    });
+
+
+    
+    console.log('working');
+    var ids = window.location.toString().split('#')[1];
+    console.log(ids);
+     console.log('a.hash[href="#'+ids+'"]');
+   $('a.hash[href="#'+ids+'"]').trigger('click');
+$("body .testimonials--section").css('opacity',1);
+    
+});
+</script>
+{% schema %}
+  {
+    "name": "Accordian",
+    "settings": [
+      {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text at top",
+        }
+    ],
+    "presets": [
+    {
+      "name": "Accordian",
+      "blocks": [
+        {
+          "type": "accordian"
+        }
+      ]
+    }
+    ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+        },
+      ]
+    },
+    {
+      "type": "accordian",
+      "name": "Accordian",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Question",
+        },
+        {
+          "type": "textarea",
+          "id": "Answer",
+          "label": "Answer",
+        },
+        {
+          "type": "richtext",
+          "id": "Answerr",
+          "label": "Answer",
+          "info": "Use either above field or this one."
+        }
+      
+      ]
+    }
+  ]
+  }
+{% endschema %}

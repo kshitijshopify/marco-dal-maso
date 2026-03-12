@@ -1,0 +1,487 @@
+{%- liquid
+  unless limit
+    assign limit = main_menu.links.size
+  endunless
+  unless offset
+    assign offset = 0
+  endunless
+-%}
+<ul class="rete site-nav site-navigation small--hide">
+  
+  {%- for link in main_menu.links limit: limit offset: offset -%}
+    {% if link.title == 'Black Friday' %}
+    <li class="site-nav__item site-nav__expanded-item bbng">
+      <span class="site-nav__link site-nav__link--underline">
+         <a href="{% if customer %}/collections/black-friday{% else %}{{ link.url }}{% endif %}">
+          {{ link.title }}
+        </a>
+      </span>
+    </li>
+      {% endif %}
+    {% unless link.title == 'Black Friday' %}
+    {%- liquid
+      assign has_dropdown = false
+      assign is_megamenu2 = false
+      assign is_megamenu3 = false
+
+      if link.links != blank
+        assign has_dropdown = true
+        if link.levels > 1
+          assign is_megamenu2 = true
+        endif
+      endif
+    -%}
+
+    {% for block in section.blocks %}
+      {% if block.type == 'megamenutype2' %}
+        {% if block.settings.men-title == link.title %}
+          {% assign is_megamenu2 = true %}
+        {% endif %}   
+      {% elsif block.type == 'megamenutype3' %}
+        {% if block.settings.men-title == link.title %}
+          {% assign is_megamenu3 = true %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    <li class="site-nav__item site-nav__expanded-item{% if has_dropdown %} site-nav--has-dropdown{% endif %}{% if is_megamenu2 or is_megamenu3 %} site-nav--is-megamenu{% endif %}">
+      {% if is_megamenu2 or is_megamenu3 or has_dropdown %}
+        <details data-hover="{{ hover_menu }}" id="site-nav-item--{{ forloop.index }}" class="site-nav__details">
+          <summary data-link="{{ link.url }}" aria-expanded="false" aria-controls="site-nav-item--{{ forloop.index }}" class="site-nav__link site-nav__link--underline{% if has_dropdown %} site-nav__link--has-dropdown{% endif %}">
+           <a href="{{ link.url }}"> {{ link.title }} </a>
+           {% comment %} <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-chevron-down" viewBox="0 0 28 16"><path d="m1.57 1.59 12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none"/></svg> {% endcomment %}
+          </summary>
+      {% else %}
+        <span class="site-nav__link site-nav__link--underline">
+          <a href="{{ link.url }}" class="">
+            {{ link.title }}
+          </a>
+        </span>
+      {% endif %}
+
+      {% if is_megamenu2 %}
+        <!-- Original Mega Menu Type 2 structure -->
+         <div class="overlay"></div>
+        <div class="site-nav__dropdown megamenu text-left custom-slides-menu r55">
+          <div class="page-width">
+            <div class="relative grid{% if dropdown_alignment == 'center' %} grid--center{% endif %}">
+              {% for block in section.blocks %}
+                {% if block.type == 'megamenutype2' %}
+                  {% if block.settings.men-title == link.title %}
+                    <div  class="menupromo__image megatype2promo grid__item medium-up--four-fifths imageContainerBox appear-animation appear-delay-{{ animation_column }}">
+                      <div class="menupromo__inner">
+                       <div class="megapromo__griditem first-menu-with-color">
+                            <div class="megapromo__textbox">
+                              <p class="h3">{{ block.settings.first-menu-heading }}</p>
+                                <ul>
+                                  {% for link in block.settings.first-menu.links %}
+                                  <a href="{{ link.url }}">
+                                    <li>{{ link.title }}</li>
+                                  </a>
+                                  {% endfor %}
+                                </ul>
+                            </div>                          
+                        </div>
+                        {% if block.settings.second-menu.links  != blank%}
+                        <div class="megapromo__griditem">
+                            <div class="megapromo__textbox">
+                              <p class="h3">{{ block.settings.second-menu-heading }}</p>
+                                <ul>
+                                  {% for link in block.settings.second-menu.links %}
+                                  <a href="{{ link.url }}">
+                                    <li>{{ link.title }}</li>
+                                  </a>
+                                  {% endfor %}
+                                </ul>
+                            </div>                          
+                        </div>
+                          {% endif %}
+                         {% if block.settings.third-menu.links  != blank%}
+                    <div class="megapromo__griditem">
+                            <div class="megapromo__textbox">
+                              <p class="h3">{{ block.settings.third-menu-heading }}</p>
+                                <ul>
+                                  {% for link in block.settings.third-menu.links %}
+                                  <a href="{{ link.url }}">
+                                    <li>{{ link.title }}</li>
+                                  </a>
+                                  {% endfor %}
+                                </ul>
+                            </div>                          
+                        </div>
+                          {% endif %}
+                         {% if block.settings.fourth-menu.links  != blank%}
+                        <div class="megapromo__griditem">
+                            <div class="megapromo__textbox">
+                              <p class="h3">{{ block.settings.fourth-menu-heading }}</p>
+                                <ul>
+                                  {% for link in block.settings.fourth-menu.links %}
+                                  <a href="{{ link.url }}">
+                                    <li>{{ link.title }}</li>
+                                  </a>
+                                  {% endfor %}
+                                </ul>
+                            </div>                          
+                        </div>
+                        {% endif %}
+                         <!-- First Image Item for Mega Menu Type 2 -->
+                        <div class="megapromo__griditem">
+                          <a href="{{ block.settings.mega-link }}">
+                            {{ block.settings.mega-image | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="'  }}
+                            <div class="megapromo__textbox">
+                              <p class="h3">{{ block.settings.btn-label }}</p>
+                              <span>{{ block.settings.sub-text }}</span>
+                            </div>
+                          </a>
+                        </div>
+                        <!-- Second Image Item for Mega Menu Type 2 -->
+                         {% if block.settings.mega-image2 != blank %}
+                        <div class="megapromo__griditem">
+                          <a href="{{ block.settings.mega-link2 }}">
+                            {{ block.settings.mega-image2 | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                            <div class="megapromo__textbox">
+                              <p class="h3">{{ block.settings.btn-label2 }}</p>
+                              <span>{{ block.settings.sub-text2 }}</span>
+                            </div>
+                          </a>
+                        </div>
+                        {% endif %}
+                        <!-- Third Image Item for Mega Menu Type 2 -->
+                        {% if block.settings.mega-image3 != blank %}
+                        <div class="megapromo__griditem">
+                          <a href="{{ block.settings.mega-link3 }}">
+                            {{ block.settings.mega-image3 | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                            <div class="megapromo__textbox">
+                              <p class="h3">{{ block.settings.btn-label3 }}</p>
+                              <span>{{ block.settings.sub-text3 }}</span>
+                            </div>
+                          </a>
+                        </div>
+                        {% endif %}
+                         <!-- Additional Text Column for Mega Menu Type 2 -->
+                     {% if block.settings.descriptionarea != blank %}
+                    <div class="subcatmenus subcatmenus__megatype2promo grid__item medium-up--one-fifth appear-animation appear-delay-{{ animation_column }}">
+                      <div class="textblock__megapromo">
+                        <div class="rte">
+                          {{ block.settings.descriptionarea }}
+                        </div>
+                        <a href="{{ block.settings.textlink }}" class="">{{ block.settings.textlabel }}</a>
+                      </div>
+                    </div>
+                  {% endif %}
+                      </div>
+                    </div>
+                   
+                  {% endif %}
+                {% endif %}
+                <!-- custom editing in menu -->
+                {% if block.type == 'megamenutype3' %}
+                  {% if block.settings.men-title == link.title %}
+                    <div class="menupromo__image megatype3promo grid__item medium-up--full imageContainerBox appear-animation">
+                      <div class="wexcvbnm menupromo__inner menupromo__inner--grid4 {% if block.settings.showcarousel %}custom-menu-slides{% endif %}">
+                        {% unless block.settings.showcarousel %}
+                          <div class="grid___item">
+                            <div class="griditem__header">
+                              <p class="h3">Men</p><a href="/collections/mens">View All</a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link }}">
+                                {{ block.settings.mega-image | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label }}</p>
+                                  <span>{{ block.settings.sub-text }}</span>
+                                </div>
+                              </a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link2 }}">
+                                {{ block.settings.mega-image2 | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label2 }}</p>
+                                  <span>{{ block.settings.sub-text2 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link3 }}">
+                                {{ block.settings.mega-image3 | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label3 }}</p>
+                                  <span>{{ block.settings.sub-text3 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                          <div class="grid___item">
+                            <div class="griditem__header">
+                              <p class="h3">Women</p><a href="/collections/womens">View All</a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link4 }}">
+                                {{ block.settings.mega-image4 | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label4 }}</p>
+                                  <span>{{ block.settings.sub-text4 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link5 }}">
+                                {{ block.settings.mega-image5 | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label5 }}</p>
+                                  <span>{{ block.settings.sub-text5 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link6 }}">
+                                {{ block.settings.mega-image6 | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label6 }}</p>
+                                  <span>{{ block.settings.sub-text6 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        {% endunless %}
+                      </div>
+                      <div class="custom-cta-btn">
+                      <a href="/collections" class="collection-shop-btn">View All Collections</a>
+                      </div>
+                    </div>
+                  
+                    {% endif %}
+                  {% else %}
+                    {% if block.type == 'menu' %}    
+                      {% if block.type != 'megamenutype3' and block.type != 'megamenutype2' and link.title != 'Collections' %}                     
+                        {% if block.settings.men-title == link.title %}                      
+                          <ul class="custom-mega-menu cvvvvvvvff">
+                            {%- for childlink in link.links -%}                              
+                              <li class="custom-childlink">
+                                <h3 class="headline custom-count-{{ link.title }}">{{ childlink.title }}</h3>
+                                {%- for grandchildlink in childlink.links -%}
+                                  {%- liquid
+                                          if link.title == 'Men'
+                                          assign menuhandle = grandchildlink.title | handle | append: '-mens'
+                                          else
+                                          assign menuhandle = grandchildlink.title | handle | append: '-womens'
+                                          endif
+                                          assign subsub_menu = linklists[menuhandle]
+
+                                          assign fourthtier = false
+                                          if subsub_menu != blank and subsub_menu.links.size > 0
+                                          assign fourthtier = true
+                                          break
+                                          endif
+                                  -%}                                  
+                                {%- endfor -%}
+
+                                
+                                {% if fourthtier %}<div class="flex">{% endif %}
+                                  
+                                  {% if childlink.links != blank %}
+                                    <ul class="childlink">
+                                      {%- for grandchildlink in childlink.links -%}
+                                        {%- liquid
+                                          if link.title == 'Men'
+                                          assign menuhandle = grandchildlink.title | handle | append: '-mens'
+                                          else
+                                          assign menuhandle = grandchildlink.title | handle | append: '-womens'
+                                          endif
+                                          assign subsub_menu = linklists[menuhandle]
+                                        -%}
+
+                                        <li class="custom-grandchild" {% if link.title == 'Featured' and forloop.last == true %} style="display: none;"{% endif %}>
+                                          <!-- the grandchild link itself -->
+                                          <a href="{{ grandchildlink.url }}" class="site-nav__dropdown-link">
+                                            {{ grandchildlink.title | escape }}
+                                          </a>
+
+                                          {% if subsub_menu != blank and subsub_menu.links.size > 0 %}
+                                            <!-- the extra menu, e.g. "Mens Bracelets" items Beaded / Leather Bracelets -->
+                                            <ul class="subsub-menu">
+                                              {%- for grandgrandchildlink in subsub_menu.links -%}
+                                                <li>
+                                                  <a href="{{ grandgrandchildlink.url }}" class="site-nav__dropdown-link">
+                                                    {{ grandgrandchildlink.title | escape }}
+                                                  </a>
+                                                </li>
+                                              {%- endfor -%}
+                                            </ul>
+                                          {% endif %}
+                                        </li>
+                                      {%- endfor -%}
+                                    </ul>
+                                  {% endif %}                                  
+                                {% if fourthtier %}</div>{% endif %}
+                              </li>
+                            {% endfor %}
+                            {% if block.settings.mega-image != blank %}
+                              <div class="megapromo__griditem">
+                                <a href="{{ block.settings.mega-link }}">
+                                  {{ block.settings.mega-image | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                  <div class="megapromo__textbox">
+                                    <p class="h3">{{ block.settings.btn-label }}</p>
+                                    <span>{{ block.settings.sub-text }}</span>
+                                  </div>
+                                </a>
+                              </div>
+                            {% endif %}
+                            
+                            {% if block.settings.mega-image2 != blank %}
+                            <!-- Second Image Item for Mega Menu Type 2 -->
+                            <div class="megapromo__griditem">
+                              <a href="{{ block.settings.mega-link2 }}">
+                                {{ block.settings.mega-image2 | img_url: "master" | img_tag | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                <div class="megapromo__textbox">
+                                  <p class="h3">{{ block.settings.btn-label2 }}</p>
+                                  <span>{{ block.settings.sub-text2 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                            {% endif %}
+                          </ul> 
+                        {% endif %}
+                      {% endif %}
+                    {% endif %}
+                  {% endif %}
+                  <!-- custom editing in menu -->
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% elsif is_megamenu3  %}     
+        <!-- Separate Mega Menu Type 3 structure, isolated from Mega Menu Type 2 -->
+        <div class="overlay"></div>
+        <div  class="site-nav__dropdown megamenu text-left custom-mega-menu">
+       
+          <div class="page-width5">
+            <div class="jussst-tesssting relative grid menupromo__inner--grid4{% if dropdown_alignment == 'center' %} grid--center{% endif %}">
+              {% for block in section.blocks %}
+                {% if block.type == 'megamenutype3' %}                
+                  {% if block.settings.men-title == link.title %}
+                    <div  class="menupromo__image megatype3promo grid__item medium-up--full imageContainerBox appear-animation">
+                      <div class="qwerty menupromo__inner menupromo__inner--grid4 {% if block.settings.showcarousel %}custom-menu-slides{% endif %}">
+                        {% unless block.settings.showcarousel %}
+                          <div class="grid___item">
+                            <div class="griditem__header">
+                              <p class="h3">Men</p><a href="/collections/mens">View All</a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link }}">
+                                {{ block.settings.mega-image | img_url: "master" | img_tag }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label }}</p>
+                                  <span>{{ block.settings.sub-text }}</span>
+                                </div>
+                              </a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link2 }}">
+                                {{ block.settings.mega-image2 | img_url: "master" | img_tag }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label2 }}</p>
+                                  <span>{{ block.settings.sub-text2 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link3 }}">
+                                {{ block.settings.mega-image3 | img_url: "master" | img_tag }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label3 }}</p>
+                                  <span>{{ block.settings.sub-text3 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                          <div class="grid___item">
+                            <div class="griditem__header">
+                              <p class="h3">Women</p><a href="/collections/womens">View All</a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link4 }}">
+                                {{ block.settings.mega-image4 | img_url: "master" | img_tag }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label4 }}</p>
+                                  <span>{{ block.settings.sub-text4 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link5 }}">
+                                {{ block.settings.mega-image5 | img_url: "master" | img_tag }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label5 }}</p>
+                                  <span>{{ block.settings.sub-text5 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                            <div class="megapromo__griditem5">
+                              <a href="{{ block.settings.mega-link6 }}">
+                                {{ block.settings.mega-image6 | img_url: "master" | img_tag }}
+                                <div class="megapromo__textbox5">
+                                  <p class="h3">{{ block.settings.btn-label6 }}</p>
+                                  <span>{{ block.settings.sub-text6 }}</span>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        {% endunless %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% elsif has_dropdown %}
+        <ul class="site-nav__dropdown text-left">
+          {%- for childlink in link.links -%}
+            {%- liquid
+              assign has_sub_dropdown = false
+              if childlink.links != blank
+                assign has_sub_dropdown = true
+              endif
+            -%}
+            <li class="{% if has_sub_dropdown %} site-nav__deep-dropdown-trigger{% endif %}">
+              <a href="{{ childlink.url }}" class="site-nav__dropdown-link site-nav__dropdown-link--second-level{% if has_sub_dropdown %} site-nav__dropdown-link--has-children{% endif %}">
+                {{ childlink.title | escape }}
+                {%- if has_sub_dropdown -%}
+                  <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-chevron-down" viewBox="0 0 28 16"><path d="m1.57 1.59 12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none"/></svg>
+                {%- endif -%}
+              </a>
+              {%- if has_sub_dropdown -%}
+                <ul class="site-nav__deep-dropdown">
+                  {%- for grandchildlink in childlink.links -%}
+                    <li>
+                      <a href="{{ grandchildlink.url }}" class="site-nav__dropdown-link">{{ grandchildlink.title | escape }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {% endif %}
+      
+      {% if is_megamenu2 or is_megamenu3 or has_dropdown %}
+        </details>
+      {% endif %}
+    </li>
+    {% endunless %}
+  {%- endfor -%}
+</ul>
+<style>
+  .megapromo__textbox span {
+    display: none;
+}
+  .page-width5{
+    width:100%;
+  }
+  ul.custom-mega-menu {
+    display: flex;
+}
+</style>

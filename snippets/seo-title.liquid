@@ -1,0 +1,30 @@
+{%- capture seo_title -%}
+  {{ page_title }}
+  {%- if current_tags -%}
+    {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}  
+  {%- endif -%}
+  {%- if current_page != 1 -%}
+    &ndash; {{ 'general.meta.page' | t: page: current_page }} | {{ shop.name }}
+  {%- endif -%}
+  {%- if template == 'password' -%}
+    {{ shop.name }}
+  {%- else -%}
+  
+  {%- endif -%} 
+{%- endcapture -%}
+{% capture url_locale %}
+  {{ request.path | split: '/' | slice: 1 }}
+{% endcapture %}
+{% assign locale_parts = url_locale | split: '-' %}
+{% assign language = locale_parts[0] %}
+{% assign country = locale_parts[1] %}
+
+{% if canonical_url == 'https://marcodalmaso.com/collections' %}
+<title>Marco Dal Maso Collections | Luxury Handmade Jewelry</title>
+<meta name="description" content="Shop MARCO DAL MASO’s exclusive Italian jewelry collection. Handcrafted rings, bracelets, necklaces and pendants crafted for modern sophistication & style.">
+{% else %}
+  <title class="bbbbbbb">{{ seo_title }}{% if language and country and language != 'en' %} | {{ language }}-{{ country }}{% endif %}</title>
+  {% endif %}
+
+
+

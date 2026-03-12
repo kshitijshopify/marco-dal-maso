@@ -1,0 +1,99 @@
+{%- form 'product', product, id: form_id, class: 'product-single__form' -%}  
+  {% if template contains 'gift-card' %}    
+    <div class="gift_form">
+                        <p class="line-item-property__field">
+                          <label class="field__label" for="recipient-name">RECIPIENT'S NAME</label>
+                          <input required="" class="required" id="voucher_recipient" type="text" name="properties[RECIPIENT'S NAME]">
+                        </p>
+                        <p class="line-item-property__field">
+                          <label class="field__label" for="recipient-email">RECIPIENT'S EMAIL</label>
+    <input type="text" autocomplete="email" maxlength="60" name="properties[RECIPIENT'S EMAIL]" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}" required="" class="required" id="voucher_recipient_email" placeholder="example@hello.com" value="">
+                          <!-- <input required="" class="required" id="voucher_recipient_email" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="properties[RECIPIENT'S EMAIL]"> -->
+                        </p>
+                        <p class="line-item-property__field">
+                          <label class="field__label" for="recipient-message">MESSAGE</label>
+                          <textarea id="voucher_message" name="properties[MESSAGE]" rows="2" cols="52"></textarea>
+                        </p>
+                        {{ form.errors | default_errors }}
+                       </div>
+                      {% endif %}
+  {%- liquid
+    assign enable_dynamic_buttons = false
+    if show_dynamic_checkout and template != 'product.preorder'
+      assign enable_dynamic_buttons = true
+    endif
+  -%}
+{% unless template contains 'gift-card' %}
+  {%- if enable_dynamic_buttons -%}
+    <div class="payment-buttons">
+  {%- endif -%}
+{% endunless %}
+    {%- liquid
+      assign default_text = 'products.product.add_to_cart' | t
+      assign button_text = 'products.product.add_to_cart' | t
+      if template contains 'preorder'
+        assign default_text = 'products.product.preorder' | t
+        assign button_text = 'products.product.preorder' | t
+      endif
+      unless current_variant.available
+        assign button_text = 'products.product.sold_out' | t
+      endunless
+    -%}
+
+    {% if quick_shop_enable %}
+    <button
+      {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+      name="add"
+      data-add-to-cart
+      class="btn btn--full add-to-cart"
+      {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+        <span class="add-to-cart-text">      
+          <span class="svg-wrapper add-to-cart-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--icon-stroke-width)" d="M16.608 9.421V6.906H3.392v8.016c0 .567.224 1.112.624 1.513.4.402.941.627 1.506.627H8.63M8.818 3h2.333c.618 0 1.212.247 1.649.686a2.35 2.35 0 0 1 .683 1.658v1.562H6.486V5.344c0-.622.246-1.218.683-1.658A2.33 2.33 0 0 1 8.82 3"></path><path stroke="currentColor" stroke-linecap="round" stroke-width="var(--icon-stroke-width)" d="M14.608 12.563v5m2.5-2.5h-5"></path></svg>
+          </span>      
+          <span class="add-to-cart-text__content is-visually-hidden-mobile">Add</span>
+        </span> 
+    </button>
+
+    {% else %}
+
+    <button
+      {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+      name="add"
+      data-add-to-cart
+      class="btn btn--full add-to-cart"
+      {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+      <span data-add-to-cart-text data-default-text="{{ default_text }}">
+        {{ button_text }}
+      </span>
+    </button>
+    {% endif %}
+
+  {% unless template contains 'gift-card' %}
+    {%- if enable_dynamic_buttons -%}
+      {{ form | payment_button }}
+    {%- endif -%}
+    
+
+  {%- if enable_dynamic_buttons -%}
+    </div>
+  {%- endif -%}
+{% endunless %}
+  <div class="shopify-payment-terms product__policies">{{ form | payment_terms }}</div>
+
+  <select name="id" data-product-select class="product-single__variants no-js">
+    {%- for variant in product.variants -%}
+      {%- if variant.available -%}
+        <option {% if variant == product.selected_or_first_available_variant %}
+          selected="selected"{% endif %}
+          value="{{ variant.id }}">
+          {{ variant.title }} - {{ variant.price | money_with_currency }}
+        </option>
+      {%- else -%}
+        <option disabled="disabled">
+          {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+        </option>
+      {%- endif -%}
+    {%- endfor -%}
+  </select>
+{%- endform -%}

@@ -1,0 +1,59 @@
+<style>
+  tr:has(td:empty) {
+    display: none;
+}
+</style>
+<table>
+  {% paginate  collections['all'].products by 2500 %}
+    {% for product in collections['all'].products %}
+      {%- for image in product.images -%}
+        {%- if image.width < 1000 -%}
+        <tr>
+          <td>
+            {% increment my_counter %}
+            <a href="/admin/products/{{product.id}}" target="_blank">{{product.title}}</a>
+          </td>
+          <td>
+            <img src="{{ image.src | img_url: "50x" }}"/>
+            {{ image.width }} x    {{ image.height }}         
+          </td>
+        </tr>
+        {%- endif -%}
+      {% endfor %}
+    {% endfor %}
+    {%- if paginate.pages > 1 -%}
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endif -%}    
+  {% endpaginate %}
+</table>
+
+<table>
+  {% for product in collections['all'].products %}
+  {% if product.description contains "#" %}
+  <tr>
+    <td>{{ product.title }}</td>
+    <td>{{ product.description | truncatewords: 1, ""}}</td>
+  </tr>
+  {% endif %}
+  {% endfor %}
+</table>
+
+{% schema %}
+  {
+    "name": "Low res",
+    "settings": [],
+      "presets": [
+    {
+      "name": "low res",
+      "blocks": [
+      ]
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

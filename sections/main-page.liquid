@@ -1,0 +1,30 @@
+{% if template contains 'newsletter-signup' %}
+  <div class="page-width-full page-cosntent">
+    {% comment %} <div class="klaviyo-form-V5CCEP"></div>
+    <div class="klaviyo-form-Ti828M"></div> {% endcomment %}
+
+    {% if request.locale.iso_code == 'it' %}
+    <div class="klaviyo-form-XYLbdF"></div>
+    {% else %}
+    <div class="klaviyo-form-QPFqfU"></div><div class="klaviyo-form-WJhMjF"></div>
+    {% endif %}
+  </div>
+{% else %}
+<div class="{% unless template contains 'refer-friend' or template contains 'recommended' %}page-width {% unless template contains 'swym' or page.handle contains 'store-locator' %}page-width--narrow{% endunless %} page-content {% endunless %} cuspage__class {% if template contains 'swym' and customer %} notoppadding{% endif %}">
+  {%- render 'breadcrumbs' -%}
+  {% unless template contains 'swym' or page.handle contains 'referral' or template contains 'refer-friend' %}
+    <header class="section-header">
+    <h1 class="section-header__title">{{ page.title }}</h1>
+  </header>{% endunless %}
+
+  <div class="rte rte--nomargin relative">
+    {{ page.content }}
+  </div>
+</div>
+{% endif %}
+{% schema %}
+{
+  "name": "t:sections.main-page.name",
+  "tag": "section"
+}
+{% endschema %}

@@ -1,0 +1,56 @@
+{%- assign header_font = settings.type_header_font_family -%}
+{%- assign base_font = settings.type_base_font_family -%}
+{%- assign base_font_bold = base_font | font_modify: 'weight', '600' -%}
+{%- assign base_font_italic = base_font | font_modify: 'style', 'italic' -%}
+{%- assign base_font_bold_italic = base_font_bold | font_modify: 'style', 'italic' -%}
+{% comment %} <link rel="preload" as="font" href="{{ header_font | font_url }}" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="{{ base_font_bold | font_url }}" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="https://cdn.shopify.com/s/files/1/1476/0022/files/nevis-Bold.woff2?v=1731558088" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="https://cdn.shopify.com/s/files/1/1476/0022/files/Optima_nova_LT_Regular.woff2?v=1709101526" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="https://cdn.shopify.com/s/files/1/1476/0022/files/Alta_regular.woff2?v=1731561793" type="font/woff2" crossorigin> {% endcomment %}
+{% capture get_code %}  
+  {%- style -%}
+    {{ header_font | font_face: font_display: 'swap' }}
+    {{ base_font | font_face: font_display: 'swap' }}
+
+    {{ base_font_bold | font_face: font_display: 'swap' }}
+    {{ base_font_italic | font_face: font_display: 'swap' }}
+    {{ base_font_bold_italic | font_face: font_display: 'swap' }}
+
+    @font-face {
+      font-family: "Optima nova LT Regular";
+      src: url("https://cdn.shopify.com/s/files/1/1476/0022/files/Optima_nova_LT_Regular.woff2?v=1709101526")format("woff2"),
+            url("https://cdn.shopify.com/s/files/1/1476/0022/files/Optima_nova_LT_Regular.woff?v=1709101525")format("woff");
+      font_display: 'swap';size-adjust: 102%;
+    ascent-override: 90%;
+    descent-override: 22%;
+    line-gap-override: 0%;
+    }
+    @font-face {
+        font-family: 'nevis';
+        src: url('https://cdn.shopify.com/s/files/1/1476/0022/files/nevis-Bold.woff2?v=1731558088') format('woff2');
+        font-weight: bold;
+        font-style: normal;
+        font-display: swap;
+        size-adjust: 102%;
+        ascent-override: 90%;
+    descent-override: 22%;
+    line-gap-override: 0%;
+    }  
+    @font-face {
+      font-family: 'Alta';
+      src: url('https://cdn.shopify.com/s/files/1/1476/0022/files/Alta_regular.eot?v=1731561793');
+      src: url('https://cdn.shopify.com/s/files/1/1476/0022/files/Alta_regular.eot?v=1731561793?#iefix') format('embedded-opentype'),
+          url('https://cdn.shopify.com/s/files/1/1476/0022/files/Alta_regular.woff2?v=1731561793') format('woff2'),
+          url('https://cdn.shopify.com/s/files/1/1476/0022/files/Alta_regular.woff?v=1731561793') format('woff'),
+          url('https://cdn.shopify.com/s/files/1/1476/0022/files/Alta_regular.ttf?v=1731561793') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;size-adjust: 102%;
+    ascent-override: 90%;
+    descent-override: 22%;
+    line-gap-override: 0%;
+  }
+  {%- endstyle -%}
+{%endcapture%}
+<script>if (!window.mainopt) {document.write({{ get_code | json }});}document.close();</script>

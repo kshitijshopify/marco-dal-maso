@@ -1,0 +1,162 @@
+{%- assign disable_sticky_header = false -%}
+
+{%- if section.settings.enable -%}
+  {%- if section.settings.collection_image_enable and collection.image -%}
+    <div
+      id="CollectionHeaderSection"
+      data-section-id="{{ section.id }}"
+      data-section-type="collection-header"
+      {% if section.settings.parallax %}data-parallax="true"{% endif %}>
+
+      <div class="collection-hero">
+
+        {%- if section.settings.parallax -%}
+          <parallax-image class="parallax-container">
+            <div class="parallax-image" data-movement="15%" data-parallax-image data-angle="{{ section.settings.parallax_direction }}">
+        {%- endif -%}
+
+          {%- render 'image-element',
+              img: collection.image,
+              img_width: 2400,
+              classes: 'collection-hero__image image-fit',
+              preload: true,
+              loading: 'eager',
+          -%}
+
+        {%- if section.settings.parallax -%}
+            </div>
+          </parallax-image>
+        {%- endif -%}
+
+        <div class="collection-hero__content">
+          <div class="page-width">
+            <header class="section-header section-header--hero">
+              <div class="section-header__shadow">
+                {%- render 'breadcrumbs' -%}
+                {% if collection.handle contains 'black-friday' %}
+                  {% comment %}<style>.collection-hero__content:before{display: none;}</style>
+                  <h1 class="section-header__title">30% OFF
+                  </h1>
+                  <span class="coll_desc">Minimum spend $200.</span>
+                  <h1 class="section-header__title">35% OFF
+                  </h1>
+                  <span class="coll_desc">Minimum spend $1000.</span>
+                  <small>Discount automatically applied at checkout</small>{% endcomment %}
+                {% else %}
+                <h1 class="section-header__title">
+                  {{ collection.title }} 
+                  
+    {% comment %}{% if collection.description != blank %}
+                    <span class="coll_Desc">{{ collection.description }}</span>                 
+                    {%  endif %}{% endcomment %}
+                </h1>
+                {% comment %} <span class="coll_Descx">The Annual Event is live - 30% applied at checkout.</span>   {% endcomment %}
+                  {% endif %}
+              </div>
+            </header>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    {%- assign disable_sticky_header = true -%}
+    <div class="page-width page-content page-content--top">
+      <header class="section-header section-header--flush">
+        {%- render 'breadcrumbs' -%}
+        <h1 class="section-header__title">
+          {{ collection.title }}
+        </h1>
+      </header>
+    </div>
+  {%- endif -%}
+{% else %}
+  {%- assign disable_sticky_header = true -%}
+{%- endif -%}
+
+{%- if disable_sticky_header -%}
+  {% comment %}
+    Div to trigger theme.CollectionHeader JS
+  {% endcomment %}
+  <div
+    id="CollectionHeaderSection"
+    data-section-id="{{ section.id }}"
+    data-section-type="collection-header">
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.collection-header.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable",
+      "label": "t:sections.collection-header.settings.enable.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_image_enable",
+      "label": "t:sections.collection-header.settings.collection_image_enable.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "parallax",
+      "label": "t:sections.collection-header.settings.parallax.label",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "parallax_direction",
+      "label": "t:sections.background-image-text.settings.parallax_direction.label",
+      "default": "top",
+      "options": [
+        {
+          "value": "top",
+          "label": "t:sections.background-image-text.settings.parallax_direction.options.top.label"
+        },
+        {
+          "value": "left",
+          "label": "t:sections.background-image-text.settings.parallax_direction.options.left.label"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}
+   <style>
+.coll_Desc{padding: 2px 0 2px 30px;font-size: 1rem;line-height: 24px;position:relative;top: 0px;margin-left: 30px;}
+.coll_Desc::before {content: "";opacity: .3;background: #fff;width: 1px;height: 100%;position: absolute;top: 0;left: 0;}
+.collection-hero__content .section-header__title{display: flex;align-items: center;justify-content: center;}
+ .transition-body .announcement-bar {
+  /* background: transparent; */
+  /* position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999; */
+  width: 100%;
+}
+    .collection-hero__content small {
+    margin-top: 10px;
+    font-size: 12px;
+}
+@media screen and (max-width:640px){
+.collection-hero__content .section-header__title {
+    max-width: 100%;
+}
+  .coll_Desc {
+    padding: 2px 0 2px 0px;
+    font-size: 12px;
+    line-height: 16px;
+    margin-left: 0;
+}
+  /* .collection-hero {
+    height: auto;
+} */
+}
+</style>

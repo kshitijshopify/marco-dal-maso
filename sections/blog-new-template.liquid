@@ -1,0 +1,262 @@
+{%- paginate blog.articles by 21 -%}
+<div data-section-id="{{ section.id }}" data-section-type="blog">
+  <div class="page-width page-content blogtemplate_new">
+    
+    {% comment %}{%- if section.settings.blog_show_tag_filter and blog.tags.size > 0 -%}
+    <ul id="nav" class="blogtabs {{ blog.title }} small--hide">
+      <li><a class="{% unless canonical_url contains 'tagged' %}active{% endunless %}" href="/blogs/{{ blog.handle }}">All Categories</a></li>
+      {%- for tag in blog.all_tags -%}
+        {% unless tag == 'Featured_Post' %}
+        {% if tag contains "_" %}{%- assign tag_starts_with = tag | slice: 0 -%}{% if tag_starts_with == "_" %}{% if tag_count %}{%- assign tag_count = tag_count | minus: 1 | at_least: 0 -%}{% endif %}{% continue %}{% endif %}{% endif %}
+        <li><a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" class="{% if current_tags contains tag %}active{% endif %}">{{ tag }}</a></li>
+        {% endunless %}
+      {% endfor %}
+    </ul>
+        <select id="BlogTagFilter" class="medium-up--hide">
+          <option value="/blogs/{{ blog.handle }}">All Categories</option>
+          {%- for tag in blog.all_tags -%}
+            {% if tag contains "_" %}{%- assign tag_starts_with = tag | slice: 0 -%}{% if tag_starts_with == "_" %}{% if tag_count %}{%- assign tag_count = tag_count | minus: 1 | at_least: 0 -%}{% endif %}{% continue %}{% endif %}{% endif %}
+            <option value="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" {% if current_tags contains tag %}selected{% endif %}>{{ tag }}</option>
+          {%- endfor -%}
+        </select>
+    {%- endif -%}{% endcomment %}
+    
+    {%- render 'breadcrumbs' -%}
+
+    <div class="grid grid--uniform ff">
+      {% assign variable = 0 %}
+      {%- for article in blog.articles -%}
+        {% unless article.tags contains 'Featured_Post' %}
+          {% if variable <= 1 %}
+            {%- render 'article-grid-custom', article: article, grid_item_width: 'medium-up--one-whole', per_row: '1', image_size: section.settings.blog_image_size -%}
+          {% endif %}
+          {% if variable == 1 %}
+            {% break %}
+          {% endif %}
+          {% assign variable = variable | plus: 1 %}
+        {% endunless %}
+      {%- endfor -%}
+    </div>
+  </div>
+  
+    <div class="grid grid--uniform fullwidthimg featuredPost">
+    {%- for article in blog.articles -%}
+      {% if article.tags contains 'Featured_Post' %}
+        {%- render 'article-grid-custom-featured', article: article, grid_item_width: 'medium-up--one-whole', per_row: '1', image_size: section.settings.blog_image_size -%}
+        {% assign variable = variable | plus: 1 %}
+      {% endif %}
+    {%- endfor -%}
+    </div>
+  
+  <div class="page-width page-content blogtemplate_new">
+    <div class="grid grid--uniform dd {{ variable }}">
+      {%- for article in blog.articles offset: variable -%}
+        {% unless article.tags contains 'Featured_Post' %}
+          {%- render 'article-grid-custom', article: article, grid_item_width: 'medium-up--one-whole', per_row: '1', image_size: section.settings.blog_image_size -%}
+        {% endunless %}
+      {%- endfor -%}
+    </div>
+    
+    {%- if paginate.pages > 1 -%}
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endif -%}  
+  </div>
+</div>
+{%- endpaginate -%}
+
+<style>
+.blogtemplate_new .grid__item.medium-up--one-whole:nth-child(even) .grid {display: flex;flex-direction: row-reverse;width: 100%;}
+.blogtemplate_new .grid__item.medium-up--one-whole:nth-child(odd) .grid {display: flex;flex-direction: row;width: 100%;}
+.text-left{text-align:left !important;}
+.template-all .blogtemplate_new #nav li {display: inline-flex;min-width: 0px;text-align: left;}        
+.template-all .blogtemplate_new #nav li:first-child a {
+    padding-left: 0;
+}
+.template-all .blogtemplate_new #nav {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 25px;
+    margin-bottom: 40px;
+    margin-left: 0;
+    padding-left: 0;
+}
+  .page-width.page-content.blogtemplate_new:last-child {
+    padding-top: 30px;
+}
+  .fullwidthimg.featuredPost .bloggrid__item .grid .article__title_heading.h2 {
+    color: #fff;
+    font-size: 42px;
+}
+  .fullwidthimg.featuredPost .bloggrid__item .grid .rte.article__excerpt {
+    font-size: 24px;
+    margin-bottom: 50px;
+}
+  .fullwidthimg.featuredPost .bloggrid__item .grid {
+    flex-direction: column !important;
+    position: relative;
+}
+  .fullwidthimg.featuredPost .bloggrid__item {
+    margin: 0;
+}
+  .page-width.page-content.blogtemplate_new:first-child {
+    padding-bottom: 30px;
+}
+  .fullwidthimg.featuredPost .bloggrid__item .grid .aticle__gridcontent {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+}
+  @media screen and (min-width:769px){
+  .fullwidthimg.featuredPost .bloggrid__item .grid .grid__image-ratio--wide:before {
+    padding-bottom: 40%;
+}
+  }
+.template-all .blogtemplate_new #nav li a{border-bottom:0px solid #000;}
+.template-all .blogtemplate_new #nav li a {font-weight: normal;padding: 0px;}
+.template-all .blogtemplate_new #nav li a.active {
+    border-bottom: 1px solid;
+    font-weight: 500;
+}
+.template-all a.article__title {font-weight: 700;font-size: 22px;}
+.template-all .article__grid-meta.text-left {padding-left: 20px;}
+/* .template-all .image-element{opacity:1;} */
+.template-all .grid__item.medium-up--one-whole {margin-bottom: 30px;}
+.template-all .rte.article__excerpt img {display: none;}
+.template-all .article__grid-meta.text-left {display: flex;align-items: start;justify-content: space-evenly;flex-direction: column;height: calc(100% - 20px);position:relative;}
+div#shopify-section-template--18180035707137__rich_text_HD9bfQ {
+    margin-bottom: 0px;
+}
+
+  
+@media screen and (max-width:768px){
+  .bloggrid__item .grid .grid__item {
+    padding-left: 0;
+}
+.bloggrid__item .grid {
+    margin-left: 0;
+}
+  select#BlogTagFilter {
+    margin-bottom: 20px;
+    width: 100%;
+}
+  .blogtemplate_new .grid > .bloggrid__item:last-child {
+    margin: 0;
+}
+  .fullwidthimg.featuredPost .page-width.page-content.blogtemplate_new .article__grid-meta {
+    margin: 0;
+}
+.fullwidthimg.featuredPost .page-width.page-content.blogtemplate_new {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+  .fullwidthimg.featuredPost .bloggrid__item .grid .aticle__gridcontent {
+    margin: 0;
+  }
+  .fullwidthimg.featuredPost .bloggrid__item .grid .grid__item {
+    margin: 0;
+}
+  .article__grid-image {
+    margin-bottom: 30px;
+  }
+  .fullwidthimg.featuredPost .bloggrid__item .grid .aticle__gridcontent {
+    position: unset;
+    transform: none;
+    color: #000000;
+}
+  .fullwidthimg.featuredPost .bloggrid__item .grid .article__title_heading.h2 {
+    color: #000;
+    font-size: 32px;
+}
+  .fullwidthimg.featuredPost .bloggrid__item .grid .rte.article__excerpt {
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+  body.template-all a.article__title {font-size: 18px;}
+  .blogtemplate_new .grid__item.medium-up--one-whole:nth-child(even) .grid, .blogtemplate_new .grid__item.medium-up--one-whole:nth-child(odd) .grid{flex-direction: column;}
+.template-all .article__grid-meta.text-left {
+    padding: 0;
+}
+  .top_part {
+    margin-bottom: 20px;
+}
+}
+</style>
+
+
+{% schema %}
+{
+  "name": "t:sections.blog-template.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "blog_show_tag_filter",
+      "label": "t:sections.blog-template.settings.blog_show_tag_filter.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_rss",
+      "label": "t:sections.blog-template.settings.blog_show_rss.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_tags",
+      "label": "t:sections.blog-template.settings.blog_show_tags.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_date",
+      "label": "t:sections.blog-template.settings.blog_show_date.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_comments",
+      "label": "t:sections.blog-template.settings.blog_show_comments.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_author",
+      "label": "t:sections.blog-template.settings.blog_show_author.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_excerpt",
+      "label": "t:sections.blog-template.settings.blog_show_excerpt.label"
+    },
+    {
+      "type": "select",
+      "id": "blog_image_size",
+      "label": "t:sections.blog-template.settings.blog_image_size.label",
+      "default": "wide",
+      "options": [
+        {
+          "value": "natural",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.natural.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.square.label"
+        },
+        {
+          "value": "landscape",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.landscape.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.portrait.label"
+        },
+        {
+          "value": "wide",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.wide.label"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}

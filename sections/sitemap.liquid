@@ -1,0 +1,53 @@
+{% layout none %} 
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main URL -->
+  <url>
+    <loc>{{ shop.url }}/</loc>
+    <lastmod>{{ 'now' | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Products -->
+  {% for product in collections.all_products.products %}
+  <url>
+    <loc>{{ shop.url }}{{ product.url }}</loc>
+    <lastmod>{{ product.updated_at | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  {% endfor %}
+
+  <!-- Collections -->
+  {% for collection in collections %}
+  <url>
+    <loc>{{ shop.url }}{{ collection.url }}</loc>
+    <lastmod>{{ collection.updated_at | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {% endfor %}
+
+  <!-- Pages -->
+  {% for page in pages %}
+  <url>
+    <loc>{{ shop.url }}{{ page.url }}</loc>
+    <lastmod>{{ page.updated_at | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {% endfor %}
+
+  <!-- Metaobjects -->
+  {% for metaobject in metaobjects %}
+    {% unless metaobject.url == '/sitemap_metaobject_pages_1.xml' %}
+      <url>
+        <loc>{{ shop.url }}{{ metaobject.url }}</loc>
+        <lastmod>{{ metaobject.updated_at | date: '%Y-%m-%d' }}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+      </url>
+    {% endunless %}
+  {% endfor %}
+</urlset>

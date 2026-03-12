@@ -1,0 +1,17 @@
+{%- if full_product == null -%}
+  <span class="onlysmall_screens">
+  {{ product.title | truncate: 27 }}
+</span>
+  <span class="large_screens">
+  {{ product.title | truncate: 40 }}
+</span>
+{%- else -%}
+  <span data-behavior="variable-product_title" data-variant_id='{{product.id}}'>
+    {%- assign downcase_title = product.title | downcase -%}
+    {%- if full_product.id == product.id or downcase_title == 'default title' -%}
+      {{ full_product.title }}
+    {%- else -%}
+      {{ full_product.title }}
+    {%- endif -%}
+  </span>
+{%- endif -%}

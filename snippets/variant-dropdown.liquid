@@ -1,0 +1,134 @@
+{%- capture size_chart_title -%}
+  <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-size-chart" viewBox="0 0 64 64"><defs><style>.a{fill:none;stroke:#000;stroke-width:2px}</style></defs><path class="a" d="M22.39 33.53c-7.46 0-13.5-3.9-13.5-8.72s6-8.72 13.5-8.72 13.5 3.9 13.5 8.72a12 12 0 0 1-.22 1.73"/><ellipse cx="22.39" cy="24.81" rx="3.28" ry="2.12"/><path class="a" d="M8.89 24.81V38.5c0 7.9 6.4 9.41 14.3 9.41h31.92V33.53H22.39m24.39 0v7.44m-8.13-7.44v7.44m-8.13-7.44v7.44m-8.13-7.44v7.44"/></svg>
+  {{ 'products.general.size_chart' | t }} 
+{%- endcapture -%}
+
+{%- liquid
+  assign is_size = false
+  assign size_trigger = 'products.general.size_trigger' | t | downcase
+  assign downcased_option = option.name | downcase
+
+  if downcased_option contains 'Size' or downcased_option contains 'Dimensioni' or downcased_option contains 'Opzioni' or downcased_option contains 'size' or downcased_option contains 'dimensioni' or downcased_option contains 'opzioni'
+    assign is_size = true
+  elsif downcased_option == 'length'
+    assign is_size = true
+  endif
+comment
+  assign is_size = false
+  assign size_option_index = 0
+  assign size_trigger = 'products.general.size_trigger' | t | downcase
+  assign size_label_list = 'products.general.size_trigger' | t | replace: ', ', ',' | downcase | split: ','
+  assign size_option_index = forloop.index0
+  assign downcased_option = option.name | downcase
+  if size_label_list contains downcased_option
+    assign is_size = true
+  elsif size_trigger == 'size' and downcased_option contains 'size'
+    assign is_size = true
+  elsif downcased_option == 'length'
+    assign is_size = true
+  endif
+endcomment
+
+
+-%}
+<div class="variant-wrapper variant-wrapper--dropdown js {% if option.values.size == 1 %}hide hiddenoptions{% endif %}" data-type="dropdown">  
+  <div class="flexdiv relative">  
+    <label class="variant__label{% if option.name == 'Default' or option.name == 'Title' %} hidden-label{% endif %}{% unless variant_labels %} hidden-label{% endunless %}"
+      for="SingleOptionSelector-{{ section_id }}-{{ product.id }}-option-{{ forloop.index0 }}">
+      {% unless option.name contains 'Buy' %}<span>{{ option.name }}</span>{% endunless %}    
+    </label>
+    {%- if connect_to_sizechart and is_size -%}    
+      <span class="variant__label-info">  
+        <span class="size_popup">{% render 'size_icon' %} Size chart</span>
+        <div class="size_drawer {{ product.type | handle }}-sizechart">
+          <div class="size__inner" >
+            <div class="size_title">{{ section.blocks[sizechart_index].settings.size_chart.title }} 
+              <button class="size__close" data-tool-tip-close=""><svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><title>icon-X</title><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/></svg></button>
+            </div>
+            {{section.blocks[sizechart_index].settings.size_chart.content }}
+            
+            <p>Between or unsure of sizes? Our team is <br>happy to help.</p>
+            <ul class="tool_bottom">
+              <li>{% render 'email-icon' %}<a href="mailto:ciao@marcodalmaso.com">Email us</a></li>
+              <li>{% render 'phone-icon' %}<a href="https://wa.me/447572924444" target="_blank">Get in touch on Whatsapp</a></li>
+            </ul>
+          </div>
+        </div>
+        {% comment %} {%- render 'tool-tip-trigger', title: size_chart_title, content: section.blocks[sizechart_index].settings.size_chart.content, context: 'size-chart' -%} {% endcomment %}      
+      </span>
+    {%- endif -%}    
+  </div>
+    
+  <div class="variant-input-wrap" data-index="option{{ forloop.index }}" data-handle="{{ option.name | handleize }}">
+    <select class="sync-select {{ product.type }}"
+      form="{{ form_id }}"Ring size
+      data-variant-input
+      id="SingleOptionSelector-{{ section_id }}-{{ product.id }}-option-{{ forloop.index0 }}"
+      data-index="option{{ forloop.index }}" data-sync="size">
+      <option selected="selected" disabled>
+        {% assign product_type = product.type | strip | downcase %}
+        {% if product_type == 'earrings' %}
+          Select QTY
+        {% elsif product_type == 'necklaces' %}
+          Select Length
+        {% else %}
+          Select Size
+        {% endif %}
+      </option>
+      {%- for value in option.values -%}
+        {%- liquid
+          assign variant_label_state = true
+          if product.options.size == 1
+            unless product.variants[forloop.index0].available
+              assign variant_label_state = false
+            endunless
+          endif
+        -%}
+        <option
+          value="{{ value | escape }}"
+          data-varid="{{ product.variants[forloop.index0].id }}"
+          {% if option.name contains 'Length' or option.name contains 'length' or option.name contains 'Buy As' or option.name contains 'buy as' or option.name contains 'Size' or option.name contains 'size' %}{% else %}{% if option.selected_value == value %} selected="selected"{% endif %}{% endif %}
+          {% unless variant_label_state %} disabled="disabled"{% endunless %}
+          name="{{ option.name }}"
+          class="variant-input"
+          data-index="option{{ forloop.index }}">
+          {{ value }}{%comment%}
+          {% if product.variants[forloop.index0].inventory_management == 'shopify' and product.variants[forloop.index0].inventory_quantity > 0 %} | Ready to Ship{% endif %}
+           {% endcomment %}
+        </option>
+      {%- endfor -%}
+    </select>
+  </div>
+</div>
+<script>
+// Open drawer
+document.querySelectorAll('.size_popup').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.size_drawer').forEach(function (drawer) {
+      drawer.classList.add('open');
+    });
+  });
+});
+
+// Close drawer via close button
+document.querySelectorAll('.size__close').forEach(function (closeBtn) {
+  closeBtn.addEventListener('click', function () {
+    const drawer = closeBtn.closest('.size_drawer');
+    if (drawer) drawer.classList.remove('open');
+  });
+});
+
+// ✅ Close drawer when clicking outside inner content
+document.querySelectorAll('.size_drawer').forEach(function (drawer) {
+  drawer.addEventListener('click', function () {
+    drawer.classList.remove('open');
+  });
+});
+
+// ✅ Prevent closing when clicking inside drawer content
+document.querySelectorAll('.size__inner').forEach(function (inner) {
+  inner.addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+});
+</script>

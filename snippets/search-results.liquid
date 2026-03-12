@@ -1,0 +1,186 @@
+{% liquid
+  assign resources = predictive_search.resources
+  assign columnCount = resources.queries.size | plus: resources.pages.size | plus: resources.articles.size | plus: resources.collections.size
+  assign totalCount = resources.queries.size | plus: resources.pages.size | plus: resources.articles.size | plus: resources.collections.size | plus: resources.products.size
+%}
+
+{%- if predictive_search.performed -%}
+  <div class="predictive-search-results {% if totalCount == 0 %}predictive-search-results--none{% endif %}" id="predictive-search-results">
+    {% if totalCount > 0 %}
+      <div class="results__group-1" {% if columnCount == 0 %}style="display: none"{% endif %}>
+        <!-- Recent Searches (Sidebar/Drawer/Anywhere) -->
+          {% comment %} <div class="recent-searches results results--queries" data-recent-searches data-limit="5" data-days="30">
+            <div class="recent-searches__head">
+              <h3 class="h4" id="predictive-search-suggestions">
+                Recent searches
+              </h3>
+              <button type="button" class="recent-searches__clear" data-recent-clear aria-label="Clear recent searches">Clear</button>
+            </div>
+            <ul role="listbox" aria-labelledby="predictive-search-queries" class="recent-searches__list" data-recent-list></ul>  
+            <p class="recent-searches__empty" data-recent-empty style="display:none;">No recent searches.</p>            
+          </div> {% endcomment %}
+
+        {%- if predictive_search.resources.queries.size > 0 -%}
+          <div class="results results--queries">
+            <h3 class="h4" id="predictive-search-suggestions">
+              {{ 'general.search.suggestions' | t }}
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-queries">
+              {%- for query in predictive_search.resources.queries -%}
+                <li role="option">
+                  <a href="{{ query.url }}">
+                    <span>{{ query.styled_text }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if predictive_search.resources.pages.size > 0 -%}
+          <div class="results results--pages">
+            <h3 class="h4" id="predictive-search-pages">
+              {{ 'general.search.pages' | t }}
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-pages">
+              {%- for page in predictive_search.resources.pages -%}
+                <li role="option">
+                  <a href="{{ page.url }}">
+                    <span>{{ page.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if predictive_search.resources.articles.size > 0 -%}
+          <div class="results results--articles">
+            <h3 class="h4" id="predictive-search-articles">
+              {{ 'general.search.articles' | t }}
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-articles">
+              {%- for article in predictive_search.resources.articles -%}
+                <li role="option">
+                  <a href="{{ article.url }}">
+                    <span>{{ article.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if predictive_search.resources.collections.size > 0 -%}
+          <div class="results results--collections">
+            <h3 class="h4" id="predictive-search-collections">
+              {{ 'general.search.collections' | t }}
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-collections">
+              {%- for collection in predictive_search.resources.collections -%}
+                <li role="option">
+                  <a href="{{ collection.url }}">
+                    <span>{{ collection.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="results__group-2">
+        {%- if predictive_search.resources.collections.size > 0 -%}
+          <div class="results results--collections">
+            <h3 class="h4" id="predictive-search-collections">
+              {{ 'general.search.collections' | t }}
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-collections">
+              {%- for collection in predictive_search.resources.collections -%}
+                <li role="option">
+                  <a href="{{ collection.url }}">
+                    <span>{{ collection.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if predictive_search.resources.products.size > 0 -%}
+          <div class="results results--products">
+            <h3 class="h4" id="predictive-search-products">
+              {{ 'general.search.products' | t }}
+            </h3>
+            <div class="grid-overflow-wrapper">                
+              <ul role="listbox" aria-labelledby="predictive-search-products" class="grid grid--uniform" data-aos="overflow__animation" aria-hidden="true">
+                {%- for product in predictive_search.resources.products -%}
+                  {%- render 'product-grid-item',
+                    product: product,
+                    per_row: '6',
+                    quick_shop_enable: settings.quick_shop_enable,
+                    fallback: '39vw',
+                  -%}
+                {%- endfor -%}
+              </ul>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {% comment %} {%- if predictive_search.resources.products.size > 0 -%}
+          <div class="results results--products">
+            <h3 class="h4" id="predictive-search-products">
+              Categories
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-products">
+              {%- for product in predictive_search.resources.products -%}
+                <li role="option" class="{{ product.type }}">
+                  <a href="{{ product.url }}">
+                    {{ product.type }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%} {% endcomment %}
+
+        {%- if predictive_search.resources.pages.size > 0 -%}
+          <div class="results results--pages">
+            <h3 class="h4" id="predictive-search-pages">
+              {{ 'general.search.pages' | t }}
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-pages">
+              {%- for page in predictive_search.resources.pages -%}
+                <li role="option">
+                  <a href="{{ page.url }}">
+                    <span>{{ page.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if predictive_search.resources.articles.size > 0 -%}
+          <div class="results results--articles">
+            <h3 class="h4" id="predictive-search-articles">
+              {{ 'general.search.articles' | t }}
+            </h3>
+            <ul role="listbox" aria-labelledby="predictive-search-articles">
+              {%- for article in predictive_search.resources.articles -%}
+                <li role="option">
+                  <a href="{{ article.url }}">
+                    <span>{{ article.title }}</span>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    {% else %}
+      <div class="results"><a class="predictive-search__no-results" href="{{ routes.search_url }}?q={{ predictive_search.terms | escape }}">{{ 'general.search.no_results_html' | t: terms: predictive_search.terms }}</a></div>
+    {% endif %}
+  </div>
+  {% if totalCount > 0 %}
+    <button class="results__search-btn">
+      {% comment %} {{ 'general.search.view_more' | t: terms: predictive_search.terms }} <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 5H12.5M12.5 5L8.5 1M12.5 5L8.5 9" stroke="currentColor"/></svg> {% endcomment %}
+      View all results
+    </button>
+  {% endif %}
+{%- endif -%}

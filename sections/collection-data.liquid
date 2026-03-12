@@ -1,0 +1,239 @@
+{%- liquid
+  assign per_row = section.settings.grid
+  assign paginate_by = per_row | times: 7
+
+  capture gridView
+    assign per_row = per_row | times: 1
+    if section.settings.display_type == 'selected' and section.blocks.size < per_row
+      assign products_per_row = section.blocks.size
+    else
+      assign products_per_row = per_row
+    endif
+    render 'products_per_row', products_per_row: products_per_row, style: 'fractions'
+  endcapture
+-%}
+
+
+<div class="page-width collection-data page-content">
+  
+  <div class="headerpart__collectionslist">
+    {%- if section.settings.title_enable -%}
+      <header class="section-header">
+        <h1 class="section-header__title">{{ 'collections.general.catalog_title' | t }}</h1>
+      </header>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <div class="rte">{{ section.settings.text }}</div>
+    {%- endif -%}
+  </div>
+  
+  {%- for block in section.blocks -%}
+    <div class="grid col_data_g grid--uniform{% unless settings.collection_grid_gutter %} grid--no-gutters{% endunless %}">
+      {%- assign collection = collections[block.settings.collection] -%}
+      {%- liquid
+        unless background_position
+          assign background_position = 'center center'
+        endunless
+        if block.settings.image != blank
+          assign collection_image = block.settings.image
+        else
+             
+          if settings.collection_grid_image == 'custom'
+            assign collection_image = collection.handle | append: '.' | append: 'png'
+          elsif settings.collection_grid_image == 'collection' and collection.image
+            assign collection_image = collection.image
+          else
+            assign collection_image = collection.products.first.featured_media.preview_image
+          endif
+        endif
+  
+        if block.settings.title != blank
+          assign title_output = block.settings.title
+        else
+          if collection == blank
+            assign title_output = 'home_page.onboarding.collection_title' | t
+          elsif collection_title
+            assign title_output = collection_title
+          else
+            assign title_output = collection.title | escape
+          endif
+        endif
+      -%}
+  
+      <div class="grid__item {{ gridView }}" {{ block.shopify_attributes }}>
+        <div class="title_area center" style="text-align:center;">
+          <h3>{{ title_output }}</h3>
+        {% if  block.settings.text != blank %}<div>{{ block.settings.text }}</div>{% else %}<div>{{  collection.description }}</div>{% endif %}
+        </div>
+        <br/><br/>
+        <a href="{{ collection.url }}" class="collection-item collection-item--{{ settings.collection_grid_style }}" data-aos="row-of-{{ per_row }}">
+        
+          
+          {%- if collection == blank or collection_image == blank -%}
+            {%- capture placeholder -%}collection-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+            <div class="collection-image collection-image--{{ settings.collection_grid_shape }} collection-image--placeholder">{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}</div>
+          {%- else -%}
+            <div class="collection-image collection-image--{{ settings.collection_grid_shape }} image-wrap">
+              {% assign indicator = block.id %}
+              {% if block == blank %}
+                {% assign indicator = collection.id %}
+              {% endif %}
+      
+              {% style %}
+                .collection-image--{{ indicator }} {
+                  object-position: {{ background_position }};
+                }
+              {% endstyle %}
+      
+              {% assign classes = 'collection-image--' | append: indicator %}
+              {%- render 'image-element',
+                img: collection_image,
+                widths: '900, 1080',
+                classes: classes,
+                sizes: sizes,
+                sizeVariable: sizeVariable,
+                fallback: fallback,
+              -%}
+            </div>
+          {%- endif -%}
+        </a>
+      </div>
+      {%- for product in collections[block.settings.collection].products limit: 4 -%}
+        {%- render 'product-grid-item',
+          product: product,
+          collection: collection,
+          per_row: 4,
+        -%}
+      {%- endfor -%}
+  
+      <div class="grid__item text-center{% if section.settings.mobile_scrollable %} small--hide{% endif %}">
+        <a href="{{ collections[block.settings.collection].url }}" class="btn">{{ 'collections.general.all_of_collection' | t }}</a>
+      </div>        
+    </div>
+  {%- endfor -%}
+</div>
+      
+<style>
+.collection-data .grid--uniform .medium-up--one-quarter:nth-of-type(4n+1),
+.collection-data .grid--uniform .small--one-half:nth-of-type(odd),
+.collection-data .grid--uniform .small--one-third:nth-of-type(3n+1){clear:unset;}
+.collection-data  .collection-image--landscape {
+    padding-top: 350px;
+}
+.collection-data .collection-image--landscape:hover {
+    transform: scale(1.2);
+}
+.col_data_g{margin-bottom :80px;}
+  .headerpart__collectionslist .rte h3 {
+    text-transform: none;
+    line-height: 32px;
+}
+
+.headerpart__collectionslist h1 {
+    font-size: 48px;
+}
+.headerpart__collectionslist::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    width: 50%;
+    border-bottom: 3px solid #000;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.headerpart__collectionslist {
+    margin: auto auto 100px;
+    max-width: 1130px;
+    position: relative;
+}
+</style>
+
+{% schema %}
+  {
+  "name": "Collection Data",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "title_enable",
+      "label": "t:sections.list-collections-template.settings.title_enable.label",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.text-and-image.settings.text.label",
+      "default": "<p>Pair large text with an image to tell a story, explain a detail about your product, or describe a new promotion.</p>"
+    },
+    {
+      "type": "select",
+      "id": "grid",
+      "label": "t:sections.list-collections-template.settings.grid.label",
+      "default": "4",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "t:sections.list-collections-template.blocks.collection.name",
+      "settings": [
+        {
+          "label": "t:sections.list-collections-template.blocks.collection.settings.collection.label",
+          "id": "collection",
+          "type": "collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Custom Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Banner image if required"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Data",
+      "blocks": [
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}

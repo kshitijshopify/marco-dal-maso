@@ -1,0 +1,294 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+ .rte h3:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  height: 1px;
+  width: 50%;
+  border-bottom: 3px solid #000;
+  left: 50%;
+  transform: translateX(-50%);
+}
+  .collection_block {
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}
+.grid.grid--uniform.grid--no-gutters .grid__item:last-child .img_p {
+    border-left: none;
+}
+
+.img_p {
+    border-right: none;
+}
+.img_p, .coll_p {
+    width: 50%;
+    border: 1px solid #ddd;
+}
+.img_p img {width: 100%;min-height: 360px;max-height: 360px;object-fit: cover;object-position: center;}
+  .img_p image-element {
+    display: inline-block;
+    width: 100%;
+}
+  .img_p .slide_img a {
+    width: 100%;
+}
+.coll_p ul{list-style-type:none;padding-left:0px;margin-left:0px;} 
+.coll_p {padding: 50px;font-size:12px;text-transform:uppercase;display: flex;
+    flex-direction: column;
+    justify-content: center;}
+  .coll_p:hover .relative:after{width:50px;}
+  .coll_p .relative{position:relative;}
+  .coll_p .relative:after {
+    content: " ";transition:0.5s ease all;
+    width: 30px;
+    border-top: 1px solid #ccc;
+    height: 0px;
+    background: transparent;
+    position: absolute;
+    top: 10px;
+    margin-left: 15px;
+}
+  .reverse_data .grid__item .collection_block {
+    flex-direction: row-reverse;
+}
+  .grid.grid--uniform.grid--no-gutters .collection_block {
+    height: 100%;
+}
+  .grid.grid--uniform.grid--no-gutters {
+    margin-bottom: 30px;
+    display: flex;
+}
+  @media screen and (max-width:768px){
+.grid.grid--uniform.grid--no-gutters {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+    .grid.grid--uniform.grid--no-gutters .grid__item:last-child .collection_block {
+    flex-direction: row-reverse;
+}
+    .reverse_data .grid__item .collection_block {
+    flex-direction: row;
+}
+    .collection_block .slick-list.draggable {
+    margin: 0;
+}
+  }
+  @media screen and (max-width:480px){
+    .img_p img {
+    width: 100%;
+    min-height: 180px;
+    max-height: 180px;
+}
+  }
+  @media screen and (min-width:481px) and (max-width:680px){
+    .img_p img {
+    width: 100%;
+    min-height: 220px;
+    max-height: 220px;
+}
+  }
+  @media screen and (min-width:681px) and (max-width:768px){
+    .img_p img {
+    width: 100%;
+    min-height: 260px;
+    max-height: 260px;
+}
+  }
+</style>
+<div class="page-width">
+  {% assign find_r = 0 %}   
+  {%- for block in section.blocks -%}
+    {% assign rr = forloop.index | modulo: 2 %}
+    {% if rr == 1 %}
+      {% assign find_r = find_r | plus:1 %}
+       {% assign rw_gt = find_r| modulo: 2 %}
+       <div class="{% if rw_gt == 0 %} reverse_data {% endif %} grid grid--uniform{% unless section.settings.enable_gutter %} grid--no-gutters{% endunless %}">
+    {% endif %}
+    <div class="grid__item medium-up--one-half">
+      <div class="collection_block">
+        <div class="img_p">
+          <div class="slide_img img-carousel">
+                            {% for i in (1..5) %}
+                              {% capture coll  %}collection_{{ i }}{% endcapture %}
+                              {% capture img  %}image_{{ i }}{% endcapture %}
+                                 {% assign collection = collections[block.settings[coll]] %}
+                                 {% assign image = block.settings[img]  %}
+                                 {% if image != blank %}
+                                      {% assign collection_image = image  %} 
+                                 {% elsif collection.metafields.custom.menu_vertical_image !=  blank %}
+                                   {% assign collection_image = collection.metafields.custom.menu_vertical_image | image_url: width: collections[grandchildlink.object.handle].metafields.custom.menu_vertical_image.width %}
+                                 {% else %}
+                                   {%  if collection.image %}
+                                      {% assign collection_image = collection.image  %} 
+                                   {% else %}
+                                      {% assign collection_image = collection.products.first.featured_media.preview_image%}
+                                   {% endif  %}
+                                  {% endif %}
+                                  {% assign indicator = block.id %}
+                                  {% if block == blank %}
+                                    {% assign indicator = collection.id %}
+                                  {% endif %}
+                                      {% if collection_image != blank %}
+                                         <a href="{{ collection.url }}" data="{{ image }}">          
+                                           {% assign classes = 'collection-image--' | append: indicator %}
+                                              {%- render 'image-element',
+                                                img: collection_image,
+                                                widths: '900, 1080',
+                                                classes: classes,
+                                                sizes: sizes,
+                                                sizeVariable: sizeVariable,
+                                                fallback: fallback,
+                                              -%}
+                                          </a>
+                                      {% endif %}
+                              
+                            {% endfor %} 
+          </div>
+        </div>
+        <div class="coll_p">
+                                    <h3 class="relative">{{ block.settings.title }}</h3>
+                                    <ul>
+                                      {% for i in (1..5) %}
+                                        {% capture coll  %}collection_{{ i }}{% endcapture %}
+                                        {% capture img  %}image_{{ i }}{% endcapture %}
+                                           {% assign collection = collections[block.settings[coll]] %}
+                                           {% assign image = block.settings[img]  %}
+                                           {% if collection != blank %}<li><a href="{{ collection.url }}">{{ collection.title | remove: 'The' | remove: 'Collection' }}</a></li>{% endif %}
+                                      {% endfor %}  
+                                    </ul> 
+                              </div>
+                </div>
+              </div>
+          
+          {% if rr == 0  or forloop.last%}
+            
+            </div>
+            {% endif %}
+          
+         {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Collection Data",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_gutter",
+      "label": "t:sections.featured-collections.settings.enable_gutter.label",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection  Data",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "t:sections.featured-collections.blocks.collection.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title"
+        },
+        {
+          "type": "header",
+          "content": "Coll 1"
+        },
+        {
+          "id": "collection_1",
+          "type": "collection",
+          "label": "t:sections.featured-collections.blocks.collection.settings.collection.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Custom image"
+        },
+        {
+          "type": "header",
+          "content": "Coll 2"
+        },
+        {
+          "id": "collection_2",
+          "type": "collection",
+          "label": "t:sections.featured-collections.blocks.collection.settings.collection.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Custom image"
+        },
+        {
+          "type": "header",
+          "content": "Coll 3"
+        },
+        {
+          "id": "collection_3",
+          "type": "collection",
+          "label": "t:sections.featured-collections.blocks.collection.settings.collection.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Custom image"
+        },
+        {
+          "type": "header",
+          "content": "Coll 4"
+        },
+        {
+          "id": "collection_4",
+          "type": "collection",
+          "label": "t:sections.featured-collections.blocks.collection.settings.collection.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_4",
+          "label": "Custom image"
+        },
+        {
+          "type": "header",
+          "content": "Coll 5"
+        },
+        {
+          "id": "collection_5",
+          "type": "collection",
+          "label": "t:sections.featured-collections.blocks.collection.settings.collection.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_5",
+          "label": "Custom image"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}

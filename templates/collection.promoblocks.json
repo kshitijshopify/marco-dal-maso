@@ -1,0 +1,174 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection-header": {
+      "type": "collection-header",
+      "settings": {
+        "enable": true,
+        "collection_image_enable": true,
+        "parallax": false,
+        "parallax_direction": "top"
+      }
+    },
+    "main-collection": {
+      "type": "main-collection-promos",
+      "blocks": {
+        "promotion_3RpRMf": {
+          "type": "promotion",
+          "settings": {
+            "collection": "test",
+            "row-number": 3,
+            "column-number": 2,
+            "promo-width": 2,
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "rgba(0,0,0,0)",
+            "txt_color": "#ffffff",
+            "overlay-style": "none",
+            "image": "{{ block.settings.collection.metafields.custom.shop_look.value.banner.value }}",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "Discover the look",
+            "openaspopup": true,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center"
+          }
+        },
+        "promotion_WtThVz": {
+          "type": "promotion",
+          "settings": {
+            "collection": "test",
+            "row-number": 6,
+            "column-number": 1,
+            "promo-width": 3,
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "center",
+            "text-background-color": "",
+            "txt_color": "#ffffff",
+            "overlay-style": "darken",
+            "image": "shopify://shop_images/Gold_and_Silver_Initial_Rings.png",
+            "code": "",
+            "overline": "SubHeading",
+            "title": "Heading",
+            "description": "<p>Emphasize featured or banner headings by wrapping text with square brackets, ie. This is [emphasized].Emphasize featured or banner headings by wrapping text with square brackets, ie. This is [emphasized].</p>",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center"
+          }
+        },
+        "promotion_xKedHg": {
+          "type": "promotion",
+          "settings": {
+            "collection": "test",
+            "row-number": 10,
+            "column-number": 1,
+            "promo-width": 1,
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "center",
+            "text-background-color": "#000000",
+            "txt_color": "#ffffff",
+            "overlay-style": "none",
+            "code": "",
+            "overline": "Promotion",
+            "title": "Heading",
+            "description": "<p>Description</p>",
+            "showcolldesc": false,
+            "link-url": "shopify://pages/rewards",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center"
+          }
+        },
+        "promotion_j7Uw6X": {
+          "type": "promotion",
+          "settings": {
+            "collection": "test",
+            "row-number": 14,
+            "column-number": 3,
+            "promo-width": 1,
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "center",
+            "text-background-color": "rgba(0,0,0,0)",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "image": "shopify://shop_images/AGOR0020-03BV_1.jpg",
+            "code": "",
+            "overline": "",
+            "title": "Promotion Grid",
+            "description": "<p>Shop Now</p>",
+            "showcolldesc": false,
+            "link-url": "shopify://pages/sms-club",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center"
+          }
+        },
+        "promotion_iNrJQL": {
+          "type": "promotion",
+          "settings": {
+            "collection": "acies-collection",
+            "row-number": 2,
+            "column-number": 1,
+            "promo-width": 2,
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "center",
+            "text-background-color": "",
+            "txt_color": "",
+            "overlay-style": "none",
+            "image": "shopify://shop_images/AGBR0109-01BVEV.jpg",
+            "code": "<h2>Custom content</h2><p>Use this advanced section to build your own layouts or to add custom HTML, Liquid, or scripts.</p>",
+            "overline": "Overline text",
+            "title": "Grid promotion",
+            "description": "<p>Create eye-catching promos within collection grids to increase discoverability and accelerate conversions.</p>",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "Optional link",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "promotion_3RpRMf",
+        "promotion_WtThVz",
+        "promotion_xKedHg",
+        "promotion_j7Uw6X",
+        "promotion_iNrJQL"
+      ],
+      "settings": {
+        "showsubcolls__belowheader": true,
+        "enable_sidebar": true,
+        "collapsed": true,
+        "filter_style": "horizontal",
+        "enable_color_swatches": true,
+        "enable_sort": true,
+        "enable_collection_count": false,
+        "products-per-row--desktop": 3,
+        "products-per-row--mobile": "1",
+        "number-of-rows": 16
+      }
+    }
+  },
+  "order": [
+    "collection-header",
+    "main-collection"
+  ]
+}

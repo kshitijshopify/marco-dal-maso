@@ -1,0 +1,94 @@
+{% style %}
+  {% if section.settings.top_padding == false %}
+    #shopify-section-{{ section.id }} .index-section { margin-top: 0 !important; }
+  {% endif %}
+  {% if section.settings.bottom_padding == false %}
+    #shopify-section-{{ section.id }} .index-section { margin-bottom: 0 !important; }
+  {% endif %}
+{% endstyle %}
+{% if section.settings.product_coll_title != blank and section.settings.product_coll_content != blank and section.settings.coll_image != blank %}
+<div class="product_collection_detail page-width">
+  <div class="grid grid-flex prdct_coll pcdec_area">
+    <div class="grid__item medium-up--two-thirds ">      
+      <p>COLLECTION</p>
+      <h2>{{ section.settings.product_coll_title }}</h2>
+      <div>{{ section.settings.product_coll_content }}</div>      
+    </div> 
+    <div class="grid__item medium-up--one-third">
+      <!-- <div>
+        <img src="{{ section.settings.coll_image | img_url: 'master' }}" alt="{{ section.settings.coll_image.alt | default: section.settings.product_coll_title | default: 'Default Alt Text' }}">
+      </div> -->
+      <div class="coll_lnk">
+        <a href="{{ section.settings.product_coll_button_link }}">Discover the {{ section.settings.product_coll_button_label | downcase }}</a>
+      </div>
+    </div> 
+  </div>
+</div>
+{% endif %}
+{% schema %}
+  {
+    "name": "Product Metareference",
+    "settings": [      
+    {
+      "type": "header",
+      "content": "Product Collection Info through Metafields"
+    },   
+    {
+      "type": "image_picker",
+      "id": "coll_image",
+      "label": "Collection image",
+      "info": "Link in the product metaobject entry through dynamic source."
+    }, 
+    {
+      "type": "text",
+      "id": "product_coll_title",
+      "label": "Collection title",
+      "info": "Link in the product metaobject entry through dynamic source."
+    },    
+    {
+      "type": "richtext",
+      "id": "product_coll_content",
+      "label": "Collection content",
+      "info": "Link in the product metaobject entry through dynamic source."
+    },    
+    {
+      "type": "text",
+      "id": "product_coll_button_label",
+      "label": "Button label",
+      "info": "Link in the product metaobject entry through dynamic source."
+    },
+    {
+      "type": "url",
+      "id": "product_coll_button_link",
+      "label": "Collection button link",
+      "info": "Link in the product metaobject entry through dynamic source."
+    },
+    {
+      "type": "checkbox",
+      "id": "top_padding",
+      "label": "t:sections.text-and-image.settings.top_padding.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "bottom_padding",
+      "label": "t:sections.text-and-image.settings.bottom_padding.label",
+      "default": true
+    }
+    ],
+  "presets": [
+    {
+      "name": "Product Metareference"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

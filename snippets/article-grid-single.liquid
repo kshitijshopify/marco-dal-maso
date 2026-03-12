@@ -1,0 +1,61 @@
+{%- assign fixed_aspect_ratio = false -%}
+{% unless image_size == 'natural' %}
+  {%- assign fixed_aspect_ratio = true -%}
+{% endunless %}
+
+<div class="grid__item {{ grid_item_width }}" data-aos="row-of-{{ per_row }}">
+  <div class="gridd relative">
+    <div class="gridd__item small--one-whole">
+      {%- if article.image -%}
+        <a href="{{ article.url }}" class="single_article_img article__grid-image" aria-label="{{ article.title | escape }}">
+          <img src="{{ article.image | img_url:'master' }}" style="width:100%;" />
+        </a>
+      {%- else -%}
+        <div class="article__grid-image">
+          {%- if fixed_aspect_ratio -%}
+            <div class="image-wrap">
+              <div
+                class="grid__image-ratio grid__image-ratio--{{ image_size }}">
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="article_abs gridd__item small--two-thirds">
+      <div class="article__grid-meta   text-left">
+        
+        <div class="event_data">
+            {% if article.metafields.custom.event_city %}
+              <div class="event_city article_data">{{ article.metafields.custom.event_city }}</div>
+            {% endif %}
+            {% if article.metafields.custom.event_country %}
+              <div class="event_country article_data">{{ article.metafields.custom.event_country }}</div>
+            {% endif %}
+            {% if article.metafields.custom.event_end_date %}
+              <div class="event_date article_data">{{ article.metafields.custom.event_start_date | date: "%b" }}, {{ article.metafields.custom.event_start_date | date: "%d" }} - {{ article.metafields.custom.event_end_date | date: "%d" }}</div>
+            {% endif %}
+        </div>
+
+        <!-- <div class="btn_bottom">
+        <tool-tip-trigger class="tool-tip-trigger" data-tool-tip="events_enquiry">
+          <div class="tool-tip-trigger__title btn">ENQUIRE NOW</div>
+          <span class="tool-tip-trigger__content" data-tool-tip-content="">
+            <div class="globo-formbuilder" data-id="MTI0Mzg2"></div>
+          </span>
+        </tool-tip-trigger>
+        </div> -->
+
+        <div class="btn_bottom">          
+          <div class="btn_bottom">
+            <button class="tool-tip-trigger__title btn globo-formbuilder-open" data-id="MTI0Mzg2" 
+              data-event_city="{{ article.metafields.custom.event_city }}" 
+              data-event_country="{{ article.metafields.custom.event_country }}" 
+              data-event_start_date="{{ article.metafields.custom.event_start_date }}">ENQUIRE NOW</button>        
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

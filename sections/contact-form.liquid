@@ -1,0 +1,150 @@
+<div class="index-section">
+  <div class="page-width{% if section.settings.narrow_column %} page-width--narrow{% endif %}">
+    {%- if section.settings.show_aside -%}<div class="grid grid--uniform"><div class="grid__item medium-up--one-half">{%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <div class="section-header text-left">
+          <h2 class="section-header__title text-left">
+            {{ section.settings.title }}
+          </h2>
+          {%- if section.settings.text != blank -%}
+            <div class="rte section-header__rte">{{ section.settings.text }}</div>
+          {%- endif -%}
+        </div>
+      {% endif %}
+      {%- if section.settings.show_aside -%}</div><div class="grid__item medium-up--one-half">{%- endif -%}
+      <div class="form-vertical {% if template contains 'page' %}page_c_form{% endif %}">
+
+        {% if template contains 'bespoke' %}
+        <div class="globo-formbuilder" data-id="MzU1NjI="></div>
+          {% else %}
+        {%- assign form_id = 'contact-' | append: section.id -%}
+        {%- form 'contact', id: form_id -%}
+
+          {% if template contains 'page' %}
+            <input type="hidden" id="custId" name="contact[Subject]" value="{{ page.title }}">
+          {% endif %}
+          {%- if form.posted_successfully? -%}
+            <p class="note note--success">
+              {{ 'contact.form.post_success' | t }}
+            </p>
+          {%- endif -%}
+
+          {{ form.errors | default_errors }}
+
+          <div class="grid grid--small">
+            <div class="grid__item medium-up--one-whole">
+              <label for="ContactFormName-{{ section.id }}">{{ 'contact.form.name' | t }}</label>
+              <input type="text" id="ContactFormName-{{ section.id }}" class="input-full" name="contact[name]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+            </div>
+
+            <div class="grid__item medium-up--one-whole">
+              <label for="ContactFormEmail-{{ section.id }}">{{ 'contact.form.email' | t }}</label>
+              <input type="email" id="ContactFormEmail-{{ section.id }}" class="input-full" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+            </div>
+          </div>
+
+          {%- if section.settings.show_phone -%}
+            <label for="ContactFormPhone-{{ section.id }}">{{ 'contact.form.phone' | t }}</label>
+            <input type="tel" id="ContactFormPhone-{{ section.id }}" class="input-full" name="contact[phone]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+          {%- endif -%}
+
+          {%- if section.settings.show_order -%}
+            <label for="ContactFormPhone-{{ section.id }}">Order No.</label>
+            <input type="text" id="ContactFormOrder-{{ section.id }}" class="input-full" name="contact[Order No]" value="">
+          {%- endif -%}
+    
+          {%- if section.settings.show_company -%}
+            <label for="ContactFormPhone-{{ section.id }}">Company</label>
+            <input type="text" id="ContactFormCompany-{{ section.id }}" class="input-full" name="contact[Company]" value="">
+          {%- endif -%}
+
+          {%- if section.settings.show_website -%}
+            <label for="ContactFormPhone-{{ section.id }}">Website</label>
+            <input type="url" id="ContactFormWebsite-{{ section.id }}" class="input-full" name="contact[Website]" value="">
+          {%- endif -%}
+          
+          <label for="ContactFormMessage-{{ section.id }}">{{ 'contact.form.message' | t }}</label>
+          <textarea rows="5" id="ContactFormMessage-{{ section.id }}" class="input-full" name="contact[body]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+          <label for="contact-form-submit-{{ section.id }}" class="hidden-label">{{ 'contact.form.send' | t }}</label>
+          <button type="submit" id="contact-form-submit-{{ section.id }}" class="btn">
+            Submit
+          </button>
+
+          {% comment %}
+            Remove the following three lines of code to remove the note
+            about being protected by Google's reCAPTCHA service.
+            By removing it, the small reCAPTCHA widget will appear in the
+            bottom right corner of the page.
+          {{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}
+          {% endcomment %}
+
+        {%- endform -%}
+        {% endif %}
+      </div>
+    {%- if section.settings.show_aside -%}</div></div>{%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.contact-form.name",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.contact-form.settings.content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.contact-form.settings.title.label",
+      "default": "Contact us"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.contact-form.settings.text.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "t:sections.contact-form.settings.show_phone.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_company",
+      "label": "Show Company"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_order",
+      "label": "Show Order"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_website",
+      "label": "Show Website Field"
+    },
+    {
+      "type": "checkbox",
+      "id": "narrow_column",
+      "label": "t:sections.contact-form.settings.narrow_column.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_aside",
+      "label": "Show text and form in columns aside"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.contact_form.name"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}

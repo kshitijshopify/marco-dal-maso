@@ -1,0 +1,31 @@
+{% comment %} <script type="load">
+    document.addEventListener('DOMContentLoaded', function () {
+        var videos = document.querySelectorAll('video.lazyvideo');
+        if(videos){
+            videos.forEach(function (video) {
+                video.removeAttribute('preload');
+                video.setAttribute('autoplay', true);
+                video.muted = true;
+                video.play();
+            });
+        }
+    });
+</script> {% endcomment %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const startinterval = setInterval(() => {
+        if (!document.documentElement.classList.contains("xh") && document.documentElement.classList.contains("mainopt")) {
+            const mouseMoveEvent = new MouseEvent('mousemove', {
+                bubbles: true,
+                cancelable: true,
+                clientX: 100,
+                clientY: 150
+            });
+            document.dispatchEvent(mouseMoveEvent);
+        } else {
+            clearInterval(startinterval);
+            console.log("stoped")
+        }
+    }, 100);
+});
+</script>

@@ -1,0 +1,619 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "layout": "theme",
+  "sections": {
+    "hero_video_dKjDgN": {
+      "type": "hero-video",
+      "disabled": true,
+      "custom_css": [
+        ".hero__text-content.horizontal-center {justify-self: center; width: 100%;}",
+        ".hero__text-content.vertical-bottom {align-self: flex-end;}",
+        ".page-width5 {width: 100%; display: inline-flex; height: 100%;}",
+        ".hero__link .btn {opacity: 1;}",
+        ".hero__subtitle p {margin: 0;}",
+        "@media (max-width: 767px) {.hero__subtitle p {font-size: var(--typeBaseSize); }}"
+      ],
+      "name": "t:sections.hero-video.presets.video_hero.name",
+      "settings": {
+        "full_width": true,
+        "color_bg": "#ffffff",
+        "title": "A Considered Gesture",
+        "title_size": 40,
+        "subheading": "<p>Gift Cards delivered instantly</p>",
+        "link_text": "Send a Gift",
+        "link": "shopify://products/gift-card",
+        "color_accent": "#ffffff",
+        "text_align": "vertical-center horizontal-center",
+        "video_1": "shopify://files/videos/16-9.MOV",
+        "video_url": "",
+        "overlay_opacity": 0,
+        "section_height": "750px",
+        "mobile_height": "auto"
+      }
+    },
+    "slideshow_withvideo_slide_LH4kX3": {
+      "type": "slideshow-withvideo-slide",
+      "blocks": {
+        "image_NzY94c": {
+          "type": "image",
+          "settings": {
+            "top_subheading": "",
+            "title": "Innovation in Form",
+            "title_size": 35,
+            "subheading": "Shape-memory core. \nItalian craftsmanship.",
+            "text_color": "#ffffff",
+            "link": "https://marcodalmaso.com/products/acies-leather-cuff-oxidized-silver-black-enamel-black-leather-agsc22-01bvpn",
+            "link_text": "Discover Acies",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "rgba(0,0,0,0)",
+            "text_align": "vertical-center horizontal-left",
+            "text_align_mobiles": "mobvertical-bottom mobhorizontal-center",
+            "image": "shopify://shop_images/HP_Banner_Model_Weating_Acies_Leather_Cuff.jpg",
+            "video": "",
+            "image_mobile": "shopify://shop_images/HP_Banner_Model_Weating_Acies_Leather_Cuff_Mobile.jpg",
+            "video_mobile": "",
+            "object-position": "center",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_NzY94c"
+      ],
+      "custom_css": [
+        ".hero__title,.hero__subtitle {text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);}",
+        ".btn {background: #ffffff !important; color: #000000 !important;}",
+        ".slider-buttons,.slideshow__controls {bottom: 6px !important;}",
+        "@media (max-width: 767px) {.hero__title, .hero__subtitle {color: #ffffff !important; } .hero__title {font-size: 28px !important; } .hero__subtitle {font-size: 16px !important; line-height: 24px !important; } .banner__buttons {margin-bottom: 14px !important; }}"
+      ],
+      "name": "Slider Custom",
+      "settings": {
+        "lazyload_images": true
+      }
+    },
+    "slideshow_3RdW4n": {
+      "type": "slideshow",
+      "blocks": {
+        "image_zK4hay": {
+          "type": "image",
+          "settings": {
+            "top_subheading": "",
+            "title": "NEW IN",
+            "title_size": 40,
+            "subheading": "The newly released Iron Snake Collection",
+            "text_color": "#000000",
+            "link": "shopify://collections/iron-snake",
+            "link_text": "Discover Now",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "#ffffff",
+            "text_align": "vertical-bottom horizontal-left",
+            "text_align_mobiles": "mobvertical-top mobhorizontal-center",
+            "image": "shopify://shop_images/Frame_135.jpg",
+            "video": "",
+            "image_mobile": "shopify://shop_images/Frame_138.jpg",
+            "video_mobile": "",
+            "object-position": "center",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
+          }
+        },
+        "image_XmBDXx": {
+          "type": "image",
+          "settings": {
+            "top_subheading": "",
+            "title": "THE FALL EDIT",
+            "title_size": 40,
+            "subheading": "Refined pieces for the season ahead.",
+            "text_color": "#ffffff",
+            "link": "shopify://collections/fall-edit",
+            "link_text": "Shop Collection",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "#ffffff",
+            "text_align": "vertical-center horizontal-left",
+            "text_align_mobiles": "mobvertical-bottom mobhorizontal-left",
+            "image": "shopify://shop_images/Group_40.jpg",
+            "video": "",
+            "video_mobile": "https://cdn.shopify.com/videos/c/o/v/df26a5d4c8db456087489c380854e0a2.mp4",
+            "object-position": "center",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_zK4hay",
+        "image_XmBDXx"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".btn {font-size: 14px; font-weight: 700; text-align: center; padding: 11px 12px; letter-spacing: 0; width: auto; border: none; transition: 0.5s !important;}",
+        ".hero__image-wrapper:before,.hero__media:before {background-color: transparent !important;}",
+        ".hero__text-shadow:before {background: none;}",
+        ".hero__subtitle {font-size: 18px; font-weight: 500; line-height: 28px; text-underline-position: from-font; text-decoration-skip-ink: none; max-width: 609px; width: 100%; margin-bottom: 30px; margin-top: 10px;}"
+      ],
+      "settings": {
+        "section_height": "natural",
+        "mobile_height": "auto",
+        "first_section": true,
+        "parallax": false,
+        "style": "dots",
+        "autoplay": true,
+        "autoplay_speed": 7,
+        "lazyload_images": false
+      }
+    },
+    "featured_collection_hmrRFp": {
+      "type": "featured-collection",
+      "custom_css": [
+        "@media (max-width: 768px) {.p-carousel {margin-left: -15px; } .custom-feature-product button.flickity-button.next {right: 5px; } .custom-feature-product button.flickity-button.previous {left: 5px; }}",
+        ".grid-product {margin-bottom: 0;}",
+        ".custom-feature-product {margin-bottom: 0px;}"
+      ],
+      "settings": {
+        "title": "Discover What's Trending",
+        "enlarge_text": true,
+        "text": "",
+        "home_featured_products": "homepage",
+        "per_row": 4,
+        "rows": 5,
+        "mobile_scrollable": true,
+        "carousel": true,
+        "slider_flow": false,
+        "view_all": false,
+        "divider": false
+      }
+    },
+    "tabbed_collections_XDcYhH": {
+      "type": "tabbed-collections",
+      "blocks": {
+        "collection_QyXKGn": {
+          "type": "collection",
+          "settings": {
+            "title": "Shop By Men",
+            "btntext": "",
+            "btnlink": "",
+            "collection1": "mens-earrings",
+            "image1": "shopify://shop_images/AGCL56-01BVPEM_12.jpg",
+            "title1": "Earrings",
+            "collection2": "mens-necklaces",
+            "image2": "shopify://shop_images/AGCL146-01BV47.jpg",
+            "title2": "Necklaces",
+            "collection3": "mens-bracelets",
+            "image3": "shopify://shop_images/AGBR0042-02BVW-M.jpg",
+            "title3": "Bracelets",
+            "collection4": "mens-rings",
+            "image4": "shopify://shop_images/GIAN0842-01YE_A.jpg",
+            "title4": "Rings",
+            "collection5": "",
+            "image5": "shopify://shop_images/Frame_77.png",
+            "title5": "",
+            "collection6": "",
+            "image6": "shopify://shop_images/gift_guide_promo_banner_gift_package.png",
+            "title6": "",
+            "collection7": "",
+            "title7": "",
+            "collection8": "",
+            "title8": "",
+            "focal_point": "center center"
+          }
+        },
+        "collection_d9TaxJ": {
+          "type": "collection",
+          "settings": {
+            "title": "Shop By Women",
+            "btntext": "",
+            "btnlink": "",
+            "collection1": "womens-earrings",
+            "image1": "shopify://shop_images/Frame_116.png",
+            "mobimage1": "shopify://shop_images/Frame_116.png",
+            "title1": "Earrings",
+            "collection2": "womens-bracelets",
+            "image2": "shopify://shop_images/Frame_118.png",
+            "mobimage2": "shopify://shop_images/Frame_118.png",
+            "title2": "Bracelets",
+            "collection3": "womens-pendants-necklaces",
+            "image3": "shopify://shop_images/Frame_117.png",
+            "mobimage3": "shopify://shop_images/Frame_117.png",
+            "title3": "Necklaces",
+            "collection4": "womens-rings",
+            "image4": "shopify://shop_images/Frame_119.png",
+            "mobimage4": "shopify://shop_images/Frame_119.png",
+            "title4": "Rings",
+            "collection5": "",
+            "title5": "",
+            "collection6": "",
+            "title6": "",
+            "collection7": "",
+            "title7": "",
+            "collection8": "",
+            "title8": "",
+            "focal_point": "center center"
+          }
+        }
+      },
+      "block_order": [
+        "collection_QyXKGn",
+        "collection_d9TaxJ"
+      ],
+      "custom_css": [
+        ".tab_contentt .grid--no-gutters.grid {display: flex; flex-flow: row wrap; gap: 15px;}",
+        "@media (min-width: 769px) {.tab_contentt .grid--no-gutters .grid__item {flex: 1 1 calc(16.666% - 7.5px); } .section-header {margin-top: 0; }}",
+        "@media (max-width: 768px) {.tab_contentt .grid--no-gutters .grid__item {flex: 0 0 calc(50% - 7.5px); }}"
+      ],
+      "settings": {
+        "tabsstyle": "textstyletabs",
+        "top_margin": 0,
+        "bottom_margin": 0,
+        "per_row": 4,
+        "rows": 2,
+        "mobile_scrollable": false,
+        "divider": false,
+        "accent_background": "#ffffff",
+        "text_color": "rgba(0,0,0,0)",
+        "button_background": "rgba(0,0,0,0)",
+        "button_text_color": "rgba(0,0,0,0)",
+        "padding_top": 32,
+        "padding_bottom": 36,
+        "enable_gutter": false
+      }
+    },
+    "promo_grid_6p8aYH": {
+      "type": "promo-grid",
+      "blocks": {
+        "advanced_BfDKRm": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "Men's Bracelets",
+            "textarea": "Elegance made for the festive season.",
+            "cta_text1": "DISCOVER NOW",
+            "cta_link1": "shopify://collections/mens-bracelets",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/FLAMING_TONGUE_9MM_Bracelet_on_a_male_model._1.png",
+            "video_url": "",
+            "width": "50",
+            "height": 800,
+            "text_size": 100,
+            "text_align": "vertical-bottom horizontal-left",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        },
+        "advanced_Lp64zq": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "Flaming tongue rings",
+            "textarea": "Jewels to celebrate winter’s finest moments.",
+            "cta_text1": "SHOP THE COLLECTION",
+            "cta_link1": "https://marcodalmaso.com/collections/flaming-tongue?filter.p.product_type=Ring",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/male_model_wearing_the_Flaming_Tongue_Chain_Ring_1.png",
+            "video_url": "",
+            "width": "50",
+            "height": 800,
+            "text_size": 100,
+            "text_align": "vertical-bottom horizontal-left",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        }
+      },
+      "block_order": [
+        "advanced_BfDKRm",
+        "advanced_Lp64zq"
+      ],
+      "custom_css": [
+        "h2.rte--block ~ div.rte--block {margin-bottom: 26px;}",
+        "h2.rte--block {margin-bottom: 0; padding-left: 0 !important; padding-right: 0 !important;}",
+        "@media screen and (max-width: 768px) {.custom-promo-grid .flex-grid {gap: 20px; } .promo-grid--space-top {padding-bottom: 30px; } .flex-grid.flex-grid--gutters {row-gap: 30px; }}",
+        "@media screen and (min-width: 769px) {.flex-grid.flex-grid--gutters {column-gap: 17px; margin-left: -17px; row-gap: 0; flex-wrap: nowrap; }}"
+      ],
+      "settings": {
+        "custom_class": "",
+        "full_width": true,
+        "customblock": false,
+        "gutter_size": 0,
+        "space_above": true,
+        "space_below": true,
+        "lazyload_images": true,
+        "ms": false
+      }
+    },
+    "background_image_text_9Yjtyj": {
+      "type": "background-image-text",
+      "custom_css": [
+        "@media screen and (min-width: 768px) {.bgimg__with__parallax_option {display: none; }}"
+      ],
+      "settings": {
+        "classes": "custom-banner-img-parallax",
+        "subtitle": "",
+        "title": "",
+        "text": "",
+        "text_color": "#000000",
+        "button_label": "",
+        "button_link": "shopify://collections/eclipse",
+        "bg_color": "#000000",
+        "btn_color": "#ffffff",
+        "image": "shopify://shop_images/Frame_157.jpg",
+        "layout": "left",
+        "height": 650,
+        "framed": false,
+        "parallax": false,
+        "parallax_direction": "top",
+        "lazyload_images": true
+      }
+    },
+    "featured_collection_p7AV6W": {
+      "type": "featured-collection",
+      "custom_css": [
+        "@media (max-width: 768px) {.custom-feature-product {padding-bottom: 100px !important; } .grid__item--view-all {padding-top: 30px; } .grid-product {margin-bottom: 15px; }}",
+        "@media (min-width: 769px) {.grid-product .variant-wrapper {text-align: left; min-height: 45px; } .btn {margin-bottom: 45px; }}"
+      ],
+      "settings": {
+        "title": "DIAMONDS 'N' ROSES",
+        "enlarge_text": true,
+        "text": "<p>Discover The Featured Collection</p>",
+        "home_featured_products": "diamonds-roses",
+        "per_row": 4,
+        "rows": 1,
+        "mobile_scrollable": false,
+        "carousel": false,
+        "slider_flow": false,
+        "view_all": true,
+        "divider": false
+      }
+    },
+    "slideshow_old_Q949kd": {
+      "type": "slideshow-old",
+      "blocks": {
+        "image_R93CCL": {
+          "type": "image",
+          "settings": {
+            "top_subheading": "",
+            "title": "MADE IN ITALY, ALWAYS",
+            "title_size": 40,
+            "subheading": "",
+            "text_color": "#ffffff",
+            "link": "shopify://pages/about-us",
+            "link_text": "Learn More",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "rgba(0,0,0,0)",
+            "text_align": "vertical-center horizontal-center",
+            "text_align_mobiles": "mobvertical-center mobhorizontal-center",
+            "image": "shopify://shop_images/craftsman_working_on_silver_Italian_jewelry_for_men_by_mens_designer_marco_dal_maso.jpg",
+            "video": "",
+            "video_mobile": "",
+            "object-position": "center",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_R93CCL"
+      ],
+      "custom_css": [
+        "@media screen and (max-width: 768px) {.slideshow-section {margin-bottom: 30px; display: inline-block; width: 100%; }}",
+        ".slideshow-section .slideshow-wrapper > div > div {width: 100%;}"
+      ],
+      "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
+      "settings": {
+        "section_height": "650px",
+        "mobile_height": "250px",
+        "first_section": false,
+        "parallax": false,
+        "style": "bars",
+        "autoplay": true,
+        "autoplay_speed": 5,
+        "lazyload_images": true
+      }
+    },
+    "background_image_text_phc86c": {
+      "type": "background-image-text",
+      "custom_css": [
+        "@media screen and (min-width: 768px) {.bgimg__with__parallax_option {display: none; }}"
+      ],
+      "settings": {
+        "classes": "custom-banner-img-parallax",
+        "subtitle": "",
+        "title": "",
+        "text": "",
+        "text_color": "#000000",
+        "button_label": "",
+        "button_link": "shopify://collections/ulysses-collection",
+        "bg_color": "#000000",
+        "btn_color": "#ffffff",
+        "image": "shopify://shop_images/AMBIENTATO_09_1.png",
+        "layout": "left",
+        "height": 650,
+        "framed": false,
+        "parallax": false,
+        "parallax_direction": "top",
+        "lazyload_images": true
+      }
+    },
+    "featured_collection_9mjUQd": {
+      "type": "featured-collection",
+      "custom_css": [
+        ".custom-feature-product {display: none;}",
+        "@media screen and (max-width: 768px) {.custom-feature-product {display: block; padding-bottom: 100px !important; } .grid__item--view-all {padding-top: 30px; } .grid-product {margin-bottom: 15px; }}",
+        "@media (min-width: 769px) {.grid-product .variant-wrapper {text-align: left; min-height: 45px; }}"
+      ],
+      "settings": {
+        "title": "SILVER BRACELETS",
+        "enlarge_text": true,
+        "text": "<p>New Arrivals</p>",
+        "home_featured_products": "silver-bracelets",
+        "per_row": 4,
+        "rows": 1,
+        "mobile_scrollable": false,
+        "carousel": false,
+        "slider_flow": false,
+        "view_all": true,
+        "divider": false
+      }
+    },
+    "blog_posts_bqGdG3": {
+      "type": "blog-posts",
+      "custom_css": [
+        "@media (max-width: 768px) {.article__grid-meta {margin-bottom: 0; }}"
+      ],
+      "settings": {
+        "title": "Stories",
+        "blog": "craft-edit",
+        "post_limit": 3,
+        "blog_show_tags": false,
+        "blog_show_date": true,
+        "blog_show_comments": false,
+        "blog_show_author": false,
+        "view_all": false,
+        "blog_image_size": "portrait",
+        "divider": false
+      }
+    },
+    "custom_instagram_CaUNpy": {
+      "type": "custom-instagram",
+      "blocks": {
+        "logo_image_FHCpXm": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/cropped-504245123_18356052448157586_3709036094763852649_n.jpg",
+            "link": "https://www.instagram.com/p/DKhF42LI3nA/?img_index=1"
+          }
+        },
+        "logo_image_tnxihh": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Maluma_wears_Acies_collection_by_luxury_jewellery_designer_Marco_Dal_Maso_while_he_poses_for_a_shoot_with_playgirl_Magazine_1.png",
+            "link": "https://www.instagram.com/p/C4QDoD0IEhL/?img_index=1"
+          }
+        },
+        "logo_image_wjCETV": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Sean_Bankhead_wears_white_diamond_ring_by_luxury_jewelry_designer_Marco_Dal_Maso.png",
+            "link": "https://www.instagram.com/p/DCmmoKosRmw/?img_index=1"
+          }
+        },
+        "logo_image_xHWznR": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Fitness_influencer_Juan_Pablo_Reyes_wears_Ulysses_necklace_by_luxury_jewellery_designer_Marco_Dal_Maso.png",
+            "link": "https://www.instagram.com/p/CRMphMLr2lJ/?igsh=MXNkMndtdzNsMmxhbQ%3D%3D"
+          }
+        },
+        "logo_image_ETyzhG": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Cristiano_Godino_was_sterling_silver_necklace_by_luxury_men_s_jewellery_designer_Marco_Dal_Maso.png",
+            "link": "https://www.instagram.com/p/DCpLaBzO_5Z/?igsh=cGZhZzAydTk5bTYy"
+          }
+        },
+        "logo_image_fPi7dX": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/rsz_1rsz_img_4043.png",
+            "link": "https://www.instagram.com/p/DG1E8iiSNre/"
+          }
+        },
+        "logo_image_j7kJ38": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/cropped-IMG_0815.webp",
+            "link": "https://www.instagram.com/p/Co7epQPIWSW/?img_index=1"
+          }
+        }
+      },
+      "block_order": [
+        "logo_image_FHCpXm",
+        "logo_image_tnxihh",
+        "logo_image_wjCETV",
+        "logo_image_xHWznR",
+        "logo_image_ETyzhG",
+        "logo_image_fPi7dX",
+        "logo_image_j7kJ38"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".section-header {padding-top: 25px;}",
+        "@media screen and (max-width: 768px) {.section-header {margin-bottom: 10px; }}"
+      ],
+      "settings": {
+        "title": "<p><strong>Instagram</strong></p>",
+        "logo_opacity": 100,
+        "divider": false,
+        "targetblank": true
+      }
+    },
+    "1764241935d4c42f68": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_zFWQrd": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Instagram",
+            "title_color": "#000000",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_zFWQrd"
+      ],
+      "custom_css": [
+        ".custom__appsection {position: relative; z-index: 2; background: #fff;}",
+        "#insta-feed {padding-top: 40px;}"
+      ],
+      "settings": {
+        "full_width": false,
+        "space_around": true,
+        "image_width": "50",
+        "layout": "right"
+      }
+    }
+  },
+  "order": [
+    "hero_video_dKjDgN",
+    "slideshow_withvideo_slide_LH4kX3",
+    "slideshow_3RdW4n",
+    "featured_collection_hmrRFp",
+    "tabbed_collections_XDcYhH",
+    "promo_grid_6p8aYH",
+    "background_image_text_9Yjtyj",
+    "featured_collection_p7AV6W",
+    "slideshow_old_Q949kd",
+    "background_image_text_phc86c",
+    "featured_collection_9mjUQd",
+    "blog_posts_bqGdG3",
+    "custom_instagram_CaUNpy",
+    "1764241935d4c42f68"
+  ]
+}

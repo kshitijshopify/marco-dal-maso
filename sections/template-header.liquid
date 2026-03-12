@@ -1,0 +1,53 @@
+ <div class="template_header_image" style="background-image:url('{{ section.settings.img | img_url :'master' }}')">
+    <div class="header_content">
+      <h1 style="color:{{ section.settings.text_color }}">
+        {% if template == 'customers/account' %}
+          {{ section.settings.heading }} , {{ customer.name }}<!-- {{ 'customer.orders.title' | t }} -->
+        {% elsif template == 'customers/addresses' %}
+          {{ section.settings.heading }} , {{ customer.name }}<!-- {{ 'customer.addresses.title' | t }} -->
+        {% else %}
+          {{ section.settings.heading }} , {{ customer.name }}
+        {% endif %}
+      </h1>
+      <!-- <div class="flexbtns">
+        {% if template == 'customers/account' or template contains 'addresses' %}
+        <a href="https://marcodalmaso.com/pages/account-details" class="btn btn--secondary btn--small section-header__link">Back to my account</a>
+        {% endif %}
+        <a href="{{ routes.account_logout_url }}" class="btn btn--secondary btn--small section-header__link">{{ 'layout.customer.log_out'| t }}</a>
+      </div> -->
+    </div>
+     <span><img src="https://cdn.shopify.com/s/files/1/1476/0022/files/AGAN39-01WHEN-2-removebg-preview.png?v=1724833051"></span>
+  </div>
+{% schema %}
+  {
+    "name": "Template Header",
+    "settings": [
+        {
+          "type":"image_picker",
+          "id":"img",
+          "label":"Image"
+        },
+        {
+          "type":"text",
+          "id":"heading",
+          "label":"Heading"
+        },
+        {
+          "type":"color",
+          "id":"text_color",
+          "label":"Heading Text Color"
+        }
+    ],
+    "presets":[
+      {
+        "name":"Template Header"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

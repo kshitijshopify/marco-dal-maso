@@ -1,0 +1,260 @@
+{%- if settings.cart_type == 'drawer' -%}
+  <div id="CartDrawer" class="drawer drawer--right" data-cart-drawer data-section-id="cart-drawer">
+    {% comment %}
+      <div class="salemsg withtimer">
+        <p>Private Sale Opens in</p> <div id="countdown"></div>
+      </div>
+    {% endcomment %}
+    {%- if section.settings.cart_show_free_shipping_threshold
+      and section.settings.cart_free_shipping_threshold != ''
+    -%}
+      {%- assign free_shipping_thresholds = section.settings.cart_free_shipping_threshold | remove: ' ' | split: ',' -%}
+      {%- assign has_found_matching_threshold = false -%}
+
+      {%- if free_shipping_thresholds.size > 1 -%}
+        {%- for threshold in free_shipping_thresholds -%}
+          {%- assign threshold_parts = threshold | split: ':' -%}
+          {%- assign currency_code = threshold_parts | first | upcase -%}
+
+          {%- if currency_code == cart.currency.iso_code -%}
+            {%- assign free_shipping_calculated_threshold = threshold_parts | last -%}
+            {%- assign has_found_matching_threshold = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- assign free_shipping_calculated_threshold = free_shipping_thresholds | last -%}
+        {%- assign has_found_matching_threshold = true -%}
+      {%- endif -%}
+
+      {%- if has_found_matching_threshold -%}
+        {%- assign threshold_in_cents = free_shipping_calculated_threshold | times: 100 -%}
+        {%- capture remaining_amount -%}{{ cart.total_price | minus: threshold_in_cents | abs | money_without_trailing_zeros  }}{%- endcapture -%}
+
+        {% assign promote_txt = section.settings.free_shipping_remaining_html | escape %}
+        {% assign unlocked_txt = section.settings.free_shipping | escape %}
+        {% assign val_left = threshold_in_cents | minus: cart.total_price %}
+        {% assign val_left_money = val_left | money_without_trailing_zeros %}
+        {% assign totlval = cart.total_price %}
+
+        <free-shipping-bar
+          class="shipping-bar {{ cart.total_price }}"
+          style="--progress: {{ cart.total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }};"
+        >
+          <div
+            class="free-shipping-bar"
+            data-promote="{{ promote_txt }}"
+            data-unlocked="{{ unlocked_txt }}"
+            data-threshold="{{ threshold_in_cents }}"
+            data-total="{{ totlval }}"
+          >
+            {%- if cart.total_price >= threshold_in_cents -%}
+              <span class="shipping-bar__text text--small unlocked">{{ unlocked_txt }}</span>
+            {%- else -%}
+              <span class="shipping-bar__text text--small {{ threshold_in_cents }} ">
+                {{- promote_txt | replace: '[value]', val_left_money -}}
+              </span>
+            {%- endif -%}
+          </div>
+          <span class="shipping-bar__progress"></span>
+        </free-shipping-bar>
+      {%- endif -%}
+    {%- endif -%}
+    <div class="special_msg">
+      {{ section.settings.special_msg }}
+    </div>
+    <form
+      id="CartDrawerForm"
+      action="{{ routes.cart_url }}"
+      method="post"
+      novalidate
+      class="drawer__contents"
+      data-location="cart-drawer"
+    >
+      <div class="drawer__fixed-header">
+        <div class="drawer__header appear-animation appear-delay-1">
+          <div class="h2 drawer__title">{{ 'cart.general.title' | t }}</div>
+          <div class="drawer__close">
+            <button type="button" class="drawer__close-button js-drawer-close">
+              <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64">
+                <title>icon-X</title><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/>
+              </svg>
+              <span class="icon__fallback-text">{{ 'cart.general.close_cart' | t }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer__inner">
+        <div class="drawer__scrollable">
+          <div data-products class="appear-animation appear-delay-2"></div>
+
+          {% if settings.cart_notes_enable %}
+            <div class="appear-animation appear-delay-3">
+              <label for="CartNoteDrawer">{{ 'cart.general.note' | t }}</label>
+              <textarea name="note" class="input-full cart-notes" id="CartNoteDrawer">{{ cart.note }}</textarea>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="drawer__footer appear-animation appear-delay-4">
+          <div class="footer_top_scrollable">
+            <div class="orderlimitt taxesduties__msg">
+              <small>{{ section.settings.taxes_text }}</small>
+            </div>
+            <div data-discounts>
+              {% if cart.cart_level_discount_applications != blank %}
+                <div class="cart__discounts cart__item-sub cart__item-row">
+                  <div>{{ 'cart.general.discounts' | t }}</div>
+                  <div class="text-right">
+                    {% for cart_discount in cart.cart_level_discount_applications %}
+                      <div class="cart__discount">
+                        {{ cart_discount.title }} (-
+                        {{- cart_discount.total_allocated_amount | money_without_trailing_zeros -}}
+                        )
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="cart__item-sub cart__item-row">
+              <div class="ajaxcart__subtotal">{{ 'cart.general.subtotal' | t }}</div>
+              <div data-subtotal>{{ cart.total_price | money_without_trailing_zeros }}</div>
+            </div>
+
+            {% comment %}
+              <div class="cart__item-row text-center">
+                <small>
+                  {{ 'cart.general.shipping_at_checkout' | t }}<br />
+                </small>
+              </div>
+            {% endcomment %}
+
+            {% if settings.cart_terms_conditions_enable %}
+              <div class="cart__item-row cart__terms">
+                <input type="checkbox" id="CartTermsDrawer" class="cart__terms-checkbox">
+                <label for="CartTermsDrawer">
+                  {% if settings.cart_terms_conditions_page != blank %}
+                    {{ 'cart.general.terms_html' | t: url: settings.cart_terms_conditions_page.url }}
+                  {% else %}
+                    {{ 'cart.general.terms' | t }}
+                  {% endif %}
+                </label>
+              </div>
+            {% endif %}
+
+            <div class="cart__checkout-wrapper">
+              <button
+                type="submit"
+                id="checkoutbtn"
+                name="checkout"
+                data-terms-required="{{ settings.cart_terms_conditions_enable }}"
+                class="{{ cart.total_price }} cart-checkoutcommonclass btn cart__checkout"
+              >
+                {{ 'cart.general.checkout' | t }}
+              </button>
+
+              {% if additional_checkout_buttons and settings.cart_additional_buttons %}
+                <div class="additional-checkout-buttons additional-checkout-buttons--vertical">
+                  {{ content_for_additional_checkout_buttons }}
+                </div>
+              {% endif %}
+            </div>
+
+            {%- render 'gift-wrap-option' -%}
+          </div>
+
+          <div class="footer_bottom_scrollable">
+            {%- if settings.liquid != blank -%}
+              <div class="klaviyoform_withsalemsg">
+                {{- settings.liquid -}}
+              </div>
+            {%- endif -%}
+            {% comment %} {% render 'gift-wrapping' %} {% endcomment %}
+
+            {%- assign number_of_recoms = 0 -%}
+            {%- for item in cart.items -%}
+              {% if item.product.metafields.custom.paired_products != blank %}
+                {% assign number_of_recoms = number_of_recoms | plus: 1 %}
+              {% endif %}
+            {%- endfor -%}
+
+            {%- if number_of_recoms == 0 and settings.cart_drawer_collection != blank -%}
+              {%- assign number_of_recoms = 10 -%}
+            {%- endif -%}
+
+            {% if number_of_recoms > 0 %}
+              {%- liquid
+                assign number_of_products = settings.complementary_count
+                assign image_style = settings.image_style
+              -%}
+              <div class="prod_cart_upsells">
+                <h4 class="product-recommendations__title">{{ settings.product_complementary_heading }}</h4>
+                {% assign collection = settings.cart_drawer_collection %}
+                <div class="grid-overflow-wrapper">
+                  <div class="grid grid--uniform" data-aos="overflow__animation">
+                    {%- for item in cart.items -%}
+                      {% if item.product.metafields.custom.paired_products != blank %}
+                        {% for product in item.product.metafields.custom.paired_products.value limit: 10 %}
+                          <div
+                            class="product-recommendations__slide grid__item grid-product"
+                            data-aos="row-of-{{ per_row }}"
+                            data-product-handle="{{ product.handle }}"
+                            data-product-id="{{ product.id }}"
+                          >
+                            {%- render 'product--item',
+                              image_style: image_style,
+                              product: product,
+                              per_row: 1,
+                              type: 'horizontal',
+                              sizes: '112px'
+                            -%}
+                          </div>
+                        {%- endfor -%}
+                        {% assign number_of_slides = number_of_slides | plus: 1 %}
+                      {% endif %}
+                    {%- endfor -%}
+
+                    {% for product in collection.products limit: 10 %}
+                      <div
+                        class="product-recommendations__slide grid__item grid-product"
+                        data-aos="row-of-{{ per_row }}"
+                        data-product-handle="{{ product.handle }}"
+                        data-product-id="{{ product.id }}"
+                      >
+                        {%- render 'product--item',
+                          image_style: image_style,
+                          product: product,
+                          per_row: 1,
+                          type: 'horizontal',
+                          sizes: '112px',
+                          new_quick_add: true,
+                        -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+
+            <img
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+              data-li="st"
+              d-src="https://cdn.shopify.com/s/files/1/1476/0022/files/rsz_58ecb2d9-35f1-4b52-a0d0-e7e77da00bf3.png?v=1762931347"
+              alt=""
+              class="customImage"
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer__cart-empty appear-animation appear-delay-2">
+        <div class="drawer__scrollable">
+          {{ 'cart.general.empty' | t }}
+        </div>
+      </div>
+    </form>
+  </div>
+{%- endif -%}

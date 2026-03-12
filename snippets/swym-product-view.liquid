@@ -1,0 +1,24 @@
+<script>
+  if (!window.SwymViewProducts) {
+    window.SwymViewProducts = {};
+  }
+
+  window.SwymViewProducts["{{ product.id }}"] = {
+    epi: "{{ product.id }}",
+    empi: "{{ product.variants.first.id }}",
+    sku: "{{ product.variants.first.sku }}",
+    pr: {{ product.price | money_without_currency | remove: ',' | json }},
+    du: "{{ shop.url }}{{ product.url }}",
+    iu: "{{ product.featured_image | img_url: 'grande' }}",
+    dt: {{ product.title | json }},
+    variants: [
+      {% for variant in product.variants %}
+        {
+          id: {{ variant.id }},
+          price: {{ variant.price | money_without_currency | remove: ',' }},
+          available: {{ variant.available | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  };
+</script>

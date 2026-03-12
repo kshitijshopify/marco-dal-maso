@@ -1,0 +1,759 @@
+<script type="load">
+ $(document).ready(function(){
+  $('ul.tabs li').on('click', function(){
+    // get the data attribute
+    var tab_id = $(this).attr('data-tab');
+    // remove the default classes
+    $('ul.tabs li').removeClass('current');
+    $('.tab-content').removeClass('current');
+    // add new classes on mouse click
+    $(this).addClass('current');
+    $('#'+tab_id).addClass('current');
+  });
+});
+  $(document).ready(function() {
+	 
+	$('.accordionButton').click(function() {
+		$('.accordionButton').removeClass('on');
+	 	$('.accordionContent').slideUp('normal');
+		if($(this).next().is(':hidden') == true) {
+			$(this).addClass('on');
+			$(this).next().slideDown('normal');
+		 } 
+		  
+	 });
+	  
+	$('.accordionButton').mouseover(function() {
+		$(this).addClass('over');
+	}).mouseout(function() {
+		$(this).removeClass('over');										
+	});
+	$('.accordionContent').hide();
+
+});
+</script>
+<style>
+/* div#shopify-section-template--18085595218177__rich_text_w8zzdA {background: #ccc;padding: 75px 0px;margin: 0px 0px 80px;} */
+ul.tabs {margin-left: 0px;}
+.container{  margin: 0 auto;}
+.tabs{display:flex;align-items:center;justify-content:space-between;list-style: none;}
+.tabs li.tab.current{border-bottom: 3px #000 solid;}
+.tabs li{display: inline-flex;min-width: 40%;align-items: center;justify-content: center;font-size: 20px;padding: 10px;font-weight:bold;}
+.tab-content{display: none;padding: 15px;line-height:1.4;}
+.tab-content.current{display: inherit;}
+  .accordionButton:first-child{border-top:0px solid transparent;}
+.accordionContent {
+    text-align: left;
+    padding: 20px;
+}
+  .accordionButton {
+    text-align: left;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px 0px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+  .accordionButton svg {
+    width: 20px;
+    height: 20px;
+}
+  img.image_element {
+    max-width: 500px;
+    margin: 0px auto;
+    width: 100%;
+}
+</style>
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+<div class="text-{{ section.settings.align_text }} page-width{% if section.settings.narrow_column %} page-width--narrow{% endif %}">
+  <div class="container">
+    <ul class="tabs">
+      <li class="tab current" data-tab="tab-1">Men</li>
+      <li class="tab" data-tab="tab-2">Women</li>
+    </ul>
+    <div id="tab-1" class="tab-content current">
+      <div id="wrapper">
+      	<div class="accordionButton">Men's Bracelet Size Guide {% render 'icon-arrow' %}</div>
+      	<div class="accordionContent">
+          <p>Finding the right bracelet size ensures that your piece fits comfortably and securely. Use the following steps to measure your wrist and find your ideal bracelet size:
+          </p><p><b>Tips to measure your wrist:</b></p>
+          <ul><li>Use a flexible measuring tape or a piece of string.</li>
+          <li>Wrap it around your wrist just above the wrist bone, or where you would normally wear the bracelet.</li>
+          <li>Mark where the ends meet and measure the string with a ruler.</li></ul>
+          <h4><center>MEN'S BRACELET</center></h4>
+          <div class="table-wrapper">
+            <table>
+              <tbody>
+              <tr>
+              <th>
+              <p class="size-chart-linkk"><span>Size</span></p>
+              </th>
+              <th>
+              <p class="size-chart-linkk"><span>Wrist circumference (cm)</span></p>
+              </th>
+              <th>
+              <p class="size-chart-linkk"><span>Wrist circumference (inches)</span></p>
+              </th>
+              </tr>
+              <tr>
+              <td><span class="lettersize">XS</span></td>
+              <td><span class="centimeter">16cm—17cm</span></td>
+              <td><span class="inch">6.3in—6.7in</span></td>
+              </tr>
+              <tr>
+              <td><span class="lettersize">S</span></td>
+              <td><span class="centimeter">17cm—18cm</span></td>
+              <td><span class="inch">6.7in—7.1in</span></td>
+              </tr>
+              <tr>
+              <td><span class="lettersize">M</span></td>
+              <td><span class="centimeter">18cm—19cm</span></td>
+              <td><span class="inch">7.1in—7.5in</span></td>
+              </tr>
+              <tr>
+              <td><span class="lettersize">L</span></td>
+              <td><span class="centimeter">19cm—20cm</span></td>
+              <td><span class="inch">7.5in—7.9in</span></td>
+              </tr>
+              <tr>
+              <td><span class="lettersize">XL</span></td>
+              <td><span class="centimeter">20cm—21cm</span></td>
+              <td><span class="inch">7.9in—8.3in</span></td>
+              </tr>
+              </tbody>
+            </table>
+            <br><br>
+            <p>Not sure which to choose? Speak to <a href="/pages/contact-us" style="font-weight: bold; text-decoration: underline;">our team</a> for a personalised recommendation</p>
+          </div>           
+        </div>
+
+        <div class="accordionButton">Men's Cuff Size Guide {% render 'icon-arrow' %}</div>
+        <div class="accordionContent">
+          <p>To determine your wrist size for a cuff, follow these steps:</p>
+          <ul><li><b>Use a Tape Measure or Ribbon:</b> Wrap it around your wrist just below the wrist bone, ensuring the numbers face out.</li>
+          <li><b>Mark and Measure:</b> Note where the ends meet and measure the length with a ruler.</li>
+          <li><b>Adjust for Comfort:</b> Ensure the measurement fits comfortably around your wrist.</li></ul>
+          <p>If you fall between two sizes, we recommend choosing the larger size for a better fit.</p>
+          <h4><center>MEN'S CUFF</center></h4>
+          <div class="table-wrapper">
+            <table style="width: 100%; height: 117.563px;">
+              <tbody>
+                <tr valign="top" align="center" style="height: 19.5938px;">
+                <th style="width: 27.2434%; height: 19.5938px;">WRIST CM</th>
+                <th style="width: 27.5727%; height: 19.5938px;">WRIST INCH</th>
+                </tr>
+                <tr style="height: 19.5938px;">
+                <td style="width: 27.2434%; height: 19.5938px;">12.7 – 14.0</td>
+                <td style="width: 27.5727%; height: 19.5938px;">5.0 - 5.5</td>
+                </tr>
+                <tr style="height: 19.5938px;">
+                <td style="width: 27.2434%; height: 19.5938px;">14.0 – 15.2</td>
+                <td style="width: 27.5727%; height: 19.5938px;">5.5 - 6.0</td>
+                </tr>
+                <tr style="height: 19.5938px;">
+                <td style="width: 27.2434%; height: 19.5938px;">15.2 - 16.5</td>
+                <td style="width: 27.5727%; height: 19.5938px;">6.0 - 6.5</td>
+                </tr>
+                <tr style="height: 19.5938px;">
+                <td style="width: 27.2434%; height: 19.5938px;">16.5 - 17.8</td>
+                <td style="width: 27.5727%; height: 19.5938px;">6.5 - 7.0</td>
+                </tr>
+                <tr style="height: 19.5938px;">
+                <td style="width: 27.2434%; height: 19.5938px;">17.8 - 19.1</td>
+                <td style="width: 27.5727%; height: 19.5938px;">7.0 - 7.5</td>
+                </tr>
+                <tr style="height: 19.5938px;">
+                <td style="width: 27.2434%; height: 19.5938px;">19.1 - 20.3</td>
+                <td style="width: 27.5727%; height: 19.5938px;">7.5 - 8.0</td>
+                </tr>
+                <tr style="height: 19.5938px;">
+                <td style="width: 27.2434%; height: 19.5938px;">20.3 - 21.6</td>
+                <td style="width: 27.5727%; height: 19.5938px;">8.0 - 8.5</td>
+                </tr>
+              </tbody>
+            </table>
+            <br><br>
+            <p>Not sure which to choose? Speak to <a href="/pages/contact-us" style="font-weight: bold; text-decoration: underline;">our team</a> for a personalised recommendation</p>
+          </div>   
+        </div>
+
+        <div class="accordionButton">Men's Ring Size Guide {% render 'icon-arrow' %}</div>
+        <div class="accordionContent">
+          <p>Ensuring your ring fits perfectly is crucial for both comfort and appearance. Remember that finger size can change depending on the time of day and temperature. When measuring your finger, consider doing so at the end of the day and when your fingers are warm for the most accurate size.</p>
+          <div class="grid grid--center  grid--uniform grid--flush-bottom">
+            <div class="grid__item medium-up--one-half text-center aos-init aos-animate" data-aos="row-of-3">
+              <div style="margin: 0 auto; max-width: 450px;">
+                <a class="btnlink" href="https://cdn.shopify.com/s/files/1/1476/0022/files/MARCO_DAL_MASO_Ring_Size_Guide_MEN_02.pdf?v=1614168989">
+                  <div class="image-wrap text-spacing loaded" style="height: 0; padding-bottom: 78.47222222222223%;">
+                    <image-element data-aos="image-fade-in" class="aos-init aos-animate">
+                      <img src="//marcodalmaso.com/cdn/shop/files/MARCO_DAL_MASO_Rings_Size_Guide_Men_900x_720x_72f429ef-0a84-4300-8c91-333c2ba8eac9.jpg?v=1665655240&amp;width=1080" alt="rings size guide men" srcset="//marcodalmaso.com/cdn/shop/files/MARCO_DAL_MASO_Rings_Size_Guide_Men_900x_720x_72f429ef-0a84-4300-8c91-333c2ba8eac9.jpg?v=1665655240&amp;width=180 180w, //marcodalmaso.com/cdn/shop/files/MARCO_DAL_MASO_Rings_Size_Guide_Men_900x_720x_72f429ef-0a84-4300-8c91-333c2ba8eac9.jpg?v=1665655240&amp;width=360 360w, //marcodalmaso.com/cdn/shop/files/MARCO_DAL_MASO_Rings_Size_Guide_Men_900x_720x_72f429ef-0a84-4300-8c91-333c2ba8eac9.jpg?v=1665655240&amp;width=540 540w, //marcodalmaso.com/cdn/shop/files/MARCO_DAL_MASO_Rings_Size_Guide_Men_900x_720x_72f429ef-0a84-4300-8c91-333c2ba8eac9.jpg?v=1665655240&amp;width=720 720w, //marcodalmaso.com/cdn/shop/files/MARCO_DAL_MASO_Rings_Size_Guide_Men_900x_720x_72f429ef-0a84-4300-8c91-333c2ba8eac9.jpg?v=1665655240&amp;width=900 900w, //marcodalmaso.com/cdn/shop/files/MARCO_DAL_MASO_Rings_Size_Guide_Men_900x_720x_72f429ef-0a84-4300-8c91-333c2ba8eac9.jpg?v=1665655240&amp;width=1080 1080w" loading="lazy" class=" image-element" sizes="(min-width: 769px) 50vw, 100vw">
+                    </image-element>
+                  </div>
+                </a>
+              </div>
+              <!--
+              <a href="https://cdn.shopify.com/s/files/1/1476/0022/files/MARCO_DAL_MASO_Ring_Size_Guide_MEN_02.pdf?v=1614168989" class="btn btn--secondary btn--small">
+                    Download Men's Ring Size Guide        
+              </a> 
+              -->
+            </div>
+          </div>
+          <br/><br/>
+          <div class="table-wrapper">
+            <table>
+              <tbody>
+                <tr>
+                <th style="font-size: 12px;">US Size</th>
+                <th style="font-size: 12px;">France Size</th>
+                <th style="font-size: 12px;">Italian Size</th>
+                <th style="font-size: 12px;">UK Size</th>
+                </tr>
+                <tr>
+                <td>2</td>
+                <td>41.5</td>
+                <td>2</td>
+                <td>D</td>
+                </tr>
+                <tr>
+                <td>2.5</td>
+                <td>42.75</td>
+                <td>2.5</td>
+                <td>E</td>
+                </tr>
+                <tr>
+                <td>3</td>
+                <td>44</td>
+                <td>4</td>
+                <td>F</td>
+                </tr>
+                <tr>
+                <td>3.5</td>
+                <td>45.5</td>
+                <td>5.5</td>
+                <td>G</td>
+                </tr>
+                <tr>
+                <td>4</td>
+                <td>46.75</td>
+                <td>6.8</td>
+                <td>H <sup>1/2</sup>
+                </td>
+                </tr>
+                <tr>
+                <td>4.5</td>
+                <td>48</td>
+                <td>8</td>
+                <td>I <sup>1/2</sup>
+                </td>
+                </tr>
+                <tr>
+                <td>5</td>
+                <td>49.25</td>
+                <td>9.5</td>
+                <td>J <sup>1/2</sup>
+                </td>
+                </tr>
+                <tr>
+                <td>5.5</td>
+                <td>50.5</td>
+                <td>10.5</td>
+                <td>L</td>
+                </tr>
+                <tr>
+                <td>6</td>
+                <td>51.5</td>
+                <td>11.5</td>
+                <td>M</td>
+                </tr>
+                <tr>
+                <td>6.5</td>
+                <td>53</td>
+                <td>13</td>
+                <td>N</td>
+                </tr>
+                <tr>
+                <td>7</td>
+                <td>54.5</td>
+                <td>14.5</td>
+                <td>O</td>
+                </tr>
+                <tr>
+                <td>7.5</td>
+                <td>56</td>
+                <td>16</td>
+                <td>P</td>
+                </tr>
+                <tr>
+                <td>8</td>
+                <td>57</td>
+                <td>17</td>
+                <td>Q</td>
+                </tr>
+                <tr>
+                <td>8.5</td>
+                <td>58.5</td>
+                <td>18.5</td>
+                <td>Q <sup>1/2</sup>
+                </td>
+                </tr>
+                <tr>
+                <td>9</td>
+                <td>59.75</td>
+                <td>19.5</td>
+                <td>R <sup>1/2</sup>
+                </td>
+                </tr>
+                <tr>
+                <td>9.5</td>
+                <td>61</td>
+                <td>21</td>
+                <td>S <sup>1/2</sup>
+                </td>
+                </tr>
+                <tr>
+                <td>10</td>
+                <td>62</td>
+                <td>22</td>
+                <td>T <sup>1/2</sup>
+                </td>
+                </tr>
+                <tr>
+                <td>10.5</td>
+                <td>63.5</td>
+                <td>23.5</td>
+                <td>U <sup>1/2</sup>
+                </td>
+                </tr>
+                <tr>
+                <td>11</td>
+                <td>65</td>
+                <td>25</td>
+                <td>W</td>
+                </tr>
+                <tr>
+                <td>11.5</td>
+                <td>66.25</td>
+                <td>26.5</td>
+                <td>W <sup>1/2</sup>
+                </td>
+                </tr>
+                <tr>
+                <td>12</td>
+                <td>67.5</td>
+                <td>27.5</td>
+                <td>Y</td>
+                </tr>
+                <tr>
+                <td>12.5</td>
+                <td>68.75</td>
+                <td>28.5</td>
+                <td>Z</td>
+                </tr>
+                <tr>
+                <td>13</td>
+                <td>70</td>
+                <td>30</td>
+                <td>1</td>
+                </tr>
+              </tbody>
+            </table>
+            <br><br>
+            <p>Not sure which to choose? Speak to <a href="/pages/contact-us" style="font-weight: bold; text-decoration: underline;">our team</a> for a personalised recommendation</p>
+          </div>
+        </div>
+            
+        <div class="accordionButton">Men's Necklace Size Guide {% render 'icon-arrow' %}</div>
+        <div class="accordionContent">
+          <p>Choosing the right necklace length ensures your piece complements your style perfectly. Here’s how to select the ideal necklace length:
+          </p><p><b>Tips to determine necklace length:</b></p>
+          <ul>
+            <li>Use a flexible measuring tape or a string.</li>
+            <li>Wrap it around your neck to the desired length and mark where the ends meet.</li>
+          </ul>              
+          <img src="https://cdn.shopify.com/s/files/1/1476/0022/files/MARCO_DAL_MASO_NEcklace_Size_Guide_Mens_900x_720x_682066d9-0795-4219-b624-de1fe130c086_480x480.jpg?v=1660740297" class="image_element"/>
+          <div class="table-wrapper">
+            <table>
+              <tbody>
+                <tr>
+                <th>
+                <p>CM</p>
+                </th>
+                <th>
+                <p>INCH</p>
+                </th>
+                </tr>
+                <tr>
+                <td>
+                <p>52</p>
+                </td>
+                <td>
+                <p>20.47</p>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                <p>57</p>
+                </td>
+                <td>
+                <p>22.44</p>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                <p>62</p>
+                </td>
+                <td>
+                <p>24.40</p>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+            <br><br>
+            <p>Not sure which to choose? Speak to <a href="/pages/contact-us" style="font-weight: bold; text-decoration: underline;">our team</a> for a personalised recommendation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="tab-2" class="tab-content">
+      <div id="wrapper">      	
+      	<div class="accordionButton">Women's Necklace Size Guide {% render 'icon-arrow' %}</div>
+      	<div class="accordionContent">
+          <p>Choosing the right necklace length ensures your piece complements your style perfectly. Here’s how to select the ideal necklace length:
+          </p><p><b>Tips to determine necklace length:</b></p>
+          <ul>
+            <li>Use a flexible measuring tape or a string.</li>
+            <li>Wrap it around your neck to the desired length and mark where the ends meet.</li>
+          </ul>
+          <img src="//marcodalmaso.com/cdn/shop/files/Female_Necklace_Guide-2_900x_1e239d56-4f0c-40a3-bd8e-3e6913c968b2.jpg?v=1614914057&amp;width=1080"  class=" image_element"><br/><br/>
+          <div class="table-wrapper">
+            <table>
+              <tbody>
+              <tr>
+              <th>CM</th>
+              <th>INCH</th>
+              </tr>
+              <tr>
+              <td>52</td>
+              <td>20.47</td>
+              </tr>
+              <tr>
+              <td>57</td>
+              <td>22.44</td>
+              </tr>
+              <tr>
+              <td>62</td>
+              <td>24.40</td>
+              </tr>
+              </tbody>
+            </table>
+            <br><br>
+            <p>Not sure which to choose? Speak to <a href="/pages/contact-us" style="font-weight: bold; text-decoration: underline;">our team</a> for a personalised recommendation</p>
+          </div>     
+        </div>
+      		
+        <div class="accordionButton">Women's Ring Size Guide {% render 'icon-arrow' %}</div>      		
+        <div class="accordionContent">
+          <p>Ensuring your ring fits perfectly is crucial for both comfort and appearance. Remember that finger size can change depending on the time of day and temperature. When measuring your finger, consider doing so at the end of the day and when your fingers are warm for the most accurate size.</p>
+          <div class="grid grid--center  grid--uniform grid--flush-bottom">
+            <div class="grid__item medium-up--one-half text-center aos-init aos-animate" data-aos="row-of-3">
+              <div style="margin: 0 auto; max-width: 500px;">
+                <a class="btnlink" href="https://cdn.shopify.com/s/files/1/1476/0022/files/MARCO_DAL_MASO_Ring_Size_Guide_Women_02.pdf?v=1613994880"><div class="image-wrap text-spacing loaded" style="height: 0; padding-bottom: 89.39071154665531%;">
+                  <image-element data-aos="image-fade-in" class="aos-init aos-animate">
+                  <img src="//marcodalmaso.com/cdn/shop/files/Women_Hand3-3-2.jpg?v=1614330457&amp;width=1080" alt="" srcset="//marcodalmaso.com/cdn/shop/files/Women_Hand3-3-2.jpg?v=1614330457&amp;width=180 180w, //marcodalmaso.com/cdn/shop/files/Women_Hand3-3-2.jpg?v=1614330457&amp;width=360 360w, //marcodalmaso.com/cdn/shop/files/Women_Hand3-3-2.jpg?v=1614330457&amp;width=540 540w, //marcodalmaso.com/cdn/shop/files/Women_Hand3-3-2.jpg?v=1614330457&amp;width=720 720w, //marcodalmaso.com/cdn/shop/files/Women_Hand3-3-2.jpg?v=1614330457&amp;width=900 900w, //marcodalmaso.com/cdn/shop/files/Women_Hand3-3-2.jpg?v=1614330457&amp;width=1080 1080w" loading="lazy" class=" image-element" sizes="(min-width: 769px) 50vw, 100vw">
+                  </image-element>
+                </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <br/><br/>
+          <h4>Women's Rings Size Chart</h4>
+          <div class="table-wrapper">
+            <table>
+              <tbody>
+                <tr>
+                <th style="font-size: 12px;">US Size</th>
+                <th style="font-size: 12px;">France Size</th>
+                <th style="font-size: 12px;">Italian Size</th>
+                <th style="font-size: 12px;">UK Size</th>
+                <th style="font-size: 12px;">Japanese Size</th>
+                <th style="font-size: 12px;">Inner Diameter (mm)</th>
+                <th style="font-size: 12px;">Inner Diameter (in)</th>
+                </tr>
+                <tr>
+                <td>2</td>
+                <td>41.5</td>
+                <td>2</td>
+                <td>D</td>
+                <td>2</td>
+                <td>1.33</td>
+                <td>4.18</td>
+                </tr>
+                <tr>
+                <td>2.5</td>
+                <td>42.75</td>
+                <td>2.5</td>
+                <td>E</td>
+                <td>2.5</td>
+                <td>1.35</td>
+                <td>4.25</td>
+                </tr>
+                <tr>
+                <td>3</td>
+                <td>44</td>
+                <td>4</td>
+                <td>F</td>
+                <td>4</td>
+                <td>1.4</td>
+                <td>4.4</td>
+                </tr>
+                <tr>
+                <td>3.5</td>
+                <td>45.5</td>
+                <td>5.5</td>
+                <td>G</td>
+                <td>5.5</td>
+                <td>1.45</td>
+                <td>4.55</td>
+                </tr>
+                <tr>
+                <td>4</td>
+                <td>46.75</td>
+                <td>6.8</td>
+                <td>H <sup>1/2</sup>
+                </td>
+                <td>6.5</td>
+                <td>1.47</td>
+                <td>4.62</td>
+                </tr>
+                <tr>
+                <td>4.5</td>
+                <td>48</td>
+                <td>8</td>
+                <td>I <sup>1/2</sup>
+                </td>
+                <td>8</td>
+                <td>1.53</td>
+                <td>4.8</td>
+                </tr>
+                <tr>
+                <td>5</td>
+                <td>49.25</td>
+                <td>9.5</td>
+                <td>J <sup>1/2</sup>
+                </td>
+                <td>9.5</td>
+                <td>1.58</td>
+                <td>4.96</td>
+                </tr>
+                <tr>
+                <td>5.5</td>
+                <td>50.5</td>
+                <td>10.5</td>
+                <td>L</td>
+                <td>10.5</td>
+                <td>1.61</td>
+                <td>5.06</td>
+                </tr>
+                <tr>
+                <td>6</td>
+                <td>51.5</td>
+                <td>11.5</td>
+                <td>M</td>
+                <td>11</td>
+                <td>1.63</td>
+                <td>5.12</td>
+                </tr>
+                <tr>
+                <td>6.5</td>
+                <td>53</td>
+                <td>13</td>
+                <td>N</td>
+                <td>12.5</td>
+                <td>1.68</td>
+                <td>5.25</td>
+                </tr>
+                <tr>
+                <td>7</td>
+                <td>54.5</td>
+                <td>14.5</td>
+                <td>O</td>
+                <td>14</td>
+                <td>1.73</td>
+                <td>5.3</td>
+                </tr>
+                <tr>
+                <td>7.5</td>
+                <td>56</td>
+                <td>16</td>
+                <td>P</td>
+                <td>15.5</td>
+                <td>1.78</td>
+                <td>5.59</td>
+                </tr>
+                <tr>
+                <td>8</td>
+                <td>57</td>
+                <td>17</td>
+                <td>Q</td>
+                <td>16.5</td>
+                <td>1.81</td>
+                <td>5.68</td>
+                </tr>
+                <tr>
+                <td>8.5</td>
+                <td>58.5</td>
+                <td>18.5</td>
+                <td>Q <sup>1/2</sup>
+                </td>
+                <td>18</td>
+                <td>1.86</td>
+                <td>5.84</td>
+                </tr>
+                <tr>
+                <td>9</td>
+                <td>59.75</td>
+                <td>19.5</td>
+                <td>R <sup>1/2</sup>
+                </td>
+                <td>19</td>
+                <td>1.9</td>
+                <td>5.97</td>
+                </tr>
+                <tr>
+                <td>9.5</td>
+                <td>61</td>
+                <td>21</td>
+                <td>S <sup>1/2</sup>
+                </td>
+                <td>20.5</td>
+                <td>1.95</td>
+                <td>6.12</td>
+                </tr>
+                <tr>
+                <td>10</td>
+                <td>62</td>
+                <td>22</td>
+                <td>T <sup>1/2</sup>
+                </td>
+                <td>21.5</td>
+                <td>1.98</td>
+                <td>6.22</td>
+                </tr>
+                <tr>
+                <td>10.5</td>
+                <td>63.5</td>
+                <td>23.5</td>
+                <td>U <sup>1/2</sup>
+                </td>
+                <td>22.5</td>
+                <td>2.02</td>
+                <td>6.34</td>
+                </tr>
+                <tr>
+                <td>11</td>
+                <td>65</td>
+                <td>25</td>
+                <td>W</td>
+                <td>24</td>
+                <td>2.06</td>
+                <td>6.47</td>
+                </tr>
+                <tr>
+                <td>11.5</td>
+                <td>66.25</td>
+                <td>26.5</td>
+                <td>W <sup>1/2</sup>
+                </td>
+                <td>25.5</td>
+                <td>2.11</td>
+                <td>6.63</td>
+                </tr>
+                <tr>
+                <td>12</td>
+                <td>67.5</td>
+                <td>27.5</td>
+                <td>Y</td>
+                <td>26</td>
+                <td>2.13</td>
+                <td>6.68</td>
+                </tr>
+                <tr>
+                <td>12.5</td>
+                <td>68.75</td>
+                <td>28.5</td>
+                <td>Z</td>
+                <td>27</td>
+                <td>2.17</td>
+                <td>6.81</td>
+                </tr>
+                <tr>
+                <td>13</td>
+                <td>70</td>
+                <td>30</td>
+                <td>1</td>
+                <td>29</td>
+                <td>2.22</td>
+                <td>6.97</td>
+                </tr>
+              </tbody>
+            </table>
+            <br><br>
+            <p>Not sure which to choose? Speak to <a href="/pages/contact-us" style="font-weight: bold; text-decoration: underline;">our team</a> for a personalised recommendation</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- Your content here -->
+  </div>
+</div><!-- container -->
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+{% schema %}
+  {
+    "name": "Tabs with accordian",
+    "settings": [{
+      "type": "select",
+      "id": "align_text",
+      "label": "t:sections.rich-text.settings.align_text.label",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.rich-text.settings.align_text.options.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.rich-text.settings.align_text.options.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.rich-text.settings.align_text.options.right.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "narrow_column",
+      "label": "t:sections.rich-text.settings.narrow_column.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "divider",
+      "label": "t:sections.rich-text.settings.divider.label",
+      "default": false
+    }],
+  "presets": [
+    {
+      "name": "Tabs with accordian"
+    }
+  ]
+  }
+{% endschema %}

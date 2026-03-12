@@ -1,0 +1,156 @@
+{%- liquid
+  assign text_exists = false
+  if overline != blank or title != blank or description != blank or description2 != false or code != blank or link_text != blank
+    assign text_exists = true
+  endif
+
+  unless bg_color
+    assign bg_color = 'transparent'
+  endunless
+-%}
+
+{%- if text_exists -%}
+  <div
+    class="stacked-text--root--{{ section.id }} stacked-text--root--{{ block.id }} stacked-text--root {% if mobile_hide_description %}small--hide{% endif %}"
+    data-light-text="{{ light_text }}"
+    data-mobile-alignment="{{ mobile_alignment }}"
+    data-x-alignment="{{ x_alignment }}"
+    data-y-alignment="{{ y_alignment }}"
+    data-width="{{ width }}" data-overlay="{{ overlay_style }}"
+  >
+    <div
+      class="stacked-text--wrapper"
+      data-text-style="{{ style }}" data-text-pos="{{ text_position }}"
+      data-background-color="{{ bg_color }}"
+    >
+      {% if block.settings.overlay_opacity >= 0 %}
+        {% if text_position == 'below_image' %}
+          <style>        
+            .stacked-text--root--{{ block.id }} .stacked-text--wrapper::after {
+              content: '';
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              z-index: -1;
+              background-color: {{bg_color}};
+              
+            }    
+          </style>
+        {% else %}
+          <style>        
+            .stacked-text--root--{{ block.id }} .stacked-text--wrapper::after {
+              content: '';
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              z-index: -1;
+              background-color: {{bg_color}};
+              opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+            } 
+          </style>
+        {% endif %}
+      {% endif %}
+      {%- if title != blank -%}
+        <div
+          {% unless settings.transitions--text %}
+            data-transition-item="{{ id }}"
+          {% endunless %}
+        >
+          <h2 class="h1 stacked-text--title" data-item="{{ heading_type }}" style="color:{{ text_color }};">
+            {%- render "utils", utility: "emphasized-text", text: title -%}
+          </h2>
+        </div>
+      {%- endif -%}
+
+      {%- if overline != blank -%}
+        <div
+          class="stacked-text--overline"
+          {% unless settings.transitions--text %}
+            data-transition-item="{{ id }}"
+          {% endunless %}
+        >
+          <h3 data-item="overline" style="color:{{ text_color }};">
+            {{- overline | escape -}}
+          </h3>
+        </div>
+      {%- endif -%}
+
+      {%- if description != blank -%}
+        <div
+          class="stacked-text--description"
+          data-item="rte-content"
+          {% if mobile_hide_description %}
+            data-mq="medium-large"
+          {% endif %}
+          {% unless settings.transitions--text %}
+            data-transition-item="{{ id }}"
+          {% endunless %}
+           style="color:{{ text_color }};"
+        >
+          {{- description -}}
+        </div>
+      {%- endif -%}
+
+      {%- if description2 != blank -%}
+        <div
+          class="stacked-text--description"
+          data-item="rte-content"
+          {% if mobile_hide_description %}
+            data-mq="medium-large"
+          {% endif %}
+          {% unless settings.transitions--text %}
+            data-transition-item="{{ id }}"
+          {% endunless %}
+           style="color:{{ text_color }};"
+        >
+          {{ collection.description }}
+        </div>
+      {%- endif -%}
+
+      {%- if code != blank -%}
+      <div class="rte" style="color:{{ text_color }};">
+        {{ code }}
+      </div>
+      {% endif %}
+
+      {%- if link_text != blank -%}
+        {%- if cover_link -%}
+          <div
+            class="stacked-text--button"
+            data-item="{{- settings.buttons--style -}}"
+            data-text="{{ link_text }}"
+            {% unless settings.transitions--text %}
+              data-transition-item="{{ id }}"
+              data-transition-type="fade-in"
+            {% endunless %}
+            {% unless settings.transitions--buttons %}
+              data-transition-button
+            {% endunless %} style="color:{{ text_color }};"
+          >
+            <span>{{- link_text -}}</span>
+          </div>
+        {%- else -%}
+          <a
+            class="stacked-text--button"
+            href="{{ link_url }}"
+            data-item="{{- settings.buttons--style -}}"
+            data-text="{{ link_text }}"
+            {% unless settings.transitions--text %}
+              data-transition-item="{{ id }}"
+              data-transition-type="fade-in"
+            {% endunless %}
+            {% unless settings.transitions--buttons %}
+              data-transition-button
+            {% endunless %} style="color:{{ text_color }};border-color:{{ text_color }};"
+          >
+            <span>{{- link_text -}}</span>
+          </a>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

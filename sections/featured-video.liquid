@@ -1,0 +1,186 @@
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+<div class="page-width-r55">
+  {%- if section.settings.title != blank -%}
+    <div class="section-header">
+      <h2>{{ section.settings.title }}</h2>
+    </div>
+  {%- endif -%}
+  <div class="box-video">
+    {% if section.settings.image != blank %}
+      <div class="bg-video" style="background-image: url({{ section.settings.image | img_url:'master' }}?fit=crop&fm=jpg&q=75&w=1000);">
+        <div class="bt-play">
+        <svg width="164" height="165" viewBox="0 0 164 165" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M82.0001 0.860352C36.943 0.860352 0.416992 37.3864 0.416992 82.4434C0.416992 127.5 36.943 164.026 82.0001 164.026C127.057 164.026 163.583 127.5 163.583 82.4434C163.535 37.4065 127.037 0.908496 82.0001 0.860352ZM116.358 85.0429C115.793 86.1759 114.875 87.0943 113.742 87.659V87.6881L67.1229 110.998C64.2438 112.436 60.7439 111.269 59.3051 108.39C58.896 107.571 58.6854 106.668 58.6905 105.753V59.1342C58.6891 55.9157 61.2967 53.3057 64.5152 53.304C65.4204 53.3035 66.3132 53.514 67.1229 53.9186L113.742 77.2281C116.622 78.6636 117.794 82.1624 116.358 85.0429Z" fill="#FFF4F4"/>
+        </svg>
+        </div>
+      </div>
+      {% endif %}
+  <div class="video-container">
+  <div class="video-wrapper">
+  {%- if section.settings.video_url == blank -%}
+    <iframe src="//www.youtube.com/embed/_9VUPq3SxOc?rel=0&showinfo=0&vq=720" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+  {%- else -%}
+    {%- if section.settings.video_url.type == "youtube" -%}
+      <iframe src="//www.youtube.com/embed/{{ section.settings.video_url.id }}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playlist={{ section.settings.video_url.id }}" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+    {%- endif -%}
+    {%- if section.settings.video_url.type == "vimeo" -%}
+      <iframe src="//player.vimeo.com/video/{{ section.settings.video_url.id }}?color={{ settings.color_button | remove: "#" }}&byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+    {%- endif -%}
+  {%- endif -%}
+    </div>
+</div>
+  </div>
+</div>
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+<style>
+  .box-video{
+  position: relative;
+  width: 100%;
+  margin:0 auto 20px auto;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+ /* Set Cover aka Background-Image */
+.box-video .bg-video{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: 2;
+}
+
+ /* Add light shade to make play button visible*/
+.bg-video::after{ 
+	content:'';
+	position: absolute;
+  	top: 0;
+  	left: 0;
+  	width: 100%;
+  	height: 100%;
+  	background-color: rgba(0,0,0,0.1);
+  	z-index: 3;
+  	}
+
+
+/* The Play-Button using CSS-Only */
+.box-video .bt-play {
+  position: absolute;
+  top:50%;
+  left:50%;
+  margin:0px;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background: rgba(255,255,255,0.1);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%;
+  text-indent: -999em;
+  cursor: pointer;
+  z-index:2;
+  -webkit-transition: all .3s ease-out;
+  transition: all .3s ease-out;
+}
+
+/* The Play-Triangle */
+.box-video .bt-play:after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 0;
+  width: 0;
+  margin: -12px 0 0 -6px;
+  border: solid transparent;
+  border-left-color: #000;
+  border-width: 12px 20px;
+  -webkit-transition: all .3s ease-out;
+  transition: all .3s ease-out;
+}
+
+.box-video:hover .bt-play {
+  transform: scale(1.1);
+}
+
+/* When Class added the Cover gets hidden... */
+.box-video.open .bg-video{
+  visibility: hidden;
+  opacity: 0;
+
+  -webkit-transition: all .6s .8s;
+  transition: all .6s .8s;  
+}
+
+/* and iframe shows up */
+.box-video.open .video-container{
+  opacity: 1;
+  -webkit-transition: all .6s .8s;
+  transition: all .6s .8s;
+}
+
+/* Giving the div ratio of 16:9 with padding */
+.video-container {
+	position: relative;
+	width: 100%;
+	height: 0;
+  margin: 0;
+  z-index: 1;
+	padding-bottom: 56.27198%;
+}
+
+.video-container iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+</style>
+{% schema %}
+{
+  "name": "t:sections.featured-video.name",
+  "class": "index-section custom-video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.featured-video.settings.title.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Cover Image"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "t:sections.featured-video.settings.video_url.label",
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "divider",
+      "label": "t:sections.featured-video.settings.divider.label",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured-video.presets.video.name"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}

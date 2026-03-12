@@ -1,0 +1,189 @@
+{%- liquid
+  assign number_of_comments = article.comments_count
+  if comment.status == 'pending'
+    assign number_of_comments = article.comments_count | plus: 1
+  endif
+-%}
+
+{%- if section.settings.image_hero and article.image -%}
+  <div class="collection-hero">
+    {% comment %} Full width image so don't need to adjust sizes attribute, fallback is 100vw {% endcomment %}
+    {%- render 'image-element',
+      img: article.image,
+      classes: 'collection-hero__image image-fit',
+    -%}
+
+    <div class="collection-hero__content">
+      <div class="page-width">
+        <header class="section-header section-header--hero">
+          <div class="section-header__shadow">
+            {%- render 'breadcrumbs' -%}
+            {%- if section.settings.blog_show_date or article.tags.size > 0 or articles.comments_count > 0 -%}
+              <div class="article__date">
+                {%- if section.settings.blog_show_tags and article.tags.size > 0 -%}
+                  {%- for tag in article.tags -%}
+                    {% if tag contains "_" %}{%- assign tag_starts_with = tag | slice: 0 -%}{% if tag_starts_with == "_" %}{% if tag_count %}{%- assign tag_count = tag_count | minus: 1 | at_least: 0 -%}{% endif %}{% continue %}{% endif %}{% endif %}
+                    <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a> &middot;
+                  {%- endfor -%}
+                {%- endif -%}
+                {%- if section.settings.blog_show_comments and article.comments_count > 0 -%}
+                  <a href="#comments">
+                    {{ 'blogs.comments.with_count' | t: count: number_of_comments }}
+                  </a> &middot;
+                {%- endif -%}
+                {%- if section.settings.blog_show_date -%}
+                  {{ article.published_at | time_tag: format: 'month_day_year' }}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            <h1 class="section-header__title">
+              {{ article.title }}
+            </h1>
+
+            {%- if section.settings.blog_show_author -%}
+              <div class="article__author">by {{ article.author }}</div>
+            {%- endif -%}
+          </div>
+        </header>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<div class="err pbo page-width page-width--narrow page-content">
+  <article class="article">
+    {%- unless section.settings.image_hero and article.image -%}
+
+      <header class="section-header">
+        {%- if section.settings.blog_show_date or article.tags.size > 0 or articles.comments_count > 0 -%}
+          <div class="article__date">
+            {%- if section.settings.blog_show_tags and article.tags.size > 0 -%}
+              {%- for tag in article.tags -%}
+                {% unless tag == 'Featured_Post' %}
+                {% if tag contains "_" %}{%- assign tag_starts_with = tag | slice: 0 -%}{% if tag_starts_with == "_" %}{% if tag_count %}{%- assign tag_count = tag_count | minus: 1 | at_least: 0 -%}{% endif %}{% continue %}{% endif %}{% endif %}
+                <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+                  {% endunless %}
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if section.settings.blog_show_comments and article.comments_count > 0 -%}
+              <a href="#comments">
+                {{ 'blogs.comments.with_count' | t: count: number_of_comments }}
+              </a> &middot;
+            {%- endif -%}
+            {%- if section.settings.blog_show_date -%}
+              {{ article.published_at | time_tag: format: 'month_day_year' }}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        <h1 class="section-header__title">{{ article.title }}</h1>
+        {%- if section.settings.blog_show_author -%}
+          <div class="article__author">by {{ article.author }}</div>
+        {%- endif -%}
+      </header>
+    {%- endunless -%}
+
+    {% if article.content != blank %}
+    <div class="article__body rte">     
+      {{ article.content }}
+    </div>
+    {% endif %}
+
+    {%- if section.settings.social_sharing_blog -%}
+      {%- render 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article.image -%}
+    {%- endif -%}
+
+
+
+  </article>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "articleBody": {{ article.content | strip_html | json }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ shop.url | append: article.url | json }}
+  },
+  "headline": {{ article.title | json }},
+  {% if article.excerpt != blank %}
+    "description": {{ article.excerpt | strip_html | json }},
+  {% endif %}
+  {% if article.image %}
+    {% assign image_size = article.image.width | append: 'x' %}
+    "image": [
+      {{ article | img_url: image_size | prepend: "https:" | json }}
+    ],
+  {% endif %}
+  "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    {% if page_image %}
+      {% assign image_size = page_image.width | append: 'x' %}
+      "logo": {
+        "@type": "ImageObject",
+        "height": {{ page_image.height | json }},
+        "url": {{ page_image | img_url: image_size | prepend: "https:" | json }},
+        "width": {{ page_image.width | json }}
+      },
+    {% endif %}
+    "name": {{ shop.name | json }}
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.article-template.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "image_hero",
+      "label": "t:sections.article-template.settings.image_hero.label",
+      "info": "t:sections.article-template.settings.image_hero.info",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_tags",
+      "label": "t:sections.article-template.settings.blog_show_tags.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_date",
+      "label": "t:sections.article-template.settings.blog_show_date.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_comments",
+      "label": "t:sections.article-template.settings.blog_show_comments.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_author",
+      "label": "t:sections.article-template.settings.blog_show_author.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "social_sharing_blog",
+      "label": "t:sections.article-template.settings.social_sharing_blog.label",
+      "default": true
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}

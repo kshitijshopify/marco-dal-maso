@@ -1,0 +1,237 @@
+{%- paginate blog.articles by 21 -%}
+
+<div data-section-id="{{ section.id }}" data-section-type="blog">
+  <div class="page-width page-content">
+
+    {%- render 'breadcrumbs' -%}
+
+    <header class="section-header{% if section.settings.blog_show_tag_filter and blog.tags.size > 0 %}{% unless settings.type_headers_align_text %} section-header--with-link{% endunless %}{% endif %}">
+     
+      {%- if section.settings.blog_show_tag_filter and blog.tags.size > 0 -%}
+        <select id="BlogTagFilter">
+          <option value="/blogs/{{ blog.handle }}">All</option>
+          {%- for tag in blog.all_tags -%}
+            {% if tag contains "_" %}{%- assign tag_starts_with = tag | slice: 0 -%}{% if tag_starts_with == "_" %}{% if tag_count %}{%- assign tag_count = tag_count | minus: 1 | at_least: 0 -%}{% endif %}{% continue %}{% endif %}{% endif %}
+            <option value="/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" {% if current_tags contains tag %}selected{% endif %}>{{ tag }}</option>
+          {%- endfor -%}
+        </select>
+      {%- endif -%}
+    </header>
+
+    <div class="grid grid--uniform soon_comingup_event">
+      {%- for article in blog.articles -%}
+        {% assign today_date = "now" | date: "%s" | times: 1 %}
+        {% assign pre_date = article.metafields.custom.event_end_date | date: "%s" | times: 1 %}
+        {% if today_date <= pre_date %}
+          {%- render 'article-grid-single', article: article, grid_item_width: 'medium-up--one-whole', per_row: '1', image_size: 'landscape' -%}
+          {% assign featuredevent = article.title %}
+          {% break %}
+        {% endif %}
+      {%- endfor -%}
+    </div>
+    <div class="grid grid--uniform comingup_incoming_months">
+      {%- for article in blog.articles -%}
+        {% assign today_date = "now" | date: "%s" | times: 1 %}
+        {% assign pre_date = article.metafields.custom.event_end_date | date: "%s" | times: 1 %}
+        {% if today_date < pre_date and article.title != featuredevent%}
+          {%- render 'article-grid', article: article, grid_item_width: 'medium-up--one-half', per_row: '2', image_size: 'square' -%}
+        {% endif %}
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endif -%}
+
+  </div>
+</div>
+
+{%- endpaginate -%}
+
+<div data-section-id="{{ section.id }}" data-section-type="blog">
+  <div class="page-width page-content"> 
+          <header class="section-header">
+             <h2 class="section-header__title">Past Events</h2>
+          </header>
+          <div class="article_carousel past_events grid grid--uniform">
+                {%- for article in blog.articles -%}
+                  {% assign today_date = "now" | date: "%s" | times: 1 %}
+                  {% assign pre_date = article.metafields.custom.event_end_date | date: "%s" | times: 1 %}
+                  {% if today_date > pre_date and article.title != featuredevent%}
+                    {%- render 'article-grid', today_date: today_date, pre_date: pre_date, article: article, grid_item_width: 'medium-up--one-third', per_row: '3', image_size: 'square' -%}
+                  {% endif %}
+                {%- endfor -%}
+          </div>
+  </div>
+</div>
+
+<style>
+  .article_carousel.past_events button.slick-next.slick-arrow {
+    right: 0;
+    left: auto;
+}
+  .article_carousel.past_events button.slick-next.slick-arrow {
+    right: 0;
+    left: auto;
+}
+.article_carousel.past_events .slick-arrow {
+    position: absolute;
+    top: 40%;
+    z-index: 9;
+    background: #fff;
+    box-shadow: 0 0 20px #00000026;
+    width: 50px;
+    height: 50px;
+    left: 0;
+    cursor: pointer;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+}
+  .Enq-popup {
+    position: fixed;
+    top: 0px;
+    left:0px;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9;display:none;}
+span.close {
+    cursor: pointer;
+    float: right;
+}
+.Enq-popup form  .grid input {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+  .Enq-popup.active {    display: flex;
+    align-items: center;
+    justify-content: center;
+}.pop_form {
+    max-width: 500px;
+    background: #fff;
+    padding: 30PX;
+    border-radius: 8px;
+}
+.past_events .btn_bottom {
+    display: none;
+}
+  .section-header__title {
+    margin-top: 50px;
+}
+.article_abs .article__grid-meta .btn{letter-spacing:0.3px;}
+/* @media screen and (min-width:769px){
+  .article_carousel.past_events {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+} */
+  @media only screen and (min-width: 769px) {
+    .article_carousel.past_events.grid--uniform .medium-up--one-half:nth-of-type(odd):not(.collmetafieldbanner), .article_carousel.past_events.grid--uniform .medium-up--one-third:nth-of-type(3n+1) {
+        clear: unset;
+    }
+}
+@media screen and (max-width:768px){
+  .single_article_img img{min-height:300px;object-fit:cover;}
+  body  .article_abs{padding:20px 35px 10px;}
+   body  div.article_data {line-height: 1.3;font-size: 20px;font-weight: 500;}
+}
+  .event_data {
+    color: #fff;
+}
+  .single_article_img.article__grid-image img {
+    max-height: 480px;
+    object-fit: cover;
+}
+  .relative{position:relative;}
+  .article_abs{position:absolute;top:0px;left:0px;width:100%;height:100%;text-align:left;padding:40px 60px;background: rgba(0, 0, 0, 0.4);}
+  div.article_data {display: block;line-height: 1.7;font-size: 22px;font-weight: 500;}
+  .article_abs .article__grid-meta {display: flex;align-items: start;justify-content: space-between;flex-direction: column;height: calc(100% - 30px);}
+  .page-width.page-content {padding-top: 0px;padding-bottom: 0px;}
+  .gridd.relative {
+    margin-bottom: 22px;
+}
+  .article__grid-image {
+    margin: 0;
+}
+</style>
+{% schema %}
+{
+  "name": "t:sections.blog-template.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "blog_show_tag_filter",
+      "label": "t:sections.blog-template.settings.blog_show_tag_filter.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_rss",
+      "label": "t:sections.blog-template.settings.blog_show_rss.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_tags",
+      "label": "t:sections.blog-template.settings.blog_show_tags.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_date",
+      "label": "t:sections.blog-template.settings.blog_show_date.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_comments",
+      "label": "t:sections.blog-template.settings.blog_show_comments.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_author",
+      "label": "t:sections.blog-template.settings.blog_show_author.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_show_excerpt",
+      "label": "t:sections.blog-template.settings.blog_show_excerpt.label"
+    },
+    {
+      "type": "select",
+      "id": "blog_image_size",
+      "label": "t:sections.blog-template.settings.blog_image_size.label",
+      "default": "wide",
+      "options": [
+        {
+          "value": "natural",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.natural.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.square.label"
+        },
+        {
+          "value": "landscape",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.landscape.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.portrait.label"
+        },
+        {
+          "value": "wide",
+          "label": "t:sections.blog-template.settings.blog_image_size.options.wide.label"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}

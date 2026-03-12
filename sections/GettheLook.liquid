@@ -1,0 +1,89 @@
+{% if product.metafields.custom.product_look_book != blank %}
+<div data-section-id="{{ product.id }}" data-subsection data-section-type="collection-grid" class="index-section">
+  <div class="product_rlatede_detail">
+    {%  if section.settings.title != blank %}
+    <div class="page-width">
+      <header class="section-header">
+        <h3 class="section-header__title">
+         {{ section.settings.title }}
+        </h3>
+      </header>
+    </div>
+    {% endif %}
+    <div class="grid grid--product-images--partial">
+      <div class="grid__item medium-up--three-fifths ">  
+        <div class="cdcd collection-grid__wrapper">
+          <div class="product-recommendations page-width">
+            <div class="grid grid--uniform">
+              {% assign related_products = section.settings.product_list %}
+              {% assign quick_shop_onlybtn = true %}
+              {% for prod in related_products %}
+                {%- render 'product-grid-item',
+                  product: prod, per_row: 3, quick_shop_onlybtn: quick_shop_onlybtn, fallback: '39vw', -%}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative  grid__item medium-up--two-fifths">
+        <img class="pbimg" src="{{ section.settings.coll_image | img_url:'master'}}" width="" height="" alt="" loading="eager" />
+        {% for prod in related_products %}
+          <div class="dot_products dot_{{ forloop.index }}">
+            <span class="dot_icon"></span>
+            <div class="dot-product">
+              <a href="{{shop.url | append: "/products/" | append: prod.handle }}">
+                <div class="dot-product-name">{{prod.title}}</div>
+                <div class="dot-product-price">{{prod.price | money}}</div>
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+     </div>  
+  </div>
+</div>
+{% endif %}
+<style>
+{{ section.settings.css | strip_html }}
+</style>
+
+{% schema %}
+  {
+    "name": "Get the Look",
+    "settings": [ 
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "You may also like"
+    }, 
+    {
+      "type": "image_picker",
+      "id": "coll_image",
+      "label": "Get the Look Image",
+      "info": "Link in the product metaobject entry through dynamic source."
+    }, 
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Products List",
+      "info": "Link in the product metaobject entry through dynamic source."
+    },
+    {
+      "type": "text",
+      "id": "css",
+      "label": "CSS for Dots Positioning"
+    }
+    ],
+  "presets": [
+    {
+      "name": "Get the Look"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}
+{% javascript %}
+{% endjavascript %}

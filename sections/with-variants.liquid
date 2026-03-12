@@ -1,0 +1,48 @@
+<style>
+  tr:has(td:empty) {
+    display: none;
+}
+</style>
+<table>
+  {% paginate  collections['all'].products by 2500 %}
+  {% for product in collections['all'].products %}
+    <tr>
+      <td>
+        {% increment my_counter %}
+        <a href="/admin/products/{{product.id}}" target="_blank">{{product.title}}</a>
+      </td>
+      <td>
+        {%- for variant in product.variants -%}
+          {% if variant.available %}
+            {% assign sizesList = variant.title | split: '/' | first | append: ', ' %}
+              {{ sizesList }}  
+          {%- endif -%}
+        {% endfor -%}
+      </td>
+    </tr>          
+  {% endfor %}
+  {%- if paginate.pages > 1 -%}
+    {%- render 'pagination', paginate: paginate -%}
+  {%- endif -%}    
+  {% endpaginate %}
+</table>
+
+{% schema %}
+  {
+    "name": "products w variants",
+    "settings": [],
+      "presets": [
+    {
+      "name": "products w variants arc",
+      "blocks": [
+      ]
+    }
+  ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

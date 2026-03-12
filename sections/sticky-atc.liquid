@@ -1,0 +1,557 @@
+{% assign product_tags = product.tags | join: ',' %}
+{% unless product_tags contains 'POA' %}  
+  {% if section.settings.enable_section and request.page_type == 'product' and product.available %}
+  {% liquid 
+        assign current_variant = product.selected_or_first_available_variant
+        assign product_form_id = 'product-form-' | append: section.id
+        assign image = current_variant.image | default: product.featured_image 
+        assign img_size = section.settings.img_width | append: 'x' | append: section.settings.img_height
+  %}
+
+  <style>
+        #md-sticky-atc {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2;
+            padding-top: {{ section.settings.pt }}rem;
+            padding-bottom: {{ section.settings.pb }}rem;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(100%);
+            transition: all .15s ease-out;background: #fff;
+            border-top: 0.1rem solid rgba(var(--color-foreground),.08);box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+        }
+        #md-sticky-atc.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #md-sticky-atc .page-width-inner {
+        }
+        @media (min-width: 990px) {
+            #md-sticky-atc .page-width-inner {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+        #md-sticky-atc .product-content {
+            display: flex;
+            align-items: center;
+            padding-bottom: .5rem;
+        }
+        @media (min-width: 990px) {
+            #md-sticky-atc .product-content {
+                padding-bottom: 0;
+                padding-right: 2rem;
+            }
+        }
+        #md-sticky-atc .product-content .product__title {
+            margin: 0 0 .5rem;
+        }
+        #md-sticky-atc .product-content .price {
+            display: flex;
+            align-items: center;
+        }
+        #md-sticky-atc .product-content img {
+            margin-right: .75rem;height: 100%;
+    object-fit: cover;
+        }
+        #md-sticky-atc .product-form {
+            flex-shrink: 0;
+        }
+        #md-sticky-atc .product-form .select {
+            flex-shrink: 0;
+            width: auto;
+            margin-right: .75rem;
+            flex-grow: 1;
+            max-width: 50%;
+        }
+        @media (min-width: 990px) {
+            #md-sticky-atc .product-form .select {
+                flex-grow: 0;
+            }
+        }
+        
+        #md-sticky-atc .product-form .quantity-input-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        #md-sticky-atc .product-form .quantity {
+            /* display: none; */
+            flex-shrink: 0;
+            margin-right: .75rem;
+        }
+        @media (min-width: 990px) {
+            #md-sticky-atc .product-form .quantity {
+                display: flex;
+            }
+        }
+        #md-sticky-atc .product-form button[name="add"] {
+            flex-shrink: 0;
+            flex-grow: 1;
+            margin: 0;
+        }
+        @media (min-width: 990px) {
+            #md-sticky-atc .product-form button[name="add"] {
+                flex-grow: 0;
+            }
+        }
+        @media (max-width: 800px) {
+            #md-sticky-atc {
+                display: block;
+            }
+        }
+
+      #md-sticky-atc .icon.icon-caret {
+    width: 12px;
+    display: inline-block;
+    vertical-align: middle;
+        margin-right: 15px;
+}
+
+      .select__select {
+        padding-right: 0 !important;
+}
+
+@media (min-width: 769px) {
+#md-sticky-atc {
+    position: fixed;
+    top: 100px;
+    left: auto;
+    right: 2rem;
+    background: #ececec;
+    border-top: none;
+    box-shadow: none;bottom: auto;
+    max-width: 344px;padding: 0;
+}
+  #md-sticky-atc .page-width {
+    padding: 10px;
+}
+      #md-sticky-atc .product-content {
+        padding-right: 0;
+        flex: 0 0 25%;
+    }
+      #md-sticky-atc .page-width-inner {
+        display: flex;align-items: unset;
+        gap: 10px;
+    }
+  .stickyflexitems .small--hide {
+    display: flex;
+    align-items: flex-start;
+        justify-content: space-between;
+}
+  .stickyflexitems {
+    flex: 1 1 80%;display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+}
+.stickyflexitems .product__title {
+    letter-spacing: 0;
+    margin: 0;font-size: 13px;
+        max-width: 60%;
+}
+  div#price-sticky-atc span {
+    font-size: 14px;
+}
+  #md-sticky-atc form.product-single__form select, #md-sticky-atc form.product-single__form button {
+    flex: 0 0 45%;
+    max-width: 50%;
+    height: auto;
+    padding: 5px 5px;
+    letter-spacing: 0;
+    font-size: 12px;
+    font-weight: 400;background-color: transparent;
+    color: #000;
+    border: 1px solid;
+}
+}
+      @media (max-width: 768px) {
+    #md-sticky-atc .product-form .quantity-input-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #md-sticky-atc .product-form .select {
+        max-width: 40%; /* Increase width for mobile */
+    }
+
+    .quantity {
+        width: 32%; /* Adjust width for better mobile layout */
+    }
+
+    .button {
+        padding: 0px 12px; /* Reduce padding for smaller screen */
+        font-size: 15px !important; /* Slightly smaller font for mobile */
+      min-width: unset !important;
+    }
+}
+#md-sticky-atc form.product-single__form {
+    display: flex;
+    gap: 10px;flex-flow: row wrap;
+}
+.p-0, .pr-1\.5 {
+    font-size: 12px;
+}
+      #md-sticky-atc select.product-single__variants {
+    display: block;
+}
+  </style>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+      const target = document.querySelector('.prodblock__atcbuttons')
+      const triggerDiv = document.querySelector('.recomm_recent_together')
+      const triggerDiv2 = document.querySelector('.product_collection_detail')
+      const stickyATC = document.querySelector('#md-sticky-atc')
+      const stickyATCContent = document.querySelector('#md-sticky-atc .product-content')
+      const img = stickyATC.querySelector('.product-content img')
+      const btn = stickyATC.querySelector('[name="add"]')
+      const btnSpinner = btn.querySelector('.loading__spinner')
+      const selectField = stickyATC.querySelector('select[name="id"]')
+      const threshold = document.querySelector('button[name="add"]').getBoundingClientRect().bottom + Number(stickyATC.dataset.offset)
+      function isInViewport(el) {
+        const rect = el.getBoundingClientRect();
+        return (
+          rect.top >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+        );
+      }
+      function handleScroll() {
+        if (isInViewport(target)) {
+          stickyATC.classList.remove('show');
+          stickyATC.classList.add('hide');
+          document.body.style.paddingBottom = '0'
+        } else {
+          stickyATC.classList.remove('hide');
+          stickyATC.classList.add('show');
+          document.body.style.paddingBottom = `${stickyATC.clientHeight}px`
+          document.body.style.height = 'auto'  
+        }
+      }
+      window.addEventListener('scroll', handleScroll);
+      //window.addEventListener('load', handleScroll); // Run on page load too
+          
+      function checkWindowSize() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;          
+        console.log(`Width: ${width}, Height: ${height}`);
+          
+        // Example condition: if window width is less than 768px (mobile view)
+        if (width <= 768) {
+          console.log("Mobile view");
+          window.addEventListener('load', () => {
+            stickyATCContent.classList.add('hide')             
+          });
+        } else{
+          
+        }
+      }      
+      // Listen for resize events
+      window.addEventListener('resize', checkWindowSize);      
+      // Optionally check size on page load
+      checkWindowSize();
+
+      // if (selectField) {
+      //     selectField.addEventListener('change', () => {
+      //         img.setAttribute('src', selectField.options[selectField.selectedIndex].dataset.img)
+      //     })
+      // }
+
+      document.querySelector('.prodblock__atcbuttons [name="id"]')?.addEventListener('change', (e) => {
+        const value = Number(e.target.value)
+
+        if (value) {
+          selectField.value = value
+        }
+      })
+
+      document.querySelectorAll('.sync-select').forEach(select => {
+        select.addEventListener('change', function () {
+          const group = this.dataset.sync;
+          const selectsInGroup = document.querySelectorAll(`.sync-select[data-sync="${group}"]`);
+    
+          selectsInGroup.forEach(otherSelect => {
+            if (otherSelect === this) return;
+    
+            let selectedLabel = this.options[this.selectedIndex].textContent.trim();
+    
+            // Try to find an option in the other select that matches by label
+            for (let i = 0; i < otherSelect.options.length; i++) {
+              if (otherSelect.options[i].textContent.trim() === selectedLabel) {
+                otherSelect.selectedIndex = i;
+                break;
+              }
+            }
+          });
+        });
+      });
+    });
+ 
+  </script>
+
+    <div id="md-sticky-atc" class="md-sticky-prd color-{{ section.settings.color_scheme }}" aria-hidden="true" data-offset="{{ section.settings.offset }}">
+      <div class="page-width">
+        <div class="page-width-inner">
+          <div class="product-content small--hide">
+            {% if section.settings.show_img %}
+              <img src="{{ image | img_url: img_size, crop: 'center' }}" class="" width="{{ section.settings.img_width }}" height="{{ section.settings.img_height }}" loading="lazy">
+            {% endif %}                    
+          </div>
+          <div class="stickyflexitems">
+            <div class="small--hide">
+                        <h3 class="product__title {{ section.settings.title_size }}">
+                            {{ product.title }}
+                        </h3>
+                        <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                            {%- assign hide_sale_price = true -%}
+                      {%- if product.compare_at_price_max > product.price -%}
+                        {%- if current_variant.compare_at_price > current_variant.price -%}
+                          {%- assign hide_sale_price = false -%}
+                        {%- endif -%}
+                        <span
+                          data-a11y-price
+                          class="visually-hidden"
+                          aria-hidden="{{ hide_sale_price }}">
+                            {{ 'products.general.regular_price' | t }}
+                        </span>
+                        <span data-product-price-wrap class="{% if hide_sale_price %} hide{% endif %}">
+                          <span data-compare-price class="product__price product__price--compare">
+                            {%- if current_variant.compare_at_price > current_variant.price -%}
+                              {{ current_variant.compare_at_price | money_without_trailing_zeros  }}
+                            {%- endif -%}
+                          </span>
+                        </span>
+                        <span data-compare-price-a11y class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+                      {%- else -%}
+                        <span data-a11y-price class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                      {%- endif -%}
+
+                      <span data-product-price
+                        class="price-item price-item--regular product__price{% if current_variant.compare_at_price > current_variant.price %} on-sale{% endif %}">
+                        {%- unless product.empty? -%}
+                          {{ current_variant.price | money_without_trailing_zeros  }}
+                        {%- else -%}
+                          {{ 1999 | money_without_trailing_zeros  }}
+                        {%- endunless -%}
+                      </span>
+
+                      {%- if settings.product_save_amount -%}
+                        {%- if settings.product_save_type == 'dollar' -%}
+                          {%- capture saved_amount -%}{{ current_variant.compare_at_price | minus: current_variant.price | money_without_trailing_zeros  }}{%- endcapture -%}
+                        {%- else -%}
+                          {%- capture saved_amount -%}{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round }}%{%- endcapture -%}
+                        {%- endif -%}
+                        <span data-save-price class="product__price-savings{% if hide_sale_price %} hide{% endif %}">
+                          {%- unless hide_sale_price -%}
+                            {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                          {%- endunless -%}
+                        </span>
+                      {%- endif -%}
+
+                      <div
+                        data-unit-price-wrapper
+                        class="product__unit-price product__unit-price--spacing {% unless current_variant.unit_price_measurement %} hide{% endunless %}">
+                        {%- capture unit_price_base_unit -%}
+                          <span data-unit-base>
+                            {%- if current_variant.unit_price_measurement -%}
+                              {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+                                {{ current_variant.unit_price_measurement.reference_value }}
+                              {%- endif -%}
+                              {{ current_variant.unit_price_measurement.reference_unit }}
+                            {%- endif -%}
+                          </span>
+                        {%- endcapture -%}
+
+                        <span data-unit-price>{{ current_variant.unit_price | money_without_trailing_zeros  }}</span>/{{ unit_price_base_unit }}
+                      </div>
+                        </div>
+                    </div>
+            {%- form 'product', product, id: form_id, class: 'product-single__form' -%}
+              {%- liquid
+                    assign enable_dynamic_buttons = false
+                    if show_dynamic_checkout and template != 'product.preorder'
+                      assign enable_dynamic_buttons = true
+                    endif
+              -%}
+              {% unless template contains 'gift-card' %}
+                  {%- if enable_dynamic_buttons -%}
+                    <div class="payment-buttons">
+                  {%- endif -%}
+              {% endunless %}
+              {%- liquid
+                      assign default_text = 'products.product.add_to_cart' | t
+                      assign button_text = 'products.product.add_to_cart' | t
+                      if template contains 'preorder'
+                        assign default_text = 'products.product.preorder' | t
+                        assign button_text = 'products.product.preorder' | t
+                      endif
+                      unless current_variant.available
+                        assign button_text = 'products.product.sold_out' | t
+                      endunless
+              -%}
+              {% if product.variants.size == 1 %}
+  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+{% else %}
+              <select name="id" data-product-select class="sync-select select_pop product-single__variants no-js" data-sync="size">
+                     <option selected="selected" disabled>
+        {% if product.type == 'Earrings' %}
+        Select QTY
+        {% else %}
+        Select Size{% endif %}</option>
+                    {%- for variant in product.variants -%}
+                      {%- if variant.available -%}
+                        <option
+                          value="{{ variant.id }}">
+                          {{ variant.title }}
+                        </option>
+                      {%- else -%}
+                        <option disabled="disabled">
+                          {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                        </option>
+                      {%- endif -%}
+                    {%- endfor -%}
+              </select>
+            {% endif %}
+              <button
+                      {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+                      name="add"
+                      data-add-to-cart
+                      class="btn btn--full add-to-cart"
+                      {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+                      <span data-add-to-cart-text data-default-text="{{ default_text }}">
+                        {{ button_text }}
+                      </span>
+              </button>
+                
+              {% unless template contains 'gift-card' %}
+                    {%- if enable_dynamic_buttons -%}
+                      {{ form | payment_button }}
+                    {%- endif -%}
+                    
+                
+                  {%- if enable_dynamic_buttons -%}
+                    </div>
+                  {%- endif -%}
+              {% endunless %}
+              <div class="shopify-payment-terms product__policies">{{ form | payment_terms }}</div>
+                  <div class="show_error_msg">Please select Size.</div>
+            {%- endform -%}
+        
+          </div>
+        </div>
+      </div>
+    </div>
+{% endif %}
+
+<style>
+  .show_error_msg{display:none;font-size: 12px;color: red;}
+  .show_error_msg.active{display:block;}
+</style>
+{% endunless %}
+{% schema %}
+{
+    "name": "Sticky ATC",
+    "settings": [
+        {
+            "type": "header",
+            "content": "General"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_section",
+            "label": "Enable \"Sticky ATC\"",
+            "info": "Quickly enable or disable this feature",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "title_size",
+            "label": "Title Size",
+            "default": "h4",
+            "options": [
+                {  "value": "h1", "label": "H1" },
+                {  "value": "h2", "label": "H2" },
+                {  "value": "h3", "label": "H3" },
+                {  "value": "h4", "label": "H4" },
+                {  "value": "h5", "label": "H5" },
+                {  "value": "h6", "label": "H6" }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "show_img",
+            "default": true,
+            "label": "Show image"
+        },
+        {
+            "type": "text",
+            "id": "img_width",
+            "default": "80",
+            "label": "Image width (px)"
+        },
+        {
+            "type": "text",
+            "id": "img_height",
+            "default": "80",
+            "label": "Image height (px)"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_quantity_input",
+            "default": true,
+            "label": "Show quantity field"
+        },
+        {
+            "type": "select",
+            "id": "btn_style",
+            "options": [
+                { "value": "primary", "label": "Primary" },
+                { "value": "secondary", "label": "Secondary" }
+            ],
+            "default": "primary",
+            "label": "'Add to cart' button style"
+        },
+        {
+            "type": "header",
+            "content": "Advanced"
+        },
+        {
+            "type": "range",
+            "id": "offset",
+            "label": "Offset",
+            "min": 0,
+            "max": 500,
+            "step": 10,
+            "default": 0,
+            "info": "Adjust the offset value when showing the Sticky ATC section related to the main product form."
+        },
+        {
+            "type": "header",
+            "content": "Spacing",
+            "info": "Based on 'rem' values [Learn more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)"
+        },
+        {
+            "type": "range",
+            "id": "pt",
+            "label": "Padding top",
+            "min": 0,
+            "max": 5,
+            "step": 0.5,
+            "default": 0.5
+        },
+        {
+            "type": "range",
+            "id": "pb",
+            "label": "Padding bottom",
+            "min": 0,
+            "max": 5,
+            "step": 0.5,
+            "default": 0.5
+        }
+    ]
+}
+{% endschema %}

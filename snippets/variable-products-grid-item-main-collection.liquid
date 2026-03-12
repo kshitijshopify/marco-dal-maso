@@ -1,0 +1,454 @@
+{%- assign enable_variable = true -%}
+{%- assign collection_id_string = collection.id | downcase -%}
+{%- assign blacklisted_collections = '' | split: ',' -%}
+{%- if blacklisted_collections contains collection_id_string -%}{%- assign enable_variable = false -%}{%- endif -%}
+{%- assign whitelisted_collections = '' | split: ',' -%}
+{%- if whitelisted_collections contains collection_id_string -%}{%- assign enable_variable = true -%}{%- endif -%}
+
+{%- if enable_variable -%}
+  {%- assign enabled_on_all_products = true -%}
+{%- assign product_ids_blacklist = '' | split: ',' -%}{%- assign product_ids_whitelist = '' | split: ',' -%}
+  {%- assign condition_sale = false -%}
+  {%- assign collection_black_list = '' | split: ',' -%}
+  
+  
+  
+  {%- assign variable_filters = '' -%}
+  {%- assign variable_filter_exist = true -%}
+  {%- for filter in collection.filters -%}
+    {%- assign filter_values = '' -%}
+    {%- for af in filter.active_values -%}
+      {%- assign filter_values = filter_values | append:',' | append:af.value -%}
+    {%- endfor -%}
+    {%- assign filter_values = filter_values | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;'  -%}
+    {%- assign filter_param_name = filter.param_name | replace: ' ', '_' -%}
+    {%- if filter_param_name contains 'filter.v.option' -%}
+      {%- assign filter_param_name = filter_param_name | downcase -%}
+    {%- endif -%}
+    {%- if filter_param_name contains 'filter.v.price' -%}
+      {%- assign filter_values = filter_values | append:filter.min_value.value | append:'-' | append:filter.max_value.value -%}
+    {%- endif -%}
+    {%- assign variable_filters = variable_filters | append:';;' | append:filter_param_name | append:'::' | append:filter_values -%}
+  {%- endfor -%}
+  {%- assign shown_variants = '' -%}{%- assign shown_variants_count = 0 -%}{%- assign stop_showing_variants = false -%}{%- assign not_all_loaded = false -%}
+  {%- assign prod_offset = 0 -%}{%- assign var_offset = 0 -%}
+  {%- if false -%}
+    {%- if collection.sort_by == '' or collection.sort_by == collection.default_sort_by -%}{%- assign max_variants_limit = 200 -%}{%- endif -%}
+    {%- if collection.sort_by contains 'variableproducts' -%}{%- assign v_sort_params = collection.sort_by | split: '-' -%}{%- assign prod_offset = v_sort_params[1] -%}{%- assign var_offset = v_sort_params[2] -%}{%- endif -%}
+  {%- endif -%}
+  {%- if variant_limit -%}{%- assign max_variants_limit = variant_limit -%}{%- endif -%}
+
+  {%- paginate collection.products by paginate_by -%}
+    <main data-behavior="variable-products" style="display: none !important" data-collection-id='{{ collection_id_string }}' data-collection-handle='{{ collection.handle }}' class='grid-item product-item product product--root' data-next-page='{{ paginate.next.url }}'>
+      {%- assign variable_products = "[" -%}
+      {%- assign variable_products_arr = "" | split: "," -%}
+      {%- unless variable_collection_products -%}
+        {%- assign variable_collection_products = related_products | default: collection.products -%}
+      {%- endunless -%}
+
+      {%- for full_product in variable_collection_products offset: prod_offset -%}
+        {%- if stop_showing_variants -%}{%- break -%}{%- endif -%}
+        {%- if max_variants_limit != null and shown_variants_count >= max_variants_limit -%}
+          {%- assign stop_showing_variants = true -%}
+          {%- assign prod_offset = product_forloop.index0 -%}{%- assign var_offset = forloop.index0 -%}
+          {%- if product_forloop.last != true or forloop.last != true -%}{%- assign not_all_loaded = true -%}{%- endif -%}
+          {%- break -%}
+        {%- endif -%}
+        {%- assign product = full_product -%}
+        {%- assign product_forloop = forloop -%}
+        {%- assign variable_product = '{"' | append:product.handle | append:'":{"id":"' | append:product.id -%}
+        {%- assign variable_product = variable_product | append:'","options":{' -%}
+
+        {%- assign options_exist = false -%}
+        {%- for product_option in product.options_with_values -%}
+          {%- assign values_exist = false -%}
+          {%- if options_exist == true -%}
+            {%- assign variable_product = variable_product | append:',' -%}
+          {%- endif -%}
+          {%- assign variable_product = variable_product | append:'"option' | append:product_option.position | append:'":{"values":[' -%}
+          {%- for value in product_option.values -%}
+            {%- if values_exist == true -%}
+              {%- assign variable_product = variable_product | append:',' -%}
+            {%- endif -%}
+            {%- assign variable_option_value = value | replace: '"', '' | replace: "'", '' -%}
+            {%- assign variable_product = variable_product | append:'"' | append:variable_option_value | append:'"' -%}
+            {%- assign values_exist = true -%}
+          {%- endfor -%}
+          {%- assign option_name = product_option.name | replace: '"', '' | replace: "'", '' -%}
+          {%- assign variable_product = variable_product | append:'], "name":"' | append:option_name | append: '"}' -%}
+          {%- assign options_exist = true -%}
+        {%- endfor -%}
+
+        {%- assign variable_product = variable_product | append:'},"variants":[' -%}
+        {%- assign variants_arr = "" | split: "," -%}
+
+        {%- assign real_product_id = full_product.id | append: '' -%}
+        {%- assign enabled_for_current_product = enabled_on_all_products -%}
+        {%- if enabled_for_current_product == true and product_ids_blacklist contains real_product_id -%}{%- assign enabled_for_current_product = false -%}{%- endif -%}
+        {%- if enabled_for_current_product == false and product_ids_whitelist contains real_product_id -%}{%- assign enabled_for_current_product = true -%}{%- endif -%}
+        {%- if enabled_for_current_product -%}
+          {%- assign show_products_without_variants = true -%}
+          {%- if product.has_only_default_variant and show_products_without_variants -%}
+            {%- assign variant_hsh = '{}' -%}
+            {%- for product in full_product.variants -%}
+              {%- assign variant = product -%}
+              {%- if condition_sale -%}{%- if variant.compare_at_price == nil or variant.compare_at_price <= variant.price -%}{%- continue -%}{%- endif -%}{%- endif -%}
+              {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}{%- if shopify_variant -%}  {%- assign shopify_hsh = ', "shopify_variant": true' -%}{%- else -%}  {%- assign shopify_hsh = '' -%}{%- endif -%}{%- assign variable_product_variant = '{"id":"' | append:variant.id | append: '", "option1":"' | append:variable_option1_value | append: '", "option2":"' | append:variable_option2_value | append: '", "option3":"' | append:variable_option3_value | append: '", "available":' | append:variant.available | append: shopify_hsh | append: ', "ctitle":' | append:variant_hsh | append: '}' -%}{%- assign tmp_variant_arr = variable_product_variant | split: "," -%}{%- assign variants_arr = variants_arr|concat:tmp_variant_arr -%}
+              {%- assign shown_variants_count = shown_variants_count | plus: 1 -%}{%- render 'product-grid-item', full_product: full_product,
+                  product: prod, per_row: 2, quick_shop_enable: settings.quick_shop_enable, fallback: '39vw', -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign only_options = 'Material Type,Color,Metal,Gold Colour,Enamel,Diamond' | split: ',' -%}
+      {%- assign black_list = '' | split: ',' -%}
+      {%- assign white_list = '' | split: ',' -%}
+      {%- assign white_exceptions_count = white_list | size -%}
+      {%- assign shown_variants = '' -%}
+      {%- assign option_values = '' -%}
+      {%- assign option1 = false -%}
+      {%- assign option2 = false -%}
+      {%- assign option3 = false -%}
+      {%- assign shopify_variant = nil -%}
+
+      {%- for product_option in full_product.options_with_values -%}
+        {%- assign option_name = product_option.name | replace: '<tc>', '' | replace: '</tc>', '' | strip -%}
+        {%- if only_options contains option_name -%}
+          {%- if product_option.position == 1 -%}
+            {%- assign option1 = true -%}
+          {%- elsif product_option.position == 2 -%}
+            {%- assign option2 = true -%}
+          {%- else -%}
+            {%- assign option3 = true -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if white_exceptions_count < 10 -%}
+        {%- for variant_id in white_list -%}
+          {%- for product in full_product.variants offset: var_offset -%}
+            {%- assign variant = product -%}
+
+            {%- assign product_id = product.id | append: '' -%}
+            {%- if product_id == variant_id -%}
+              {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}
+              {%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}
+              {%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}
+
+              {%- assign target_condition_variant = variant -%}
+              {%- if collection_condition_match_type != 'any' -%}  {%- assign pass_conditions = true -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endunless -%}{%- endif -%}    {%- if condition_operator == 'not_contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- else -%}  {%- assign pass_conditions = false -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endunless -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- endif -%}
+              {%- assign skip_by_filter = false -%}{%- if variable_filter_exist -%}  {%- assign filters_arr = variable_filters | split: ';;' -%}  {%- assign variable_filter_exist = false -%}  {%- for filtr in filters_arr -%}    {%- assign filtr_key_value = filtr | split: '::' -%}    {%- assign filtr_key = filtr_key_value[0] -%}    {%- if filtr_key_value[1] == null or filtr_key_value[1] == '' or filtr_key_value[1] == '-' -%}{%- continue -%}{%- endif -%}    {%- assign variable_filter_exist = true -%}    {%- assign filtr_value = filtr_key_value[1] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' | split: ',' -%}    {%- assign filter_values_count = filtr_value| size -%}    {%- for product_option in full_product.options_with_values -%}      {%- assign filtr_option_name = 'filter.v.option.' | append: product_option.name | downcase | replace: ' ', '_' -%}      {%- assign voption = 'option' | append: product_option.position -%}      {%- if filtr_option_name == filtr_key and filter_values_count > 0 -%}        {%- assign variant_value = target_condition_variant[voption] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' -%}        {%- unless filtr_value contains variant_value -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endunless -%}      {%- endif -%}    {%- endfor -%}    {%- if 'filter.v.availability' == filtr_key -%}      {%- if filtr_value contains '1' and filtr_value contains '0' -%}{%- continue -%}{%- endif -%}      {%- if filtr_value contains '1' -%}        {%- if target_condition_variant.inventory_quantity <= 0 and target_condition_variant.inventory_policy != 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- elsif filtr_value contains '0' -%}        {%- if target_condition_variant.inventory_quantity > 0 or target_condition_variant.inventory_policy == 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- endif -%}    {%- endif -%}    {%- if 'filter.v.price' == filtr_key -%}      {%- assign filtr_price_range = filtr_value | join | split: '-' -%}      {%- assign min_price = filtr_price_range[0] | plus: 0 -%}      {%- assign max_price = filtr_price_range[1] | plus: 0 -%}      {%- if target_condition_variant.price < min_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}      {%- if max_price != 0 and target_condition_variant.price > max_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}    {%- endif -%}    {%- assign metafield_namespaces = 'global,my_fields,custom,swing_de,variantFilter,filter' | split: ',' -%}    {%- for namespace in metafield_namespaces -%}      {%- assign filtr_metafiled_name = 'filter.v.m.' | append: namespace | append: '.' | replace: ' ', '_' -%}      {%- if filtr_key contains filtr_metafiled_name and filter_values_count > 0 -%}        {%- assign metafield_key = filtr_key | remove: filtr_metafiled_name -%}        {%- if target_condition_variant.metafields[namespace][metafield_key].type contains 'list.' -%}          {%- assign metafield_value_found = false -%}          {% for mfiltr_value in target_condition_variant.metafields[namespace][metafield_key].value -%}            {%- if filtr_value contains mfiltr_value -%}              {%- assign metafield_value_found = true -%}{%- break -%}            {%- endif -%}          {%- endfor %}          {%- unless metafield_value_found -%}{%- assign skip_by_filter = true -%}{%- break -%}{%- endunless -%}        {%- else -%}          {%- assign mfiltr_value = target_condition_variant.metafields[namespace][metafield_key] | metafield_text -%}          {%- if target_condition_variant.metafields[namespace][metafield_key].type == 'boolean' -%}{%- if mfiltr_value == 'true' -%}{%- assign mfiltr_value = '1' -%}{%- else -%}{%- assign mfiltr_value = '0' -%}{%- endif -%}{%- endif -%}          {%- unless mfiltr_value != '' and filtr_value contains mfiltr_value -%}            {%- assign skip_by_filter = true -%}{%- break -%}          {%- endunless -%}        {%- endif -%}      {%- endif -%}    {%- endfor -%}  {%- endfor -%}  {%- if skip_by_filter -%}{%- continue -%}{%- endif -%}{%- endif -%}
+              {%- unless black_list contains product_id or collection_black_list contains product_id -%}
+                {%- assign variant_hsh = '{' -%}
+                {%- if option1 == true -%}
+                  {%- assign variant_hsh = variant_hsh | append:'"option1":"' | append: variable_option1_value | append: '"' -%}
+                {%- endif -%}
+                {%- if option2 == true -%}
+                  {%- if option1 == true -%}
+                    {%- assign variant_hsh = variant_hsh | append:',' -%}
+                  {%- endif -%}
+                  {%- assign variant_hsh = variant_hsh | append:'"option2":"' | append: variable_option2_value | append: '"' -%}
+                {%- endif -%}
+                {%- if option3 == true -%}
+                  {%- if option1 == true or option2 == true -%}
+                    {%- assign variant_hsh = variant_hsh | append:',' -%}
+                  {%- endif -%}
+                  {%- assign variant_hsh = variant_hsh | append:'"option3":"' | append: variable_option3_value | append: '"' -%}
+                {%- endif -%}
+                {%- assign variant_hsh = variant_hsh | append:'}' -%}
+
+                {%- unless option_values contains variant_hsh -%}
+                  {%- assign option_values = option_values | append: ', ' | append: variant_hsh -%}
+                {%- endunless -%}
+                {%- assign shown_variants = shown_variants | append: ', ' | append: product.id -%}
+                {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}{%- if shopify_variant -%}  {%- assign shopify_hsh = ', "shopify_variant": true' -%}{%- else -%}  {%- assign shopify_hsh = '' -%}{%- endif -%}{%- assign variable_product_variant = '{"id":"' | append:variant.id | append: '", "option1":"' | append:variable_option1_value | append: '", "option2":"' | append:variable_option2_value | append: '", "option3":"' | append:variable_option3_value | append: '", "available":' | append:variant.available | append: shopify_hsh | append: ', "ctitle":' | append:variant_hsh | append: '}' -%}{%- assign tmp_variant_arr = variable_product_variant | split: "," -%}{%- assign variants_arr = variants_arr|concat:tmp_variant_arr -%}
+                {%- assign shown_variants_count = shown_variants_count | plus: 1 -%}{%- render 'product-grid-item', full_product: full_product,
+                  product: prod, per_row: 2, quick_shop_enable: settings.quick_shop_enable, fallback: '39vw', -%}
+              {%- endunless -%}
+            {%- endif -%}
+
+          {%- endfor -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for product in full_product.variants offset: var_offset -%}
+          {%- assign product_id = product.id | append: '' -%}
+          {%- if white_list contains product_id -%}
+            {%- assign variant = product -%}
+
+            {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}
+            {%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}
+            {%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}
+
+            {%- assign target_condition_variant = variant -%}
+            {%- if collection_condition_match_type != 'any' -%}  {%- assign pass_conditions = true -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endunless -%}{%- endif -%}    {%- if condition_operator == 'not_contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- else -%}  {%- assign pass_conditions = false -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endunless -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- endif -%}
+            {%- assign skip_by_filter = false -%}{%- if variable_filter_exist -%}  {%- assign filters_arr = variable_filters | split: ';;' -%}  {%- assign variable_filter_exist = false -%}  {%- for filtr in filters_arr -%}    {%- assign filtr_key_value = filtr | split: '::' -%}    {%- assign filtr_key = filtr_key_value[0] -%}    {%- if filtr_key_value[1] == null or filtr_key_value[1] == '' or filtr_key_value[1] == '-' -%}{%- continue -%}{%- endif -%}    {%- assign variable_filter_exist = true -%}    {%- assign filtr_value = filtr_key_value[1] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' | split: ',' -%}    {%- assign filter_values_count = filtr_value| size -%}    {%- for product_option in full_product.options_with_values -%}      {%- assign filtr_option_name = 'filter.v.option.' | append: product_option.name | downcase | replace: ' ', '_' -%}      {%- assign voption = 'option' | append: product_option.position -%}      {%- if filtr_option_name == filtr_key and filter_values_count > 0 -%}        {%- assign variant_value = target_condition_variant[voption] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' -%}        {%- unless filtr_value contains variant_value -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endunless -%}      {%- endif -%}    {%- endfor -%}    {%- if 'filter.v.availability' == filtr_key -%}      {%- if filtr_value contains '1' and filtr_value contains '0' -%}{%- continue -%}{%- endif -%}      {%- if filtr_value contains '1' -%}        {%- if target_condition_variant.inventory_quantity <= 0 and target_condition_variant.inventory_policy != 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- elsif filtr_value contains '0' -%}        {%- if target_condition_variant.inventory_quantity > 0 or target_condition_variant.inventory_policy == 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- endif -%}    {%- endif -%}    {%- if 'filter.v.price' == filtr_key -%}      {%- assign filtr_price_range = filtr_value | join | split: '-' -%}      {%- assign min_price = filtr_price_range[0] | plus: 0 -%}      {%- assign max_price = filtr_price_range[1] | plus: 0 -%}      {%- if target_condition_variant.price < min_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}      {%- if max_price != 0 and target_condition_variant.price > max_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}    {%- endif -%}    {%- assign metafield_namespaces = 'global,my_fields,custom,swing_de,variantFilter,filter' | split: ',' -%}    {%- for namespace in metafield_namespaces -%}      {%- assign filtr_metafiled_name = 'filter.v.m.' | append: namespace | append: '.' | replace: ' ', '_' -%}      {%- if filtr_key contains filtr_metafiled_name and filter_values_count > 0 -%}        {%- assign metafield_key = filtr_key | remove: filtr_metafiled_name -%}        {%- if target_condition_variant.metafields[namespace][metafield_key].type contains 'list.' -%}          {%- assign metafield_value_found = false -%}          {% for mfiltr_value in target_condition_variant.metafields[namespace][metafield_key].value -%}            {%- if filtr_value contains mfiltr_value -%}              {%- assign metafield_value_found = true -%}{%- break -%}            {%- endif -%}          {%- endfor %}          {%- unless metafield_value_found -%}{%- assign skip_by_filter = true -%}{%- break -%}{%- endunless -%}        {%- else -%}          {%- assign mfiltr_value = target_condition_variant.metafields[namespace][metafield_key] | metafield_text -%}          {%- if target_condition_variant.metafields[namespace][metafield_key].type == 'boolean' -%}{%- if mfiltr_value == 'true' -%}{%- assign mfiltr_value = '1' -%}{%- else -%}{%- assign mfiltr_value = '0' -%}{%- endif -%}{%- endif -%}          {%- unless mfiltr_value != '' and filtr_value contains mfiltr_value -%}            {%- assign skip_by_filter = true -%}{%- break -%}          {%- endunless -%}        {%- endif -%}      {%- endif -%}    {%- endfor -%}  {%- endfor -%}  {%- if skip_by_filter -%}{%- continue -%}{%- endif -%}{%- endif -%}
+            {%- unless black_list contains product_id or collection_black_list contains product_id -%}
+              {%- assign variant_hsh = '{' -%}
+              {%- if option1 == true -%}
+                {%- assign variant_hsh = variant_hsh | append:'"option1":"' | append: variable_option1_value | append: '"' -%}
+              {%- endif -%}
+              {%- if option2 == true -%}
+                {%- if option1 == true -%}
+                  {%- assign variant_hsh = variant_hsh | append:',' -%}
+                {%- endif -%}
+                {%- assign variant_hsh = variant_hsh | append:'"option2":"' | append: variable_option2_value | append: '"' -%}
+              {%- endif -%}
+              {%- if option3 == true -%}
+                {%- if option1 == true or option2 == true -%}
+                  {%- assign variant_hsh = variant_hsh | append:',' -%}
+                {%- endif -%}
+                {%- assign variant_hsh = variant_hsh | append:'"option3":"' | append: variable_option3_value | append: '"' -%}
+              {%- endif -%}
+              {%- assign variant_hsh = variant_hsh | append:'}' -%}
+
+              {%- unless option_values contains variant_hsh -%}
+                {%- assign option_values = option_values | append: ', ' | append: variant_hsh -%}
+              {%- endunless -%}
+              {%- assign shown_variants = shown_variants | append: ', ' | append: product.id -%}
+              {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}{%- if shopify_variant -%}  {%- assign shopify_hsh = ', "shopify_variant": true' -%}{%- else -%}  {%- assign shopify_hsh = '' -%}{%- endif -%}{%- assign variable_product_variant = '{"id":"' | append:variant.id | append: '", "option1":"' | append:variable_option1_value | append: '", "option2":"' | append:variable_option2_value | append: '", "option3":"' | append:variable_option3_value | append: '", "available":' | append:variant.available | append: shopify_hsh | append: ', "ctitle":' | append:variant_hsh | append: '}' -%}{%- assign tmp_variant_arr = variable_product_variant | split: "," -%}{%- assign variants_arr = variants_arr|concat:tmp_variant_arr -%}
+              {%- assign shown_variants_count = shown_variants_count | plus: 1 -%}{%- render 'product-grid-item', full_product: full_product,
+                  product: prod, per_row: 2, quick_shop_enable: settings.quick_shop_enable, fallback: '39vw', -%}
+            {%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- assign show_out_of_stock = true -%}
+      {%- assign out_of_stock_limit = 0 -%}
+      {%- assign has_option_in_list = false -%}
+      {%- for option in only_options -%}
+        {%- assign option_position = null -%}
+        {%- for product_option in full_product.options_with_values -%}
+          {%- assign option_name = product_option.name | replace: '<tc>', '' | replace: '</tc>', '' | strip -%}
+          {%- if option == option_name -%}
+            {%- assign option_position = product_option.position -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if option_position != null -%}
+          {%- assign has_option_in_list = true -%}
+          {%- assign option_name = 'option' | append: option_position -%}
+
+          {%- for product_var in full_product.variants offset: var_offset -%}
+            {%- if stop_showing_variants -%}{%- break -%}{%- endif -%}
+            {%- if max_variants_limit != null and shown_variants_count >= max_variants_limit -%}
+              {%- assign stop_showing_variants = true -%}
+              {%- assign prod_offset = product_forloop.index0 -%}{%- assign var_offset = forloop.index0 -%}
+              {%- if product_forloop.last != true or forloop.last != true -%}{%- assign not_all_loaded = true -%}{%- endif -%}
+              {%- break -%}
+            {%- endif -%}
+
+            {%- assign product = product_var -%}
+            {%- assign variant = product -%}
+            {%- if condition_sale -%}{%- if variant.compare_at_price == nil or variant.compare_at_price <= variant.price -%}{%- continue -%}{%- endif -%}{%- endif -%}
+            {%- assign product_id = product_var.id | append: '' -%}
+            {%- unless black_list contains product_id or collection_black_list contains product_id -%}
+              {%- assign variable_option1_value = product_var.option1 | replace: '"', '' | replace: "'", '' -%}
+              {%- assign variable_option2_value = product_var.option2 | replace: '"', '' | replace: "'", '' -%}
+              {%- assign variable_option3_value = product_var.option3 | replace: '"', '' | replace: "'", '' -%}
+              {%- assign target_condition_variant = variant -%}
+              {%- if collection_condition_match_type != 'any' -%}  {%- assign pass_conditions = true -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endunless -%}{%- endif -%}    {%- if condition_operator == 'not_contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- else -%}  {%- assign pass_conditions = false -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endunless -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- endif -%}
+              {%- assign skip_by_filter = false -%}{%- if variable_filter_exist -%}  {%- assign filters_arr = variable_filters | split: ';;' -%}  {%- assign variable_filter_exist = false -%}  {%- for filtr in filters_arr -%}    {%- assign filtr_key_value = filtr | split: '::' -%}    {%- assign filtr_key = filtr_key_value[0] -%}    {%- if filtr_key_value[1] == null or filtr_key_value[1] == '' or filtr_key_value[1] == '-' -%}{%- continue -%}{%- endif -%}    {%- assign variable_filter_exist = true -%}    {%- assign filtr_value = filtr_key_value[1] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' | split: ',' -%}    {%- assign filter_values_count = filtr_value| size -%}    {%- for product_option in full_product.options_with_values -%}      {%- assign filtr_option_name = 'filter.v.option.' | append: product_option.name | downcase | replace: ' ', '_' -%}      {%- assign voption = 'option' | append: product_option.position -%}      {%- if filtr_option_name == filtr_key and filter_values_count > 0 -%}        {%- assign variant_value = target_condition_variant[voption] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' -%}        {%- unless filtr_value contains variant_value -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endunless -%}      {%- endif -%}    {%- endfor -%}    {%- if 'filter.v.availability' == filtr_key -%}      {%- if filtr_value contains '1' and filtr_value contains '0' -%}{%- continue -%}{%- endif -%}      {%- if filtr_value contains '1' -%}        {%- if target_condition_variant.inventory_quantity <= 0 and target_condition_variant.inventory_policy != 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- elsif filtr_value contains '0' -%}        {%- if target_condition_variant.inventory_quantity > 0 or target_condition_variant.inventory_policy == 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- endif -%}    {%- endif -%}    {%- if 'filter.v.price' == filtr_key -%}      {%- assign filtr_price_range = filtr_value | join | split: '-' -%}      {%- assign min_price = filtr_price_range[0] | plus: 0 -%}      {%- assign max_price = filtr_price_range[1] | plus: 0 -%}      {%- if target_condition_variant.price < min_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}      {%- if max_price != 0 and target_condition_variant.price > max_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}    {%- endif -%}    {%- assign metafield_namespaces = 'global,my_fields,custom,swing_de,variantFilter,filter' | split: ',' -%}    {%- for namespace in metafield_namespaces -%}      {%- assign filtr_metafiled_name = 'filter.v.m.' | append: namespace | append: '.' | replace: ' ', '_' -%}      {%- if filtr_key contains filtr_metafiled_name and filter_values_count > 0 -%}        {%- assign metafield_key = filtr_key | remove: filtr_metafiled_name -%}        {%- if target_condition_variant.metafields[namespace][metafield_key].type contains 'list.' -%}          {%- assign metafield_value_found = false -%}          {% for mfiltr_value in target_condition_variant.metafields[namespace][metafield_key].value -%}            {%- if filtr_value contains mfiltr_value -%}              {%- assign metafield_value_found = true -%}{%- break -%}            {%- endif -%}          {%- endfor %}          {%- unless metafield_value_found -%}{%- assign skip_by_filter = true -%}{%- break -%}{%- endunless -%}        {%- else -%}          {%- assign mfiltr_value = target_condition_variant.metafields[namespace][metafield_key] | metafield_text -%}          {%- if target_condition_variant.metafields[namespace][metafield_key].type == 'boolean' -%}{%- if mfiltr_value == 'true' -%}{%- assign mfiltr_value = '1' -%}{%- else -%}{%- assign mfiltr_value = '0' -%}{%- endif -%}{%- endif -%}          {%- unless mfiltr_value != '' and filtr_value contains mfiltr_value -%}            {%- assign skip_by_filter = true -%}{%- break -%}          {%- endunless -%}        {%- endif -%}      {%- endif -%}    {%- endfor -%}  {%- endfor -%}  {%- if skip_by_filter -%}{%- continue -%}{%- endif -%}{%- endif -%}
+              {%- assign variant_hsh = '{' -%}
+              {%- if option1 == true -%}
+                {%- assign variant_hsh = variant_hsh | append:'"option1":"' | append: variable_option1_value | append: '"' -%}
+              {%- endif -%}
+              {%- if option2 == true -%}
+                {%- if option1 == true -%}
+                  {%- assign variant_hsh = variant_hsh | append:',' -%}
+                {%- endif -%}
+                {%- assign variant_hsh = variant_hsh | append:'"option2":"' | append: variable_option2_value | append: '"' -%}
+              {%- endif -%}
+              {%- if option3 == true -%}
+                {%- if option1 == true or option2 == true -%}
+                  {%- assign variant_hsh = variant_hsh | append:',' -%}
+                {%- endif -%}
+                {%- assign variant_hsh = variant_hsh | append:'"option3":"' | append: variable_option3_value | append: '"' -%}
+              {%- endif -%}
+              {%- assign variant_hsh = variant_hsh | append:'}' -%}
+
+              {%- unless option_values contains variant_hsh or shown_variants contains product_id -%}
+                {%- if product_var.inventory_quantity > out_of_stock_limit or product_var.inventory_policy == 'continue' -%}
+                  {%- assign option_values = option_values | append: ', ' | append: variant_hsh -%}
+                  {%- assign shown_variants = shown_variants | append: ', ' | append: product_id -%}
+                  {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}{%- if shopify_variant -%}  {%- assign shopify_hsh = ', "shopify_variant": true' -%}{%- else -%}  {%- assign shopify_hsh = '' -%}{%- endif -%}{%- assign variable_product_variant = '{"id":"' | append:variant.id | append: '", "option1":"' | append:variable_option1_value | append: '", "option2":"' | append:variable_option2_value | append: '", "option3":"' | append:variable_option3_value | append: '", "available":' | append:variant.available | append: shopify_hsh | append: ', "ctitle":' | append:variant_hsh | append: '}' -%}{%- assign tmp_variant_arr = variable_product_variant | split: "," -%}{%- assign variants_arr = variants_arr|concat:tmp_variant_arr -%}
+                  {%- assign shown_variants_count = shown_variants_count | plus: 1 -%}{%- render 'product-grid-item', full_product: full_product,
+                  product: prod, per_row: 2, quick_shop_enable: settings.quick_shop_enable, fallback: '39vw', -%}
+                {%- else -%}
+                  {%- assign available_exist = false -%}
+                  {%- if full_product.available -%}
+                    {%- for suitable_variant in full_product.variants offset: var_offset -%}
+                      {%- assign suitable_variant_id = suitable_variant.id | append: '' -%}
+                      {%- unless black_list contains suitable_variant_id or collection_black_list contains suitable_variant_id -%}
+                        {%- if suitable_variant.inventory_quantity > out_of_stock_limit or suitable_variant.inventory_policy == 'continue' -%}
+
+                          {%- assign variable_option1_value = suitable_variant.option1 | replace: '"', '' | replace: "'", '' -%}
+                          {%- assign variable_option2_value = suitable_variant.option2 | replace: '"', '' | replace: "'", '' -%}
+                          {%- assign variable_option3_value = suitable_variant.option3 | replace: '"', '' | replace: "'", '' -%}
+                          {%- assign target_condition_variant = suitable_variant -%}
+                          {%- if condition_sale -%}{%- if target_condition_variant.compare_at_price == nil or target_condition_variant.compare_at_price <= target_condition_variant.price -%}{%- continue -%}{%- endif -%}{%- endif -%}
+                          {%- if collection_condition_match_type != 'any' -%}  {%- assign pass_conditions = true -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endunless -%}{%- endif -%}    {%- if condition_operator == 'not_contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- else -%}  {%- assign pass_conditions = false -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endunless -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- endif -%}
+                          {%- assign skip_by_filter = false -%}{%- if variable_filter_exist -%}  {%- assign filters_arr = variable_filters | split: ';;' -%}  {%- assign variable_filter_exist = false -%}  {%- for filtr in filters_arr -%}    {%- assign filtr_key_value = filtr | split: '::' -%}    {%- assign filtr_key = filtr_key_value[0] -%}    {%- if filtr_key_value[1] == null or filtr_key_value[1] == '' or filtr_key_value[1] == '-' -%}{%- continue -%}{%- endif -%}    {%- assign variable_filter_exist = true -%}    {%- assign filtr_value = filtr_key_value[1] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' | split: ',' -%}    {%- assign filter_values_count = filtr_value| size -%}    {%- for product_option in full_product.options_with_values -%}      {%- assign filtr_option_name = 'filter.v.option.' | append: product_option.name | downcase | replace: ' ', '_' -%}      {%- assign voption = 'option' | append: product_option.position -%}      {%- if filtr_option_name == filtr_key and filter_values_count > 0 -%}        {%- assign variant_value = target_condition_variant[voption] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' -%}        {%- unless filtr_value contains variant_value -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endunless -%}      {%- endif -%}    {%- endfor -%}    {%- if 'filter.v.availability' == filtr_key -%}      {%- if filtr_value contains '1' and filtr_value contains '0' -%}{%- continue -%}{%- endif -%}      {%- if filtr_value contains '1' -%}        {%- if target_condition_variant.inventory_quantity <= 0 and target_condition_variant.inventory_policy != 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- elsif filtr_value contains '0' -%}        {%- if target_condition_variant.inventory_quantity > 0 or target_condition_variant.inventory_policy == 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- endif -%}    {%- endif -%}    {%- if 'filter.v.price' == filtr_key -%}      {%- assign filtr_price_range = filtr_value | join | split: '-' -%}      {%- assign min_price = filtr_price_range[0] | plus: 0 -%}      {%- assign max_price = filtr_price_range[1] | plus: 0 -%}      {%- if target_condition_variant.price < min_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}      {%- if max_price != 0 and target_condition_variant.price > max_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}    {%- endif -%}    {%- assign metafield_namespaces = 'global,my_fields,custom,swing_de,variantFilter,filter' | split: ',' -%}    {%- for namespace in metafield_namespaces -%}      {%- assign filtr_metafiled_name = 'filter.v.m.' | append: namespace | append: '.' | replace: ' ', '_' -%}      {%- if filtr_key contains filtr_metafiled_name and filter_values_count > 0 -%}        {%- assign metafield_key = filtr_key | remove: filtr_metafiled_name -%}        {%- if target_condition_variant.metafields[namespace][metafield_key].type contains 'list.' -%}          {%- assign metafield_value_found = false -%}          {% for mfiltr_value in target_condition_variant.metafields[namespace][metafield_key].value -%}            {%- if filtr_value contains mfiltr_value -%}              {%- assign metafield_value_found = true -%}{%- break -%}            {%- endif -%}          {%- endfor %}          {%- unless metafield_value_found -%}{%- assign skip_by_filter = true -%}{%- break -%}{%- endunless -%}        {%- else -%}          {%- assign mfiltr_value = target_condition_variant.metafields[namespace][metafield_key] | metafield_text -%}          {%- if target_condition_variant.metafields[namespace][metafield_key].type == 'boolean' -%}{%- if mfiltr_value == 'true' -%}{%- assign mfiltr_value = '1' -%}{%- else -%}{%- assign mfiltr_value = '0' -%}{%- endif -%}{%- endif -%}          {%- unless mfiltr_value != '' and filtr_value contains mfiltr_value -%}            {%- assign skip_by_filter = true -%}{%- break -%}          {%- endunless -%}        {%- endif -%}      {%- endif -%}    {%- endfor -%}  {%- endfor -%}  {%- if skip_by_filter -%}{%- continue -%}{%- endif -%}{%- endif -%}
+                          {%- assign suitable_variant_hsh = '{' -%}
+                          {%- if option1 == true -%}
+                            {%- assign suitable_variant_hsh = suitable_variant_hsh | append:'"option1":"' | append: variable_option1_value | append: '"' -%}
+                          {%- endif -%}
+                          {%- if option2 == true -%}
+                            {%- if option1 == true -%}
+                              {%- assign suitable_variant_hsh = suitable_variant_hsh | append:',' -%}
+                            {%- endif -%}
+                            {%- assign suitable_variant_hsh = suitable_variant_hsh | append:'"option2":"' | append: variable_option2_value | append: '"' -%}
+                          {%- endif -%}
+                          {%- if option3 == true -%}
+                            {%- if option1 == true or option2 == true -%}
+                              {%- assign suitable_variant_hsh = suitable_variant_hsh | append:',' -%}
+                            {%- endif -%}
+                            {%- assign suitable_variant_hsh = suitable_variant_hsh | append:'"option3":"' | append: variable_option3_value | append: '"' -%}
+                          {%- endif -%}
+                          {%- assign suitable_variant_hsh = suitable_variant_hsh | append:'}' -%}
+
+                          {%- if suitable_variant_hsh == variant_hsh -%}
+                            {%- assign available_exist = suitable_variant -%}
+                            {%- break -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+
+                  {%- if available_exist != false -%}
+                    {%- assign product = available_exist -%}
+                    {%- assign variant = available_exist -%}
+                  {%- endif -%}
+                  {%- if available_exist or show_out_of_stock -%}
+                    {%- assign option_values = option_values | append: ', ' | append: variant_hsh -%}
+                    {%- assign shown_variants = shown_variants | append: ', ' | append: product_id -%}
+                    {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}{%- if shopify_variant -%}  {%- assign shopify_hsh = ', "shopify_variant": true' -%}{%- else -%}  {%- assign shopify_hsh = '' -%}{%- endif -%}{%- assign variable_product_variant = '{"id":"' | append:variant.id | append: '", "option1":"' | append:variable_option1_value | append: '", "option2":"' | append:variable_option2_value | append: '", "option3":"' | append:variable_option3_value | append: '", "available":' | append:variant.available | append: shopify_hsh | append: ', "ctitle":' | append:variant_hsh | append: '}' -%}{%- assign tmp_variant_arr = variable_product_variant | split: "," -%}{%- assign variants_arr = variants_arr|concat:tmp_variant_arr -%}
+                    {%- assign shown_variants_count = shown_variants_count | plus: 1 -%}{%- render 'product-grid-item', full_product: full_product,
+                  product: prod, per_row: 2, quick_shop_enable: settings.quick_shop_enable, fallback: '39vw', -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endunless -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- assign variants_count = shown_variants | size -%}
+      {%- assign show_first_if_all_hidden = true -%}
+      {%- assign conditions_hide_completely = true -%}
+      {%- assign filter_hide_completely = false -%}
+      {%- if variants_count == 0 and show_first_if_all_hidden -%}
+
+        {%- assign variable_first_variant = null -%}
+        {%- for product in full_product.variants offset: var_offset -%}
+          {%- if product.inventory_quantity > out_of_stock_limit or product.inventory_policy == 'continue' -%}
+            {%- assign product_id = product.id | append: '' -%}
+            {%- unless black_list contains product_id or collection_black_list contains product_id -%}
+              {%- assign target_condition_variant = product -%}
+              {%- if conditions_hide_completely -%}
+                {%- if condition_sale -%}{%- if target_condition_variant.compare_at_price == nil or target_condition_variant.compare_at_price <= target_condition_variant.price -%}{%- continue -%}{%- endif -%}{%- endif -%}
+                {%- if collection_condition_match_type != 'any' -%}  {%- assign pass_conditions = true -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endunless -%}{%- endif -%}    {%- if condition_operator == 'not_contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- else -%}  {%- assign pass_conditions = false -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endunless -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- endif -%}
+              {%- endif -%}
+              {%- if has_option_in_list -%}
+                {%- assign skip_by_filter = false -%}{%- if variable_filter_exist -%}  {%- assign filters_arr = variable_filters | split: ';;' -%}  {%- assign variable_filter_exist = false -%}  {%- for filtr in filters_arr -%}    {%- assign filtr_key_value = filtr | split: '::' -%}    {%- assign filtr_key = filtr_key_value[0] -%}    {%- if filtr_key_value[1] == null or filtr_key_value[1] == '' or filtr_key_value[1] == '-' -%}{%- continue -%}{%- endif -%}    {%- assign variable_filter_exist = true -%}    {%- assign filtr_value = filtr_key_value[1] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' | split: ',' -%}    {%- assign filter_values_count = filtr_value| size -%}    {%- for product_option in full_product.options_with_values -%}      {%- assign filtr_option_name = 'filter.v.option.' | append: product_option.name | downcase | replace: ' ', '_' -%}      {%- assign voption = 'option' | append: product_option.position -%}      {%- if filtr_option_name == filtr_key and filter_values_count > 0 -%}        {%- assign variant_value = target_condition_variant[voption] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' -%}        {%- unless filtr_value contains variant_value -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endunless -%}      {%- endif -%}    {%- endfor -%}    {%- if 'filter.v.availability' == filtr_key -%}      {%- if filtr_value contains '1' and filtr_value contains '0' -%}{%- continue -%}{%- endif -%}      {%- if filtr_value contains '1' -%}        {%- if target_condition_variant.inventory_quantity <= 0 and target_condition_variant.inventory_policy != 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- elsif filtr_value contains '0' -%}        {%- if target_condition_variant.inventory_quantity > 0 or target_condition_variant.inventory_policy == 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- endif -%}    {%- endif -%}    {%- if 'filter.v.price' == filtr_key -%}      {%- assign filtr_price_range = filtr_value | join | split: '-' -%}      {%- assign min_price = filtr_price_range[0] | plus: 0 -%}      {%- assign max_price = filtr_price_range[1] | plus: 0 -%}      {%- if target_condition_variant.price < min_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}      {%- if max_price != 0 and target_condition_variant.price > max_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}    {%- endif -%}    {%- assign metafield_namespaces = 'global,my_fields,custom,swing_de,variantFilter,filter' | split: ',' -%}    {%- for namespace in metafield_namespaces -%}      {%- assign filtr_metafiled_name = 'filter.v.m.' | append: namespace | append: '.' | replace: ' ', '_' -%}      {%- if filtr_key contains filtr_metafiled_name and filter_values_count > 0 -%}        {%- assign metafield_key = filtr_key | remove: filtr_metafiled_name -%}        {%- if target_condition_variant.metafields[namespace][metafield_key].type contains 'list.' -%}          {%- assign metafield_value_found = false -%}          {% for mfiltr_value in target_condition_variant.metafields[namespace][metafield_key].value -%}            {%- if filtr_value contains mfiltr_value -%}              {%- assign metafield_value_found = true -%}{%- break -%}            {%- endif -%}          {%- endfor %}          {%- unless metafield_value_found -%}{%- assign skip_by_filter = true -%}{%- break -%}{%- endunless -%}        {%- else -%}          {%- assign mfiltr_value = target_condition_variant.metafields[namespace][metafield_key] | metafield_text -%}          {%- if target_condition_variant.metafields[namespace][metafield_key].type == 'boolean' -%}{%- if mfiltr_value == 'true' -%}{%- assign mfiltr_value = '1' -%}{%- else -%}{%- assign mfiltr_value = '0' -%}{%- endif -%}{%- endif -%}          {%- unless mfiltr_value != '' and filtr_value contains mfiltr_value -%}            {%- assign skip_by_filter = true -%}{%- break -%}          {%- endunless -%}        {%- endif -%}      {%- endif -%}    {%- endfor -%}  {%- endfor -%}  {%- endif -%}
+              {%- else -%}
+                {%- assign skip_by_filter = false -%}{%- if variable_filter_exist -%}  {%- assign filters_arr = variable_filters | split: ';;' -%}  {%- assign variable_filter_exist = false -%}  {%- for filtr in filters_arr -%}    {%- assign filtr_key_value = filtr | split: '::' -%}    {%- assign filtr_key = filtr_key_value[0] -%}    {%- if filtr_key_value[1] == null or filtr_key_value[1] == '' or filtr_key_value[1] == '-' -%}{%- continue -%}{%- endif -%}    {%- assign variable_filter_exist = true -%}    {%- assign filtr_value = filtr_key_value[1] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' | split: ',' -%}    {%- assign filter_values_count = filtr_value| size -%}    {%- for product_option in full_product.options_with_values -%}      {%- assign filtr_option_name = 'filter.v.option.' | append: product_option.name | downcase | replace: ' ', '_' -%}      {%- assign voption = 'option' | append: product_option.position -%}      {%- if filtr_option_name == filtr_key and filter_values_count > 0 -%}        {%- assign variant_value = target_condition_variant[voption] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' -%}        {%- unless filtr_value contains variant_value -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endunless -%}      {%- endif -%}    {%- endfor -%}    {%- if 'filter.v.availability' == filtr_key -%}      {%- if filtr_value contains '1' and filtr_value contains '0' -%}{%- continue -%}{%- endif -%}      {%- if filtr_value contains '1' -%}        {%- if target_condition_variant.inventory_quantity <= 0 and target_condition_variant.inventory_policy != 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- elsif filtr_value contains '0' -%}        {%- if target_condition_variant.inventory_quantity > 0 or target_condition_variant.inventory_policy == 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- endif -%}    {%- endif -%}    {%- if 'filter.v.price' == filtr_key -%}      {%- assign filtr_price_range = filtr_value | join | split: '-' -%}      {%- assign min_price = filtr_price_range[0] | plus: 0 -%}      {%- assign max_price = filtr_price_range[1] | plus: 0 -%}      {%- if target_condition_variant.price < min_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}      {%- if max_price != 0 and target_condition_variant.price > max_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}    {%- endif -%}    {%- assign metafield_namespaces = 'global,my_fields,custom,swing_de,variantFilter,filter' | split: ',' -%}    {%- for namespace in metafield_namespaces -%}      {%- assign filtr_metafiled_name = 'filter.v.m.' | append: namespace | append: '.' | replace: ' ', '_' -%}      {%- if filtr_key contains filtr_metafiled_name and filter_values_count > 0 -%}        {%- assign metafield_key = filtr_key | remove: filtr_metafiled_name -%}        {%- if target_condition_variant.metafields[namespace][metafield_key].type contains 'list.' -%}          {%- assign metafield_value_found = false -%}          {% for mfiltr_value in target_condition_variant.metafields[namespace][metafield_key].value -%}            {%- if filtr_value contains mfiltr_value -%}              {%- assign metafield_value_found = true -%}{%- break -%}            {%- endif -%}          {%- endfor %}          {%- unless metafield_value_found -%}{%- assign skip_by_filter = true -%}{%- break -%}{%- endunless -%}        {%- else -%}          {%- assign mfiltr_value = target_condition_variant.metafields[namespace][metafield_key] | metafield_text -%}          {%- if target_condition_variant.metafields[namespace][metafield_key].type == 'boolean' -%}{%- if mfiltr_value == 'true' -%}{%- assign mfiltr_value = '1' -%}{%- else -%}{%- assign mfiltr_value = '0' -%}{%- endif -%}{%- endif -%}          {%- unless mfiltr_value != '' and filtr_value contains mfiltr_value -%}            {%- assign skip_by_filter = true -%}{%- break -%}          {%- endunless -%}        {%- endif -%}      {%- endif -%}    {%- endfor -%}  {%- endfor -%}  {%- if skip_by_filter -%}{%- continue -%}{%- endif -%}{%- endif -%}
+              {%- endif -%}
+              {%- if skip_by_filter -%}
+                {%- if filter_hide_completely -%}
+                  {%- continue -%}
+                {%- else -%}
+                  {%- assign variable_first_variant = full_product.selected_or_first_available_variant -%}
+                  {%- assign shopify_variant = variable_first_variant -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endif -%}
+              {%- assign variable_first_variant = product -%}
+              {%- break -%}
+            {%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if variable_first_variant == null and show_out_of_stock -%}
+          {%- for product in full_product.variants offset: var_offset -%}
+            {%- assign product_id = product.id | append: '' -%}
+            {%- unless black_list contains product_id or collection_black_list contains product_id -%}
+              {%- assign target_condition_variant = product -%}
+              {%- if conditions_hide_completely -%}
+                {%- if condition_sale -%}{%- if target_condition_variant.compare_at_price == nil or target_condition_variant.compare_at_price <= target_condition_variant.price -%}{%- continue -%}{%- endif -%}{%- endif -%}
+                {%- if collection_condition_match_type != 'any' -%}  {%- assign pass_conditions = true -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endunless -%}{%- endif -%}    {%- if condition_operator == 'not_contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = false -%}{%- break -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- else -%}  {%- assign pass_conditions = false -%}  {%- for condition_name in condition_option_names -%}    {%- assign condition_value = condition_option_values[forloop.index0] -%}    {%- assign condition_operator = condition_operators[forloop.index0] -%}    {%- assign option_by_condition = full_product.options_by_name[condition_name] -%}    {%- case option_by_condition.position -%}      {%- when 1 -%}{%- assign option_value_by_condition = target_condition_variant.option1 -%}      {%- when 2 -%}{%- assign option_value_by_condition = target_condition_variant.option2 -%}      {%- else -%}{%- assign option_value_by_condition = target_condition_variant.option3 -%}    {%- endcase -%}    {%- assign downcase_option_value = option_value_by_condition | replace: '"', '' | replace: "'", '' | downcase -%}    {%- if condition_operator == 'equal_to' and downcase_option_value == condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_equal_to' and downcase_option_value != condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'contains' and downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endif -%}    {%- if condition_operator == 'not_contains' -%}{%- unless downcase_option_value contains condition_value -%}{%- assign pass_conditions = true -%}{%- break -%}{%- endunless -%}{%- endif -%}  {%- endfor -%}  {%- unless pass_conditions -%}{%- continue -%}{%- endunless -%}{%- endif -%}
+              {%- endif -%}
+              {%- if has_option_in_list -%}
+                {%- assign skip_by_filter = false -%}{%- if variable_filter_exist -%}  {%- assign filters_arr = variable_filters | split: ';;' -%}  {%- assign variable_filter_exist = false -%}  {%- for filtr in filters_arr -%}    {%- assign filtr_key_value = filtr | split: '::' -%}    {%- assign filtr_key = filtr_key_value[0] -%}    {%- if filtr_key_value[1] == null or filtr_key_value[1] == '' or filtr_key_value[1] == '-' -%}{%- continue -%}{%- endif -%}    {%- assign variable_filter_exist = true -%}    {%- assign filtr_value = filtr_key_value[1] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' | split: ',' -%}    {%- assign filter_values_count = filtr_value| size -%}    {%- for product_option in full_product.options_with_values -%}      {%- assign filtr_option_name = 'filter.v.option.' | append: product_option.name | downcase | replace: ' ', '_' -%}      {%- assign voption = 'option' | append: product_option.position -%}      {%- if filtr_option_name == filtr_key and filter_values_count > 0 -%}        {%- assign variant_value = target_condition_variant[voption] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' -%}        {%- unless filtr_value contains variant_value -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endunless -%}      {%- endif -%}    {%- endfor -%}    {%- if 'filter.v.availability' == filtr_key -%}      {%- if filtr_value contains '1' and filtr_value contains '0' -%}{%- continue -%}{%- endif -%}      {%- if filtr_value contains '1' -%}        {%- if target_condition_variant.inventory_quantity <= 0 and target_condition_variant.inventory_policy != 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- elsif filtr_value contains '0' -%}        {%- if target_condition_variant.inventory_quantity > 0 or target_condition_variant.inventory_policy == 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- endif -%}    {%- endif -%}    {%- if 'filter.v.price' == filtr_key -%}      {%- assign filtr_price_range = filtr_value | join | split: '-' -%}      {%- assign min_price = filtr_price_range[0] | plus: 0 -%}      {%- assign max_price = filtr_price_range[1] | plus: 0 -%}      {%- if target_condition_variant.price < min_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}      {%- if max_price != 0 and target_condition_variant.price > max_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}    {%- endif -%}    {%- assign metafield_namespaces = 'global,my_fields,custom,swing_de,variantFilter,filter' | split: ',' -%}    {%- for namespace in metafield_namespaces -%}      {%- assign filtr_metafiled_name = 'filter.v.m.' | append: namespace | append: '.' | replace: ' ', '_' -%}      {%- if filtr_key contains filtr_metafiled_name and filter_values_count > 0 -%}        {%- assign metafield_key = filtr_key | remove: filtr_metafiled_name -%}        {%- if target_condition_variant.metafields[namespace][metafield_key].type contains 'list.' -%}          {%- assign metafield_value_found = false -%}          {% for mfiltr_value in target_condition_variant.metafields[namespace][metafield_key].value -%}            {%- if filtr_value contains mfiltr_value -%}              {%- assign metafield_value_found = true -%}{%- break -%}            {%- endif -%}          {%- endfor %}          {%- unless metafield_value_found -%}{%- assign skip_by_filter = true -%}{%- break -%}{%- endunless -%}        {%- else -%}          {%- assign mfiltr_value = target_condition_variant.metafields[namespace][metafield_key] | metafield_text -%}          {%- if target_condition_variant.metafields[namespace][metafield_key].type == 'boolean' -%}{%- if mfiltr_value == 'true' -%}{%- assign mfiltr_value = '1' -%}{%- else -%}{%- assign mfiltr_value = '0' -%}{%- endif -%}{%- endif -%}          {%- unless mfiltr_value != '' and filtr_value contains mfiltr_value -%}            {%- assign skip_by_filter = true -%}{%- break -%}          {%- endunless -%}        {%- endif -%}      {%- endif -%}    {%- endfor -%}  {%- endfor -%}  {%- endif -%}
+              {%- else -%}
+                {%- assign skip_by_filter = false -%}{%- if variable_filter_exist -%}  {%- assign filters_arr = variable_filters | split: ';;' -%}  {%- assign variable_filter_exist = false -%}  {%- for filtr in filters_arr -%}    {%- assign filtr_key_value = filtr | split: '::' -%}    {%- assign filtr_key = filtr_key_value[0] -%}    {%- if filtr_key_value[1] == null or filtr_key_value[1] == '' or filtr_key_value[1] == '-' -%}{%- continue -%}{%- endif -%}    {%- assign variable_filter_exist = true -%}    {%- assign filtr_value = filtr_key_value[1] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' | split: ',' -%}    {%- assign filter_values_count = filtr_value| size -%}    {%- for product_option in full_product.options_with_values -%}      {%- assign filtr_option_name = 'filter.v.option.' | append: product_option.name | downcase | replace: ' ', '_' -%}      {%- assign voption = 'option' | append: product_option.position -%}      {%- if filtr_option_name == filtr_key and filter_values_count > 0 -%}        {%- assign variant_value = target_condition_variant[voption] | remove: '"' | remove: "'" | remove: "&#39;" | remove: '&quot;' -%}        {%- unless filtr_value contains variant_value -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endunless -%}      {%- endif -%}    {%- endfor -%}    {%- if 'filter.v.availability' == filtr_key -%}      {%- if filtr_value contains '1' and filtr_value contains '0' -%}{%- continue -%}{%- endif -%}      {%- if filtr_value contains '1' -%}        {%- if target_condition_variant.inventory_quantity <= 0 and target_condition_variant.inventory_policy != 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- elsif filtr_value contains '0' -%}        {%- if target_condition_variant.inventory_quantity > 0 or target_condition_variant.inventory_policy == 'continue' -%}          {%- assign skip_by_filter = true -%}{%- break -%}        {%- endif -%}      {%- endif -%}    {%- endif -%}    {%- if 'filter.v.price' == filtr_key -%}      {%- assign filtr_price_range = filtr_value | join | split: '-' -%}      {%- assign min_price = filtr_price_range[0] | plus: 0 -%}      {%- assign max_price = filtr_price_range[1] | plus: 0 -%}      {%- if target_condition_variant.price < min_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}      {%- if max_price != 0 and target_condition_variant.price > max_price -%}        {%- assign skip_by_filter = true -%}{%- break -%}      {%- endif -%}    {%- endif -%}    {%- assign metafield_namespaces = 'global,my_fields,custom,swing_de,variantFilter,filter' | split: ',' -%}    {%- for namespace in metafield_namespaces -%}      {%- assign filtr_metafiled_name = 'filter.v.m.' | append: namespace | append: '.' | replace: ' ', '_' -%}      {%- if filtr_key contains filtr_metafiled_name and filter_values_count > 0 -%}        {%- assign metafield_key = filtr_key | remove: filtr_metafiled_name -%}        {%- if target_condition_variant.metafields[namespace][metafield_key].type contains 'list.' -%}          {%- assign metafield_value_found = false -%}          {% for mfiltr_value in target_condition_variant.metafields[namespace][metafield_key].value -%}            {%- if filtr_value contains mfiltr_value -%}              {%- assign metafield_value_found = true -%}{%- break -%}            {%- endif -%}          {%- endfor %}          {%- unless metafield_value_found -%}{%- assign skip_by_filter = true -%}{%- break -%}{%- endunless -%}        {%- else -%}          {%- assign mfiltr_value = target_condition_variant.metafields[namespace][metafield_key] | metafield_text -%}          {%- if target_condition_variant.metafields[namespace][metafield_key].type == 'boolean' -%}{%- if mfiltr_value == 'true' -%}{%- assign mfiltr_value = '1' -%}{%- else -%}{%- assign mfiltr_value = '0' -%}{%- endif -%}{%- endif -%}          {%- unless mfiltr_value != '' and filtr_value contains mfiltr_value -%}            {%- assign skip_by_filter = true -%}{%- break -%}          {%- endunless -%}        {%- endif -%}      {%- endif -%}    {%- endfor -%}  {%- endfor -%}  {%- if skip_by_filter -%}{%- continue -%}{%- endif -%}{%- endif -%}
+              {%- endif -%}
+              {%- if skip_by_filter -%}
+                {%- if filter_hide_completely -%}
+                  {%- continue -%}
+                {%- else -%}
+                  {%- assign variable_first_variant = full_product.selected_or_first_available_variant -%}
+                  {%- assign shopify_variant = variable_first_variant -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endif -%}
+              {%- assign variable_first_variant = product -%}
+              {%- break -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- if variable_first_variant != null -%}
+          {%- assign product = variable_first_variant -%}
+          {%- assign variant = product -%}
+          {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}
+          {%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}
+          {%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}
+
+          {%- assign variant_hsh = '{' -%}
+          {%- if option1 == true -%}
+            {%- assign variant_hsh = variant_hsh | append:'"option1":"' | append: variable_option1_value | append: '"' -%}
+          {%- endif -%}
+          {%- if option2 == true -%}
+            {%- if option1 == true -%}
+              {%- assign variant_hsh = variant_hsh | append:',' -%}
+            {%- endif -%}
+            {%- assign variant_hsh = variant_hsh | append:'"option2":"' | append: variable_option1_value | append: '"' -%}
+          {%- endif -%}
+          {%- if option3 == true -%}
+            {%- if option1 == true or option2 == true -%}
+              {%- assign variant_hsh = variant_hsh | append:',' -%}
+            {%- endif -%}
+            {%- assign variant_hsh = variant_hsh | append:'"option3":"' | append: variable_option1_value | append: '"' -%}
+          {%- endif -%}
+          {%- assign variant_hsh = variant_hsh | append:'}' -%}
+
+          {%- assign option_values = option_values | append: ', ' | append: variant_hsh -%}
+          {%- assign shown_variants = shown_variants | append: ', ' | append: product.id -%}
+          {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}{%- if shopify_variant -%}  {%- assign shopify_hsh = ', "shopify_variant": true' -%}{%- else -%}  {%- assign shopify_hsh = '' -%}{%- endif -%}{%- assign variable_product_variant = '{"id":"' | append:variant.id | append: '", "option1":"' | append:variable_option1_value | append: '", "option2":"' | append:variable_option2_value | append: '", "option3":"' | append:variable_option3_value | append: '", "available":' | append:variant.available | append: shopify_hsh | append: ', "ctitle":' | append:variant_hsh | append: '}' -%}{%- assign tmp_variant_arr = variable_product_variant | split: "," -%}{%- assign variants_arr = variants_arr|concat:tmp_variant_arr -%}
+          {%- assign shown_variants_count = shown_variants_count | plus: 1 -%}{%- render 'product-grid-item', full_product: full_product,
+                  product: prod, per_row: 2, quick_shop_enable: settings.quick_shop_enable, fallback: '39vw', -%}
+        {%- endif -%}
+
+      {%- endif -%}
+          {%- endif -%}
+        {%- else -%}
+          {%- assign variant_hsh = '{}' -%}
+          {%- assign variant = full_product.first_available_variant | default: full_product.variants[0] -%}
+          {%- assign variable_option1_value = variant.option1 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option2_value = variant.option2 | replace: '"', '' | replace: "'", '' -%}{%- assign variable_option3_value = variant.option3 | replace: '"', '' | replace: "'", '' -%}{%- if shopify_variant -%}  {%- assign shopify_hsh = ', "shopify_variant": true' -%}{%- else -%}  {%- assign shopify_hsh = '' -%}{%- endif -%}{%- assign variable_product_variant = '{"id":"' | append:variant.id | append: '", "option1":"' | append:variable_option1_value | append: '", "option2":"' | append:variable_option2_value | append: '", "option3":"' | append:variable_option3_value | append: '", "available":' | append:variant.available | append: shopify_hsh | append: ', "ctitle":' | append:variant_hsh | append: '}' -%}{%- assign tmp_variant_arr = variable_product_variant | split: "," -%}{%- assign variants_arr = variants_arr|concat:tmp_variant_arr -%}
+          {%- assign shown_variants_count = shown_variants_count | plus: 1 -%}{%- render 'product-grid-item', full_product: null,
+                  product: prod, per_row: 2, quick_shop_enable: settings.quick_shop_enable, fallback: '39vw', -%}
+        {%- endif -%}
+        {%- assign joined_variants = variants_arr | join: "," -%}
+        {%- assign variable_product = variable_product | append: joined_variants | append:"]}}" -%}
+        {%- assign tmp_product_arr = variable_product | split: "," -%}
+        {%- assign variable_products_arr = variable_products_arr|concat:tmp_product_arr -%}
+      {%- endfor -%}
+      {%- assign joined_products = variable_products_arr | join: "," -%}
+      {%- assign variable_products = variable_products | append: joined_products | append:"]" -%}
+      <span data-behavior="variable_product_list" data-product_list='{{ variable_products }}' data-shown-product-size='{{ variable_collection_products | size }}'
+      {%- if false and not_all_loaded -%}data-prod-offset='{{ prod_offset }}' data-var-offset='{{ var_offset }}'{%- endif -%}
+      ></span>
+    </main>
+    
+  {%- endpaginate -%}
+{%- endif -%}

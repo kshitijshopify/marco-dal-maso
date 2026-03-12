@@ -1,0 +1,50 @@
+<script>
+    document.addEventListener("globo.formbuilder.form.loaded", function(e) {
+        const eventCity = "{{ article.metafields.custom.event_city }}"
+        const eventDate = "{{ article.metafields.custom.event_start_date | date: '%b' }}, {{ article.metafields.custom.event_start_date | date: '%d' }} - {{ article.metafields.custom.event_end_date | date: '%d' }}"
+        console.log('eventCity', eventCity, eventDate)
+        const hiddenEventCity = event.detail.form.querySelector('[name="hidden-1"]')
+        const hiddenEventDate = event.detail.form.querySelector('[name="hidden-3"]')
+
+
+        console.log("FORM: ", event.detail.form)
+        const modal = event.detail.form.closest(".globo-form-publish-modal[data-id]")
+        console.log("MODAL: ", modal)
+        if(modal) {
+            const cID = modal.getAttribute('data-id')
+            const btn = document.querySelector(`.tool-tip-trigger__title[data-id="${cID}"]`)
+            if(btn) {
+                const eventCity = btn.getAttribute("data-event_city")
+                const eventCountry = btn.getAttribute("data-event_country")
+                const eventDate = btn.getAttribute("data-event_start_date")
+
+                
+
+                if(eventCity && hiddenEventCity) {
+                    hiddenEventCity.value = eventCity
+                }
+
+                if(eventDate && hiddenEventDate) {
+                    hiddenEventDate.value = eventDate
+                }
+            }
+        }
+
+
+
+        
+
+
+
+        {% comment %} if(hiddenEventCity){
+            hiddenEventCity.value = eventCity
+        }
+        if(hiddenEventDate){
+            if(eventDate && eventDate !== ',  - '){
+                hiddenEventDate.value = eventDate
+            }else{
+                hiddenEventDate.value = ''
+            }
+        } {% endcomment %}
+    });
+</script>

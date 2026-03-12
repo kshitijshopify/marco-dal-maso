@@ -1,0 +1,97 @@
+{%- liquid
+
+  unless background_position
+    assign background_position = 'center center'
+  endunless
+
+  if settings.collection_grid_image == 'custom'
+    if colltitle != blank
+      if collcustomimgmobile != blank
+       assign collection_image_mobile = collcustomimgmobile
+      endif
+   
+      assign collection_image = collcustomimg
+    elsif settings.collection_grid_image == 'collection' and collection.image
+      assign collection_image = collection.image
+    else
+      assign collection_image = collection.products.first.featured_media.preview_image
+    endif
+  endif
+
+  if colltitle != blank
+    assign title_output = colltitle
+  else
+    if collection == blank
+      assign title_output = 'home_page.onboarding.collection_title' | t
+    elsif collection_title
+      assign title_output = collection_title
+    else
+      assign title_output = collection.title | escape
+    endif
+
+    
+  endif
+-%}
+
+<div class="grid__item {{ gridView }}" {{ block.shopify_attributes }}>
+  <a href="{% if template contains 'collection' %}{{ collection_url | replace: '%3F', '?' }}{% else %}{% if subcoll_sortorder %}{{ sub_collection_handle }}?{{ subcoll_sortorder }}{% else %}{{ collection.url }}{% endif %}{% endif %}" class="collection-item collection-item--{{ settings.collection_grid_style }}" data-aos="row-of-{{ per_row }}">
+    {% if template contains 'index' or template contains 'list-collections' %}
+      {%- if collection == blank or collection_image == blank -%}
+        {%- capture placeholder -%}collection-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+        <div class="collection-image collection-image--{{ settings.collection_grid_shape }} collection-image--placeholder">{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}</div>
+      {%- else -%}
+        <div class="collection-image collection-image--{{ settings.collection_grid_shape }} image-wrap">
+          {% assign indicator = block.id %}
+          {% if block == blank %}
+            {% assign indicator = collection.id %}
+          {% endif %}
+  
+          {% style %}
+            .collection-image--{{ indicator }} {
+              object-position: {{ background_position }};
+            }
+          {% endstyle %}
+  
+          {% if collection_image_mobile != blank %}
+            <div class="small--hide">
+              {% assign classes = 'collection-image--' | append: indicator %}
+              {%- render 'image-element',
+                img: collection_image,
+                classes: classes,
+                widths: '750, 900, 1080',
+                sizeVariable: sizeVariable,
+                fallback: fallback,
+              -%}
+            </div>
+            <div class="medium-up--hide">
+              {% assign classes = 'collection-image--' | append: indicator %}
+              {%- render 'image-element',
+                img: collection_image_mobile,
+                classes: classes,
+                widths: '750, 900, 1080',
+                sizeVariable: sizeVariable,
+                fallback: fallback,
+              -%}
+            </div>
+          {% else %}
+            {% assign classes = 'collection-image--' | append: indicator %}
+              {%- render 'image-element',
+                img: collection_image,
+                classes: classes,
+                widths: '750, 900, 1080',
+                sizeVariable: sizeVariable,
+                fallback: fallback,
+              -%}
+          {% endif %}
+        </div>
+      {%- endif -%}
+    {% endif %}
+    <span
+      class="collection-item__title collection-item__title--{{ settings.collection_grid_style }} collection-item__title--{{ settings.type_collection_font }} collection-item__title--{{ settings.collection_grid_text_align }}">
+      <span>
+        {% if subcoll_sortorder %}New {% endif %}{{ title_output }}
+      </span>
+    </span>
+
+  </a>
+</div>

@@ -1,0 +1,235 @@
+{%- comment -%}
+Carl Friedrik–Style Country Selector (Impulse Header Integrated)
+{%- endcomment -%}
+
+<style>
+  :root {
+    --cfz: 999999;
+    --cf-bg: #fff;
+    --cf-fg: #111;
+    --cf-muted: #666;
+    --cf-border: #e5e7eb;
+    --cf-cta: #5a2115;
+    --cf-cta-fg: #fff;
+  }
+
+  .cfm-modal {position:fixed;inset:0;display:none;z-index:var(--cfz);}
+  .cfm-modal[open]{display:block;}
+  .cfm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);}
+  .cfm-dialog{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:min(640px,90vw);max-height:90vh;overflow-y:auto;
+    background:var(--cf-bg);border-radius:12px;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+  }
+  .cfm-head,.cfm-body{padding:20px 24px;}
+  .cfm-title{font-weight:700;margin:0 0 6px;}
+  .cfm-sub{color:var(--cf-muted);margin:0 0 14px;}
+  .cfm-btn{all:unset;display:block;width:100%;text-align:center;border-radius:8px;
+    padding:12px 14px;cursor:pointer;}
+  .cfm-btn-primary{background:var(--cf-cta);color:var(--cf-cta-fg);font-weight:600;}
+  .cfm-btn-secondary{border:1px solid var(--cf-border);}
+  .cfm-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;}
+  @media(max-width:500px){.cfm-list{grid-template-columns:1fr;}}
+  .cfm-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--cf-border);
+    border-radius:8px;padding:10px 12px;background:#fafafa;cursor:pointer;}
+  .cfm-chip:hover{background:#f3f3f3;}
+  .cfm-row{display:flex;gap:8px;margin-top:10px;}
+  .cfm-select{flex:1;padding:10px 12px;border:1px solid var(--cf-border);border-radius:8px;}
+  .cfm-close{position:absolute;right:10px;top:10px;all:unset;cursor:pointer;padding:6px;}
+</style>
+
+{%- capture cf_popular -%}
+US,GB,CA,DE,SE,AU,IN
+{%- endcapture -%}
+{%- assign cf_popular = cf_popular | strip | strip_newlines -%}
+
+<form id="cfmForm" action="/localization" method="post" style="display:none;">
+  <input type="hidden" name="form_type" value="localization">
+  <input type="hidden" name="country_code" id="cfmCountryCode" value="{{ localization.country.iso_code }}">
+  <input type="hidden" name="return_to" value="{{ request.path }}{{ request.query != blank | prepend: '?' }}">
+</form>
+
+<div class="cfm-modal" id="cfmModal" role="dialog" aria-modal="true" aria-labelledby="cfmTitle">
+  <div class="cfm-overlay" data-close></div>
+  <div class="cfm-dialog" role="document">
+    <button class="cfm-close" data-close>✕</button>
+    <div class="cfm-head">
+      <h2 id="cfmTitle" class="cfm-title">Your location is set to <span id="cfmCountryName">—</span></h2>
+      <p class="cfm-sub">Your order will be billed in <span id="cfmCurrency">—</span>.</p>
+      <button id="cfmContinue" class="cfm-btn cfm-btn-primary">Continue</button>
+    </div>
+    <div class="cfm-body">
+      <p><strong>Choose another shipping location</strong></p>
+      <div id="cfmPopular" class="cfm-list"></div>
+      <div class="cfm-row">
+        <select id="cfmSelect" class="cfm-select" aria-label="Select other country">
+          <option value="">Select other country</option>
+        </select>
+        <button id="cfmChange" class="cfm-btn cfm-btn-secondary" style="width:auto;">Change</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const AVAILABLE = [
+    {% for country in localization.available_countries %}
+      { code: '{{ country.iso_code }}', name: '{{ country.name | escape }}', currency: '{{ country.currency.iso_code }}', symbol: {{ country.currency.symbol | json }} }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ];
+  const CURRENT = { code: '{{ localization.country.iso_code }}', name: '{{ localization.country.name | escape }}', currency: '{{ localization.country.currency.iso_code }}', symbol: {{ localization.country.currency.symbol | json }} };
+  const POPULAR_CODES = {{ cf_popular | split: ',' | map: 'strip' | json }};
+  const COUNTRIES = AVAILABLE.map(c => ({ ...c, flag: flagEmoji(c.code) }));
+
+  function flagEmoji(code) {
+    if(!code) return '🏳️';
+    if(code==='EU') return '🇪🇺';
+    if(code.length!==2) return '🏳️';
+    const A=127397;
+    return String.fromCodePoint(...code.toUpperCase().split('').map(c=>c.charCodeAt(0)+A));
+  }
+
+  const $ = (s,c=document)=>c.querySelector(s);
+  const modal = $('#cfmModal');
+  const trigger = $('#cfmTrigger');
+  const flagEl = $('#cfHeaderFlag');
+  const labelEl = $('#cfHeaderLabel');
+  const btnContinue = $('#cfmContinue');
+  const listPopular = $('#cfmPopular');
+  const selectAll = $('#cfmSelect');
+  const btnChange = $('#cfmChange');
+  const tName = $('#cfmCountryName');
+  const tCurr = $('#cfmCurrency');
+
+  // local storage helpers
+  const store = {
+    get(){try{return JSON.parse(localStorage.getItem('cfm_choice'));}catch(e){return null;}},
+    set(v){try{localStorage.setItem('cfm_choice',JSON.stringify(v));}catch(e){}}
+  };
+  const hasRecentlySwitched = ()=>{
+    const t = localStorage.getItem('cfm_switched_at');
+    if (!t) return false;
+    const diff = Date.now() - parseInt(t, 10);
+    return diff < 10000;
+  };
+  const markSwitched = ()=>localStorage.setItem('cfm_switched_at', Date.now().toString());
+
+  // modal open/close
+  function open(){ modal.setAttribute('open',''); trigger && trigger.setAttribute('aria-expanded','true'); }
+  function close(){ modal.removeAttribute('open'); trigger && trigger.setAttribute('aria-expanded','false'); }
+
+  // ✅ Trigger click - prevent refresh
+  if (trigger) {
+    const openModal = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('🌐 Opening locale modal...');
+      open();
+    };
+    trigger.addEventListener('click', openModal);
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') openModal(e);
+    });
+  }
+
+  modal.addEventListener('click',(e)=>{ if(e.target.hasAttribute('data-close')) close(); });
+  document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') close(); });
+
+  function detect(){
+    const lang = navigator.language || (navigator.languages && navigator.languages[0]) || '';
+    const m = lang.match(/[-_]([A-Z]{2})$/);
+    const code = m?m[1]:null;
+    return COUNTRIES.find(c=>c.code===code) || null;
+  }
+
+  function switchMarket(sel){
+    if(!sel || !sel.code) return;
+    store.set(sel);
+    console.log('🌍 Switching market →', sel);
+
+    const formData = new URLSearchParams({
+      'form_type': 'localization',
+      'country_code': sel.code,
+      'return_to': window.location.pathname + window.location.search
+    });
+
+    fetch('/localization', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'text/html,application/json',
+      },
+      body: formData.toString(),
+      credentials: 'same-origin'
+    })
+    .then(res => {
+      console.log('📡 Response status:', res.status);
+      return res.text();
+    })
+    .then(() => {
+      console.log('✅ Reloading page for market change');
+      markSwitched(); // prevent loop
+      window.location.reload();
+    })
+    .catch(err => console.error('❌ Localization error:', err));
+  }
+
+  function renderPopular(){
+    listPopular.innerHTML = POPULAR_CODES.map(cd=>{
+      const c = COUNTRIES.find(x=>x.code===cd);
+      return c ? `<button class="cfm-chip" type="button" data-code="${c.code}">
+        <span class="cfm-flag">${c.flag}</span><span>${c.name}</span>
+      </button>` : '';
+    }).join('');
+  }
+  function renderSelect(){
+    selectAll.innerHTML = `<option value="">Select other country</option>` + 
+      COUNTRIES.map(c=>`<option value="${c.code}">${c.name} — ${c.currency}</option>`).join('');
+  }
+  function updateHeader(sel){
+    if(flagEl) flagEl.textContent = sel.flag || '🌐';
+    if(labelEl) labelEl.textContent = `${sel.code} • ${sel.currency}`;
+  }
+  function setModalTexts(c){
+    tName.textContent = c.name;
+    tCurr.textContent = `${c.currency} (${c.symbol||''})`;
+  }
+
+  const detected = detect();
+  const stored = store.get();
+  const active = detected || CURRENT;
+  renderPopular();
+  renderSelect();
+  updateHeader(CURRENT);
+  setModalTexts(active);
+
+  // Auto-open / auto-switch logic
+  if(!stored && detected && detected.code !== CURRENT.code){
+    open();
+  } else if(stored && stored.code && stored.code !== CURRENT.code && !hasRecentlySwitched()){
+    console.log('🧭 Auto-switching to stored market:', stored.code);
+    switchMarket(stored);
+    return;
+  } else {
+    console.log('✅ No auto-switch needed');
+  }
+
+  // Click handlers
+  btnContinue.addEventListener('click',()=>switchMarket(detected || CURRENT));
+  listPopular.addEventListener('click',e=>{
+    const b=e.target.closest('.cfm-chip');
+    if(!b)return;
+    const sel=COUNTRIES.find(c=>c.code===b.dataset.code);
+    if(sel)switchMarket(sel);
+  });
+  btnChange.addEventListener('click',()=>{
+    const code=selectAll.value;
+    const sel=COUNTRIES.find(c=>c.code===code);
+    if(sel)switchMarket(sel);
+  });
+
+  console.log('✅ Locale modal ready. Available:', AVAILABLE);
+})();
+</script>

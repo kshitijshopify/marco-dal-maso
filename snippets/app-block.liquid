@@ -1,0 +1,540 @@
+<!-- BEGIN app block: shopify://apps/glood-product-recommendations/blocks/app-embed/6e79d991-1504-45bb-88e3-1fb55a4f26cd -->
+
+<script
+  type="load"
+  id="glood-loader"
+  page-enabled="true"
+>
+  (function () {
+    function generateUUID() {
+      const timestampInSecs = Math.floor(Date.now() / 1000);
+      if (typeof window.crypto.randomUUID === 'function') {
+        return `${timestampInSecs}-${window.crypto.randomUUID()}`;
+      }
+      const generateUID = () =>
+        ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+            (
+            c ^
+            (Math.random() * 16 >> c / 4)
+          ).toString(16)
+        );
+      return `${timestampInSecs}-${generateUID()}`;
+    }
+
+    function setCookie(name, value, days) {
+      if(!days){
+        document.cookie = `${name}=${value}; path=/`;
+        return;
+      }
+      const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+      document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+    }
+
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nameEQ) === 0) return cookie.substring(nameEQ.length);
+      }
+      return null;
+    }
+
+    let uuid = getCookie('rk_uid');
+
+    // Set the cookie with rk_uid key only if it doesn't exist
+    if (!uuid) {
+      uuid = generateUUID();
+      
+        setCookie('rk_uid', uuid); // setting cookie for a session
+      
+    }
+
+    document.addEventListener("visitorConsentCollected", (event) => {
+      if(event.detail.preferencesAllowed && event.detail.analyticsAllowed && event.detail.marketingAllowed){
+        setCookie('rk_uid', uuid, 365); // setting cookie for a year
+      }
+    });
+
+    let customer = {};
+    if ("") {
+      customer = {
+        acceptsMarketing: false,
+        b2b: false,
+        email: "{{ customer.email }}",
+        firstName: "{{ customer.firstName }}",
+        hasAccount: {{ customer.hasAccount | json }},
+        id: '{{ customer.id }}',
+        lastName: "{{ customer.lastName }}",
+        name: "{{ customer.name }}",
+        ordersCount: '{{ customer.ordersCount }}',
+        phone: "{{ customer.phone }}",
+        tags: {{ customer.tags | json }},
+        totalSpent: '{{ customer.totalSpent }}',
+        address: {{ customer.address | json }},
+      };
+    }
+    function initializeGloodObject() {
+      window.glood = {
+        config: {
+          uid: uuid,
+          pageUrl: "marcodalmaso.com" + "{{ request.path }}",
+          pageType: {{ template.name | json }}
+        },
+        shop: {
+          myShopifyDomain: "marco-ta-moko.myshopify.com",
+          locale: "en",
+          currencyCode: "USD",
+          moneyFormat: {{ shop.money_format | json }},
+          id: "14760022",
+          domain: "marcodalmaso.com",
+          currencyRate: window.Shopify?.currency?.rate || 1,
+        },
+        shopify: {
+          rootUrl: "/"
+        },
+        localization: {
+          country: "US",
+          market: {
+            handle: "cc9b905b-7ae6-49ca-8e23-b79bad7b36f9",
+            id: "23200001"
+          },
+          language: {
+            locale: "en",
+            primary: true,
+            rootUrl: "/"
+          },
+          currency: "USD"
+        },
+        product: {{ product | json }},
+        collection: {{ collection | json }},
+        customer,
+        cart: {{ cart | json }},
+        version: "v3",
+        storefrontTemplateUrl: "",
+        appEmbedSettings: {"enable-design-mode-preview":true,"load-glood-ai-bundles":true,"saperateBlockAPICalls":false,"init-event-name":"","jsCode":"","custom_styles":"","enableRecommendationV3":true,"enableReleaseCandiatePreview":false,"wait-for-privacy-consent":false,"disable-rk-styles":false,"add-glide-init-timeouts":true},
+        theme: {
+          id: window.Shopify.theme?.id, // Since liquid theme object from shopify is depricated
+          themeStoreId: window.Shopify.theme?.theme_store_id
+        },
+        insideShopifyEditor: false
+      };
+    }
+
+    
+      initializeGloodObject();
+    
+
+    try{
+      function func(){
+        
+      }
+      func();
+    } catch(error){
+      console.warn('GLOOD.AI: Error in js code from app-embed', error)
+    };
+  })();
+
+  function _handleGloodEditorV3SectionError(sectionId) {
+    const sectionElement = document.querySelector(`#rk-widget-${sectionId}`);
+    const errorText = "Glood Product Recommendation Section (id: __SECTION_ID__) is not visible. Use the following steps to ensure it is loaded correctly. Please ignore if this is expected.".replace('__SECTION_ID__', sectionId)
+    if (sectionElement && sectionElement.getAttribute('data-inside-shopify-editor') === 'true' && true) {
+      sectionElement.innerHTML = `
+        <div style="
+            padding: 28px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin: 32px auto;
+            border: 1px solid #E2E8F0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        ">
+            <h2 style="
+                margin-bottom: 10px;
+                font-size: 16px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            ">
+                ${errorText}
+            </h2>
+
+            <div style="
+                color: #374151;
+                font-size: 15px;
+                line-height: 1.6;
+            ">
+                <ul style="
+                    margin: 0;
+                    padding-left: 20px;
+                    list-style-type: disc;
+                    font-size: 14px;
+                ">
+                    <li style="margin-bottom: 10px;">Make sure this section is created and enabled in the Glood.AI app.</li>
+                    <li style="margin-bottom: 10px;">Check that the V3 templates are set up correctly and properly configured.</li>
+                    <li style="margin-bottom: 10px;">Verify the section settings such as AI Recommendations, Excluded Products &amp; Tags, Filter Criteria, etc.</li>
+                    <li style="margin-bottom: 10px;">
+                        You can ignore this message if this section was recently viewed or is intentionally excluded from this page.
+                    </li>
+                    <li style="margin-bottom: 10px;">
+                        Need further assistance?
+                        <a href="mailto:support@glood.ai" style="
+                            color: #2563EB;
+                            font-weight: 500;
+                            text-decoration: none;
+                        ">Feel free to reach out to our support team.</a>.
+                    </li>
+                </ul>
+
+                <div style="
+                    margin-top: 20px;
+                    padding: 12px;
+                    border-left: 4px solid #CBD5E0;
+                    background: #F8FAFC;
+                    color: #64748B;
+                    font-style: italic;
+                    font-size: 14px;
+                ">
+                    <b>Note: This message is only visible in the editor and won&#39;t appear to store visitors.</b>
+                </div>
+            </div>
+        </div>
+      `;
+    } else if (sectionElement && sectionElement.getAttribute('data-inside-shopify-editor') === 'true' && !true) {
+      sectionElement.innerHTML = `
+        <div style="
+            padding: 28px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin: 32px auto;
+            border: 1px solid #E2E8F0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        ">
+            <h2 style="
+                margin-bottom: 10px;
+                font-size: 16px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            ">
+                ${errorText}
+            </h2>
+
+            <div style="
+                color: #374151;
+                font-size: 15px;
+                line-height: 1.6;
+            ">
+
+                <ul style="
+                    margin: 0;
+                    padding-left: 20px;
+                    list-style-type: disc;
+                    font-size: 14px;
+                ">
+                    <li style="margin-bottom: 10px;">Make sure a section with this ID exists and is properly set up in the Glood.AI app.</li>
+                    <li style="margin-bottom: 10px;">Check that the correct template is assigned to this section.</li>
+                    <li style="margin-bottom: 10px;">
+                        You can ignore this message if this section was recently viewed or is intentionally excluded from this page.
+                    </li>
+                    <li style="margin-bottom: 10px;">
+                        Need further assistance?
+                        <a href="mailto:support@glood.ai" style="
+                            color: #2563EB;
+                            font-weight: 500;
+                            text-decoration: none;
+                        ">Feel free to reach out to our support team.</a>.
+                    </li>
+                </ul>
+
+                <div style="
+                    margin-top: 20px;
+                    padding: 12px;
+                    border-left: 4px solid #CBD5E0;
+                    background: #F8FAFC;
+                    color: #64748B;
+                    font-style: italic;
+                    font-size: 14px;
+                ">
+                    <b>Note: This message is only visible in the editor and won&#39;t appear to store visitors.</b>
+                </div>
+            </div>
+        </div>
+      `
+    }
+  }
+</script>
+
+
+
+
+  <script
+    id="rk-app-bundle-main-js"
+    d-src="https://cdn.shopify.com/extensions/019b0c99-e91f-77d5-8510-c6ae14536906/recommendation-kit-117/assets/glood-ai-bundles.js"
+    type="load"
+  ></script>
+  <link
+    d-href="https://cdn.shopify.com/extensions/019b0c99-e91f-77d5-8510-c6ae14536906/recommendation-kit-117/assets/glood-ai-bundles-styles.css"
+    rel="stylesheet"
+    type="text/css"
+    media="print"
+    onload="this.media='all'"
+  >
+    <script
+      id="rk-app-embed-main-js-v3"
+      d-src="https://cdn.shopify.com/extensions/019b0c99-e91f-77d5-8510-c6ae14536906/recommendation-kit-117/assets/glood-ai-recommendations-v3.js"
+      type="load"
+    ></script>
+    
+      <link
+        d-href="https://cdn.shopify.com/extensions/019b0c99-e91f-77d5-8510-c6ae14536906/recommendation-kit-117/assets/glood-ai-recommendations-v3-styles.css"
+        rel="stylesheet"
+        type="text/css"
+        media="print"
+        onload="this.media='all'"
+        id="rk-app-embed-main-css-v3"
+      >
+    
+
+  <style>
+    .__gai-skl-cont {
+      gap: 5px;
+      width: 100%;
+    }
+
+    .__gai-skl-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .__gai-skl-img {
+      width: 100%;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+    }
+
+    .__gai-skl-text {
+      width: 100%;
+      height: 20px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+    }
+
+    .__gai-shimmer-effect {
+      display: block !important;
+      background: linear-gradient(
+        90deg,
+        rgba(200, 200, 200, 0.3) 25%,
+        rgba(200, 200, 200, 0.5) 50%,
+        rgba(200, 200, 200, 0.3) 75%
+      );
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+      border-radius: 4px;
+    }
+
+    .__gai-skl-buy-btn {
+      width: 100%;
+      height: 40px;
+      margin-left: 0;
+      border-radius: 10px;
+    }
+
+    .__gai-btn-full-width {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .__gai-skl-header {
+      width: 100%;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      padding: 12px 0 12px 0;
+    }
+
+    .__gai-skl-amz-small {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .__gai-skl-title {
+      width: 50%;
+      height: 26px;
+      border-radius: 10px;
+    }
+
+    .__gai-skl-amazon {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      flex-direction: column;
+    }
+
+    .__gai-skl-amazon .__gai-skl-card {
+      display: flex;
+      justify-content: start;
+      align-items: start;
+      flex-direction: row;
+    }
+
+    .__gai-skl-amazon .__gai-skl-img {
+      width: 50%;
+      max-width: 100px;
+    }
+
+    .__gai-skl-holder {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    @media screen and (max-width: 768px) and (min-width: 481px) {
+      .__gai-skl-amazon .__gai-skl-img {
+        max-width: 150px;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .__gai-skl-buy-btn {
+        width: 140px;
+        height: 40px;
+        margin-left: 30px;
+      }
+      .__gai-skl-amazon {
+        flex-direction: row;
+      }
+
+      .__gai-skl-amazon .__gai-skl-img {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .__gai-skl-amz-small {
+        display: none !important;
+      }
+
+      .__gai-skl-cont {
+        gap: 20px;
+      }
+
+      .__gai-atc-skl {
+        display: none !important;
+      }
+      .__gai-skl-header {
+        justify-content: center;
+        padding: 20px 0 20px 0;
+      }
+
+      .__gai-skl-title {
+        height: 26px;
+      }
+
+      .__gai-skl-amazon .__gai-skl-card {
+        max-width: 600px;
+        flex-direction: column;
+      }
+    }
+
+    /* Keyframes for animation */
+    @keyframes skeleton-loading {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .__gai-amz-details {
+      display: none;
+    }
+
+    .__gai-skl-amz-saperator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media screen and (min-width: 768px) {
+      .__gai-amz-details {
+        display: flex;
+        width: 100%;
+        max-width: 25%;
+        flex-direction: column;
+        justify-items: center;
+        align-items: center;
+      }
+      .__gai-skl-amz-mob-tit {
+        display: none;
+      }
+    }
+
+    .__gai-amz-prc {
+      margin-bottom: 6px;
+      height: 20px;
+    }
+  </style>
+
+
+
+  <style>
+    
+  </style>
+
+
+<!-- END app block -->
+<!-- BEGIN app block: shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507 -->
+<script type="load" d-src="https://static.klaviyo.com/onsite/js/UT8HnE/klaviyo.js?company_id=UT8HnE"></script>
+<script type="load">!function(){if(!window.klaviyo){window._klOnsite=window._klOnsite||[];try{window.klaviyo=new Proxy({},{get:function(n,i){return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}:function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];var t="function"==typeof o[o.length-1]?o.pop():void 0,e=new Promise((function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))}));return e}}})}catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();</script>
+
+  {% if template contains 'product' %}
+  <script type="load" id="viewed_product">
+      if (item == null) {
+          var _learnq = _learnq || [];
+          var item = {
+              Name: {{ product.title | json }},
+              ProductID: {{ product.id | json }},            
+              Categories: {{ product.collections | map: 'title' | json }},
+              ImageURL: "https:{{ product.featured_image.src | img_url: 'grande' }}",
+              URL: "{{ shop.secure_url }}{{ product.url }}",
+              Brand: {{ product.vendor | json }},
+              Price: {{ product.price | money | json }},
+              Value: {{ product.price | money_without_currency | json }},
+              CompareAtPrice: {{ product.compare_at_price_max | money | json }}
+          };
+          _learnq.push(['track', 'Viewed Product', item]);
+          _learnq.push(['trackViewedItem', {
+              Title: item.Name,
+              ItemId: item.ProductID,
+              Categories: item.Categories,
+              ImageUrl: item.ImageURL,
+              Url: item.URL,
+              Metadata: {
+                  Brand: item.Brand,
+                  Price: item.Price,
+                  Value: item.Value,
+                  CompareAtPrice: item.CompareAtPrice
+              }
+          }]);
+      }
+  </script>
+  {% endif %}  
+
+  <script>
+    window.klaviyoReviewsProductDesignMode = false
+  </script>
+
+<!-- END app block -->

@@ -1,0 +1,526 @@
+{%- if section.settings.background_type == 'boxed' -%}
+  {%- assign is_boxed = true -%}
+{%- else -%}
+  {%- assign is_boxed = false -%}
+{%- endif -%}
+
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+  .grid.cus__promo_blocks {
+    display: flex;
+}
+.grid.cus__promo_blocks > div {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+}
+.cus__promo_blocks > .grid__item.grid_3 {
+    width: 33.3333%;
+}
+.cus__promo_blocks > .grid__item.grid_1 {
+    width: 66.6666%;
+}
+.cus__promo_blocks .grid__item.grid_1 > .grid__item {
+    display: flex;
+    column-gap: 20px;
+    {% comment %} height: 50%; {% endcomment %}
+    flex-flow: row wrap;
+    padding: 0;
+}
+.cus__promo_blocks .theme-block.custom-block {
+    flex: 0 0 100%;
+    text-align: center;
+    height: 40px;margin: 0;
+}
+div.image_block {
+    height: calc(100% - 40px);
+    max-width: calc(50% - 10px);
+    flex: 0 0 calc(50% - 10px);position: relative;
+}
+.innerPromoSlider div.image_block {height: auto;
+    max-width: 100%;position: relative;
+}
+.image_block img {
+    width: 100%;
+    height: 100%;
+}
+.video_block {
+    position: relative;
+    overflow: hidden;
+    padding-top: 40px;
+}
+.slick-slide {
+    padding-right: 10px;padding-left: 10px;
+}
+.slick-list {
+    margin: 0 !important;
+}
+video {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    display: inherit;
+}
+.cus__promo_blocks .promo-grid__content h2 {
+  font-size: 18px;
+  font-family: "Montserrat" !important;
+  font-weight: 500;
+  text-transform: none;margin: 0;
+}
+.cus__promo_blocks .promo-grid__content {
+    padding: 15px 20px;
+    text-align: center;
+    background: #000;
+    align-self: flex-start;
+    color: #fff;
+    position: absolute;
+    bottom: 0;
+}
+.grid.cus__promo_blocks {
+    margin-top: 50px;
+}
+{% comment %} .innerPromoSlider .slick-list > div, .innerPromoSlider .slick-list, .innerPromoSlider .slick-list > div .slick-slide, .innerPromoSlider .slick-list > div .slick-slide > div {
+    height: 100%;
+} {% endcomment %}
+button.slick-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+button.slick-next {
+    right: 0;
+}
+button.slick-prev {
+    left: 0;
+}
+@media only screen and (max-width: 769px) {
+.cus__promo_blocks > .grid__item.grid_3, .cus__promo_blocks > .grid__item.grid_1 {
+    width: 100%;
+}
+.grid.cus__promo_blocks {
+    flex-direction: column;
+}
+.cus__promo_blocks > .grid__item.grid_3 .grid__item, .cus__promo_blocks > .grid__item.grid_1 .grid__item {
+    padding: 0;
+}
+.cus__promo_blocks .promo-grid__content {
+    padding: 10px 10px !important;position: unset;
+}
+.video_block {
+    padding-top: 40px;
+}
+}
+</style>
+
+<section id="{{ section.settings.customid }}" class="image_with_video section {% unless blends_with_background or is_boxed %}section--flush{% endunless %}">
+  <div {% if is_boxed %}class="page-width"{% endif %}>
+    <div class="section__color-wrapper {% if is_boxed %}section__color-wrapper--boxed{% endif %}">
+      <div class="{% unless is_boxed %}container{% endunless %} {% unless blends_with_background %}vertical-breather{% endunless %}">
+        {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+          <header class="section__header text-container">
+            {%- if section.settings.subheading != blank -%}
+              <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+            {%- endif -%}
+
+            {%- if section.settings.title != blank -%}
+              <h3 class="heading h2">{{ section.settings.title | escape }}</h3>
+            {%- endif -%}
+          </header>
+        {%- endif -%}
+
+        {%- if section.settings.liquid != blank -%}
+          <div class="liquid">
+            {{- section.settings.liquid -}}
+          </div>
+        {%- endif -%}
+        <div class="grid cus__promo_blocks">
+          <div class="grid__item grid_1">            
+            {%- for block in section.blocks -%}  {%- case block.type %}
+              {% when 'images' %}            
+                <div {{ block.shopify_attributes }} class="{% unless block.settings.show_carousel %}grid__item  grid_{{ forloop.index }}{% endunless %}" data-type="{{ block.type }}">                
+                  <div class="theme-block custom-block"><h2>{{block.settings.title}}</h2></div>
+                  {% if block.settings.show_carousel %}<div class="innerPromoSlider">{% endif %}
+                    {% if block.settings.image != blank %}
+                      <div class="image_block">
+                        {%- if block.settings.cta_link != blank -%}
+                          <a href="{{ block.settings.cta_link }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text }}"></a>
+                        {%- endif -%}
+                        <img src="{{ block.settings.image | img_url:'master' }}">
+                        {%- if block.settings.heading != blank -%}
+                          <div class="promo-grid__content">
+                            <div class="promo-grid__text">                          
+                              <h2 class="rte--block rte--strong">
+                                {{ block.settings.heading }}
+                              </h2>                          
+                            </div>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.image1 != blank %}
+                      <div class="image_block">
+                        {%- if block.settings.cta_link1 != blank -%}
+                          <a href="{{ block.settings.cta_link1 }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text1 }}"></a>
+                        {%- endif -%}
+                        <img src="{{ block.settings.image1 | img_url:'master' }}">
+                        {%- if block.settings.heading1 != blank -%}
+                          <div class="promo-grid__content">
+                            <div class="promo-grid__text">                          
+                              <h2 class="rte--block rte--strong">
+                                {{ block.settings.heading1 }}
+                              </h2>                          
+                            </div>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.image2 != blank %}
+                      <div class="image_block">
+                        {%- if block.settings.cta_link2 != blank -%}
+                          <a href="{{ block.settings.cta_link2 }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text2 }}"></a>
+                        {%- endif -%}
+                        <img src="{{ block.settings.image2 | img_url:'master' }}">
+                        {%- if block.settings.heading2 != blank -%}
+                          <div class="promo-grid__content">
+                            <div class="promo-grid__text">                          
+                              <h2 class="rte--block rte--strong">
+                                {{ block.settings.heading2 }}
+                              </h2>                          
+                            </div>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {% endif %} 
+                    {% if block.settings.image3 != blank %}
+                      <div class="image_block">
+                        {%- if block.settings.cta_link3 != blank -%}
+                          <a href="{{ block.settings.cta_link3 }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text3 }}"></a>
+                        {%- endif -%}
+                        <img src="{{ block.settings.image3 | img_url:'master' }}">
+                        {%- if block.settings.heading3 != blank -%}
+                          <div class="promo-grid__content">
+                            <div class="promo-grid__text">                          
+                              <h2 class="rte--block rte--strong">
+                                {{ block.settings.heading3 }}
+                              </h2>                          
+                            </div>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.image4 != blank %}
+                      <div class="image_block">
+                        {%- if block.settings.cta_link4 != blank -%}
+                          <a href="{{ block.settings.cta_link4 }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text4 }}"></a>
+                        {%- endif -%}
+                        <img src="{{ block.settings.image4 | img_url:'master' }}">
+                        {%- if block.settings.heading4 != blank -%}
+                          <div class="promo-grid__content">
+                            <div class="promo-grid__text">                          
+                              <h2 class="rte--block rte--strong">
+                                {{ block.settings.heading4 }}
+                              </h2>                          
+                            </div>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    {% endif %}        
+                  {% if block.settings.show_carousel %}</div>{% endif %}       
+                </div>
+              {% endcase %}
+            {%- endfor -%}
+          </div>
+          <div class="grid__item grid_3">
+            {%- for block in section.blocks -%}
+              {%- case block.type %}
+              {% when 'video' %}
+                {% if block.settings.image != blank %}
+                  <img src="{{ block.settings.image | img_url:'master' }}">
+                {% else %}
+                  
+                    <div class="video_block">
+                      <video width="100%" height="auto" autoplay muted playsinline loop preload="none">
+                        <source src="{{ block.settings.video }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>       
+                  
+                {% endif %}  
+              {% endcase %}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+section.image_with_video {margin-bottom: 40px;}
+video{max-width: 100%;width: 100%;}
+.video_block.xbg {position: relative;overflow: hidden;}
+.image_block img{width:100%;}
+</style>
+
+{% schema %}
+{
+  "name": "Custom Promos",
+  "class": "shopify-section--custom-liquid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "customid",
+      "label": "Custom Unique id of Section",
+      "default": "sac_custom_form "
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Your subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your title"
+    },
+    {
+      "type": "liquid",
+      "id": "liquid",
+      "label": "Liquid",
+      "info": "Add app snippets or other Liquid code to create advanced customizations.",
+      "default": "<p style=\"text-align: center\">Write or copy/paste Liquid code</p>"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "images",
+      "name": "Images",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_carousel",
+          "label": "Show Promos in Carousel",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "container_width",
+          "label": "t:sections.footer.blocks.logo.settings.container_width.label",
+          "default": 25,
+          "min": 15,
+          "max": 95,
+          "unit": "%"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Title",
+          "default": "SHOP BY PRICE"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.heading.label",
+          "default": "Announce your promotion"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_text1.label",
+          "default": "Shop This"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_link1.label"
+        },
+            {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image grid"
+            },
+        {
+          "type": "text",
+          "id": "heading1",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.heading.label",
+          "default": "Announce your promotion"
+        },
+        {
+          "type": "text",
+          "id": "cta_text1",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_text1.label",
+          "default": "Shop This"
+        },
+        {
+          "type": "url",
+          "id": "cta_link1",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_link1.label"
+        },
+            {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image grid"
+            },
+        {
+          "type": "text",
+          "id": "heading2",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.heading.label",
+          "default": "Announce your promotion"
+        },
+        {
+          "type": "text",
+          "id": "cta_text2",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_text1.label",
+          "default": "Shop This"
+        },
+        {
+          "type": "url",
+          "id": "cta_link2",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_link1.label"
+        },
+            {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image grid"
+            },
+        {
+          "type": "text",
+          "id": "heading3",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.heading.label",
+          "default": "Announce your promotion"
+        },
+        {
+          "type": "text",
+          "id": "cta_text3",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_text1.label",
+          "default": "Shop This"
+        },
+        {
+          "type": "url",
+          "id": "cta_link3",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_link1.label"
+        },
+            {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Image grid"
+            },
+        {
+          "type": "text",
+          "id": "heading4",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.heading.label",
+          "default": "Announce your promotion"
+        },
+        {
+          "type": "text",
+          "id": "cta_text4",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_text1.label",
+          "default": "Shop This"
+        },
+        {
+          "type": "url",
+          "id": "cta_link4",
+          "label": "t:sections.promo-grid.blocks.advanced.settings.cta_link1.label"
+        },
+            {
+            "type": "image_picker",
+            "id": "image4",
+            "label": "Image grid"
+            }
+      ]
+
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "limit": 1,
+      "settings": [{
+          "type": "range",
+          "id": "container_width",
+          "label": "t:sections.footer.blocks.logo.settings.container_width.label",
+          "default": 25,
+          "min": 15,
+          "max": 95,
+          "unit": "%"
+        },
+            {
+            "type": "text",
+            "id": "video",
+            "label": "video Link"
+            },
+            {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Gif Image"
+            }
+      ]
+
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Promos"
+    }
+  ]
+}
+{% endschema %}

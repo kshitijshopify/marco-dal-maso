@@ -1,0 +1,312 @@
+<style>
+  {% comment %} .flickity-page-dots {
+    bottom: 10px;
+  } {% endcomment %}
+  /* Basic layout */
+  .js-hero-carousel-custom .flickity-page-dots {
+    bottom: 10px;
+    color: #fff;display:none;
+}
+  .carousel-cell picture {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+  #hero-slider-{{ section.id }}.hero-slider { position: relative; overflow: hidden; --slider-height: 60vh; }
+  .js-hero-carousel-custom { width: 100%; }
+  .carousel-cell { width: 100%; box-sizing: border-box; position: relative; overflow: hidden; }
+
+  /* Height handled by JS variable --slider-height */
+  #hero-slider-{{ section.id }}, 
+  #hero-slider-{{ section.id }} .js-hero-carousel-custom, 
+  #hero-slider-{{ section.id }} .carousel-cell {
+    height: var(--slider-height);
+    max-height: var(--slider-height);
+  }
+  /* ensure Flickity viewport has a sane min-height to avoid flashes */
+  #hero-slider-{{ section.id }} .flickity-viewport { min-height: 220px; }
+
+/* Make Flickity viewport paint-isolated where supported */
+#hero-slider-{{ section.id }} .flickity-viewport {
+  contain: paint;
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+}
+</style>
+{% comment %}
+  slider-custom.liquid
+  Drop into sections/ and add in theme editor.
+{% endcomment %}
+<link
+        rel="preload"
+        as="image"
+        href="{{ section.blocks.first.settings.image | image_url: width: 1600 }}"
+        imagesizes="100vw"
+        imagesrcset="
+          {{ section.blocks.first.settings.image | image_url: width: 1200 }} 1200w,
+          {{ section.blocks.first.settings.image | image_url: width: 1600 }} 1600w,
+          {{ section.blocks.first.settings.image | image_url: width: 1800 }} 1800w">
+           
+<section id="hero-slider-{{ section.id }}" class="hero-slider section--hero" data-section-id="{{ section.id }}">
+  <!-- Flickity CSS/JS (include once; remove if already in theme) -->
+  <div class="carousel js-hero-carousel-custom">
+    {%- for block in section.blocks -%}
+      <div class="carousel-cell" data-slide-index="{{ forloop.index0 }}" data-block-id="{{ block.id }}">
+        {%- comment -%} Desktop image (only >= 768px) {%- endcomment -%}
+        <picture class="desktop-only">
+          {% if block.settings.image != blank %}
+            <source
+              media="(min-width: 768px)"
+              srcset="
+                {{ block.settings.image | image_url: width: 1200 }} 1200w,
+                {{ block.settings.image | image_url: width: 1600 }} 1600w,
+                {{ block.settings.image | image_url: width: 1800 }} 1800w,
+                {{ block.settings.image | image_url: width: 1800 }} 3000w
+              "
+              sizes="100vw">
+
+            <img
+              src="{{ block.settings.image | image_url: width: 3000 }}"
+              alt="{{ block.settings.title | escape }}"
+              class="slide-img"
+              {% if forloop.first %}
+              loading="eager" fetchpriority="high"
+              {% endif %}
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+              style="object-position: {{ block.settings.object-position | default: 'center' }};">
+          {% else %}
+            <img src="{{ 'placeholder-no-image.png' | asset_url }}" alt="" class="slide-img">
+          {% endif %}
+        </picture>
+
+
+        {%- comment -%} Mobile video or mobile poster fallback {%- endcomment -%}
+        {%- assign mobile_video = block.settings.video_mobile -%}
+        {% if block.settings.image_mobile != blank %}
+          {%- assign mobile_poster = block.settings.image_mobile -%}
+        {% else %}
+          
+        {% endif %}
+        {% if mobile_video != blank %}
+          <div class="mobile-video-wrap mobile-only">
+            <video class="mobile-video" muted playsinline loop preload="none" poster="{{ mobile_poster | img_url: '2048x' }}" aria-hidden="true">
+              {% comment %} data-src used to lazy-load only prev/curr/next {% endcomment %}
+              <source data-src="{{ mobile_video }}" type="video/mp4">
+            </video>
+          </div>
+        {% else %}
+          {%- comment -%} no mobile video — show mobile image (falls back to desktop image) {%- endcomment -%}
+          <picture class="mobile-only">
+            {% if block.settings.image_mobile != blank %}
+              <img src="{{ block.settings.image_mobile | img_url: '1024x' }}" alt="{{ block.settings.title | escape }}" class="slide-img" style="object-position: {{ block.settings.object-position | default: 'center' }};">
+            {% else %}
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: '1024x' }}" alt="{{ block.settings.title | escape }}" class="slide-img" style="object-position: {{ block.settings.object-position | default: 'center' }};">
+              {% endif %}
+            {% endif %}
+          </picture>
+        {% endif %}
+
+        {%- comment -%}
+          Overlay text (uses block.settings.*)
+          Position classes come from text_align / text_align_mobiles in your schema.
+        {%- endcomment -%}
+
+        {%- assign desktop_align = block.settings.text_align | default: 'vertical-center horizontal-center' -%}
+        {%- assign mobile_align = block.settings.text_align_mobiles | default: 'mobvertical-center mobhorizontal-center' -%}
+        {%- assign title_size = block.settings.title_size | default: 80 -%}
+        {%- assign text_color = block.settings.text_color | default: 'rgba(255,255,255,1)' -%}
+        {%- assign overlay_opacity = block.settings.overlay_opacity | default: 0 -%}
+
+        <div class="hero__text-container {{ desktop_align }} {{ mobile_align }} {% if mobile_align == 'mobbelow-image' %}mobile-below-image{% endif %}" style="--hero-title-size: {{ title_size }}px; --hero-text-color: {{ text_color }}; --hero-overlay-opacity: {{ overlay_opacity }}%;">
+          {% if mobile_align == 'mobbelow-image' %}
+            <!-- Overlay for desktop only -->
+            <div class="hero__text-wrap">
+              <div class="page-width {{ block.settings.text_align }} {{ block.settings.text_align_mobiles }}">
+                <div class="hero__text-content {{ block.settings.text_align }} {{ block.settings.text_align_mobiles }}">
+                  <div class="hero__text-shadoww">
+                    {% unless block.settings.top_subheading == blank %}
+                      <div class="hero__top-subtitle">
+                        <div class="animation-cropper"><div class="animation-contents">{{ block.settings.top_subheading | escape }}</div></div>
+                      </div>
+                    {% endunless %}
+                    {% unless block.settings.title == blank %}
+                      <h2 class="h1 hero__title" style="font-size: var(--hero-title-size); color: var(--hero-text-color);">
+                        <div class="animation-cropper"><div class="animation-contents">{{ block.settings.title | newline_to_br }}</div></div>
+                      </h2>
+                    {% endunless %}
+                    {% unless block.settings.subheading == blank %}
+                      <div class="hero__subtitle" style="color: var(--hero-text-color);">
+                        <div class="animation-cropper"><div class="animation-contents">{{ block.settings.subheading | escape }}</div></div>
+                      </div>
+                    {% endunless %}
+                    {% if block.settings.link_text or block.settings.link_text_2 %}
+                      <div class="hero__link">
+                        {% if block.settings.link_text != blank %}
+                          <a href="{{ block.settings.link }}" class="btn">{{ block.settings.link_text }}</a>
+                        {% endif %}
+                        {% if block.settings.link_text_2 != blank %}
+                          <a href="{{ block.settings.link_2 }}" class="btn">{{ block.settings.link_text_2 }}</a>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile below-image block -->
+            <div class="hero__text-wrap mobile-below">
+              <div class="page-width {{ block.settings.text_align }} {{ block.settings.text_align_mobiles }}">
+                <div class="hero__text-content {{ block.settings.text_align }} {{ block.settings.text_align_mobiles }}">
+                  <div class="hero__text-shadow">
+                    {% unless block.settings.top_subheading == blank %}
+                      <div class="hero__top-subtitle"><div class="animation-cropper"><div class="animation-contents">{{ block.settings.top_subheading | escape }}</div></div></div>
+                    {% endunless %}
+                    {% unless block.settings.title == blank %}
+                      <h2 class="h1 hero__title" style="font-size: var(--hero-title-size); color: var(--hero-text-color);"><div class="animation-cropper"><div class="animation-contents">{{ block.settings.title | newline_to_br }}</div></div></h2>
+                    {% endunless %}
+                    {% unless block.settings.subheading == blank %}
+                      <div class="hero__subtitle" style="color: var(--hero-text-color);"><div class="animation-cropper"><div class="animation-contents">{{ block.settings.subheading | escape }}</div></div></div>
+                    {% endunless %}
+                    {% if block.settings.link_text or block.settings.link_text_2 %}
+                      <div class="hero__link">
+                        {% if block.settings.link_text != blank %}
+                          <a href="{{ block.settings.link }}" class="btn">{{ block.settings.link_text }}</a>
+                        {% endif %}
+                        {% if block.settings.link_text_2 != blank %}
+                          <a href="{{ block.settings.link_2 }}" class="btn">{{ block.settings.link_text_2 }}</a>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <!-- Default overlay for all viewports (positioned) -->
+            <div class="hero__text-wrap overlayy">
+              <div class="page-width {{ block.settings.text_align }} {{ block.settings.text_align_mobiles }}">
+                <div class="hero__text-content {{ block.settings.text_align }} {{ block.settings.text_align_mobiles }}">
+                  <div class="hero__text-shadow">
+                    {% unless block.settings.top_subheading == blank %}
+                      <div class="hero__top-subtitle"><div class="animation-cropper"><div class="animation-contents">{{ block.settings.top_subheading | escape }}</div></div></div>
+                    {% endunless %}
+                    {% unless block.settings.title == blank %}
+                      <h2 class="h1 hero__title" style="font-size: var(--hero-title-size); color: var(--hero-text-color);"><div class="animation-cropper"><div class="animation-contents">{{ block.settings.title | newline_to_br }}</div></div></h2>
+                    {% endunless %}
+                    {% unless block.settings.subheading == blank %}
+                      <div class="hero__subtitle" style="color: var(--hero-text-color);"><div class="animation-cropper"><div class="animation-contents">{{ block.settings.subheading | newline_to_br }}</div></div></div>
+                    {% endunless %}
+                    {% if block.settings.link_text or block.settings.link_text_2 %}
+                      <div class="hero__link">
+                        {% if block.settings.link_text != blank %}
+                          <a href="{{ block.settings.link }}" class="btn">{{ block.settings.link_text }}</a>
+                        {% endif %}
+                        {% if block.settings.link_text_2 != blank %}
+                          <a href="{{ block.settings.link_2 }}" class="btn">{{ block.settings.link_text_2 }}</a>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+
+
+{% schema %}
+{
+  "name": "Slider Custom",
+  "class": "index-section--hero",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "lazyload_images",
+      "label": "Lazy load images",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Slide",
+      "settings": [
+        { "type": "text", "id": "top_subheading", "label": "Top subtitle" },
+        { "type": "textarea", "id": "title", "label": "Title", "default": "Two line\ntitle slide." },
+        { "type": "range", "id": "title_size", "label": "Title size", "default": 80, "min": 30, "max": 100, "unit": "px" },
+        { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "And optional subtext" },
+        { "type": "color", "id": "text_color", "label": "Text Color", "default": "rgba(255,255,255,1)" },
+        { "type": "url", "id": "link", "label": "Button link" },
+        { "type": "text", "id": "link_text", "label": "Button text", "default": "Optional button" },
+        { "type": "url", "id": "link_2", "label": "Second button link" },
+        { "type": "text", "id": "link_text_2", "label": "Second button text" },
+        { "type": "color", "id": "color_accent", "label": "Accent color", "default": "rgba(0,0,0,0)" },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment (desktop)",
+          "default": "vertical-center horizontal-center",
+          "options": [
+             { "value": "vertical-top horizontal-left", "label": "Top Left" },
+            { "value": "vertical-top horizontal-center", "label": "Top Center" },
+            { "value": "vertical-top horizontal-right", "label": "Top Right" },
+            { "value": "vertical-center horizontal-left", "label": "Center Left" },
+            { "value": "vertical-center horizontal-center", "label": "Center" },
+            { "value": "vertical-center horizontal-right", "label": "Center Right" },
+            { "value": "vertical-bottom horizontal-left", "label": "Bottom Left" },
+            { "value": "vertical-bottom horizontal-center", "label": "Bottom Center" },
+            { "value": "vertical-bottom horizontal-right", "label": "Bottom Right" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_align_mobiles",
+          "label": "Text alignment (mobile)",
+          "default": "mobvertical-center mobhorizontal-center",
+          "options": [
+            { "value": "mobvertical-top mobhorizontal-left", "label": "Top Left" },
+            { "value": "mobvertical-top mobhorizontal-center", "label": "Top Center" },
+            { "value": "mobvertical-top mobhorizontal-right", "label": "Top Right" },
+            { "value": "mobvertical-center mobhorizontal-left", "label": "Center Left" },
+            { "value": "mobvertical-center mobhorizontal-center", "label": "Center" },
+            { "value": "mobvertical-center mobhorizontal-right", "label": "Center Right" },
+            { "value": "mobvertical-bottom mobhorizontal-left", "label": "Bottom Left" },
+            { "value": "mobvertical-bottom mobhorizontal-center", "label": "Bottom Center" },
+            { "value": "mobvertical-bottom mobhorizontal-right", "label": "Bottom Right" },
+            { "value": "mobbelow-image", "label": "Below banner" }
+          ]
+        },
+        { "type": "image_picker", "id": "image", "label": "Desktop image" },
+        { "type": "text", "id": "video", "label": "Desktop video (not used for mobile)" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (fallback)" },
+        { "type": "text", "id": "video_mobile", "label": "Mobile video (MP4 URL)" },
+        { "type": "select", "id": "object-position", "label": "Image position", "default": "center", "options": [ { "value":"top","label":"Top" }, { "value":"center","label":"Center" }, { "value":"bottom","label":"Bottom" } ] },
+        { "type": "select", "id": "parallax_direction", "label": "Parallax direction", "default": "top", "options":[ { "value":"top","label":"Top" }, { "value":"left","label":"Left" } ] },
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity (%)", "default": 0, "min": 0, "max": 100, "step": 2 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slider Custom",
+      "blocks": [
+        { "type": "image", "settings": { "title": "Endless\npossibilities.", "subheading": "Bring your brand to life" } },
+        { "type": "image", "settings": { "title": "Two line\ntitle slide.", "subheading": "And big, beautiful imagery" } }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}

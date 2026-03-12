@@ -1,0 +1,107 @@
+{%- liquid
+  assign aspect_ratio = 100.0 | divided_by: block.settings.aspect-ratio
+  assign description = block.settings.description
+  assign showvidpromo = block.settings.video_promo
+  assign showverticalpromo = block.settings.vertical_promo
+  assign description2 = block.settings.showcolldesc
+  assign code = block.settings.code
+  assign display_type = block.settings.image-display-type
+  assign heading_type = block.settings.heading-type
+  assign image = block.settings.image
+  assign light_text = block.settings.light-text
+  assign link_text = block.settings.link-text
+  assign link_url = block.settings.link-url
+   assign link_customPopup = block.settings.openaspopup
+  assign mobile_image = block.settings.mobile-image
+  assign mobile_display_type = block.settings.mobile-image-display-type
+  assign mobile_aspect_ratio = 100.0 | divided_by: block.settings.mobile-aspect-ratio
+  assign mobile_hide_description = block.settings.mobile-hide-description
+  assign mobile_text_alignment = block.settings.mobile-text-alignment
+  assign overline = block.settings.overline
+  assign text_position = block.settings.textposition
+  assign overlay_style = block.settings.overlay-style
+  assign parallax_enabled = block.settings.parallax-enabled
+  assign promo_width = block.settings.promo-width
+  assign text_bg_color = block.settings.text-background-color
+  assign text_color = block.settings.txt_color
+  assign text_style = block.settings.text-style
+  assign text_x_alignment = block.settings.text-horizontal-alignment
+  assign text_y_alignment = block.settings.text-vertical-alignment
+  assign text_width = block.settings.text-width
+  assign title = block.settings.title
+
+  assign cover_link = false
+  if link_url != blank and description == blank
+    assign cover_link = true
+  elsif link_url == blank and link_customPopup == true
+    assign cover_link = true
+  endif
+
+  assign collection = collections[block.settings.collection].title
+-%}
+{% if collection == colltitle %}
+<div
+  class="{% if showverticalpromo %}span-2-rows {% endif %}{% if showvidpromo %}collection-promo--root__videoblock {% endif %} {{ collection }}--{{ colltitle }} collection-promo--root {% if code != blank %}collection-promo--root___codeblock{% endif %}"
+  data-promo-width="{{ promo_width }}" data-textpos="{{ text_position }}" data-overlay="{{ overlay_style }}" data-y-alignment="{{ text_y_alignment }}" data-x-alignment="{{ text_x_alignment }}"
+  style="background-color:{{ text_bg_color }};"
+  {{ block.shopify_attributes }}
+>
+  {%- if cover_link -%}
+    <a
+      class="collection-promo--cover-link  {% if link_customPopup %}collmetafieldbanner{% endif %}"
+      {% unless link_customPopup %}href="{{ link_url }}"{% endunless %}
+      {%- if title != blank -%}
+        aria-label="{{ title }}"
+      {%- else -%}
+        aria-label="{{ image.alt }}"
+      {%- endif -%}
+    >
+  {%- endif -%}
+
+  {%- if image -%}
+    <div class="imagebnrr__promotion relative {% if mobile_image %} small--hide{% endif %}">
+      <img class="banner_img " src="{{ image | img_url:'master'}}" />
+    </div>
+  {%- endif -%}
+  {%- if mobile_image -%}
+    <div class="imagebnrr__promotion relative medium-up--hide">
+      <img class="banner_img " src="{{ mobile_image | img_url:'master'}}" />
+    </div>
+  {%- endif -%}
+
+  {%-
+    render "stacked-text",
+    section: section,
+    block: block
+    bg_color: text_bg_color,
+    text_color: text_color,
+    cover_link: cover_link,
+    description: description,
+    description2: description2,
+    code: code,
+    overlay_style: overlay_style,
+    heading_type: heading_type,
+    id: block.id,
+    light_text: light_text,
+    link_text: link_text,
+    link_url: link_url,
+    link_customPopup:link_customPopup,
+    mobile_hide_description: mobile_hide_description,
+    mobile_alignment: mobile_text_alignment,
+    overline: overline,
+    style: text_style,
+    title: title,
+    width: text_width,
+    text_position: text_position,
+    x_alignment: text_x_alignment,
+    y_alignment: text_y_alignment
+  -%}
+
+  {%- if cover_link -%}
+    </a>
+  {%- endif -%}
+  {%- if showvidpromo -%}
+    {% render 'collection-metavideo', section: section, block: block, bg_color: text_bg_color, text_color: text_color %}
+  {%- endif -%}
+</div>
+{% endif %}

@@ -1,0 +1,63 @@
+{% style %}
+  .scrolling-text--{{ section.id }} {
+    --move-speed: {{ section.settings.speed }}s;
+  }
+
+  .scrolling-text--{{ section.id }} span {
+    font-size: {{ section.settings.text_size }}px;
+  }
+
+  {% if section.settings.color_scheme == 'button' %}
+    .scrolling-text--{{ section.id }} {
+      background: {{ settings.color_button }};
+      color: {{ settings.color_button_text }};
+    }
+  {% endif %}
+{% endstyle %}
+
+{% if section.settings.link != blank %}
+  <a href="{{ section.settings.link }}">
+{% endif %}
+<div class="scrolling-text scrolling-text--{{ section.id }}">
+  <div class="scrolling-text__inner scrolling-text__inner--{{ section.settings.direction }}" aria-hidden="true" tabindex="0" style="gap: {% if section.settings.text_spacing %}20px{% else %}10px{% endif %};">   
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger1"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger2"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger3"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger4"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger5"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger6"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger7"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger8"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger9"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger10"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger11"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger12"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+    <span> Early Access to Black Friday: <button class="klaviyo_form_trigger13"> <b>SIGN UP</b> </button>  |</span>
+    <span>{{ section.settings.text }}</span>
+  </div>
+  {% for i in (1..13) %}
+  <script type="text/javascript">
+	document.querySelector('.klaviyo_form_trigger{{ i }}').addEventListener('click', function (){
+		window._klOnsite = window._klOnsite || [];
+        window._klOnsite.push(['openForm', 'V5CCEP']);
+	});      
+  </script>
+  {% endfor %}
+</div>
+{% if section.settings.link != blank %}
+  </a>
+{% endif %}
+

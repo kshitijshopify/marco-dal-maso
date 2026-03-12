@@ -1,0 +1,346 @@
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+{%- if section.settings.full_width -%}
+  {%- assign is_boxed = false -%}
+{%- else -%}
+  {%- assign is_boxed = true -%}
+{%- endif -%}
+
+{%- liquid
+  assign image_width = section.settings.image_width
+  assign overlap_images = true
+  if section.settings.image == blank or section.settings.image2 == blank
+    assign overlap_images = false
+  endif
+
+  if section.settings.image == blank and section.settings.image2 == blank
+    assign overlap_images = true
+    assign placeholder_images = true
+  endif
+-%}
+
+{% style %}
+  {% if section.settings.top_padding == false %}
+    .index-section { margin-top: 0 !important; }
+  {% endif %}
+  {% if section.settings.bottom_padding == false %}
+    .index-section { margin-bottom: 0 !important; }
+  {% endif %}
+{% endstyle %}
+
+<div {% if section.settings.custom_id != blank %}id="{{ section.settings.custom_id }}"{% endif %} class="index-section" {%- if section.settings.body_bg != 'rgba(0,0,0,0)' -%}style="background-color: {{ section.settings.body_bg }};"{% endif %}>
+
+  <div class="{% if is_boxed %}page-width {% else %}imagetext__fullwidth {% endif %} feature-row-wrapper feature-row--{{ image_width }}">
+    {%- capture image_layout -%}
+      <div class="feature-row__item feature-row__images{% if overlap_images %} feature-row__item--overlap-images{% endif %} {% if placeholder_images %}feature-row__item--placeholder-images{% endif %}" data-aos>
+          {%- if section.settings.image != blank -%}
+            <div class="feature-row__first-image">
+              {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}<a href="{{ section.settings.button_link }}">{%- endif -%}
+                <div class="image-wrap {% if section.settings.image_mask != 'none' %}svg-mask svg-mask--{{ section.settings.image_mask }}{% endif %}" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image.aspect_ratio }}%;">
+                  {%- liquid
+                    if section.settings.image2 == blank
+                      assign sizeVariable = section.settings.image_width | append: 'vw'
+                      assign fallback = '100vw'
+                    else
+                      assign sizeVariable = 'calc(0.4 * 50vw)'
+                      assign fallback = '40vw'
+                    endif
+
+                    assign imageWidth = section.settings.image_width | times: 1
+                    if imageWidth >= 50
+                      assign loading = section.settings.lazyload_images
+                    else
+                      assign loading = true
+                    endif
+                  -%}
+                  {%- render 'image-element',
+                    img: section.settings.image,
+                    widths: '180, 360, 540, 750, 900, 1080',
+                    loading: loading,
+                    sizeVariable: sizeVariable,
+                    fallback: fallback,
+                    classes: 'feature-row__image',
+                  -%}
+                </div>
+              {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}</a>{%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.image2 != blank -%}
+            <div class="feature-row__second-image">
+              {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}<a href="{{ section.settings.button_link }}">{%- endif -%}
+                <div class="image-wrap {% if section.settings.image2_mask != 'none' %}svg-mask svg-mask--{{ section.settings.image2_mask }}{% endif %}" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image2.aspect_ratio }}%;">
+                  {%- liquid
+                    if section.settings.image == blank
+                      assign sizeVariable = section.settings.image_width | append: 'vw'
+                      assign fallback = '100vw'
+                    else
+                      assign sizeVariable = 'calc(0.6 * 50vw)'
+                      assign fallback = '60vw'
+                    endif
+                  -%}
+                  {%- render 'image-element',
+                    img: section.settings.image2,
+                    widths: '180, 360, 540, 750, 900, 1080',
+                    sizeVariable: sizeVariable,
+                    fallback: fallback,
+                    classes: 'feature-row__image',
+                  -%}
+                </div>
+              {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}</a>{%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.image == blank and section.settings.image2 == blank -%}
+            <div class="placeholder-image-wrap">
+              <div class="image-wrap">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            </div>
+            <div class="placeholder-image-wrap">
+              <div class="image-wrap">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            </div>
+          {%- endif -%}
+      </div>
+    {%- endcapture -%}
+
+    <div class="feature-row">
+      {%- if section.settings.layout == 'left' -%}
+       <div class="grid grid--uniform">
+          {%- for block in section.blocks  -%}
+              {% if block.settings.image  != blank %}
+                    <div class="grid__item grid-product small--one-half medium-up--one-half">
+                      {% if   block.settings.link  != blank %}<a href="{{  block.settings.link  }}">{% endif %}
+                          <img src="{{ block.settings.image | img_url:'master' }}" />
+                      {% if   block.settings.link  != blank %}</a>{% endif %}
+                    </div>
+              {% endif %}
+          {% endfor %}
+  </div>
+      {%- endif -%}
+
+      <div class="feature-row__item feature-row__text feature-row__text--{{ section.settings.layout }} text-{{ section.settings.align_text }}" data-aos>
+        
+        <div>
+
+          {%- if section.settings.subtitle != blank -%}
+          <div class="subheading appear-delay{% cycle '','-1','-2','-3','-4' %}">{{ section.settings.subtitle }}</div>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h2 class="h1 appear-delay{% cycle '','-1','-2','-3','-4' %}">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="rte appear-delay{% cycle '','-1','-2','-3','-4' %}">{{ section.settings.text }}</div>
+        {%- endif -%}
+        {%- if section.settings.button_label != blank -%}
+          <div class="appear-delay{% cycle '','-1','-2','-3','-4' %}">
+            <a href="{{ section.settings.button_link }}" class="btn{% if section.settings.button_style == 'secondary' %} btn--tertiary{% endif %}">
+              {{ section.settings.button_label }}
+            </a>
+          </div>
+        {%- endif -%}
+
+          
+
+          
+        </div>
+      </div>
+
+      {%- if section.settings.layout == 'right' -%}
+        <div class="grid grid--uniform">
+          {%- for block in section.blocks  -%}
+              {% if block.settings.image  != blank %}
+                    <div class="grid__item grid-product small--one-half medium-up--one-half">
+                      {% if   block.settings.link  != blank %}<a href="{{  block.settings.link  }}">{% endif %}
+                          <img src="{{ block.settings.image | img_url:'master' }}" />
+                      {% if   block.settings.link  != blank %}</a>{% endif %}
+                    </div>
+              {% endif %}
+          {% endfor %}
+  </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+</div>
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+
+{% schema %}
+{
+  "name": "Text with Product Column",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_id",
+      "label": "Custom Id of section",
+      "info": "To use for CSS, id should be a word without any spaces or special characters"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Show content in full width",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "t:sections.text-and-image.settings.subtitle.label"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "t:sections.text-and-image.settings.title.label",
+      "default": "Image with text"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.text-and-image.settings.text.label",
+      "default": "<p>Pair large text with an image to tell a story, explain a detail about your product, or describe a new promotion.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.text-and-image.settings.button_label.label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.text-and-image.settings.button_link.label"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "t:sections.text-and-image.settings.button_style.label",
+      "default": "primary",
+      "options": [
+        {
+          "value": "primary",
+          "label": "t:sections.text-and-image.settings.button_style.options.primary.label"
+        },
+        {
+          "value": "secondary",
+          "label": "t:sections.text-and-image.settings.button_style.options.secondary.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "t:sections.text-and-image.settings.align_text.label",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.text-and-image.settings.align_text.options.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.text-and-image.settings.align_text.options.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.text-and-image.settings.align_text.options.right.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "label": "t:common.image_size.label",
+      "default": "50",
+      "options": [
+        {
+          "value": "33",
+          "label": "t:common.image_size.options.small.label"
+        },
+        {
+          "value": "50",
+          "label": "t:common.image_size.options.medium.label"
+        },
+        {
+          "value": "66",
+          "label": "t:common.image_size.options.large.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Product position",
+      "default": "right",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.text-and-image.settings.layout.options.left.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.text-and-image.settings.layout.options.right.label"
+        }
+      ]
+    },
+      {
+        "type": "color",
+        "id": "body_bg",
+        "label": "Body Background",
+        "default": "#ffffff"
+      },
+    {
+      "type": "checkbox",
+      "id": "divider",
+      "label": "t:sections.text-and-image.settings.divider.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "top_padding",
+      "label": "t:sections.text-and-image.settings.top_padding.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "bottom_padding",
+      "label": "t:sections.text-and-image.settings.bottom_padding.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "lazyload_images",
+      "label": "t:common.lazyload_images.label",
+      "info": "t:common.lazyload_images.info",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Column",
+      "settings": [
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            },
+            {
+              "type": "url",
+              "id": "link",
+              "label": "URL"
+            }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name":"Text with Product Column",
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header", "custom.popups"]
+  }
+}
+{% endschema %}

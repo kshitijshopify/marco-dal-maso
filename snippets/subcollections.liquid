@@ -1,0 +1,145 @@
+{% comment %}
+  Generate a list of collection tiles if the main menu item is
+  active and its children are also collection links
+{% endcomment %}
+{% if linklists[collhandle].links.size > 0 %}
+  {%- liquid
+  capture gridView
+    if sub_collection_links.size < per_row
+      assign products_per_row = per_row
+    else
+      assign products_per_row = per_row
+    endif
+    render 'products_per_row', products_per_row: products_per_row, style: 'fractions'
+  endcapture
+-%}
+
+
+  {% assign subcount = 0 %}
+  {% for link in linklists[collhandle].links %}
+    {% if link.url contains '/collections/' %}
+      {%- liquid
+        assign sub_collection_split = link.url | split: '/'
+
+         assign sub_collection_splitfirst = link.url | split: '/collections/' | last
+     
+                if sub_collection_splitfirst contains '/'
+                  assign sub_collection_handle = sub_collection_splitfirst | split: '/' | first                  
+                  assign sub_collection = collections[sub_collection_handle]
+                else
+                  assign sub_collection_handle = sub_collection_split | last
+                  assign sub_collection = collections[sub_collection_handle]
+                endif
+
+         
+        
+      -%}
+      {% if sub_collection != blank -%}
+        {% unless parent_url == sub_collection.url %}
+          {% assign subcount = subcount | plus: 1 %}
+        {% endunless %}
+      {% endif %}  
+    {% endif %}
+  {% endfor %}
+  
+  {% if subcount > 0 %}
+  <h4 class="h3">Top Categories</h4>
+  {% endif %}
+  
+   <div class="{{ collhandle }} gg collrow__subcolls ffdd collperrow_{{ subcount }} {% if block.settings.carousel and subcount >= per_row %}coll-carousel {% else %}grid grid--uniform grid--center {% endif %} {% unless settings.collection_grid_gutter %} grid--no-gutters{% endunless %}"
+    {% if block.settings.carousel and subcount >= per_row %}data-flickity='{ "cellAlign": "left", "contain": true, "pageDots": false, "wrapAround": true }'{% endif %}>
+    {%- liquid
+      unless current_tags
+        assign current_items = ''
+    
+        for link in linklists[collhandle].links
+          if link.active and link.levels > 0 and link.child_active == false
+            unless current_items contains link.title
+              render 'sub-collections', per_row: per_row, sub_collection_links: link.links, block: block
+              assign current_items = current_items | append: link.title
+            endunless
+          else            
+              if link.url contains '/collections/' 
+                 liquid
+                  assign sub_collection_split = link.url | split: '/'                  
+                  assign sub_collection_splitfirst = link.url | split: '/collections/' | last
+     
+                if sub_collection_splitfirst contains '/'
+                  assign sub_collection_handle = sub_collection_splitfirst | split: '/' | first                  
+                  assign sub_collection = collections[sub_collection_handle]
+                else
+                  assign sub_collection_handle = sub_collection_split | last
+                  assign sub_collection = collections[sub_collection_handle]
+                endif
+          
+                if sub_collection != blank 
+                   unless parent_url == sub_collection.url 
+                     render 'collection-grid-item', collection_title: link.title, collection_url: link.url, collection: sub_collection, gridView: gridView, per_row: per_row, sizeVariable: gridView, fallback: 'variable',
+                   endunless 
+                 endif 
+               endif 
+             
+          endif
+          for sub_link in link.links
+            if sub_link.active and sub_link.levels > 0 and sub_link.child_active == false
+              unless current_items contains sub_link.title
+                render 'sub-collections', per_row: per_row, sub_collection_links: sub_link.links, block: block
+                assign current_items = current_items | append: sub_link.title
+              endunless
+            endif
+            for sub_sub_link in sub_link.links
+              if sub_sub_link.active and sub_sub_link.url == sub_link.url
+                unless current_items contains sub_sub_link.title
+                  render 'sub-collections', per_row: per_row, parent_url: sub_link.url, sub_collection_links: sub_link.links, block: block
+                  assign current_items = current_items | append: sub_sub_link.title
+                endunless
+              elsif sub_sub_link.active and sub_sub_link.levels > 0
+                unless current_items contains sub_sub_link.title
+                  render 'sub-collections', per_row: per_row, sub_collection_links: sub_sub_link.links, block: block
+                  assign current_items = current_items | append: sub_sub_link.title
+                endunless
+              endif
+            endfor
+          endfor
+        endfor
+      endunless
+    -%}
+   </div>
+  {% else %}
+  
+    {%- liquid
+      unless current_tags
+        assign current_items = ''
+    
+        for link in linklists.new-menu.links
+          if link.active and link.levels > 0 and link.child_active == false
+            unless current_items contains link.title
+              render 'sub-collections', per_row: per_row, sub_collection_links: link.links, block: block
+              assign current_items = current_items | append: link.title
+            endunless
+          endif
+          for sub_link in link.links
+            if sub_link.active and sub_link.levels > 0 and sub_link.child_active == false
+              unless current_items contains sub_link.title
+                render 'sub-collections', per_row: per_row, sub_collection_links: sub_link.links, block: block
+                assign current_items = current_items | append: sub_link.title
+              endunless
+            endif
+            for sub_sub_link in sub_link.links
+              if sub_sub_link.active and sub_sub_link.url == sub_link.url
+                unless current_items contains sub_sub_link.title
+                  render 'sub-collections', per_row: per_row, parent_url: sub_link.url, sub_collection_links: sub_link.links, block: block
+                  assign current_items = current_items | append: sub_sub_link.title
+                endunless
+              elsif sub_sub_link.active and sub_sub_link.levels > 0
+                unless current_items contains sub_sub_link.title
+                  render 'sub-collections', per_row: per_row, sub_collection_links: sub_sub_link.links, block: block
+                  assign current_items = current_items | append: sub_sub_link.title
+                endunless
+              endif
+            endfor
+          endfor
+        endfor
+      endunless
+    -%}
+  {% endif %}
