@@ -1,1 +1,245 @@
-{"sections":{"main":{"type":"main-page","custom_css":[".section-header {margin-bottom: 20px;}"],"settings":{}},"text_columns_jwpxHz":{"type":"text-columns","blocks":{"text_block_nLmwtV":{"type":"text_block","settings":{"enable_image":false,"image_mask":"none","image_width":650,"title":"","text":"<h4><strong>Italy<\/strong><\/h4><h3>Free, sempre<\/h3><p>Free Italian shipping (1-2 business days) tracked<\/p><p>Duties and taxes included<\/p>","style_link":false,"button_label":"","button_link":""}}},"block_order":["text_block_nLmwtV"],"custom_css":[".grid__item {padding: 15px 8.5px 0; margin-bottom: 20px !important;}",".grid {margin: 0px 0 50px -0px !important; display: flex; flex-flow: row wrap; padding: 0 15px; justify-content: center;}","@media screen and (min-width: 769px) {.grid__item {padding: 15px 20px 0; } .grid {margin: 0 0 0 -20px; } .rte-setting {padding: 60px 30px; } h4 {font-size: 18px; } h2 {font-size: 30px; }}",".rte-setting {border-radius: 10px; box-shadow: 0 10px 20px #0000001a, 0 0 #0000001a; padding: 30px 15px; height: 100%;}","h4 {letter-spacing: 0; font-size: 15px;}"],"name":"t:sections.text-columns.presets.text_columns_with_images.name","settings":{"title":"","btntext":"","btnurl":"","text":"","align_text":"center","divider":false,"mobile_link":""}},"text_columns_URUd78":{"type":"text-columns","blocks":{"text_block_gxD3ck":{"type":"text_block","settings":{"enable_image":false,"image_mask":"none","image_width":650,"title":"","text":"<h4>United States<\/h4><h2>$250+<\/h2><p>Free tracked shipping (5-7 business days).<\/p><p>Duties and taxes included<\/p>","style_link":false,"button_label":"","button_link":""}},"text_block_rwYg9V":{"type":"text_block","settings":{"enable_image":false,"image_mask":"none","image_width":650,"title":"","text":"<h4>United Kingdom<\/h4><h2>£200+<\/h2><p>Free tracked shipping (3-5 business days)<\/p>","style_link":false,"button_label":"","button_link":""}},"text_block_BTEQyA":{"type":"text_block","settings":{"enable_image":false,"image_mask":"none","image_width":650,"title":"","text":"<h4>European Union<\/h4><h2>€230+<\/h2><p>Free tracked shipping (3-5 business days)<\/p>","style_link":false,"button_label":"","button_link":""}},"text_block_kKBnU9":{"type":"text_block","settings":{"enable_image":false,"image_mask":"none","image_width":650,"title":"","text":"<h4>Canada<\/h4><h2>CAD $350+<\/h2><p>Free tracked shipping (7-10 business days)<br\/><\/p><p>Duties and taxes included<\/p>","style_link":false,"button_label":"","button_link":""}},"text_block_HmNKNw":{"type":"text_block","settings":{"enable_image":false,"image_mask":"none","image_width":650,"title":"","text":"<h4>Australia<\/h4><h2>AUD $380+<\/h2><p>Free tracked shipping (8-12 business days)<\/p>","style_link":false,"button_label":"","button_link":""}},"text_block_qCB8iB":{"type":"text_block","settings":{"enable_image":false,"image_mask":"none","image_width":650,"title":"","text":"<h4>Rest of World<\/h4><h2>$300+ USD<\/h2><p>Free international shipping (10-15 business days)<br\/>Tracking included<\/p>","style_link":false,"button_label":"","button_link":""}},"text_block_ewEKXY":{"type":"text_block","disabled":true,"settings":{"enable_image":false,"image_mask":"none","image_width":650,"title":"","text":"<h4><strong>Italy<\/strong><\/h4><h2>Always Free<\/h2><p>Free international shipping (10-15 business days)<br\/>Tracking included<\/p>","style_link":false,"button_label":"","button_link":""}}},"block_order":["text_block_gxD3ck","text_block_rwYg9V","text_block_BTEQyA","text_block_kKBnU9","text_block_HmNKNw","text_block_qCB8iB","text_block_ewEKXY"],"custom_css":[".grid__item {padding: 15px 8.5px 0; margin-bottom: 20px !important;}",".grid {margin: 0px 0 50px -0px !important; display: flex; flex-flow: row wrap; padding: 0 15px;}","@media screen and (min-width: 769px) {.grid__item {padding: 15px 20px 0; } .grid {margin: 0 0 0 -20px; } .rte-setting {padding: 60px 30px; } h4 {font-size: 18px; } h2 {font-size: 30px; }}",".rte-setting {border-radius: 10px; box-shadow: 0 10px 20px #0000001a, 0 0 #0000001a; padding: 30px 15px; height: 100%;}","h4 {letter-spacing: 0; font-size: 15px;}"],"name":"t:sections.text-columns.presets.text_columns_with_images.name","settings":{"title":"","btntext":"","btnurl":"","text":"","align_text":"center","divider":false,"mobile_link":""}},"text_with_icons_mxVrhU":{"type":"text-with-icons","blocks":{"text_block_NFqNiJ":{"type":"text_block","settings":{"enable_icon":false,"icon":"chat","title":"Secure Packaging","text":"<p>Each piece is carefully wrapped in our signature packaging, ensuring your jewelry arrives in perfect condition. Our eco-conscious materials reflect our commitment to sustainability.<\/p>"}},"text_block_YcM7GT":{"type":"text_block","settings":{"enable_icon":false,"icon":"chat","title":"Order Processing","text":"<p>We aim to process all ready-to-ship orders within 1–2 business days.<\/p><p>Made-to-order and custom pieces may require additional time — estimated delivery timelines are shared on each product page and at checkout. You’ll receive a confirmation email with tracking details as soon as your order has been dispatched.<\/p>"}},"text_block_6wBJqU":{"type":"text_block","settings":{"enable_icon":false,"icon":"chat","title":"Tracking & Insurance","text":"<p>Every shipment includes full tracking and insurance coverage. You'll receive tracking information via email once your order ships.<\/p>"}}},"block_order":["text_block_NFqNiJ","text_block_YcM7GT","text_block_6wBJqU"],"custom_css":[".text-with-icons {background: #efefef; padding: 50px 0;}"],"name":"t:common.text_with_icons.presets.text_with_icons.name","settings":{"title":"Shipping Details","align_text":"center","desktop_columns_per_row":3,"icon_color":"#000000","button_label":"","button_link":"","divider":false}}},"order":["main","text_columns_jwpxHz","text_columns_URUd78","text_with_icons_mxVrhU"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "custom_css": [
+        ".section-header {margin-bottom: 20px;}"
+      ],
+      "settings": {}
+    },
+    "text_columns_jwpxHz": {
+      "type": "text-columns",
+      "blocks": {
+        "text_block_nLmwtV": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "image_mask": "none",
+            "image_width": 650,
+            "title": "",
+            "text": "<h4><strong>Italy</strong></h4><h3>Free, sempre</h3><p>Free Italian shipping (1-2 business days) tracked</p><p>Duties and taxes included</p>",
+            "style_link": false,
+            "chat_btn": false,
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_block_nLmwtV"
+      ],
+      "custom_css": [
+        ".grid__item {padding: 15px 8.5px 0; margin-bottom: 20px !important;}",
+        ".grid {margin: 0px 0 50px -0px !important; display: flex; flex-flow: row wrap; padding: 0 15px; justify-content: center;}",
+        "@media screen and (min-width: 769px) {.grid__item {padding: 15px 20px 0; } .grid {margin: 0 0 0 -20px; } .rte-setting {padding: 60px 30px; } h4 {font-size: 18px; } h2 {font-size: 30px; }}",
+        ".rte-setting {border-radius: 10px; box-shadow: 0 10px 20px #0000001a, 0 0 #0000001a; padding: 30px 15px; height: 100%;}",
+        "h4 {letter-spacing: 0; font-size: 15px;}"
+      ],
+      "name": "t:sections.text-columns.presets.text_columns_with_images.name",
+      "settings": {
+        "title": "",
+        "btntext": "",
+        "btnurl": "",
+        "text": "",
+        "align_text": "center",
+        "divider": false,
+        "mobile_link": ""
+      }
+    },
+    "text_columns_URUd78": {
+      "type": "text-columns",
+      "blocks": {
+        "text_block_gxD3ck": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "image_mask": "none",
+            "image_width": 650,
+            "title": "",
+            "text": "<h4>United States</h4><h2>$250+</h2><p>Free tracked shipping (5-7 business days).</p><p>Duties and taxes included</p>",
+            "style_link": false,
+            "chat_btn": false,
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_rwYg9V": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "image_mask": "none",
+            "image_width": 650,
+            "title": "",
+            "text": "<h4>United Kingdom</h4><h2>£200+</h2><p>Free tracked shipping (3-5 business days)</p><p>Duties and taxes included</p>",
+            "style_link": false,
+            "chat_btn": false,
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_BTEQyA": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "image_mask": "none",
+            "image_width": 650,
+            "title": "",
+            "text": "<h4>European Union</h4><h2>€230+</h2><p>Free tracked shipping (3-5 business days)</p><p>Duties and taxes included</p>",
+            "style_link": false,
+            "chat_btn": false,
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_kKBnU9": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "image_mask": "none",
+            "image_width": 650,
+            "title": "",
+            "text": "<h4>Canada</h4><h2>CAD $350+</h2><p>Free tracked shipping (7-10 business days)<br/></p><p>Duties and taxes included</p>",
+            "style_link": false,
+            "chat_btn": false,
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_HmNKNw": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "image_mask": "none",
+            "image_width": 650,
+            "title": "",
+            "text": "<h4>Australia</h4><h2>AUD $380+</h2><p>Free tracked shipping (8-12 business days)</p>",
+            "style_link": false,
+            "chat_btn": false,
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_qCB8iB": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "image_mask": "none",
+            "image_width": 650,
+            "title": "",
+            "text": "<h4>Rest of World</h4><h2>$300+ USD</h2><p>Free international shipping (10-15 business days)<br/>Tracking included</p>",
+            "style_link": false,
+            "chat_btn": false,
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "text_block_ewEKXY": {
+          "type": "text_block",
+          "disabled": true,
+          "settings": {
+            "enable_image": false,
+            "image_mask": "none",
+            "image_width": 650,
+            "title": "",
+            "text": "<h4><strong>Italy</strong></h4><h2>Always Free</h2><p>Free international shipping (10-15 business days)<br/>Tracking included</p>",
+            "style_link": false,
+            "chat_btn": false,
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_block_gxD3ck",
+        "text_block_rwYg9V",
+        "text_block_BTEQyA",
+        "text_block_kKBnU9",
+        "text_block_HmNKNw",
+        "text_block_qCB8iB",
+        "text_block_ewEKXY"
+      ],
+      "custom_css": [
+        ".grid__item {padding: 15px 8.5px 0; margin-bottom: 20px !important;}",
+        ".grid {margin: 0px 0 50px -0px !important; display: flex; flex-flow: row wrap; padding: 0 15px;}",
+        "@media screen and (min-width: 769px) {.grid__item {padding: 15px 20px 0; } .grid {margin: 0 0 0 -20px; } .rte-setting {padding: 60px 30px; } h4 {font-size: 18px; } h2 {font-size: 30px; }}",
+        ".rte-setting {border-radius: 10px; box-shadow: 0 10px 20px #0000001a, 0 0 #0000001a; padding: 30px 15px; height: 100%;}",
+        "h4 {letter-spacing: 0; font-size: 15px;}"
+      ],
+      "name": "t:sections.text-columns.presets.text_columns_with_images.name",
+      "settings": {
+        "title": "",
+        "btntext": "",
+        "btnurl": "",
+        "text": "",
+        "align_text": "center",
+        "divider": false,
+        "mobile_link": ""
+      }
+    },
+    "text_with_icons_mxVrhU": {
+      "type": "text-with-icons",
+      "blocks": {
+        "text_block_NFqNiJ": {
+          "type": "text_block",
+          "settings": {
+            "enable_icon": false,
+            "icon": "chat",
+            "title": "Secure Packaging",
+            "text": "<p>Each piece is carefully wrapped in our signature packaging, ensuring your jewelry arrives in perfect condition. Our eco-conscious materials reflect our commitment to sustainability.</p>"
+          }
+        },
+        "text_block_YcM7GT": {
+          "type": "text_block",
+          "settings": {
+            "enable_icon": false,
+            "icon": "chat",
+            "title": "Order Processing",
+            "text": "<p>We aim to process all ready-to-ship orders within 1–2 business days.</p><p>Made-to-order and custom pieces may require additional time — estimated delivery timelines are shared on each product page and at checkout. You’ll receive a confirmation email with tracking details as soon as your order has been dispatched.</p>"
+          }
+        },
+        "text_block_6wBJqU": {
+          "type": "text_block",
+          "settings": {
+            "enable_icon": false,
+            "icon": "chat",
+            "title": "Tracking & Insurance",
+            "text": "<p>Every shipment includes full tracking and insurance coverage. You'll receive tracking information via email once your order ships.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_block_NFqNiJ",
+        "text_block_YcM7GT",
+        "text_block_6wBJqU"
+      ],
+      "custom_css": [
+        ".text-with-icons {background: #efefef; padding: 50px 0;}"
+      ],
+      "name": "t:common.text_with_icons.presets.text_with_icons.name",
+      "settings": {
+        "title": "Shipping Details",
+        "align_text": "center",
+        "desktop_columns_per_row": 3,
+        "icon_color": "#000000",
+        "button_label": "",
+        "button_link": "",
+        "divider": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "text_columns_jwpxHz",
+    "text_columns_URUd78",
+    "text_with_icons_mxVrhU"
+  ]
+}
