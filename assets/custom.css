@@ -465,8 +465,8 @@ h2.section-header__title {
   
     margin-right: 0px;
 }
-.custom-rich-text .page-width h2 {
-    font-family: Nevis !important;
+.custom-rich-text .page-width h2:first-child {
+    font-family: Nevis!important;
     font-size: 24px;
     font-weight: 700;
     line-height: 36px;
