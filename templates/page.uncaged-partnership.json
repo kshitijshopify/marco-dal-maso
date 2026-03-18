@@ -1,1 +1,234 @@
-{"sections":{"logo_list_zBkdRw":{"type":"logo-list","blocks":{"logo_image_X9gnLa":{"type":"logo_image","settings":{"image":"shopify:\/\/shop_images\/MDM-logo_1.jpg","link":""}},"logo_image_UnpWDV":{"type":"logo_image","settings":{"image":"shopify:\/\/shop_images\/Uncaged_Logo_1.jpg","link":""}}},"block_order":["logo_image_X9gnLa","logo_image_UnpWDV"],"custom_css":[".custom-logo-list {background: transparent; padding: 20px 0; border-bottom: 1px solid #d9d9d9;}",".logo-bar {justify-content: center; gap: 120px;}","@media (max-width: 767px) {.custom-logo-list {display: block; } .logo-bar {gap: 60px; }}"],"name":"t:sections.logo-list.presets.logo_list.name","settings":{"title":"","logo_opacity":76,"targetblank":false,"divider":false}},"rich_text_TNKXtx":{"type":"rich-text","blocks":{"heading_3E7jX7":{"type":"heading","settings":{"title":"A REFINED PARTNERSHIP"}},"text_Q9Hdnp":{"type":"text","settings":{"enlarge_text":true,"text":"<p>MARCO DAL MASO collaborates with Uncaged Innovations to introduce ELEVATE, a bio-based material, into select pieces.<br\/><br\/>Crafted from plant proteins, ELEVATE delivers the grain, softness and durability of premium leather while aligning with our commitment to proportion, restraint, sustainability and enduring craftsmanship.<\/p>"}}},"block_order":["heading_3E7jX7","text_Q9Hdnp"],"custom_css":[".section--divider {border: none; padding-top: 55px; padding-bottom: 55px;}","h2 {font-size: var(--typeHeaderSize);}","@media (max-width: 767px) {.custom-rich-text .page-width > div .enlarge-text {display: block; } .section--divider {padding-top: 0; padding-bottom: 0; } h2 {font-size: calc(var(--typeHeaderSize) * 0.85); }}"],"name":"t:sections.rich-text.presets.rich_text.name","settings":{"desktop_hide":false,"mobile_hide":false,"align_text":"center","narrow_column":true,"divider":true,"padding_b":0}},"main":{"type":"main-page","disabled":true,"custom_css":[],"settings":{}},"text_and_image_zPizE7":{"type":"text-and-image","custom_css":["@media only screen and (max-width: 768px) {.subheading {margin-bottom: 12px; } .feature-row__text {padding-bottom: 30px; }}"],"settings":{"custom_id":"","full_width":true,"image":"shopify:\/\/shop_images\/Uncaged-Innovations-80615_1.png","image_mask":"square","image2_mask":"none","subtitle":"","caption":"","title":"THE ELEVATE MATERIAL","text":"<p>ELEVATE bio-based leather offers the structure and feel of traditional leather, engineered from plant proteins. <br\/>It reduces environmental impact while maintaining the tactile refinement expected from MARCO DAL MASO.<\/p>","html":"","button_label":"","button_link":"","button_labels":"","button_links":"","button_style":"primary","align_text":"left","image_width":"50","layout":"right","body_bg":"#ffffff","divider":false,"top_padding":false,"bottom_padding":false,"lazyload_images":true}},"text_and_image_jBYGUF":{"type":"text-and-image","custom_css":["@media only screen and (max-width: 768px) {.subheading {margin-bottom: 12px; }}"],"settings":{"custom_id":"","full_width":true,"image":"shopify:\/\/shop_images\/Generated_with_Kive.ai_-_ACIES_LEATHER_CUFF_With_black_diamonds_on_male_model_1.png","image_mask":"square","image2_mask":"none","subtitle":"","caption":"","title":"CRAFTSMANSHIP INTEGRATION","text":"<p>Handcrafted in Italy, our pieces combine ELEVATE with Italian jewelry-making precision, 100% recycled gold and silver, and lab-grown diamonds - extending measured material consideration across every detail.<\/p><h1>FEATURED IN ACIES LEATHER CUFFS<\/h1><p>Braided ELEVATE wraps a shape-memory core that flexes comfortably, then returns to precise form. <br\/>Finished with oxidized silver, 18K yellow gold or lab-grown diamonds, these cuffs maintain disciplined geometry for daily wear.<\/p>","html":"","button_label":"","button_link":"","button_labels":"","button_links":"","button_style":"primary","align_text":"left","image_width":"50","layout":"left","body_bg":"#ffffff","divider":false,"top_padding":false,"bottom_padding":true,"lazyload_images":true}},"featured_collection_heyFdc":{"type":"featured-collection","disabled":true,"custom_css":[".section--divider {border: none; padding-top: 55px;}",".flickity-page-dots {display: none;}","@media only screen and (min-width: 769px) {.grid-product {margin-bottom: 0; }}","@media only screen and (max-width: 768px) {.section--divider {padding-top: 0; }}"],"name":"t:sections.featured-collection.presets.featured_collection.name","settings":{"title":"ACIES LEATHER CUFFS","enlarge_text":true,"text":"","home_featured_products":"ready-to-ship","per_row":4,"rows":8,"mobile_scrollable":true,"carousel":true,"slider_flow":false,"view_all":false,"divider":true}},"product_list_YXDwhU":{"type":"product-list","blocks":{"product_GKGRJX":{"type":"product","settings":{"home_featured_products":"acies-leather-cuff-oxidized-silver-black-enamel-black-leather-agsc22-01bvpn"}},"product_UcVaCN":{"type":"product","settings":{"home_featured_products":"acies-leather-cuff-18k-yellow-gold-white-lab-g-white-diamonds-gisc0583-01yepn"}},"product_MTC3bD":{"type":"product","settings":{"home_featured_products":"acies-leather-cuff-oxidized-silver-black-enamel-black-diamonds-agsc23-01bven"}}},"block_order":["product_GKGRJX","product_UcVaCN","product_MTC3bD"],"custom_css":[".section--divider {border: none; padding-top: 55px;}","h2.section-header__title {font-size: var(--typeHeaderSize);}","@media only screen and (min-width: 769px) {.grid {display: flex; justify-content: center; margin-bottom: 55px; } .grid-product {margin-bottom: 0; }}","@media only screen and (max-width: 768px) {.section--divider {padding-top: 30px; } h2.section-header__title {font-size: calc(var(--typeHeaderSize) * 0.85); }}"],"name":"PRODUCT LIST","settings":{"title":"ACIES LEATHER CUFFS","enlarge_text":true,"text":"","per_row":4,"rows":1,"mobile_scrollable":false,"carousel":false,"slider_flow":false,"view_all":false,"divider":true,"url":"","level":""}}},"order":["logo_list_zBkdRw","rich_text_TNKXtx","main","text_and_image_zPizE7","text_and_image_jBYGUF","featured_collection_heyFdc","product_list_YXDwhU"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "logo_list_zBkdRw": {
+      "type": "logo-list",
+      "blocks": {
+        "logo_image_X9gnLa": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/MDM-logo_1.jpg",
+            "link": ""
+          }
+        },
+        "logo_image_UnpWDV": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify://shop_images/Uncaged_Logo_1.jpg",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "logo_image_X9gnLa",
+        "logo_image_UnpWDV"
+      ],
+      "custom_css": [
+        ".custom-logo-list {background: transparent; padding: 20px 0; border-bottom: 1px solid #d9d9d9;}",
+        ".logo-bar {justify-content: center; gap: 120px;}",
+        "@media (max-width: 767px) {.custom-logo-list {display: block; } .logo-bar {gap: 60px; }}"
+      ],
+      "name": "t:sections.logo-list.presets.logo_list.name",
+      "settings": {
+        "title": "",
+        "logo_opacity": 76,
+        "targetblank": false,
+        "divider": false
+      }
+    },
+    "rich_text_TNKXtx": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_3E7jX7": {
+          "type": "heading",
+          "settings": {
+            "title": "A REFINED PARTNERSHIP"
+          }
+        },
+        "text_Q9Hdnp": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>MARCO DAL MASO collaborates with Uncaged Innovations to introduce ELEVATE, a bio-based material, into select pieces.<br/><br/>Crafted from plant proteins, ELEVATE delivers the grain, softness and durability of premium leather while aligning with our commitment to proportion, restraint, sustainability and enduring craftsmanship.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_3E7jX7",
+        "text_Q9Hdnp"
+      ],
+      "custom_css": [
+        ".section--divider {border: none; padding-top: 55px; padding-bottom: 55px;}",
+        "h2 {font-size: var(--typeHeaderSize);}",
+        "@media (max-width: 767px) {.custom-rich-text .page-width > div .enlarge-text {display: block; } .section--divider {padding-top: 0; padding-bottom: 0; } h2 {font-size: calc(var(--typeHeaderSize) * 0.85); }}"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": true,
+        "padding_b": 0
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "custom_css": [],
+      "settings": {}
+    },
+    "text_and_image_zPizE7": {
+      "type": "text-and-image",
+      "custom_css": [
+        "@media only screen and (max-width: 768px) {.subheading {margin-bottom: 12px; } .feature-row__text {padding-bottom: 30px; }}"
+      ],
+      "settings": {
+        "custom_id": "",
+        "full_width": true,
+        "image": "shopify://shop_images/UNC_Pebble_Onyx.jpg",
+        "image_mask": "square",
+        "image2_mask": "none",
+        "subtitle": "",
+        "caption": "",
+        "title": "THE ELEVATE MATERIAL",
+        "text": "<p>ELEVATE bio-based leather offers the structure and feel of traditional leather, engineered from plant proteins. <br/>It reduces environmental impact while maintaining the tactile refinement expected from MARCO DAL MASO.</p>",
+        "html": "",
+        "button_label": "",
+        "button_link": "",
+        "button_labels": "",
+        "button_links": "",
+        "button_style": "primary",
+        "align_text": "left",
+        "image_width": "50",
+        "layout": "right",
+        "body_bg": "#ffffff",
+        "divider": false,
+        "top_padding": false,
+        "bottom_padding": false,
+        "lazyload_images": true
+      }
+    },
+    "text_and_image_jBYGUF": {
+      "type": "text-and-image",
+      "custom_css": [
+        "@media only screen and (max-width: 768px) {.subheading {margin-bottom: 12px; }}"
+      ],
+      "settings": {
+        "custom_id": "",
+        "full_width": true,
+        "image": "shopify://shop_images/Generated_with_Kive.ai_-_ACIES_LEATHER_CUFF_With_black_diamonds_on_male_model_1.png",
+        "image_mask": "square",
+        "image2_mask": "none",
+        "subtitle": "",
+        "caption": "",
+        "title": "CRAFTSMANSHIP INTEGRATION",
+        "text": "<p>Handcrafted in Italy, our pieces combine ELEVATE with Italian jewelry-making precision, 100% recycled gold and silver, and lab-grown diamonds - extending measured material consideration across every detail.</p><h1>FEATURED IN ACIES LEATHER CUFFS</h1><p>Braided ELEVATE wraps a shape-memory core that flexes comfortably, then returns to precise form. <br/>Finished with oxidized silver, 18K yellow gold or lab-grown diamonds, these cuffs maintain disciplined geometry for daily wear.</p>",
+        "html": "",
+        "button_label": "",
+        "button_link": "",
+        "button_labels": "",
+        "button_links": "",
+        "button_style": "primary",
+        "align_text": "left",
+        "image_width": "50",
+        "layout": "left",
+        "body_bg": "#ffffff",
+        "divider": false,
+        "top_padding": false,
+        "bottom_padding": true,
+        "lazyload_images": true
+      }
+    },
+    "featured_collection_heyFdc": {
+      "type": "featured-collection",
+      "disabled": true,
+      "custom_css": [
+        ".section--divider {border: none; padding-top: 55px;}",
+        ".flickity-page-dots {display: none;}",
+        "@media only screen and (min-width: 769px) {.grid-product {margin-bottom: 0; }}",
+        "@media only screen and (max-width: 768px) {.section--divider {padding-top: 0; }}"
+      ],
+      "name": "t:sections.featured-collection.presets.featured_collection.name",
+      "settings": {
+        "title": "ACIES LEATHER CUFFS",
+        "enlarge_text": true,
+        "text": "",
+        "home_featured_products": "ready-to-ship",
+        "per_row": 4,
+        "rows": 8,
+        "mobile_scrollable": true,
+        "carousel": true,
+        "slider_flow": false,
+        "view_all": false,
+        "divider": true
+      }
+    },
+    "product_list_YXDwhU": {
+      "type": "product-list",
+      "blocks": {
+        "product_GKGRJX": {
+          "type": "product",
+          "settings": {
+            "home_featured_products": "acies-leather-cuff-oxidized-silver-black-enamel-black-leather-agsc22-01bvpn"
+          }
+        },
+        "product_UcVaCN": {
+          "type": "product",
+          "settings": {
+            "home_featured_products": "acies-leather-cuff-18k-yellow-gold-white-lab-g-white-diamonds-gisc0583-01yepn"
+          }
+        },
+        "product_MTC3bD": {
+          "type": "product",
+          "settings": {
+            "home_featured_products": "acies-leather-cuff-oxidized-silver-black-enamel-black-diamonds-agsc23-01bven"
+          }
+        }
+      },
+      "block_order": [
+        "product_GKGRJX",
+        "product_UcVaCN",
+        "product_MTC3bD"
+      ],
+      "custom_css": [
+        ".section--divider {border: none; padding-top: 55px;}",
+        "h2.section-header__title {font-size: var(--typeHeaderSize);}",
+        "@media only screen and (min-width: 769px) {.grid {display: flex; justify-content: center; margin-bottom: 55px; } .grid-product {margin-bottom: 0; }}",
+        "@media only screen and (max-width: 768px) {.section--divider {padding-top: 30px; } h2.section-header__title {font-size: calc(var(--typeHeaderSize) * 0.85); }}"
+      ],
+      "name": "PRODUCT LIST",
+      "settings": {
+        "title": "ACIES LEATHER CUFFS",
+        "enlarge_text": true,
+        "text": "",
+        "per_row": 4,
+        "rows": 1,
+        "mobile_scrollable": false,
+        "carousel": false,
+        "slider_flow": false,
+        "view_all": false,
+        "divider": true,
+        "url": "",
+        "level": ""
+      }
+    }
+  },
+  "order": [
+    "logo_list_zBkdRw",
+    "rich_text_TNKXtx",
+    "main",
+    "text_and_image_zPizE7",
+    "text_and_image_jBYGUF",
+    "featured_collection_heyFdc",
+    "product_list_YXDwhU"
+  ]
+}
