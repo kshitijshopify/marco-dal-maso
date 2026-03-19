@@ -50,7 +50,33 @@
     </div>
   </div>
 {%- endif -%}
+{% if settings.show_breadcrumbs == false and section.settings.image_hero == false %}
+  <style>
+    nav.breadcrumb {
+      padding-top: 20px !important;
+      padding-bottom: 0 !important;
+      margin: 0 auto;
+      font-size: 12px;
+      text-align: left !important;
+    }
+    .pbo.page-width.page-content {
+      padding-top: 10px;
+    }
+    @media (max-width: 749px) {
+      nav.breadcrumb {
+        padding-bottom: 20px;
+      }
+    }
+  </style>
 
+  <nav class="breadcrumb page-width" role="navigation" aria-label="breadcrumbs">
+      <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+      {{ blog.title | link_to: blog.url }}
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+      {{ article.title }}
+  </nav>  
+{% endif %}
 <div class="err pbo page-width page-width--narrow page-content">
   <article class="article">
     {%- unless section.settings.image_hero and article.image -%}
