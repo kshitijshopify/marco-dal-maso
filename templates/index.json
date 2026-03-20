@@ -272,6 +272,27 @@
     "promo_grid_6p8aYH": {
       "type": "promo-grid",
       "blocks": {
+        "advanced_Lp64zq": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "",
+            "textarea": "",
+            "cta_text1": "",
+            "cta_link1": "https://marcodalmaso.com/pages/a-refined-partnership",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/Frame_230.jpg",
+            "video_url": "",
+            "width": "50",
+            "height": 800,
+            "text_size": 100,
+            "text_align": "vertical-bottom horizontal-left",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        },
         "advanced_BfDKRm": {
           "type": "advanced",
           "settings": {
@@ -292,32 +313,11 @@
             "boxed": false,
             "framed": false
           }
-        },
-        "advanced_Lp64zq": {
-          "type": "advanced",
-          "settings": {
-            "subheading": "",
-            "heading": "Flaming tongue rings",
-            "textarea": "Jewels to celebrate winter’s finest moments.",
-            "cta_text1": "SHOP THE COLLECTION",
-            "cta_link1": "https://marcodalmaso.com/collections/flaming-tongue?filter.p.product_type=Ring",
-            "cta_text2": "",
-            "cta_link2": "",
-            "image": "shopify://shop_images/male_model_wearing_the_Flaming_Tongue_Chain_Ring_1.png",
-            "video_url": "",
-            "width": "50",
-            "height": 800,
-            "text_size": 100,
-            "text_align": "vertical-bottom horizontal-left",
-            "color_accent": "rgba(0,0,0,0)",
-            "boxed": false,
-            "framed": false
-          }
         }
       },
       "block_order": [
-        "advanced_BfDKRm",
-        "advanced_Lp64zq"
+        "advanced_Lp64zq",
+        "advanced_BfDKRm"
       ],
       "custom_css": [
         "h2.rte--block ~ div.rte--block {margin-bottom: 26px;}",
