@@ -82,9 +82,11 @@
     {%- unless section.settings.image_hero and article.image -%}
 
       <header class="section-header">
-        <div style="text-align: center;padding-top: 15px;">
-          {{ section.settings.subheading }}
-        </div>
+        {% if section.settings.subheading != blank %}
+          <div style="text-align: center;padding-top: 15px;">
+            {{ section.settings.subheading }}
+          </div>
+        {% endif %}
         {%- if section.settings.blog_show_date or article.tags.size > 0 or articles.comments_count > 0 -%}
           <div class="article__date">
             {%- if section.settings.blog_show_tags and article.tags.size > 0 -%}
