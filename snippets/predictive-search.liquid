@@ -5,7 +5,7 @@
   if lightness <= 100
     assign dark_search_bg = true
   endif
--%}
+-%} 
 
 <predictive-search data-context="{{ context }}" data-enabled="{{ settings.predictive_search_enabled }}" data-dark="{{ dark_search_bg }}">
   <div class="predictive__screen" data-screen></div>
@@ -108,7 +108,8 @@
               <h3 class="h4" id="predictive-search-bestsellers">Best Sellers</h3>
               <div class="grid-overflow-wrapper">                
                 <ul role="listbox" aria-labelledby="predictive-search-bestsellers" class="grid grid--uniform" data-aos="overflow__animation" aria-hidden="true">
-                  {%- for product in collections[section.settings.home_featured_products].products limit: 4 -%}
+                  {% for product in section.settings.my_collection_selector %}
+                  
                     {% assign product = all_products[product] %}
                     {%- if full_product -%}
                       {%- assign real_product = full_product -%}
