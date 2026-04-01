@@ -1426,7 +1426,9 @@ header .site-nav__link {
 }
 
 
-li.site-nav__item:not(.site-nav--has-dropdown):hover a.site-nav__link--underline, .site-nav__item:hover .site-nav__link--underline a {
+li.site-nav__item:not(.site-nav--has-dropdown):hover a.site-nav__link--underline, 
+.site-nav__item:hover .site-nav__link--underline a,
+.site-nav__item:hover .site-nav__link--underline summary {
     border-bottom: 2px solid #1c0606;
 }
 header .site-nav__link> a {
