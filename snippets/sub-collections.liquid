@@ -9,84 +9,82 @@
   endcapture
 -%}
 
-{% assign subcount = 0 %}
-{% for sub_collection_link in sub_collection_links %}
-  {% if sub_collection_link.url contains '/collections/' %}
-    {%- liquid
-      assign sub_collection_split = sub_collection_link.url | split: '/'
 
-      assign sub_collection_splitfirst = sub_collection_link.url | split: '/collections/' | last
-
-      if sub_collection_splitfirst contains '/'
-        assign sub_collection_handle = sub_collection_splitfirst | split: '/' | first
-        assign sub_collection = collections[sub_collection_handle]
-      else
-        assign sub_collection_handle = sub_collection_split | last
-        assign sub_collection = collections[sub_collection_handle]
-      endif
-
-      if sub_collection_handle contains '?sort_by'
-        assign sub_collection_handle = sub_collection_handle | split: '?' | first
-        assign sub_collection = collections[sub_collection_handle]
-        assign subcoll__sortorder = sub_collection_splitfirst | split: '/' | first | split: '?' | last
-      endif
-    -%}
-    {% if sub_collection != blank -%}
-      {% unless parent_url == sub_collection.url %}
-        {% assign subcount = subcount | plus: 1 %}
-      {% endunless %}
+  {% assign subcount = 0 %}
+  {% for sub_collection_link in sub_collection_links %}
+    {% if sub_collection_link.url contains '/collections/' %}
+      {%- liquid
+        assign sub_collection_split = sub_collection_link.url | split: '/'
+        
+        assign sub_collection_splitfirst = sub_collection_link.url | split: '/collections/' | last
+     
+                if sub_collection_splitfirst contains '/'
+                  assign sub_collection_handle = sub_collection_splitfirst | split: '/' | first                  
+                  assign sub_collection = collections[sub_collection_handle]
+                else
+                  assign sub_collection_handle = sub_collection_split | last
+                  assign sub_collection = collections[sub_collection_handle]
+                endif
+         
+         if sub_collection_handle contains '?sort_by'
+           assign sub_collection_handle = sub_collection_handle | split: '?' | first   
+           assign sub_collection = collections[sub_collection_handle]
+           assign subcoll__sortorder = sub_collection_splitfirst | split: '/' | first | split: '?' | last   
+         endif
+      -%}
+      {% if sub_collection != blank -%}
+        {% unless parent_url == sub_collection.url %}
+          {% assign subcount = subcount | plus: 1 %}
+        {% endunless %}
+      {% endif %}  
     {% endif %}
-  {% endif %}
-{% endfor %}
+  {% endfor %}
 {% if subcount > 0 %}
-  <h4 class="h3">Top Categories</h4>
-{% endif %}
-<div
-  class="eeeee collrow__subcolls collperrow_{{ subcount }} {% if block.settings.carousel and subcount >= per_row %}coll-carousel {% else %}grid grid--uniform grid--center {% endif %} {% unless settings.collection_grid_gutter %} grid--no-gutters{% endunless %}"
-  {% if block.settings.carousel and subcount >= per_row %}
-    data-flickity='{ "cellAlign": "left", "contain": true, "pageDots": false, "wrapAround": true }'
+<h4 class="h3">Top Categories</h4>
   {% endif %}
->
+<div class="eeeee collrow__subcolls collperrow_{{ subcount }} {% if block.settings.carousel and subcount >= per_row %}coll-carousel {% else %}grid grid--uniform grid--center {% endif %} {% unless settings.collection_grid_gutter %} grid--no-gutters{% endunless %}"
+  {% if block.settings.carousel and subcount >= per_row %}data-flickity='{ "cellAlign": "left", "contain": true, "pageDots": false, "wrapAround": true }'{% endif %}>
   {%- for sub_collection_link in sub_collection_links -%}
     {%- if sub_collection_link.url contains '/collections/' -%}
       {%- liquid
         assign sub_collection_split = sub_collection_link.url | split: '/'
 
         assign sub_collection_splitfirst = sub_collection_link.url | split: '/collections/' | last
-
-        if sub_collection_splitfirst contains '/'
-          assign sub_collection_handle = sub_collection_splitfirst | split: '/' | first
-          assign sub_collection = collections[sub_collection_handle]
-        else
-          assign sub_collection_handle = sub_collection_split | last
-          assign sub_collection = collections[sub_collection_handle]
-        endif
-
-        if sub_collection_handle contains '?sort_by'
-          assign sub_collection_handle = sub_collection_handle | split: '?' | first
-          assign sub_collection = collections[sub_collection_handle]
-          assign subcoll__sortorder = sub_collection_splitfirst | split: '/' | first | split: '?' | last
-        endif
-      -%}
-      <!-- <span class="{{ sub_collection_splitfirst }}"></span> -->
+     
+                if sub_collection_splitfirst contains '/'
+                  assign sub_collection_handle = sub_collection_splitfirst | split: '/' | first                  
+                  assign sub_collection = collections[sub_collection_handle]
+                else
+                  assign sub_collection_handle = sub_collection_split | last
+                  assign sub_collection = collections[sub_collection_handle]
+                endif
+         
+         if sub_collection_handle contains '?sort_by'
+           assign sub_collection_handle = sub_collection_handle | split: '?' | first   
+           assign sub_collection = collections[sub_collection_handle]
+           assign subcoll__sortorder = sub_collection_splitfirst | split: '/' | first | split: '?' | last   
+         endif
+         
+      -%}      
+<!-- <span class="{{ sub_collection_splitfirst }}"></span> -->
       {%- if sub_collection != blank -%}
         {%- unless parent_url == sub_collection.url -%}
           {%- render 'collection-grid-item',
             collection: sub_collection,
             subcoll_sortorder: subcoll__sortorder,
-            sub_collection_handle: sub_collection_handle,
+            sub_collection_handle:sub_collection_handle,
             collection_url: sub_collection_link.url,
             gridView: gridView,
-            collection_title: sub_collection_link.title,
+            collection_title: sub_collection_link.title
             per_row: per_row,
             sizeVariable: gridView,
-            fallback: 'variable'
+            fallback: 'variable',
           -%}
         {%- endunless -%}
       {%- endif -%}
     {%- else -%}
       {%- liquid
-        assign sub_collection_handle = sub_collection_link.url
+         assign sub_collection_handle = sub_collection_link.url
       -%}
 
       {%- if sub_collection != blank -%}
@@ -95,13 +93,14 @@
             collection: sub_collection,
             collection_url: sub_collection_link.url,
             gridView: gridView,
-            collection_title: sub_collection_link.title,
+            collection_title: sub_collection_link.title
             per_row: per_row,
             sizeVariable: gridView,
-            fallback: 'variable'
+            fallback: 'variable',
           -%}
         {%- endunless -%}
       {%- endif -%}
     {%- endif -%}
   {%- endfor -%}
 </div>
+
