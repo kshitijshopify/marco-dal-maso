@@ -434,10 +434,10 @@
         "@media (min-width: 769px) {.grid-product .variant-wrapper {text-align: left; min-height: 45px; }}"
       ],
       "settings": {
-        "title": "SILVER BRACELETS",
+        "title": "EXPLORE JUST ARRIVED",
         "enlarge_text": true,
         "text": "<p>New Arrivals</p>",
-        "home_featured_products": "silver-bracelets",
+        "home_featured_products": "just-arrived",
         "per_row": 4,
         "rows": 1,
         "mobile_scrollable": false,
