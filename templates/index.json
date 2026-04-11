@@ -351,7 +351,7 @@
         "button_link": "shopify://collections/eclipse",
         "bg_color": "#000000",
         "btn_color": "#ffffff",
-        "image": "shopify://shop_images/Frame_157.jpg",
+        "image": "shopify://shop_images/AGBR0155-02BLSBP_7.jpg",
         "layout": "left",
         "height": 650,
         "framed": false,
@@ -423,30 +423,6 @@
         "style": "bars",
         "autoplay": true,
         "autoplay_speed": 5,
-        "lazyload_images": true
-      }
-    },
-    "background_image_text_phc86c": {
-      "type": "background-image-text",
-      "custom_css": [
-        "@media screen and (min-width: 768px) {.bgimg__with__parallax_option {display: none; }}"
-      ],
-      "settings": {
-        "classes": "custom-banner-img-parallax",
-        "subtitle": "",
-        "title": "",
-        "text": "",
-        "text_color": "#000000",
-        "button_label": "",
-        "button_link": "shopify://collections/ulysses-collection",
-        "bg_color": "#000000",
-        "btn_color": "#ffffff",
-        "image": "shopify://shop_images/AMBIENTATO_09_1.png",
-        "layout": "left",
-        "height": 650,
-        "framed": false,
-        "parallax": false,
-        "parallax_direction": "top",
         "lazyload_images": true
       }
     },
@@ -610,7 +586,6 @@
     "background_image_text_9Yjtyj",
     "featured_collection_p7AV6W",
     "slideshow_old_Q949kd",
-    "background_image_text_phc86c",
     "featured_collection_9mjUQd",
     "blog_posts_bqGdG3",
     "custom_instagram_CaUNpy",
