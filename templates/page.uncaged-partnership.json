@@ -57,7 +57,7 @@
           "type": "text",
           "settings": {
             "enlarge_text": true,
-            "text": "<p>MARCO DAL MASO collaborates with Uncaged Innovations to introduce ELEVATE, a bio-based material, into select pieces.<br/><br/>Crafted from plant proteins, ELEVATE delivers the grain, softness and durability of premium leather while aligning with our commitment to proportion, restraint, sustainability and enduring craftsmanship.</p>"
+            "text": "<p>MARCO DAL MASO has collaborated with Uncaged Innovations to introduce ELEVATE, a bio-based material, into select pieces.<br/><br/>Crafted from plant proteins, ELEVATE delivers the grain, softness and durability of premium leather while aligning with our commitment to proportion, restraint, sustainability and enduring craftsmanship.</p>"
           }
         }
       },
@@ -94,13 +94,13 @@
       "settings": {
         "custom_id": "",
         "full_width": true,
-        "image": "shopify://shop_images/Uncaged0847.jpg",
+        "image": "shopify://shop_images/uncaged_innovations_and_marco_dal_maso_partnership.png",
         "image_mask": "square",
         "image2_mask": "none",
         "subtitle": "",
         "caption": "",
         "title": "THE ELEVATE MATERIAL",
-        "text": "<p>ELEVATE bio-based leather offers the structure and feel of traditional leather, engineered from plant proteins. <br/>It reduces environmental impact while maintaining the tactile refinement expected from MARCO DAL MASO.</p>",
+        "text": "<p>ELEVATE bio-based leather offers the structure and feel of traditional leather, engineered from plant proteins. It reduces environmental impact while maintaining the tactile refinement expected from MARCO DAL MASO.</p>",
         "html": "",
         "button_label": "",
         "button_link": "",
@@ -131,7 +131,7 @@
         "subtitle": "",
         "caption": "",
         "title": "CRAFTSMANSHIP INTEGRATION",
-        "text": "<p>Handcrafted in Italy, our pieces combine ELEVATE with Italian jewelry-making precision, 100% recycled gold and silver, and lab-grown diamonds - extending measured material consideration across every detail.</p><h1>FEATURED IN ACIES LEATHER CUFFS</h1><p>Braided ELEVATE wraps a shape-memory core that flexes comfortably, then returns to precise form. <br/>Finished with oxidized silver, 18K yellow gold or lab-grown diamonds, these cuffs maintain disciplined geometry for daily wear.</p>",
+        "text": "<p>Handcrafted in Italy, our pieces combine ELEVATE with Italian jewelry-making precision, 100% recycled gold and silver, and lab-grown diamonds - extending measured material consideration across every detail.</p><h1>FEATURED IN ACIES LEATHER CUFFS</h1><p>Braided ELEVATE wraps a shape-memory core that flexes comfortably, then returns to precise form. Finished with oxidized silver, 18K yellow gold or lab-grown diamonds, these cuffs maintain disciplined geometry for daily wear.</p>",
         "html": "",
         "button_label": "",
         "button_link": "",
