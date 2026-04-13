@@ -12,9 +12,7 @@
     "main": {
       "type": "main-page",
       "custom_css": [
-        ".notoppadding.cuspage__class {padding-top: 0;}",
-        "header.section-header {display: none;}",
-        ".page-width--narrow {max-width: 1000px; max-width: 1500px;}"
+        ".notoppadding.cuspage__class {padding-top: 0;}"
       ],
       "settings": {}
     }
