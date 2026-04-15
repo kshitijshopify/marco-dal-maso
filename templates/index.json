@@ -323,7 +323,8 @@
         "h2.rte--block ~ div.rte--block {margin-bottom: 26px;}",
         "h2.rte--block {margin-bottom: 0; padding-left: 0 !important; padding-right: 0 !important;}",
         "@media screen and (max-width: 768px) {.custom-promo-grid .flex-grid {gap: 20px; } .promo-grid--space-top {padding-bottom: 30px; } .flex-grid.flex-grid--gutters {row-gap: 30px; }}",
-        "@media screen and (min-width: 769px) {.flex-grid.flex-grid--gutters {column-gap: 17px; margin-left: -17px; row-gap: 0; flex-wrap: nowrap; }}"
+        "@media screen and (min-width: 769px) {.flex-grid.flex-grid--gutters {column-gap: 17px; margin-left: -17px; row-gap: 0; flex-wrap: nowrap; }}",
+        ".promo-grid__container.vertical-bottom.horizontal-left {height: 100%;}"
       ],
       "settings": {
         "custom_class": "",
