@@ -269,7 +269,7 @@
         }
       })
 
-      document.querySelectorAll('.sync-select').forEach(select => {
+      {% comment %} document.querySelectorAll('.sync-select').forEach(select => {
         select.addEventListener('change', function () {
           const group = this.dataset.sync;
           const selectsInGroup = document.querySelectorAll(`.sync-select[data-sync="${group}"]`);
@@ -288,7 +288,7 @@
             }
           });
         });
-      });
+      }); {% endcomment %}
     });
  
   </script>
