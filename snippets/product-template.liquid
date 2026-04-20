@@ -318,6 +318,7 @@
                     </a>
                     <script>
                       function wishlistLoginCheckHandler() {
+                        debugger;
                         const isLoggedIn = {% if customer %}true{% else %}false{% endif %};
                         const customBtn = document.querySelector(".custom-add-to-wishlist");
                         if (!customBtn) return;
