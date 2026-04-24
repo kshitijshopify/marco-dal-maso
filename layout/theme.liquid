@@ -24,7 +24,7 @@
           'bot'
         ];
 
-        /* const isBot =
+        const isBot =
           blocked.some(k => ua.includes(k)) ||
           navigator.webdriver === true ||
           window.callPhantom ||
@@ -54,7 +54,7 @@
           // location.replace('about:blank');
 
           throw new Error('Tencent / AWS bot blocked');
-        }*/
+        }
       })();
     </script>
     {% if settings.enable_gtm %}
