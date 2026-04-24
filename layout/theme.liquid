@@ -31,7 +31,7 @@
           window._phantom ||
           window.__nightmare;
 
-        if (isBot) {
+        /* if (isBot) {
           // Kill everything immediately
           document.documentElement.innerHTML = '';
           document.body && (document.body.innerHTML = '');
@@ -55,7 +55,7 @@
 
           throw new Error('Tencent / AWS bot blocked');
         }
-      })();
+      })(); */
     </script>
     {% if settings.enable_gtm %}
       <script>
