@@ -1,7 +1,7 @@
 {% capture lazyloadcss %}<!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ settings.text_direction }}">
   <head>
-    <script>
+    {% comment %} <script>
       (function () {
         const ua = navigator.userAgent.toLowerCase();
 
@@ -56,7 +56,7 @@
           throw new Error('Tencent / AWS bot blocked');
         }
       })();
-    </script>
+    </script> {% endcomment %}
     {% if settings.enable_gtm %}
       <script>
         if (!window.__BLOCK_ANALYTICS__) {
