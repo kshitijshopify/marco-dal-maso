@@ -238,7 +238,7 @@
         "sticky_collection": false,
         "special_msg": "",
         "cart_show_free_shipping_threshold": true,
-        "cart_free_shipping_threshold": "USD:50,EUR:60,JPY:90000",
+        "cart_free_shipping_threshold": "250",
         "free_shipping": "You are eligible for free shipping!",
         "free_shipping_remaining_html": "Spend [value] more and get free shipping!",
         "toolbar_menu": "",
