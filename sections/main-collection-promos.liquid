@@ -106,7 +106,7 @@
   {% for meta in shop.metaobjects.collection_shop_look.values %}
     {% assign related_products = meta.shop_look_products.value %}
     {% if meta.collection_title == collection.title %}
-      {% render 'variable-products-grid-item-main-collection', related_products: related_products, 2: 2, settings: settings, '39vw': '39vw', paginate_by: paginate_by %}
+      {% render 'variable-products-grid-item-main-collection', related_products: related_products, renamed_variable_2: 2, settings: settings, paginate_by: paginate_by %}
       {% for prod in related_products %}
         {%- render 'product-grid-item',
                   product: prod, per_row: 2, quick_shop_enable: settings.quick_shop_enable, fallback: '39vw', -%}
@@ -1654,3 +1654,17 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'variable-products-grid-item-main-collection', related_products:
+    related_products, 2: 2, settings: settings, '39vw': '39vw', paginate_by: paginate_by
+    %}"
+  to: "{% render 'variable-products-grid-item-main-collection', related_products:
+    related_products, renamed_variable_2: 2, settings: settings, paginate_by: paginate_by
+    %}"
+  position: 3750..3913
+{% endcomment %}

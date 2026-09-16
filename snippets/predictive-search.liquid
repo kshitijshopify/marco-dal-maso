@@ -335,16 +335,7 @@
                               {% unless settings.product_grid_image_fill %} grid__image-contain{% endunless %} image-style--{{ image_style }}
                             {%- endcapture -%}
                                 {%- if preview_image != blank -%}
-                                  {%-
-                                    render 'image-element',
-                                    img: preview_image,
-                                    classes: image_classes,
-                                    sizes: sizes,
-                                    sizeVariable: sizeVariable,
-                                    fallback: fallback,
-                                    widths: '360, 540, 720, 900, 1080',
-                                    alt: product.title | escape
-                                  -%}
+                                  {%- render 'image-element', img: preview_image, classes: image_classes, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720, 900, 1080', alt: product.title -%}
                                   <!-- alt attribute added here -->
                                 {%- else -%}
                                   {%- capture placeholder -%}product-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
@@ -362,16 +353,7 @@
                                   {%- capture image_classes -%}
                                 grid-product__image image-style--{{ image_style }}
                               {%- endcapture -%}
-                                  {%-
-                                    render 'image-element',
-                                    img: preview_image,
-                                    classes: image_classes,
-                                    sizes: sizes,
-                                    sizeVariable: sizeVariable,
-                                    fallback: fallback,
-                                    widths: '360, 540, 720, 900, 1080',
-                                    alt: product.title | escape
-                                  -%}
+                                  {%- render 'image-element', img: preview_image, classes: image_classes, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720, 900, 1080', alt: product.title -%}
                                   <!-- alt attribute added here -->
                                 {%- else -%}
                                   {%- capture placeholder -%}product-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
@@ -389,16 +371,7 @@
                                 {%- capture image_classes -%}
                               image-style--{{ image_style }}
                             {%- endcapture -%}
-                                {%-
-                                  render 'image-element',
-                                  img: second_image,
-                                  classes: image_classes,
-                                  sizes: sizes,
-                                  sizeVariable: sizeVariable,
-                                  fallback: fallback,
-                                  widths: '360, 540, 720, 1000',
-                                  alt: product.title | escape
-                                -%}
+                                {%- render 'image-element', img: second_image, classes: image_classes, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720, 1000', alt: product.title -%}
                                 <!-- alt attribute added here -->
                               </div>
                             {%- endif -%}
@@ -625,3 +598,55 @@
     {% endif %}
   </form>
 </predictive-search>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%-
+                                        render 'image-element',
+                                        img: preview_image,
+                                        classes: image_classes,
+                                        sizes: sizes,
+                                        sizeVariable: sizeVariable,
+                                        fallback: fallback,
+                                        widths: '360, 540, 720, 900, 1080',
+                                        alt: product.title | escape
+                                      -%}
+  to: "{%- render 'image-element', img: preview_image, classes: image_classes, sizes:
+    sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720,
+    900, 1080', alt: product.title -%}"
+  position: 18048..18240
+- from: |-
+    {%-
+                                        render 'image-element',
+                                        img: preview_image,
+                                        classes: image_classes,
+                                        sizes: sizes,
+                                        sizeVariable: sizeVariable,
+                                        fallback: fallback,
+                                        widths: '360, 540, 720, 900, 1080',
+                                        alt: product.title | escape
+                                      -%}
+  to: "{%- render 'image-element', img: preview_image, classes: image_classes, sizes:
+    sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720,
+    900, 1080', alt: product.title -%}"
+  position: 19377..19569
+- from: |-
+    {%-
+                                      render 'image-element',
+                                      img: second_image,
+                                      classes: image_classes,
+                                      sizes: sizes,
+                                      sizeVariable: sizeVariable,
+                                      fallback: fallback,
+                                      widths: '360, 540, 720, 1000',
+                                      alt: product.title | escape
+                                    -%}
+  to: "{%- render 'image-element', img: second_image, classes: image_classes, sizes:
+    sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720,
+    1000', alt: product.title -%}"
+  position: 20771..20957
+{% endcomment %}

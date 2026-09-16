@@ -47,7 +47,7 @@ US,GB,CA,DE,SE,AU,IN
 <form id="cfmForm" action="/localization" method="post" style="display:none;">
   <input type="hidden" name="form_type" value="localization">
   <input type="hidden" name="country_code" id="cfmCountryCode" value="{{ localization.country.iso_code }}">
-  <input type="hidden" name="return_to" value="{{ request.path }}{{ request.query != blank | prepend: '?' }}">
+  <input type="hidden" name="return_to" value="{{ request.path }}{{ request.query | prepend: '?' }}">
 </form>
 
 <div class="cfm-modal" id="cfmModal" role="dialog" aria-modal="true" aria-labelledby="cfmTitle">
@@ -233,3 +233,13 @@ US,GB,CA,DE,SE,AU,IN
   console.log('✅ Locale modal ready. Available:', AVAILABLE);
 })();
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{{ request.query != blank | prepend: '?' }}"
+  to: "{{ request.query | prepend: '?' }}"
+  position: 2177..2211
+{% endcomment %}

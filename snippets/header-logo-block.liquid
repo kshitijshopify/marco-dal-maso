@@ -72,31 +72,8 @@
         {%- capture mobile_widths -%}{{ block.settings.mobile_logo_width }}, {{ block.settings.mobile_logo_width | times: 2 }}{%- endcapture -%}
         {%- capture mobile_style -%}max-height: {{ block.settings.mobile_logo_width | divided_by: block.settings.logo.aspect_ratio }}px;max-width: {{ block.settings.mobile_logo_width }}px;{%- endcapture -%}
 
-        {%- render 'image-element',
-          img: block.settings.logo,
-          img_width: width,
-          img_height: height,
-          img_tag_width: block.settings.desktop_logo_width,
-          sizes: sizes,
-          widths: widths,
-          style: style,
-          classes: 'small--hide',
-          loading: 'eager',
-          alt: block.settings.logo.alt | default: shop.name,
-          itemprop: 'logo',
-        -%}
-        {%- render 'image-element',
-          img: block.settings.logo,
-          img_width: mobile_width,
-          img_height: mobile_height,
-          img_tag_width: block.settings.mobile_logo_width,
-          sizes: mobile_sizes,
-          widths: mobile_widths,
-          style: mobile_style,
-          classes: 'medium-up--hide',
-          loading: 'eager',
-          alt: block.settings.logo.alt | default: shop.name,
-        -%}
+        {%- render 'image-element', img: block.settings.logo, img_width: width, img_height: height, img_tag_width: block.settings.desktop_logo_width, sizes: sizes, widths: widths, style: style, classes: 'small--hide', loading: 'eager', alt: block.settings.logo.alt, default: shop.name, itemprop: 'logo' -%}
+        {%- render 'image-element', img: block.settings.logo, img_width: mobile_width, img_height: mobile_height, img_tag_width: block.settings.mobile_logo_width, sizes: mobile_sizes, widths: mobile_widths, style: mobile_style, classes: 'medium-up--hide', loading: 'eager', alt: block.settings.logo.alt, default: shop.name -%}
       </a>
       {%- if block.settings.logo-inverted -%}
         <a
@@ -119,31 +96,8 @@
           {%- capture mobile_widths -%}{{ block.settings.mobile_logo_width }}, {{ block.settings.mobile_logo_width | times: 2 }}{%- endcapture -%}
           {%- capture mobile_style -%}max-height: {{ block.settings.mobile_logo_width | divided_by: block.settings.logo-inverted.aspect_ratio }}px;max-width: {{ block.settings.mobile_logo_width }}px;{%- endcapture -%}
 
-          {%- render 'image-element',
-            img: block.settings.logo-inverted,
-            img_width: width,
-            img_height: height,
-            img_tag_width: block.settings.inverted_logo_width,
-            sizes: sizes,
-            widths: widths,
-            style: style,
-            classes: 'small--hide',
-            loading: 'eager',
-            alt: block.settings.logo-inverted.alt | default: shop.name,
-            itemprop: 'logo',
-          -%}
-          {%- render 'image-element',
-            img: block.settings.logo-inverted,
-            img_width: mobile_width,
-            img_height: mobile_height,
-            img_tag_width: block.settings.mobile_logo_width,
-            sizes: mobile_sizes,
-            widths: mobile_widths,
-            style: mobile_style,
-            classes: 'medium-up--hide',
-            loading: 'eager',
-            alt: block.settings.logo-inverted.alt | default: shop.name,
-          -%}
+          {%- render 'image-element', img: block.settings.logo-inverted, img_width: width, img_height: height, img_tag_width: block.settings.inverted_logo_width, sizes: sizes, widths: widths, style: style, classes: 'small--hide', loading: 'eager', alt: block.settings.logo-inverted.alt, default: shop.name, itemprop: 'logo' -%}
+          {%- render 'image-element', img: block.settings.logo-inverted, img_width: mobile_width, img_height: mobile_height, img_tag_width: block.settings.mobile_logo_width, sizes: mobile_sizes, widths: mobile_widths, style: mobile_style, classes: 'medium-up--hide', loading: 'eager', alt: block.settings.logo-inverted.alt, default: shop.name -%}
         </a>
       {%- endif -%}
     {%- else -%}
@@ -181,3 +135,84 @@
     </div>
   {%- endif -%}
 {%- endunless -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%- render 'image-element',
+              img: block.settings.logo,
+              img_width: width,
+              img_height: height,
+              img_tag_width: block.settings.desktop_logo_width,
+              sizes: sizes,
+              widths: widths,
+              style: style,
+              classes: 'small--hide',
+              loading: 'eager',
+              alt: block.settings.logo.alt | default: shop.name,
+              itemprop: 'logo',
+            -%}
+  to: "{%- render 'image-element', img: block.settings.logo, img_width: width, img_height:
+    height, img_tag_width: block.settings.desktop_logo_width, sizes: sizes, widths:
+    widths, style: style, classes: 'small--hide', loading: 'eager', alt: block.settings.logo.alt,
+    default: shop.name, itemprop: 'logo' -%}"
+  position: 3616..3914
+- from: |-
+    {%- render 'image-element',
+              img: block.settings.logo,
+              img_width: mobile_width,
+              img_height: mobile_height,
+              img_tag_width: block.settings.mobile_logo_width,
+              sizes: mobile_sizes,
+              widths: mobile_widths,
+              style: mobile_style,
+              classes: 'medium-up--hide',
+              loading: 'eager',
+              alt: block.settings.logo.alt | default: shop.name,
+            -%}
+  to: "{%- render 'image-element', img: block.settings.logo, img_width: mobile_width,
+    img_height: mobile_height, img_tag_width: block.settings.mobile_logo_width, sizes:
+    mobile_sizes, widths: mobile_widths, style: mobile_style, classes: 'medium-up--hide',
+    loading: 'eager', alt: block.settings.logo.alt, default: shop.name -%}"
+  position: 3923..4241
+- from: |-
+    {%- render 'image-element',
+                img: block.settings.logo-inverted,
+                img_width: width,
+                img_height: height,
+                img_tag_width: block.settings.inverted_logo_width,
+                sizes: sizes,
+                widths: widths,
+                style: style,
+                classes: 'small--hide',
+                loading: 'eager',
+                alt: block.settings.logo-inverted.alt | default: shop.name,
+                itemprop: 'logo',
+              -%}
+  to: "{%- render 'image-element', img: block.settings.logo-inverted, img_width: width,
+    img_height: height, img_tag_width: block.settings.inverted_logo_width, sizes:
+    sizes, widths: widths, style: style, classes: 'small--hide', loading: 'eager',
+    alt: block.settings.logo-inverted.alt, default: shop.name, itemprop: 'logo' -%}"
+  position: 5978..6295
+- from: |-
+    {%- render 'image-element',
+                img: block.settings.logo-inverted,
+                img_width: mobile_width,
+                img_height: mobile_height,
+                img_tag_width: block.settings.mobile_logo_width,
+                sizes: mobile_sizes,
+                widths: mobile_widths,
+                style: mobile_style,
+                classes: 'medium-up--hide',
+                loading: 'eager',
+                alt: block.settings.logo-inverted.alt | default: shop.name,
+              -%}
+  to: "{%- render 'image-element', img: block.settings.logo-inverted, img_width: mobile_width,
+    img_height: mobile_height, img_tag_width: block.settings.mobile_logo_width, sizes:
+    mobile_sizes, widths: mobile_widths, style: mobile_style, classes: 'medium-up--hide',
+    loading: 'eager', alt: block.settings.logo-inverted.alt, default: shop.name -%}"
+  position: 6306..6642
+{% endcomment %}
