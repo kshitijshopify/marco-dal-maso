@@ -1,1 +1,26 @@
-{"parent":"header-group.json","context":{"market":"ca"},"sections":{"header":{"settings":{"cart_free_shipping_threshold":"350"},"blocks":{}},"announcement":{"settings":{},"blocks":{"announcement_qmRpHf":{"settings":{"text":"<p>FREE SHIPPING ON ORDERS OVER C$350. <a href=\"https:\/\/marcodalmaso.com\/pages\/free-shipping?_pos=1&_psq=shipp&_ss=e&_v=1.0\">LEARN MORE<\/a><\/p>","link_text":""}},"announcement_WPyPAh":{"settings":{"text":"<p>All taxes and duties are included in the final price. <a href=\"https:\/\/marcodalmaso.com\/pages\/support-center#shipping\" title=\"https:\/\/marcodalmaso.com\/pages\/support-center#shipping\">Learn more.<\/a><\/p>"}}},"block_order":["announcement_qmRpHf","announcement_WPyPAh"]}}}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "header-group.json",
+  "context": {
+    "market": "ca"
+  },
+  "sections": {
+    "announcement": {
+      "blocks": {
+        "announcement_qmRpHf": {
+          "settings": {
+            "text": "<p>Complimentary Shipping over C$300 · No duties or taxes on delivery</p>"
+          }
+        }
+      }
+    }
+  }
+}

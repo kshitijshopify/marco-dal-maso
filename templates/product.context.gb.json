@@ -1,1 +1,1 @@
-{"parent":"product.json","context":{"market":"gb"},"sections":{}}
+{"parent":"product.json","context":{"market":"gb"},"sections":{"main":{"blocks":{"price":{"settings":{"taxes_text":"No additional duties or taxes on delivery"}}}}}}

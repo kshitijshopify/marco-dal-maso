@@ -123,19 +123,20 @@ position: absolute;
         justify-self: center;
         text-align: center;
     }
-  .stacked-text--root[data-y-alignment=left] {
+    .stacked-text--root[data-y-alignment=left] {
         align-self: flex-start;
     }
-      .stacked-text--root[data-x-alignment=left] {
+    .stacked-text--root[data-x-alignment=left] {
         justify-self: flex-start;
         text-align: left;
     }
-  .stacked-text--root[data-y-alignment=right] {
-        align-self: flex-end;
-    }
-      .stacked-text--root[data-x-alignment=right] {
+    .stacked-text--root[data-x-alignment=right] {
         justify-self: flex-end;
         text-align: right;
+        justify-content: end;
+    }
+    .stacked-text--root[data-x-alignment=right] .stacked-text--wrapper {
+      align-items: end;
     }
   /* .collection-promo--root .stacked-text--root:only-child {
     padding: 0;
@@ -147,16 +148,19 @@ position: absolute;
     /* max-width: fit-content; */
 }
 [data-container=panel] {
-    display: grid;
-    align-items: start;
-    grid-gap: 22px;
-    grid-template-columns: minmax(auto, 1fr);
-    justify-content: center;
+  display: grid;
+  align-items: start;
+  grid-gap: 0;
+  grid-template-columns: minmax(auto,1fr);
+  justify-content: center;
+  margin-left: -22px;
 }
+/* Do not set transform here — it must only apply when .drawer--is-open is present.
+   Otherwise closing removes .drawer--is-open but transform never changes, so no
+   transitionend fires and .is-transitioning stays (display:block !important). */
 div#FilterDrawer {
   left: -350px;
   width: 350px;
-  transform: translate(350px);
 }
 .collection-sidebar__group {
     position: relative;
@@ -207,12 +211,16 @@ div#FilterDrawer {
     }
   [data-container=panel][data-mobile-columns="1"] {
         grid-template-columns: repeat(2, minmax(0, 1fr));grid-gap: 15px;
+        margin-left: 0;
     }
     div#FilterDrawer {
     left: -100%;
-    transform: translate(100%);
     max-width: 100% !important;
     width: 100% !important;
+}
+    /* Full-width slide-in; only when open so close transition runs and clears .is-transitioning */
+    div#FilterDrawer.drawer--is-open {
+    transform: translate(100%);
 }
 }
 @media only screen and (min-width: 769px) and (max-width: 1023px) {

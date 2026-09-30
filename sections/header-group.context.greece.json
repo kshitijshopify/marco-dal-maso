@@ -1,1 +1,22 @@
-{"parent":"header-group.json","context":{"market":"greece"},"sections":{"announcement":{"settings":{},"blocks":{"announcement_qmRpHf":{"settings":{"text":"<p>Free Shipping on orders over €230. <a href=\"https:\/\/marcodalmaso.com\/pages\/free-shipping?_pos=1&_psq=free&_ss=e&_v=1.0\" title=\"Free shipping from Marco Dal Maso\">Learn More<\/a><\/p>"}}}},"header":{"settings":{"cart_free_shipping_threshold":"230","taxes_text":"Final price includes all taxes and duties."},"blocks":{}}}}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "header-group.json",
+  "context": {
+    "market": "greece"
+  },
+  "sections": {
+    "header": {
+      "settings": {
+        "taxes_text": "Final price includes all taxes and duties."
+      }
+    }
+  }
+}

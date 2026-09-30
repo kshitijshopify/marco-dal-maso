@@ -1,4 +1,4 @@
-{% render 'scrolling-text', section: section, block: block %}
+{% render 'scrolling-text', section: section %}
 
 
 {% schema %}
@@ -7,7 +7,7 @@
   "class": "index-section--flush",
   "settings": [
     {
-      "type": "textarea",
+      "type": "text",
       "id": "text",
       "label": "t:sections.marquee.settings.text.label",
       "default": "Free shipping and returns"
@@ -22,7 +22,7 @@
       "id": "text_size",
       "label": "t:sections.marquee.settings.text_size.label",
       "default": 70,
-      "min": 14,
+      "min": 20,
       "max": 150,
       "step": 2,
       "unit": "px"
@@ -54,30 +54,16 @@
       "id": "speed",
       "label": "t:sections.marquee.settings.speed.label",
       "default": 200,
-      "min": 10,
+      "min": 50,
       "max": 300,
       "step": 10,
       "unit": "s"
     }
   ],
-  "blocks": [
-    {
-      "type": "text",
-      "name": "Text",
-      "limit": 6,
-      "settings": [
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "t:sections.marquee.settings.text.label",
-          "default": "<p>Free shipping and returns</p>"
-        }      
-      ]
-    }
-  ],
   "presets": [
     {
-      "name": "t:sections.marquee.presets.scrolling_text.name"
+      "name": "t:sections.marquee.presets.scrolling_text.name",
+      "category": "t:sections.categories.banners"
     }
   ],
   "disabled_on": {

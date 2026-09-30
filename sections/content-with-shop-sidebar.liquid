@@ -1,0 +1,548 @@
+{%- liquid
+  assign s = section.settings
+  assign has_cards = false
+  for b in section.blocks
+    if b.type == 'card'
+      assign has_cards = true
+      break
+    endif
+  endfor
+-%}
+
+{%- style -%}
+  #shopside-{{ section.id }} {
+    --ss-aside-w: {{ s.aside_width }}px;
+    --ss-gap: {{ s.column_gap }}px;
+    --ss-offset: {{ s.sticky_offset }}px;
+    --ss-img: {{ s.card_image_size }}px;
+    --ss-bg: {{ s.bg_color }};
+    --ss-text: {{ s.text_color }};
+    --ss-muted: {{ s.muted_color }};
+    --ss-panel: {{ s.panel_color }};
+    --ss-card: {{ s.card_color }};
+    --ss-line: {{ s.border_color }};
+    background: var(--ss-bg);
+    color: var(--ss-text);
+    padding-top: {{ s.padding_top }}px;
+    padding-bottom: {{ s.padding_bottom }}px;
+    /* sticky ko kaam karne dene ke liye: koi bhi parent overflow clip na kare */
+    overflow: visible;
+  }
+
+  #shopside-{{ section.id }} .ss__inner {
+    display: grid;
+    gap: var(--ss-gap);
+    {% if s.width == 'page' %}max-width: {{ s.max_width }}px;{% else %}max-width: 100%;{% endif %}
+    margin: 0 auto;
+    padding-inline: 20px;
+    overflow: visible;
+  }
+
+  #shopside-{{ section.id }} .ss__content > * { margin-top: 0; }
+  #shopside-{{ section.id }} .ss__heading {
+    font-size: {{ s.heading_size }}px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    text-transform: inherit;
+  }
+  #shopside-{{ section.id }} .ss__heading + .ss__rte { margin-top: 0; }
+  #shopside-{{ section.id }} .ss__block + .ss__block { margin-top: 22px; }
+  #shopside-{{ section.id }} .ss__block--heading + .ss__block { margin-top: 0; }
+  #shopside-{{ section.id }} .ss__rte {
+    font-size: {{ s.body_size }}px;
+    line-height: 1.65;
+    max-width: 68ch;
+  }
+  #shopside-{{ section.id }} .ss__rte p { margin: 0 0 14px; }
+  #shopside-{{ section.id }} .ss__rte p:last-child { margin-bottom: 0; }
+  #shopside-{{ section.id }} .ss__rte ul { margin: 0; padding-left: 30px; }
+  #shopside-{{ section.id }} .ss__rte li { margin-bottom: 8px; }
+  #shopside-{{ section.id }} .ss__rte a { color: inherit; }
+  #shopside-{{ section.id }} .ss__spacer { height: {{ s.block_spacer }}px; }
+
+  /* ---------- sidebar ---------- */
+  #shopside-{{ section.id }} .ss__panel {
+    background: var(--ss-panel);
+    padding: 22px;
+  }
+  #shopside-{{ section.id }} .ss__panel-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  #shopside-{{ section.id }} .ss__cards { display: grid; gap: 12px; }
+  #shopside-{{ section.id }} .ss__card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--ss-card);
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid transparent;
+    transition: border-color .18s ease;
+  }
+  #shopside-{{ section.id }} a.ss__card:hover { border-color: var(--ss-line); }
+  #shopside-{{ section.id }} a.ss__card:focus-visible { outline: 2px solid var(--ss-text); outline-offset: 2px; }
+  #shopside-{{ section.id }} .ss__media {
+    flex: 0 0 var(--ss-img);
+    width: var(--ss-img);
+    aspect-ratio: {{ s.card_image_ratio }};
+    background: #e6e6e6;
+    overflow: hidden;
+  }
+  #shopside-{{ section.id }} .ss__media img,
+  #shopside-{{ section.id }} .ss__media svg {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  #shopside-{{ section.id }} .ss__card-body { display: flex; flex-direction: column; }
+  #shopside-{{ section.id }} .ss__card-title { font-size: 17px; font-weight: 600; margin: 0; }
+  #shopside-{{ section.id }} .ss__card-sub { font-size: 14px; color: var(--ss-muted); margin: 3px 0 0; }
+  #shopside-{{ section.id }} .ss__card-cta {
+    display: inline-block;
+    margin-top: 9px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  #shopside-{{ section.id }} .ss__note {
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--ss-muted);
+    margin: 16px 0 0;
+  }
+  #shopside-{{ section.id }} .ss__note p { margin: 0; }
+
+  /* ---------- mobile toggle ---------- */
+  #shopside-{{ section.id }} .ss__toggle {
+    display: none;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--ss-panel);
+    color: var(--ss-text);
+    border: 1px solid var(--ss-line);
+    padding: 14px 18px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #shopside-{{ section.id }} .ss__toggle-icon {
+    flex: 0 0 auto;
+    width: 11px; height: 11px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform .2s ease;
+  }
+  #shopside-{{ section.id }} .ss__toggle[aria-expanded="true"] .ss__toggle-icon {
+    transform: rotate(-135deg) translate(-3px, -3px);
+  }
+
+  /* ---------- mobile ---------- */
+  @media screen and (max-width: {{ s.breakpoint | minus: 1 }}px) {
+    {%- if s.mobile_display == 'hide' -%}
+      #shopside-{{ section.id }} .ss__aside { display: none; }
+    {%- endif -%}
+    {%- if s.mobile_display == 'collapsible' -%}
+      #shopside-{{ section.id }} .ss__toggle { display: flex; }
+      #shopside-{{ section.id }} .ss__panel[data-collapsed="true"] { display: none; }
+      #shopside-{{ section.id }} .ss__panel { border: 1px solid var(--ss-line); border-top: 0; }
+    {%- endif -%}
+    #shopside-{{ section.id }} .ss__heading { font-size: 20px; }
+    #shopside-{{ section.id }} .ss__rte { font-size: 16px; }
+    #shopside-{{ section.id }} .ss__aside { margin-top: 32px; display: none; }
+  }
+
+  /* ---------- desktop ---------- */
+  @media screen and (min-width: {{ s.breakpoint }}px) {
+    #shopside-{{ section.id }} .ss__inner {
+      {% if s.aside_position == 'left' %}
+        grid-template-columns: var(--ss-aside-w) minmax(0, 1fr);
+      {% else %}
+        grid-template-columns: minmax(0, 1fr) var(--ss-aside-w);
+      {% endif %}
+      align-items: start;
+      padding-inline: 72px;
+    }
+    {%- if s.aside_position == 'left' -%}
+      #shopside-{{ section.id }} .ss__aside { grid-column: 1; grid-row: 1; }
+      #shopside-{{ section.id }} .ss__content { grid-column: 2; grid-row: 1; }
+    {%- endif -%}
+    #shopside-{{ section.id }} .ss__aside { align-self: start; }
+    {%- if s.sticky -%}
+      #shopside-{{ section.id }} .ss__sticky {
+        position: sticky;
+        top: var(--ss-offset);
+        top: 30%;
+        max-height: calc(100vh - var(--ss-offset) - 16px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        z-index: 2;
+      }
+      /* JS pin mode: box section ke baahar bhi chalta rahe */
+      #shopside-{{ section.id }}.is-pinned .ss__sticky { position: fixed; }
+    {%- endif -%}
+    #shopside-{{ section.id }} .ss__panel[data-collapsed="true"] { display: block; }
+  }
+  aside.ss__aside {
+    height: 100%;
+}
+{%- endstyle -%}
+
+<section id="shopside-{{ section.id }}" class="ss">
+  <div class="ss__inner">
+
+    <div class="ss__content">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            <div class="ss__block ss__block--heading" {{ block.shopify_attributes }}>
+              <{{ block.settings.tag }} class="ss__heading">{{ block.settings.text | escape }}</{{ block.settings.tag }}>
+            </div>
+          {%- when 'text' -%}
+            <div class="ss__block" {{ block.shopify_attributes }}>
+              <div class="ss__rte">{{ block.settings.text }}</div>
+            </div>
+          {%- when 'spacer' -%}
+            <div class="ss__spacer" {{ block.shopify_attributes }}></div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if has_cards or s.panel_title != blank -%}
+      <aside class="ss__aside">
+        <div class="ss__sticky">
+          {%- if s.mobile_display == 'collapsible' -%}
+            <button
+              type="button"
+              class="ss__toggle"
+              aria-expanded="{% if s.mobile_open %}true{% else %}false{% endif %}"
+              aria-controls="ss-panel-{{ section.id }}"
+              data-show-label="{{ s.mobile_show_label | escape }}"
+              data-hide-label="{{ s.mobile_hide_label | escape }}"
+            >
+              <span class="ss__toggle-label">{% if s.mobile_open %}{{ s.mobile_hide_label }}{% else %}{{ s.mobile_show_label }}{% endif %}</span>
+              <span class="ss__toggle-icon" aria-hidden="true"></span>
+            </button>
+          {%- endif -%}
+
+          <div
+            class="ss__panel"
+            id="ss-panel-{{ section.id }}"
+            {% if s.mobile_display == 'collapsible' and s.mobile_open == false %}data-collapsed="true"{% else %}data-collapsed="false"{% endif %}
+          >
+            {%- if s.panel_title != blank -%}
+              <p class="ss__panel-title">{{ s.panel_title | escape }}</p>
+            {%- endif -%}
+
+            <div class="ss__cards">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'card' -%}
+                  {%- liquid
+                    assign p = block.settings.product
+                    assign img = block.settings.image
+                    if img == blank and p != blank
+                      assign img = p.featured_image
+                    endif
+                    assign title = block.settings.title
+                    if title == blank and p != blank
+                      assign title = p.title
+                    endif
+                    assign url = block.settings.link_url
+                    if url == blank and p != blank
+                      assign url = p.url
+                    endif
+                  -%}
+                  {%- if url != blank -%}
+                    <a class="ss__card" href="{{ url }}" {{ block.shopify_attributes }}>
+                  {%- else -%}
+                    <div class="ss__card" {{ block.shopify_attributes }}>
+                  {%- endif -%}
+                    <span class="ss__media">
+                      {%- if img != blank -%}
+                        <img
+                          src="{{ img | image_url: width: 400 }}"
+                          srcset="{{ img | image_url: width: 200 }} 200w, {{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 600 }} 600w"
+                          sizes="(min-width: {{ s.breakpoint }}px) {{ s.card_image_size }}px, 120px"
+                          alt="{{ img.alt | default: title | escape }}"
+                          width="{{ img.width }}"
+                          height="{{ img.height }}"
+                          loading="lazy"
+                        >
+                      {%- else -%}
+                        {{ 'image' | placeholder_svg_tag }}
+                      {%- endif -%}
+                    </span>
+                    <span class="ss__card-body">
+                      <span class="ss__card-title">{{ title | default: 'Material' | escape }}</span>
+                      {%- if block.settings.subtitle != blank -%}
+                        <span class="ss__card-sub">{{ block.settings.subtitle | escape }}</span>
+                      {%- endif -%}
+                      {%- if block.settings.link_label != blank -%}
+                        <span class="ss__card-cta">{{ block.settings.link_label | escape }}</span>
+                      {%- endif -%}
+                    </span>
+                  {%- if url != blank -%}</a>{%- else -%}</div>{%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+            {%- if s.panel_note != blank -%}
+              <div class="ss__note">{{ s.panel_note }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      </aside>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('shopside-{{ section.id }}');
+    if (!root || root.dataset.ssBound === '1') return;
+    root.dataset.ssBound = '1';
+
+    /* ---- mobile toggle ---- */
+    var btn = root.querySelector('.ss__toggle');
+    var panel = root.querySelector('.ss__panel');
+    if (btn && panel) {
+      btn.addEventListener('click', function () {
+        var closed = panel.getAttribute('data-collapsed') === 'true';
+        panel.setAttribute('data-collapsed', closed ? 'false' : 'true');
+        btn.setAttribute('aria-expanded', closed ? 'true' : 'false');
+        var label = btn.querySelector('.ss__toggle-label');
+        if (label) label.textContent = closed ? btn.dataset.hideLabel : btn.dataset.showLabel;
+      });
+    }
+
+    /* ---- sticky beyond the section ---- */
+    {%- if s.sticky and s.sticky_scope != 'section' -%}
+    var aside = root.querySelector('.ss__aside');
+    var box = root.querySelector('.ss__sticky');
+    if (!aside || !box) return;
+
+    var offset = {{ s.sticky_offset }};
+    var bottomGap = {{ s.sticky_stop_gap }};
+    var mode = {{ s.sticky_scope | json }};
+    var selector = {{ s.sticky_stop_selector | json }};
+    var mq = window.matchMedia('(min-width: {{ s.breakpoint }}px)');
+    var queued = false;
+
+    function stopDistance() {
+      if (mode === 'page') {
+        var doc = document.documentElement;
+        return Math.max(doc.scrollHeight, document.body.scrollHeight) - window.scrollY;
+      }
+      if (!selector) return null;
+      var el;
+      try { el = document.querySelector(selector); } catch (e) { return null; }
+      return el ? el.getBoundingClientRect().top : null;
+    }
+
+    function release() {
+      root.classList.remove('is-pinned');
+      box.style.top = '';
+      box.style.left = '';
+      box.style.width = '';
+      aside.style.minHeight = '';
+    }
+
+    function update() {
+      queued = false;
+      var stopAt = stopDistance();
+      if (!mq.matches || stopAt === null) { release(); return; }
+
+      var slot = aside.getBoundingClientRect();
+      if (slot.top > offset) { release(); return; }
+
+      var height = box.offsetHeight;
+      var limit = stopAt - height - bottomGap;
+
+      aside.style.minHeight = height + 'px';
+      root.classList.add('is-pinned');
+      box.style.top = Math.min(offset, limit) + 'px';
+      box.style.left = slot.left + 'px';
+      box.style.width = slot.width + 'px';
+    }
+
+    function queue() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    }
+
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    if (mq.addEventListener) mq.addEventListener('change', queue);
+    if (window.ResizeObserver) new ResizeObserver(queue).observe(box);
+    update();
+    {%- endif -%}
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Content + shop sidebar",
+  "tag": "section",
+  "class": "section-content-shop-sidebar",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "options": [
+        { "value": "page", "label": "Page width" },
+        { "value": "full", "label": "Full width" }
+      ],
+      "default": "page"
+    },
+    { "type": "range", "id": "max_width", "min": 1000, "max": 1800, "step": 20, "unit": "px", "label": "Max width", "default": 1360 },
+    {
+      "type": "select",
+      "id": "aside_position",
+      "label": "Sidebar position",
+      "options": [
+        { "value": "right", "label": "Right" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "right"
+    },
+    { "type": "range", "id": "aside_width", "min": 280, "max": 560, "step": 10, "unit": "px", "label": "Sidebar width", "default": 430 },
+    { "type": "range", "id": "column_gap", "min": 16, "max": 120, "step": 4, "unit": "px", "label": "Gap between columns", "default": 56 },
+    { "type": "range", "id": "breakpoint", "min": 750, "max": 1200, "step": 10, "unit": "px", "label": "Desktop starts at", "default": 990, "info": "Below this width the layout stacks." },
+
+    { "type": "header", "content": "Sticky sidebar (desktop)" },
+    { "type": "checkbox", "id": "sticky", "label": "Keep sidebar sticky while scrolling", "default": true },
+    { "type": "range", "id": "sticky_offset", "min": 0, "max": 200, "step": 4, "unit": "px", "label": "Distance from top", "default": 32, "info": "Increase this if your header is sticky, so the sidebar does not slide under it." },
+    {
+      "type": "select",
+      "id": "sticky_scope",
+      "label": "Stop sticking at",
+      "options": [
+        { "value": "section", "label": "End of this section" },
+        { "value": "page", "label": "Bottom of the page" },
+        { "value": "target", "label": "A specific later section" }
+      ],
+      "default": "page"
+    },
+    { "type": "text", "id": "sticky_stop_selector", "label": "Stop at this element", "info": "Only used with \"A specific later section\". CSS selector, e.g. #shopify-section-footer or .read-next." },
+    { "type": "range", "id": "sticky_stop_gap", "min": 0, "max": 200, "step": 4, "unit": "px", "label": "Gap before the stopping point", "default": 48 },
+
+    { "type": "header", "content": "Mobile" },
+    {
+      "type": "select",
+      "id": "mobile_display",
+      "label": "Sidebar on mobile",
+      "options": [
+        { "value": "show", "label": "Always show" },
+        { "value": "collapsible", "label": "Show behind a toggle" },
+        { "value": "hide", "label": "Hide" }
+      ],
+      "default": "show"
+    },
+    { "type": "checkbox", "id": "mobile_open", "label": "Open by default", "default": false, "info": "Only applies to the toggle option." },
+    { "type": "text", "id": "mobile_show_label", "label": "Toggle label when closed", "default": "Shop by material" },
+    { "type": "text", "id": "mobile_hide_label", "label": "Toggle label when open", "default": "Hide" },
+
+    { "type": "header", "content": "Sidebar content" },
+    { "type": "text", "id": "panel_title", "label": "Sidebar heading", "default": "Shop by material" },
+    { "type": "richtext", "id": "panel_note", "label": "Note under the cards" },
+    { "type": "range", "id": "card_image_size", "min": 48, "max": 140, "step": 4, "unit": "px", "label": "Card image width", "default": 64 },
+    {
+      "type": "select",
+      "id": "card_image_ratio",
+      "label": "Card image shape",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "3 / 4", "label": "Tall" }
+      ],
+      "default": "1 / 1"
+    },
+
+    { "type": "header", "content": "Type" },
+    { "type": "range", "id": "heading_size", "min": 14, "max": 40, "step": 1, "unit": "px", "label": "Heading size", "default": 19 },
+    { "type": "range", "id": "body_size", "min": 12, "max": 20, "step": 1, "unit": "px", "label": "Body size", "default": 14 },
+    { "type": "range", "id": "block_spacer", "min": 8, "max": 120, "step": 4, "unit": "px", "label": "Spacer block height", "default": 40 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "muted_color", "label": "Secondary text", "default": "#8a8a8a" },
+    { "type": "color", "id": "panel_color", "label": "Sidebar background", "default": "#f5f5f5" },
+    { "type": "color", "id": "card_color", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Borders", "default": "#dcdcdc" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Top padding", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Bottom padding", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Heading", "default": "Which material should you choose?" },
+        {
+          "type": "select",
+          "id": "tag",
+          "label": "Heading level",
+          "options": [
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" }
+          ],
+          "default": "h2"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>The answer depends less on rules and more on how the piece will be worn.</p>" }
+      ]
+    },
+    {
+      "type": "spacer",
+      "name": "Spacer",
+      "settings": []
+    },
+    {
+      "type": "card",
+      "name": "Material card",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product", "info": "Image, title and link are pulled from the product unless you override them below." },
+        { "type": "image_picker", "id": "image", "label": "Image override" },
+        { "type": "text", "id": "title", "label": "Title override" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Structural, everyday" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop" },
+        { "type": "url", "id": "link_url", "label": "Link override" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content + shop sidebar",
+      "blocks": [
+        { "type": "heading", "settings": { "text": "Which material should you choose?" } },
+        { "type": "text", "settings": { "text": "<p>The answer depends less on rules and more on how the piece will be worn.</p><ul><li>Choose sterling silver for a sharper, more architectural presence, made for daily wear.</li><li>Choose gold vermeil for warmth and a more elevated finish.</li><li>Choose solid gold if you are buying for legacy or a milestone moment.</li></ul>" } },
+        { "type": "spacer" },
+        { "type": "heading", "settings": { "text": "A note on wear and longevity" } },
+        { "type": "text", "settings": { "text": "<p>Every material ages differently. Sterling silver can tarnish naturally over time, though on our oxidised finishes that darker tone is intentional rather than something to polish away.</p>" } },
+        { "type": "card", "settings": { "title": "Sterling Silver", "subtitle": "Structural, everyday" } },
+        { "type": "card", "settings": { "title": "Gold Vermeil", "subtitle": "18kt gold, 5 microns" } },
+        { "type": "card", "settings": { "title": "Solid Gold", "subtitle": "18kt throughout" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

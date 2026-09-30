@@ -220,7 +220,7 @@
               <li class="ecom-predictive-search__list-item">
                 <a href="{{ product.url }}" class="ecom-predictive-search__item ecom-predictive-search__product" tabindex="-1">
                   {%- if product.featured_media != blank -%}
-                    <img class="ecom-predictive-search__image" src="{{ product.featured_media | image_url: width: 150 }}" alt="{{ product.featured_media.alt }}" width="50" height="50">
+                    <img class="ecom-predictive-search__image" src="{{ product.featured_media | image_url: width: 150 }}" alt="{{ product.featured_media.alt }}" width="50" height="50" loading="lazy">
                   {%- endif -%}
                   <div class="ecom-predictive-search__item-content">
                     <p class="ecom-predictive-search__item-title">{{ product.title }}</p>

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "accessibility": {
@@ -35,13 +44,15 @@
     },
     "social": {
       "share_on_facebook": "Partilhar",
-      "share_on_twitter": "Tweetar",
+      "share_on_x": "Partilhar",
       "share_on_pinterest": "Pin it",
       "alt_text": {
         "share_on_facebook": "Partilhe no Facebook",
-        "share_on_twitter": "Tuíte no Twitter",
-        "share_on_pinterest": "Adicione no Pinterest"
-      }
+        "share_on_x": "Tuíte no X",
+        "share_on_pinterest": "Adicione no Pinterest",
+        "share_on_twitter": "Tuíte no Twitter"
+      },
+      "share_on_twitter": "Tweetar"
     },
     "newsletter_form": {
       "newsletter_email": "Subscreva a nossa lista de emails",
@@ -318,7 +329,7 @@
       "add_to_cart": "Adicionar ao Carrinho de Compras",
       "preorder": "Pedido antecipado",
       "include_taxes": "Imposto incluído.",
-      "shipping_policy_html": "<a href='{{ link }}'>Envio<\/a> calculado na finalização da compra.",
+      "shipping_policy_html": "<a href='{{ link }}'>Envio</a> calculado na finalização da compra.",
       "will_not_ship_until": "Envio a partir de {{ date }}",
       "will_be_in_stock_after": "Estará disponível após {{ date }}",
       "waiting_for_stock": "Inventory no caminho",
@@ -326,14 +337,14 @@
       "view_in_space_label": "Ver no seu espaço, carrega item na janela de realidade aumentada"
     }
   },
-  "store_availability":{
-    "general":{
+  "store_availability": {
+    "general": {
       "view_store_info": "Exibir informações de loja",
       "check_other_stores": "Ver disponibilidade em outras lojas",
       "pick_up_available": "transbordo",
       "pick_up_currently_unavailable": "Captador atualmente indisponível",
-      "pick_up_available_at_html": "Captador disponível em <strong> {{location_name}} <\/strong>",
-      "pick_up_unavailable_at_html": "Captador disponível atualmente em <strong> {{location_name}} <\/strong>"
+      "pick_up_available_at_html": "Captador disponível em <strong> {{location_name}} </strong>",
+      "pick_up_unavailable_at_html": "Captador disponível atualmente em <strong> {{location_name}} </strong>"
     }
   },
   "gift_cards": {
@@ -349,7 +360,43 @@
       "add_to_apple_wallet": "Adicionar ao Apple Wallet"
     }
   },
-  "date_formats":{
+  "date_formats": {
     "month_day_year": "%d de %B de %Y"
+  },
+  "info": {
+    "unable_to_add_item_to_cart": "Não foi possível adicionar o item ao carrinho",
+    "item_added_to_cart_html": "{{ product_title }} adicionado ao carrinho!",
+    "low_stock_count": {
+      "one": "Stock baixo - {{ count }} item restante",
+      "other": "Stock baixo - {{ count }} itens restantes"
+    },
+    "back_in_stock_on": "De volta ao stock {{ date }}",
+    "backordered": "Pedido pendente, envio em breve",
+    "in_stock": "Em stock",
+    "sold_out": "Esgotado",
+    "tax_included": "Impostos incluídos.",
+    "shipping_policy_html": "<a href='{{ link }}'>Envio</a> calculado no checkout.",
+    "pick_up_available": "Recolha disponível",
+    "pick_up_currently_unavailable": "Recolha atualmente indisponível",
+    "pick_up_available_at_html": "Recolha disponível em <strong>{{ location_name }}</strong>",
+    "pick_up_unavailable_at_html": "Recolha atualmente indisponível em <strong>{{ location_name }}</strong>"
+  },
+  "labels": {
+    "quantity": "Quantidade",
+    "search": "Pesquisar",
+    "close": "Fechar",
+    "get_directions": "Obter direções",
+    "view_store_info": "Ver informações da loja",
+    "check_availability": "Verificar disponibilidade noutras lojas",
+    "show_all_results": "Mostrar todos os resultados para \"{{ terms }}\"",
+    "from_price": "a partir de {{ price }}"
+  },
+  "actions": {
+    "add_to_cart": "Adicionar ao carrinho",
+    "close": "Fechar",
+    "get_directions": "Obter direções",
+    "view_store_info": "Ver informações da loja",
+    "check_availability": "Verificar disponibilidade noutras lojas",
+    "show_all_results": "Mostrar todos os resultados para \"{{ terms }}\""
   }
 }

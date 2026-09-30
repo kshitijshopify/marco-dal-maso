@@ -5,7 +5,7 @@
   if lightness <= 100
     assign dark_search_bg = true
   endif
--%} 
+-%}
 
 <predictive-search data-context="{{ context }}" data-enabled="{{ settings.predictive_search_enabled }}" data-dark="{{ dark_search_bg }}">
   <div class="predictive__screen" data-screen></div>
@@ -32,6 +32,9 @@
         tabindex="0"
       >
       <input name="options[prefix]" type="hidden" value="last">
+      {%- if exclude_pages -%}
+        <input type="hidden" name="type" value="product,article">
+      {%- endif -%}
       <button class="btn--search" type="submit">
         <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-search" viewBox="0 0 64 64"><defs><style>.cls-1{fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:2px}</style></defs><path class="cls-1" d="M47.16 28.58A18.58 18.58 0 1 1 28.58 10a18.58 18.58 0 0 1 18.58 18.58zM54 54L41.94 42"/></svg>
         <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
@@ -43,7 +46,7 @@
     </button>
     <div id="predictive-search" class="search__results" tabindex="-1"></div>
 
-    {% if showpredictive %}
+    {% if show_predictive_search_elements %}
       <div id="predictive-search2" class="search__results search__results2" tabindex="-1">
         <div class="predictive-search-results" id="predictive-search-results">
           <div class="results__group-1">
@@ -52,9 +55,7 @@
               assign collections_list = linklists[section.settings.collections_list]
             -%}
             <div class="results results--queries">
-              <h3 class="h4" id="predictive-search-categories">
-                    Categories
-              </h3>
+              <h3 class="h3" id="predictive-search-categories">Categories</h3>
               <ul role="listbox" aria-labelledby="" class="">
                 {%- for link in categories.links limit: 5 -%}
                   <li role="option">
@@ -67,9 +68,7 @@
             </div>
                 
             <div class="results results--queries">
-              <h3 class="h4" id="predictive-search-colls">
-                Collections
-              </h3>
+              <h3 class="h3" id="predictive-search-colls">Collections</h3>
               <ul role="listbox" aria-labelledby="predictive-search-colls" class="">
                 {%- for link in collections_list.links limit: 5 -%}
                   <li role="option">
@@ -84,7 +83,7 @@
 
           <div class="results__group-2">
             <div class="results results--products popularsearches small--hide">
-              <h3 class="h4" id="predictive-search-popularsearches">Popular Categories</h3>
+              <h3 class="h3" id="predictive-search-popularsearches">Popular Categories</h3>
               <div class="grid-overflow-wrapper">  
                 <ul role="listbox" aria-labelledby="predictive-search-popularsearches" class="grid grid--uniform" data-aos="overflow__animation" aria-hidden="true">
                   {% for i in (1..5) %}
@@ -105,7 +104,7 @@
             </div>
             
             <div class="results results--products bestsellers">
-              <h3 class="h4" id="predictive-search-bestsellers">Best Sellers</h3>
+              <h3 class="h3" id="predictive-search-bestsellers">Best Sellers</h3>
               <div class="grid-overflow-wrapper">                
                 <ul role="listbox" aria-labelledby="predictive-search-bestsellers" class="grid grid--uniform" data-aos="overflow__animation" aria-hidden="true">
                   {% for product in section.settings.my_collection_selector %}
@@ -187,14 +186,6 @@
                       {%- endif -%}
                     {%- endif -%}
 
-                    {% comment %}
-                      Arguments
-                      - product: product object
-                      - [per_row]: number of items per row
-                      - [quick_shop_enable]: boolean
-                      - [collection]: collection object
-                    {% endcomment %}
-
                     {%- liquid
                       unless per_row
                         assign per_row = 4
@@ -204,7 +195,6 @@
                         render 'products_per_row', products_per_row: per_row, style: 'fractions'
                       endcapture
 
-                      # These assignments have no effect if a sizes parameter is passed in
                       assign sizeVariable = gridView
                       if fallback != blank
                         assign fallback = fallback
@@ -242,9 +232,22 @@
                       data-product-id="{{ product_id }}"
                     >
                       <div class="grid-product__content {% if settings.quick_shopwithatc_enable %} gridprod__quick_shopwithatc_enable{% endif %}">
-                        <!-- Swym Wishlist Plus EPI Button with default first variant -->
+                        
                         {% if template contains 'collection' %}
-                          
+                          <button id="swym-collections-{{product.id}}" 
+                            class="swym-button swym-heart swym-add-to-wishlist-view-product swym-loaded" 
+                            data-with-epi="true"
+                            data-swaction="addToWishlist"
+                            data-product-id="{{product.id}}" 
+                            data-variant-id="{{product.variants[0].id}}" 
+                            data-product-url="{{shop.url}}{{product.url}}">
+                            <svg class="swym-icon-unfilled" viewBox="0 0 24 24" height="24px" width="auto">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <svg class="swym-icon-filled" viewBox="0 0 24 24" height="24px" width="auto">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
+                            </svg>
+                          </button>
                         {% else %}
                           <button id="swym-collections-{{product.id}}" 
                             class="swym-button swym-heart swym-add-to-wishlist-view-product swym-loaded" 
@@ -253,17 +256,14 @@
                             data-product-id="{{product.id}}" 
                             data-variant-id="{{product.variants[0].id}}" 
                             data-product-url="{{shop.url}}{{product.url}}">
-                            <!-- Unfilled star -->
                             <svg class="swym-icon-unfilled" viewBox="0 0 24 24" height="24px" width="auto">
                                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="currentColor" stroke-width="2"/>
                             </svg>
-                            <!-- Filled star -->
                             <svg class="swym-icon-filled" viewBox="0 0 24 24" height="24px" width="auto">
                                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
                             </svg>
                           </button>
                         {% endif %}
-                        <!-- Swym Wishlist Plus EPI Button-->
 
                         {% assign variable_product_metafields = product.metafields %}
                         {% assign product_tags = product.tags | join: ',' %}
@@ -336,7 +336,6 @@
                             {%- endcapture -%}
                                 {%- if preview_image != blank -%}
                                   {%- render 'image-element', img: preview_image, classes: image_classes, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720, 900, 1080', alt: product.title -%}
-                                  <!-- alt attribute added here -->
                                 {%- else -%}
                                   {%- capture placeholder -%}product-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
                                   <div class="product-image--placeholder">{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}</div>
@@ -354,7 +353,6 @@
                                 grid-product__image image-style--{{ image_style }}
                               {%- endcapture -%}
                                   {%- render 'image-element', img: preview_image, classes: image_classes, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720, 900, 1080', alt: product.title -%}
-                                  <!-- alt attribute added here -->
                                 {%- else -%}
                                   {%- capture placeholder -%}product-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
                                   <div class="product-image--placeholder">{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}</div>
@@ -372,7 +370,6 @@
                               image-style--{{ image_style }}
                             {%- endcapture -%}
                                 {%- render 'image-element', img: second_image, classes: image_classes, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720, 1000', alt: product.title -%}
-                                <!-- alt attribute added here -->
                               </div>
                             {%- endif -%}
 
@@ -411,170 +408,291 @@
                           </div>
 
                           <a href="{{ product.url }}" class="grid-product__link">
-        <div class="grid-product__meta">
-          <div class="grid-product__title grid-product__title--{{ settings.type_product_style }}">
-            <span>{% render 'variable-product-title', product: product, full_product: full_product %}</span>
-            {% if product.metafields.custom.subtitle != blank %}<small>{{ product.metafields.custom.subtitle }}</small>{% endif %}
-            {% assign variable_product_metafields = product.metafields %}
-                        {% assign product_tags = product.tags | join: ',' %}
-                        {% assign has_custom_label = false %}
-                        {% if variable_product_metafields.theme.label and variable_product_metafields.theme.label != blank %}
-                          {% assign has_custom_label = true %}
-                          {% assign custom_label = variable_product_metafields.theme.label.value %}
-                        {% elsif product_tags contains '_label_' %}      
-                            <div class="medium-up--hide small--hide product__tagslist product__tags--custom">                    
-                          {% for tag in product.tags %}
-                            {% if tag contains '_label_' %}
-                              {% assign tag_starts_with = tag | slice: 0 %}
-                              {% if tag_starts_with == '_' %}
-                                {% assign has_custom_label = true %}
-                                {% assign custom_label = tag | replace: '_label_', '' %}
-                                
-                              {% endif %}
-                            {% endif %}
-                          {% endfor %}
-                              {%- if has_custom_label -%}
-                                  <div class="grid-product__tag grid-product__tag--custom">
-                                    {{ custom_label }}
-                                  </div>
+                            <div class="grid-product__meta">
+                              <div class="grid-product__title grid-product__title--{{ settings.type_product_style }}">
+                                <span>{% render 'variable-product-title', product: product, full_product: full_product %}</span>
+                                {% if product.metafields.custom.subtitle != blank %}<small>{{ product.metafields.custom.subtitle }}</small>{% endif %}
+                                {% assign variable_product_metafields = product.metafields %}
+                                {% assign product_tags = product.tags | join: ',' %}
+                                {% assign has_custom_label = false %}
+                                {% if variable_product_metafields.theme.label and variable_product_metafields.theme.label != blank %}
+                                  {% assign has_custom_label = true %}
+                                  {% assign custom_label = variable_product_metafields.theme.label.value %}
+                                {% elsif product_tags contains '_label_' %}      
+                                    <div class="medium-up--hide small--hide product__tagslist product__tags--custom">                    
+                                  {% for tag in product.tags %}
+                                    {% if tag contains '_label_' %}
+                                      {% assign tag_starts_with = tag | slice: 0 %}
+                                      {% if tag_starts_with == '_' %}
+                                        {% assign has_custom_label = true %}
+                                        {% assign custom_label = tag | replace: '_label_', '' %}
+                                        
+                                      {% endif %}
+                                    {% endif %}
+                                  {% endfor %}
+                                      {%- if has_custom_label -%}
+                                          <div class="grid-product__tag grid-product__tag--custom">
+                                            {{ custom_label }}
+                                          </div>
+                                        {%- endif -%}
+                                    </div>
+                                {% endif %}    
+                              </div>
+                              {%- if settings.vendor_enable -%}
+                                <div class="grid-product__vendor">{{ variable_vendor }}</div>
+                              {%- endif -%}
+                            </div>
+                          </a>
+                          {% comment %} <div class="swatch_price_flex {% if variable_product_metafields.custom.product_variations.value != blank %} swatches__available{% endif %}">
+                            <div class="grid-product__price mm {{ product.price }}">
+                                {%- if on_sale -%}
+                                  <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                                  <span class="grid-product__price--original">{{ product.compare_at_price | money_without_trailing_zeros  }}</span>
+                                  <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+                                {%- endif -%}
+                                {%- if product.price_varies -%}
+                                  <span>
+                                  {%- assign price = variable_price_min | money_without_trailing_zeros  -%}
+                                  {{ 'products.general.from_text_html' | t: price: price }}</span>
+                                {%- else -%}
+                                  <span class="{{ product.price | money_without_trailing_zeros  }} price-item price-item--regular" data-product-id="{{ product.id }}">
+                                    {{ product.price | money_without_trailing_zeros  }}
+                                  </span>
+                                {%- endif -%}
+                                {%- if on_sale -%}
+                                  {%- if settings.product_save_amount -%}
+                                    {%- if settings.product_save_type == 'dollar' -%}
+                                      {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money_without_trailing_zeros  }}{%- endcapture -%}
+                                    {%- else -%}
+                                      {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
+                                    {%- endif -%}
+                                    <span class="grid-product__price--savings">
+                                      {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                                    </span>
+                                  {%- endif -%}
+                                {%- endif -%}
+                          
+                                {%- assign product_variant = variable_product_first_variant -%}
+                                {%- if product_variant.unit_price_measurement -%}
+                                    <div class="price-unit-price-measurement">
+                                      <span>{{ product_variant.unit_price | money_without_trailing_zeros  }}</span>/<span aria-hidden="true">{{ product_variant.unit_price_measurement.reference_value }}{{ product_variant.unit_price_measurement.reference_unit }}</span>
+                                      <span class="visually-hidden">{{ product_variant.unit_price_measurement.reference_value }}{{ product_variant.unit_price_measurement.reference_unit }}</span>
+                                    </div>
                                 {%- endif -%}
                             </div>
-                        {% endif %}    
-          </div>
-          {%- if settings.vendor_enable -%}
-            <div class="grid-product__vendor">{{ variable_vendor }}</div>
-          {%- endif -%}
-        </div>
-      </a>
-      <div class="swatch_price_flex {% if variable_product_metafields.custom.product_variations.value != blank %} swatches__available{% endif %}">
-        <div class="grid-product__price mm {{ product.price }}">
-            {%- if on_sale -%}
-              <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-              <span class="grid-product__price--original">{{ product.compare_at_price | money_without_trailing_zeros  }}</span>
-              <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
-            {%- endif -%}
-            {%- if product.price_varies -%}
-              <span>
-              {%- assign price = variable_price_min | money_without_trailing_zeros  -%}
-              {{ 'products.general.from_text_html' | t: price: price }}</span>
-            {%- else -%}
-              <span class="{{ product.price | money_without_trailing_zeros  }} price-item price-item--regular" data-product-id="{{ product.id }}">
-                {{ product.price | money_without_trailing_zeros  }}
-              </span>
-            {%- endif -%}
-            {%- if on_sale -%}
-              {%- if settings.product_save_amount -%}
-                {%- if settings.product_save_type == 'dollar' -%}
-                  {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money_without_trailing_zeros  }}{%- endcapture -%}
-                {%- else -%}
-                  {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
-                {%- endif -%}
-                <span class="grid-product__price--savings">
-                  {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
-                </span>
-              {%- endif -%}
-            {%- endif -%}
-      
-            {%- assign product_variant = variable_product_first_variant -%}
-            {%- if product_variant.unit_price_measurement -%}
-                <div class="price-unit-price-measurement">
-                  <span>{{ product_variant.unit_price | money_without_trailing_zeros  }}</span>/<span aria-hidden="true">{{ product_variant.unit_price_measurement.reference_value }}{{ product_variant.unit_price_measurement.reference_unit }}</span>
-                  <span class="visually-hidden">{{ product_variant.unit_price_measurement.reference_value }}{{ product_variant.unit_price_measurement.reference_unit }}</span>
-                </div>
-            {%- endif -%}
-          
-          {% comment %} <span class="bfsale__info">30% at checkout</span> {% endcomment %}
-        </div>
-        {%- if settings.enable_swatches and type == blank -%}
-          {%- liquid
-            assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
-            assign swatch_file_extension = 'png'
-            assign color_count = 0
-          -%}
+                            {%- if settings.enable_swatches and type == blank -%}
+                              {%- liquid
+                                assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+                                assign swatch_file_extension = 'png'
+                                assign color_count = 0
+                              -%}
 
-          {%- for option in variable_options_with_values -%}
-            {%- liquid
-              assign option_name = option.name | downcase
-              assign is_color = false
-              if option_name contains swatch_trigger
-                assign is_color = true
-              elsif swatch_trigger == 'color' and option_name contains 'colour'
-                assign is_color = true
-              endif
-            -%}
-            {%- if is_color -%}
-              {%- assign option_index = forloop.index0 -%}
-              {%- assign values = '' -%}
-              <div class="grid-product__colors grid-product__colors--{{ product_id }}">
-                {%- for variant in real_product.variants -%}
-                  {%- assign value = variant.options[option_index] %}
-                  {%- unless values contains value -%}
-                    {%- liquid
-                      assign values = values | join: ',' | append: ',' | append: value | split: ','
+                              {%- for option in variable_options_with_values -%}
+                                {%- liquid
+                                  assign option_name = option.name | downcase
+                                  assign is_color = false
+                                  if option_name contains swatch_trigger
+                                    assign is_color = true
+                                  elsif swatch_trigger == 'color' and option_name contains 'colour'
+                                    assign is_color = true
+                                  endif
+                                -%}
+                                {%- if is_color -%}
+                                  {%- assign option_index = forloop.index0 -%}
+                                  {%- assign values = '' -%}
+                                  <div class="grid-product__colors grid-product__colors--{{ product_id }}">
+                                    {%- for variant in real_product.variants -%}
+                                      {%- assign value = variant.options[option_index] %}
+                                      {%- unless values contains value -%}
+                                        {%- liquid
+                                          assign values = values | join: ',' | append: ',' | append: value | split: ','
 
-                      assign color_file_name = value | handle | append: '.' | append: swatch_file_extension
-                      assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
-                      assign color_swatch_fallback = value | split: ' ' | last | handle
-                      assign color_count = color_count | plus: 1
-                    -%}
+                                          assign color_file_name = value | handle | append: '.' | append: swatch_file_extension
+                                          assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+                                          assign color_swatch_fallback = value | split: ' ' | last | handle
+                                          assign color_count = color_count | plus: 1
+                                        -%}
 
-                    <a
-                      href="{{ variant.url | within: collection }}"
-                      class="color-swatch color-swatch--small color-swatch--{{ value | handle }}{% if variant.image %} color-swatch--with-image{% endif %}"
-                      {% if variant.image %}
-                        data-variant-id="{{ variant.id }}"
-                        data-variant-image="{{ variant.image | img_url: '400x' }}"
-                      {% endif %}
-                      aria-label="{{ product.title }} - {{ value }}"
-                      style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}">
-                      <span class="visually-hidden">{{ value }}</span>
-                    </a>
-                  {%- endunless -%}
-                {%- endfor -%}
-              </div>
-              {%- if color_count < 2 -%}
-                {%- style -%}
-                  .grid-product__colors--{{ product_id }} {
-                    display: none;
-                  }
-                {%- endstyle -%}
-              {%- endif -%}
-            {%- endif -%}
-          {%- endfor -%}
-          {% if variable_product_metafields.custom.product_variations.value != blank %}
-            <div class="dd tr similar_p_v eeeeeee">
-              <div class="variant-wrapper">
-                {% assign related_products = variable_product_metafields.custom.product_variations.value %}
-                {% assign prodsize = 0 %}
-                {% for related_product in related_products %}
-                  {% assign prodsize = prodsize | plus: 1 %}
-                {% endfor %}
-                <ul>
-                  {% for related_product in related_products limit: 4 %}
-                    {%- assign pp = all_products[related_product] -%}
-                    {% unless product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}
-                      <li {% if product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}class="activeprod"{% endif %}>
-                        <a title="{{ related_product.metafields.custom.subtitle }}" data-img="{{related_product.featured_media.preview_image |img_url: '1000x' }}" 
-                          data-title="{{ related_product.metafields.custom.subtitle }}"
-                          data-href="{{related_product.url }}"
-                          data-price="{{ related_product.price | money_without_trailing_zeros  }}">
-                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="{{related_product.featured_media.preview_image |img_url: '100x' }}" alt="{{ related_product.featured_media.alt | default: related_product.metafields.custom.subtitle }}">
-                        </a>
-                      </li>
-                    {% endunless %}
-                  {% endfor %}
-                  {% if prodsize > 3 %}
-                  <a class="variants-more" href="{{ product.url }}">+{{ prodsize | minus: 3 }} more</a>
-                  {% endif %}
-                </ul>
-              </div>
-            </div>
-          {%  endif %}      
-        {%- endif -%}
-      </div>
+                                        <a
+                                          href="{{ variant.url | within: collection }}"
+                                          class="color-swatch color-swatch--small color-swatch--{{ value | handle }}{% if variant.image %} color-swatch--with-image{% endif %}"
+                                          {% if variant.image %}
+                                            data-variant-id="{{ variant.id }}"
+                                            data-variant-image="{{ variant.image | image_url: width: 320 }}"
+                                          {% endif %}
+                                          aria-label="{{ product.title }} - {{ value }}"
+                                          style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}">
+                                          <span class="visually-hidden">{{ value }}</span>
+                                        </a>
+                                      {%- endunless -%}
+                                    {%- endfor -%}
+                                  </div>
+                                  {%- if color_count < 2 -%}
+                                    {%- style -%}
+                                      .grid-product__colors--{{ product_id }} {
+                                        display: none;
+                                      }
+                                    {%- endstyle -%}
+                                  {%- endif -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+                              {% if variable_product_metafields.custom.product_variations.value != blank %}
+                                <div class="dd tr similar_p_v eeeeeee">
+                                  <div class="variant-wrapper">
+                                    {% assign related_products = variable_product_metafields.custom.product_variations.value %}
+                                    {% assign prodsize = 0 %}
+                                    {% for related_product in related_products %}
+                                      {% assign prodsize = prodsize | plus: 1 %}
+                                    {% endfor %}
+                                    <ul>
+                                      {% for related_product in related_products limit: 4 %}
+                                        {%- assign pp = all_products[related_product] -%}
+                                        {% unless product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}
+                                          <li {% if product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}class="activeprod"{% endif %}>
+                                            <a title="{{ related_product.metafields.custom.subtitle }}" data-img="{{ related_product.featured_media.preview_image | image_url: width: 480 }}" data-srcset="{{ related_product.featured_media.preview_image | image_url: width: 200 }} 200w, {{ related_product.featured_media.preview_image | image_url: width: 240 }} 240w, {{ related_product.featured_media.preview_image | image_url: width: 320 }} 320w, {{ related_product.featured_media.preview_image | image_url: width: 360 }} 360w, {{ related_product.featured_media.preview_image | image_url: width: 420 }} 420w, {{ related_product.featured_media.preview_image | image_url: width: 480 }} 480w, {{ related_product.featured_media.preview_image | image_url: width: 540 }} 540w"
+                                              data-title="{{ related_product.metafields.custom.subtitle }}"
+                                              data-href="{{related_product.url }}"
+                                              data-price="{{ related_product.price | money_without_trailing_zeros  }}">
+                                              <img src="{{ related_product.featured_media.preview_image | image_url: width: 96 }}" srcset="{{ related_product.featured_media.preview_image | image_url: width: 96 }} 96w, {{ related_product.featured_media.preview_image | image_url: width: 160 }} 160w" sizes="96px" loading="lazy" decoding="async" fetchpriority="low" width="96" height="96" alt="{{ related_product.featured_media.alt | default: related_product.metafields.custom.subtitle }}">
+                                            </a>
+                                          </li>
+                                        {% endunless %}
+                                      {% endfor %}
+                                      {% if prodsize > 3 %}
+                                      <a class="variants-more" href="{{ product.url }}">+{{ prodsize | minus: 3 }} more</a>
+                                      {% endif %}
+                                    </ul>
+                                  </div>
+                                </div>
+                              {%  endif %}      
+                            {%- endif -%}
+                          </div> {% endcomment %}
+                          <div class="swatch_price_flex {% if variable_product_metafields.custom.product_variations.value != blank %} swatches__available{% endif %}">
+                            <div class="grid-product__price mm {{ product.price }}">
+                                {%- if on_sale -%}
+                                  <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                                  <span class="grid-product__price--original">{{ product.compare_at_price | money_without_trailing_zeros  }}</span>
+                                  <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+                                {%- endif -%}
+                                {%- if product.price_varies -%}
+                                  <span>
+                                  {%- assign price = variable_price_min | money_without_trailing_zeros  -%}
+                                  {{ 'products.general.from_text_html' | t: price: price }}</span>
+                                {%- else -%}
+                                  <span class="price-item price-item--regular" data-product-id="{{ product.id }}">
+                                    {{ product.price | money_without_trailing_zeros | strip_html  }}
+                                  </span>
+                                {%- endif -%}
+                                {%- if on_sale -%}
+                                  {%- if settings.product_save_amount -%}
+                                    {%- if settings.product_save_type == 'dollar' -%}
+                                      {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money_without_trailing_zeros  }}{%- endcapture -%}
+                                    {%- else -%}
+                                      {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
+                                    {%- endif -%}
+                                    <span class="grid-product__price--savings">
+                                      {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                                    </span>
+                                  {%- endif -%}
+                                {%- endif -%}
+                          
+                                {%- assign product_variant = variable_product_first_variant -%}
+                                {%- if product_variant.unit_price_measurement -%}
+                                    <div class="price-unit-price-measurement">
+                                      <span>{{ product_variant.unit_price | money_without_trailing_zeros  }}</span>/<span aria-hidden="true">{{ product_variant.unit_price_measurement.reference_value }}{{ product_variant.unit_price_measurement.reference_unit }}</span>
+                                      <span class="visually-hidden">{{ product_variant.unit_price_measurement.reference_value }}{{ product_variant.unit_price_measurement.reference_unit }}</span>
+                                    </div>
+                                {%- endif -%}
+                            </div>
+                            {%- if settings.enable_swatches and type == blank -%}
+                              {%- liquid
+                                assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+                                assign swatch_file_extension = 'png'
+                                assign color_count = 0
+                              -%}
+
+                              {%- for option in variable_options_with_values -%}
+                                {%- liquid
+                                  assign option_name = option.name | downcase
+                                  assign is_color = false
+                                  if option_name contains swatch_trigger
+                                    assign is_color = true
+                                  elsif swatch_trigger == 'color' and option_name contains 'colour'
+                                    assign is_color = true
+                                  endif
+                                -%}
+                                {%- if is_color -%}
+                                  {%- assign option_index = forloop.index0 -%}
+                                  {%- assign values = '' -%}
+                                  <div class="grid-product__colors grid-product__colors--{{ product_id }}">
+                                    {%- for variant in real_product.variants -%}
+                                      {%- assign value = variant.options[option_index] %}
+                                      {%- unless values contains value -%}
+                                        {%- liquid
+                                          assign values = values | join: ',' | append: ',' | append: value | split: ','
+
+                                          assign color_file_name = value | handle | append: '.' | append: swatch_file_extension
+                                          assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+                                          assign color_swatch_fallback = value | split: ' ' | last | handle
+                                          assign color_count = color_count | plus: 1
+                                        -%}
+
+                                        <a
+                                          href="{{ variant.url | within: collection }}"
+                                          class="color-swatch color-swatch--small color-swatch--{{ value | handle }}{% if variant.image %} color-swatch--with-image{% endif %}"
+                                          {% if variant.image %}
+                                            data-variant-id="{{ variant.id }}"
+                                            data-variant-image="{{ variant.image | image_url: width: 320 }}"
+                                          {% endif %}
+                                          aria-label="{{ product.title }} - {{ value }}"
+                                          style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}">
+                                          <span class="visually-hidden">{{ value }}</span>
+                                        </a>
+                                      {%- endunless -%}
+                                    {%- endfor -%}
+                                  </div>
+                                  {%- if color_count < 2 -%}
+                                    {%- style -%}
+                                      .grid-product__colors--{{ product_id }} {
+                                        display: none;
+                                      }
+                                    {%- endstyle -%}
+                                  {%- endif -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+                              {% if variable_product_metafields.custom.product_variations.value != blank %}
+                                <div class="dd tr similar_p_v eeeeeee">
+                                  <div class="variant-wrapper">
+                                    {% assign related_products = variable_product_metafields.custom.product_variations.value %}
+                                    {% assign prodsize = 0 %}
+                                    {% for related_product in related_products %}
+                                      {% assign prodsize = prodsize | plus: 1 %}
+                                    {% endfor %}
+                                    <ul>
+                                      {% for related_product in related_products limit: 4 %}
+                                        {%- assign pp = all_products[related_product] -%}
+                                        {% unless product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}
+                                          <li {% if product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}class="activeprod"{% endif %}>
+                                            <a title="{{ related_product.metafields.custom.subtitle }}" data-img="{{ related_product.featured_media.preview_image | image_url: width: 480 }}" data-srcset="{{ related_product.featured_media.preview_image | image_url: width: 200 }} 200w, {{ related_product.featured_media.preview_image | image_url: width: 240 }} 240w, {{ related_product.featured_media.preview_image | image_url: width: 320 }} 320w, {{ related_product.featured_media.preview_image | image_url: width: 360 }} 360w, {{ related_product.featured_media.preview_image | image_url: width: 420 }} 420w, {{ related_product.featured_media.preview_image | image_url: width: 480 }} 480w, {{ related_product.featured_media.preview_image | image_url: width: 540 }} 540w"
+                                              data-title="{{ related_product.metafields.custom.subtitle }}"
+                                              data-href="{{related_product.url }}"
+                                              data-price="{{ related_product.price | money_without_trailing_zeros | strip_html }}">
+                                              <img loading="lazy" src="{{ related_product.featured_media.preview_image | image_url: width: 96 }}" srcset="{{ related_product.featured_media.preview_image | image_url: width: 96 }} 96w, {{ related_product.featured_media.preview_image | image_url: width: 160 }} 160w" sizes="96px" loading="lazy" decoding="async" fetchpriority="low" width="96" height="96" alt="{{ related_product.featured_media.alt | default: related_product.metafields.custom.subtitle }}">
+                                            </a>
+                                          </li>
+                                        {% endunless %}
+                                      {% endfor %}
+                                      {% if prodsize > 3 %}
+                                      <a class="variants-more" href="{{ product.url }}">+{{ prodsize | minus: 3 }} more</a>
+                                      {% endif %}
+                                    </ul>
+                                  </div>
+                                </div>
+                              {%  endif %}      
+                            {%- endif -%}
+                          </div>
                         </div>
                       </div>
-                      
                     </div>
                   {%- endfor -%}
                   <div
@@ -591,14 +709,12 @@
           </div>
         </div>
         <a href="/collections/all" class="link_text results__search-btn">
-          {% comment %} {{ 'general.search.view_more' | t: terms: predictive_search.terms }} <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 5H12.5M12.5 5L8.5 1M12.5 5L8.5 9" stroke="currentColor"/></svg> {% endcomment %}
           View all results
         </a>
       </div>
     {% endif %}
   </form>
-</predictive-search>
-{% comment %}
+</predictive-search>{%- comment -%}
 
 This file has been rewritten to preserve the original behavior.
 
@@ -618,7 +734,7 @@ Changes:
   to: "{%- render 'image-element', img: preview_image, classes: image_classes, sizes:
     sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720,
     900, 1080', alt: product.title -%}"
-  position: 18048..18240
+  position: 18610..18802
 - from: |-
     {%-
                                         render 'image-element',
@@ -633,7 +749,7 @@ Changes:
   to: "{%- render 'image-element', img: preview_image, classes: image_classes, sizes:
     sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720,
     900, 1080', alt: product.title -%}"
-  position: 19377..19569
+  position: 19871..20063
 - from: |-
     {%-
                                       render 'image-element',
@@ -648,5 +764,5 @@ Changes:
   to: "{%- render 'image-element', img: second_image, classes: image_classes, sizes:
     sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720,
     1000', alt: product.title -%}"
-  position: 20771..20957
-{% endcomment %}
+  position: 21197..21383
+{%- endcomment -%}

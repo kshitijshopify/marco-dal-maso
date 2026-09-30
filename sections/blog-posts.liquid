@@ -1,25 +1,33 @@
-
 {%- assign blog = blogs[section.settings.blog] -%}
 
 {%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
 
-<div class="page-width">
-
+<div class="page-width custom-blog-post-section">
   {%- if section.settings.title != blank -%}
     <header class="section-header{% if section.settings.view_all %}{% unless settings.type_headers_align_text %} section-header--with-link{% endunless %}{% endif %}">
-      <h1 class="section-header__title">
+      {% if section.settings.h1_true == true %}
+        {% assign heading = 'h1' %}
+      {%  else %}
+        {% assign heading = 'h2' %}
+      {% endif %}
+      <{{ heading }} class="section-header__title">
         {{ section.settings.title | escape }}
-      </h1> 
-      
+      </{{ heading }}>
+
       {%- if section.settings.view_all -%}
-        <a href="{{ blog.url }}"  class="btn btn--secondary btn--small section-header__link">{{ 'blogs.article.view_all' | t }}</a>
+        <a href="{{ blog.url }}" class="btn btn--secondary btn--small section-header__link">
+          {{- 'blogs.article.view_all' | t -}}
+        </a>
       {%- endif -%}
     </header>
   {%- endif -%}
 
   {%- unless blog.empty? or blog.articles.size == 0 -%}
-
-    <div class="grid grid--uniform custom-slides">
+    <div
+      class="grid grid--uniform p-carousel"
+      data-mobile-only="true"
+      data-mobile-scrollable="true"
+    >
       {%- for article in blog.articles limit: section.settings.post_limit -%}
         {%- render 'article-grid-item',
           blog: blog,
@@ -32,8 +40,11 @@
     </div>
 
   {%- else -%}
-
-    <div class="grid grid--uniform">
+    <div
+      class="grid grid--uniform p-carousel"
+      data-mobile-only="true"
+      data-mobile-scrollable="true"
+    >
       {%- for i in (1..section.settings.post_limit) -%}
         <div class="grid__item medium-up--one-third" data-aos="row-of-3">
           <div class="grid">
@@ -50,7 +61,7 @@
                       <a href="#">3 comments</a> &middot;
                     {%- endif -%}
                     {%- if section.settings.blog_show_date -%}
-                      Jul 17, {{ 'now' | date: "%Y" }}
+                      Jul 17, {{ 'now' | date: '%Y' }}
                     {%- endif -%}
                   </div>
                 {%- endif -%}
@@ -66,9 +77,7 @@
         </div>
       {%- endfor -%}
     </div>
-
   {%- endunless -%}
-
 </div>
 
 {%- if section.settings.divider -%}</div>{%- endif -%}
@@ -83,6 +92,12 @@
       "id": "title",
       "label": "t:sections.blog-posts.settings.title.label",
       "default": "Blog posts"
+    },
+    {
+      "type": "checkbox",
+      "id": "h1_true",
+      "label": "Enable h1",
+      "default": false
     },
     {
       "id": "blog",

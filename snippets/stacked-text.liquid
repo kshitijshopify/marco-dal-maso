@@ -117,10 +117,16 @@
       </div>
       {% endif %}
 
+      {%- liquid
+        assign button_class = 'stacked-text--button'
+        if block.settings.homepage_button_style
+          assign button_class = button_class | append: ' btn rt-image-banner__button'
+        endif
+      -%}
       {%- if link_text != blank -%}
         {%- if cover_link -%}
           <div
-            class="stacked-text--button"
+            class="{{ button_class }}"
             data-item="{{- settings.buttons--style -}}"
             data-text="{{ link_text }}"
             {% unless settings.transitions--text %}
@@ -129,13 +135,14 @@
             {% endunless %}
             {% unless settings.transitions--buttons %}
               data-transition-button
-            {% endunless %} style="color:{{ text_color }};"
+            {% endunless %}
+            {% unless block.settings.homepage_button_style %} style="color:{{ text_color }};"{% endunless %}
           >
             <span>{{- link_text -}}</span>
           </div>
         {%- else -%}
           <a
-            class="stacked-text--button"
+            class="{{ button_class }}"
             href="{{ link_url }}"
             data-item="{{- settings.buttons--style -}}"
             data-text="{{ link_text }}"
@@ -145,7 +152,8 @@
             {% endunless %}
             {% unless settings.transitions--buttons %}
               data-transition-button
-            {% endunless %} style="color:{{ text_color }};border-color:{{ text_color }};"
+            {% endunless %}
+            {% unless block.settings.homepage_button_style %} style="color:{{ text_color }};border-color:{{ text_color }};"{% endunless %}
           >
             <span>{{- link_text -}}</span>
           </a>

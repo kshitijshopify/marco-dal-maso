@@ -51,8 +51,10 @@
             {% if article.metafields.custom.event_country %}
               <div class="event_country article_data">{{ article.metafields.custom.event_country }}</div>
             {% endif %}
-            {% if article.metafields.custom.event_end_date %}
-              <div class="event_date article_data">{{ article.metafields.custom.event_start_date | date: "%b" }}, {{ article.metafields.custom.event_start_date | date: "%d" }} - {{ article.metafields.custom.event_end_date | date: "%d" }}</div>
+            {% if article.metafields.custom.event_end_date != blank or article.metafields.custom.event_start_date != blank %}
+              <div class="event_date article_data">
+                {{ article.metafields.custom.event_start_date | date: "%b" }}, {{ article.metafields.custom.event_start_date | date: "%d" }} {% if article.metafields.custom.event_end_date != blank %}- {{ article.metafields.custom.event_end_date | date: "%d" }}{% endif %}
+              </div>
             {% endif %}
         </div>
       

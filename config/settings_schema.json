@@ -3,9 +3,9 @@
     "name": "theme_info",
     "theme_name": "Impulse",
     "theme_author": "Archetype Themes",
-    "theme_version": "7.3.4",
-    "theme_documentation_url": "https://archetypethemes.co/blogs/impulse",
-    "theme_support_url": "https://archetypethemes.co/pages/support#impulse"
+    "theme_version": "8.2.1",
+    "theme_documentation_url": "https://help.archetypethemes.co/hc/en-us/sections/45069343406867-Impulse",
+    "theme_support_url": "https://help.archetypethemes.co/hc/en-us/sections/45069343406867-Impulse"
   },
   {
     "name": "t:settings_schema.colors.name",
@@ -223,7 +223,7 @@
         "type": "font_picker",
         "id": "type_header_font_family",
         "label": "t:settings_schema.typography.settings.type_header_font_family.label",
-        "default": "poppins_n7"
+        "default": "fahkwang_n3"
       },
       {
         "type": "select",
@@ -301,9 +301,20 @@
         "label": "t:settings_schema.typography.settings.type_header_capitalize.label"
       },
       {
-        "type": "checkbox",
+        "type": "select",
         "id": "type_headers_align_text",
-        "label": "t:settings_schema.typography.settings.type_headers_align_text.label"
+        "label": "t:settings_schema.typography.settings.type_headers_align_text.label",
+        "default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "t:settings_schema.typography.settings.type_headers_align_text.options.left.label"
+          },
+          {
+            "value": "center",
+            "label": "t:settings_schema.typography.settings.type_headers_align_text.options.center.label"
+          }
+        ]
       },
       {
         "type": "header",
@@ -313,7 +324,7 @@
         "type": "font_picker",
         "id": "type_base_font_family",
         "label": "t:settings_schema.typography.settings.type_base_font_family.label",
-        "default": "poppins_n5"
+        "default": "fahkwang_n3"
       },
       {
         "type": "select",
@@ -386,10 +397,20 @@
         "step": 0.1
       },
       {
-        "type": "checkbox",
+        "type": "select",
         "id": "type_body_align_text",
         "label": "t:settings_schema.typography.settings.type_body_align_text.label",
-        "default": true
+        "default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "t:settings_schema.typography.settings.type_body_align_text.options.left.label"
+          },
+          {
+            "value": "center",
+            "label": "t:settings_schema.typography.settings.type_body_align_text.options.center.label"
+          }
+        ]
       },
       {
         "type": "header",
@@ -583,34 +604,19 @@
         "type": "checkbox",
         "id": "vendor_enable",
         "label": "t:settings_schema.products.settings.vendor_enable.label"
+      },
+      {
+        "type": "number",
+        "id": "poa_price_threshold",
+        "label": "POA Price Threshold (in your store's base currency)",
+        "info": "Variants above this amount will show 'Contact Concierge' instead of the price. Enter amount in your store's base currency.",
+        "default": 5000
       }
     ]
   },
   {
     "name": "t:settings_schema.product_tiles.name",
     "settings": [
-      {
-        "type": "select",
-        "id": "metaprodbannersize",
-        "label": "Size of Banner In grid",
-        "default": "portrait",
-        "options": [
-          {
-            "value": "portrait",
-            "label": "Portrait"
-          },
-          {
-            "value": "landscape",
-            "label": "Landscape"
-          }
-        ]
-      },
-      {
-        "type": "checkbox",
-        "id": "quick_shopwithatc_enable",
-        "label": "Small Quick shop with ATC on mobiles",
-        "default": true
-      },
       {
         "type": "checkbox",
         "id": "quick_shop_enable",
@@ -621,6 +627,10 @@
         "id": "quick_shop_text",
         "label": "t:settings_schema.product_tiles.settings.quick_shop_text.label",
         "default": "Quick view"
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.product_tiles.settings.header_media"
       },
       {
         "type": "select",
@@ -682,29 +692,12 @@
             "label": "t:settings_schema.product_tiles.settings.swatch_style.options.square.label"
           }
         ]
-      },
-      {
-        "type": "header",
-        "content": "t:settings_schema.product_tiles.settings.header_product_reviews"
-      },
-      {
-        "type": "paragraph",
-        "content": "t:settings_schema.product_tiles.settings.content"
-      },
-      {
-        "type": "checkbox",
-        "label": "t:settings_schema.product_tiles.settings.enable_product_reviews.label",
-        "id": "enable_product_reviews"
       }
     ]
   },
   {
     "name": "t:settings_schema.collection_tiles.name",
     "settings": [
-      {
-        "type": "header",
-        "content": "t:settings_schema.collection_tiles.settings.header_collection_tiles"
-      },
       {
         "type": "select",
         "id": "collection_grid_style",
@@ -727,21 +720,21 @@
       },
       {
         "type": "select",
-        "id": "collection_grid_shape",
-        "label": "t:settings_schema.collection_tiles.settings.collection_grid_shape.label",
+        "id": "collection_grid_size",
+        "label": "t:settings_schema.collection_tiles.settings.collection_grid_size.label",
         "default": "square",
         "options": [
           {
             "value": "square",
-            "label": "t:settings_schema.collection_tiles.settings.collection_grid_shape.options.square.label"
+            "label": "t:settings_schema.collection_tiles.settings.collection_grid_size.options.square.label"
           },
           {
             "value": "landscape",
-            "label": "t:settings_schema.collection_tiles.settings.collection_grid_shape.options.landscape.label"
+            "label": "t:settings_schema.collection_tiles.settings.collection_grid_size.options.landscape.label"
           },
           {
             "value": "portrait",
-            "label": "t:settings_schema.collection_tiles.settings.collection_grid_shape.options.portrait.label"
+            "label": "t:settings_schema.collection_tiles.settings.collection_grid_size.options.portrait.label"
           }
         ]
       },
@@ -750,7 +743,6 @@
         "id": "collection_grid_image",
         "label": "t:settings_schema.collection_tiles.settings.collection_grid_image.label",
         "default": "collection",
-        "info": "Upload images in files when custom selected and the name of the image will be same as the collection handle. A collection handle is the last part in url after / for example in this following url https://marcodalmaso.com/collections/mens-18kt-gold-rings the handle is 'mens-18kt-gold-rings' and the image format should be png",
         "options": [
           {
             "value": "product",
@@ -759,10 +751,6 @@
           {
             "value": "collection",
             "label": "t:settings_schema.collection_tiles.settings.collection_grid_image.options.collection.label"
-          },
-          {
-            "value": "custom",
-            "label": "Custom"
           }
         ]
       },
@@ -837,45 +825,6 @@
   {
     "name": "t:settings_schema.cart.name",
     "settings": [
-      {
-        "type": "header",
-        "content": "Complimentary Gift"
-      },
-      {
-        "type": "text",
-        "id": "gift_title",
-        "label": "Gift title",
-        "default": "Complimentary Gift Box"
-      },
-      {
-        "type": "text",
-        "id": "message_title",
-        "label": "Message title",
-        "default": "Personal Message"
-      },
-      {
-        "type": "text",
-        "id": "gift_added",
-        "label": "Text when added",
-        "default": "ADDED"
-      },
-      {
-        "type": "text",
-        "id": "gift_add",
-        "label": "Text when not added",
-        "default": "ADD"
-      },
-      {
-        "type": "html",
-        "id": "liquid",
-        "label": "Liquid",
-        "info": "Private Sale Message",
-        "default": "<p><b>MEMBERS SALE ACCESS</b><br><small>Join to unlock early acces and private client benefits.</small></p> <div class='klaviyo-form-ScrciR'></div>"
-      },
-      {
-        "type": "header",
-        "content": "t:settings_schema.cart.settings.header_cart"
-      },
       {
         "type": "select",
         "id": "cart_type",
@@ -1006,6 +955,21 @@
       },
       {
         "type": "header",
+        "content": "Trustpilot"
+      },
+      {
+        "type": "text",
+        "id": "trustpilot_text",
+        "label": "Text",
+        "default": "4.8 · Rated Excellent on Trustpilot"
+      },
+      {
+        "type": "url",
+        "id": "trustpilot_link",
+        "label": "Link"
+      },
+      {
+        "type": "header",
         "content": "t:sections.product-complementary.settings.header.content"
       },
       {
@@ -1027,12 +991,55 @@
     ]
   },
   {
-    "name": "t:settings_schema.social_media.name",
+    "name": "t:settings_schema.customer_accounts.name",
     "settings": [
       {
-        "type": "header",
-        "content": "t:settings_schema.social_media.settings.header_accounts"
+        "type": "paragraph",
+        "content": "t:settings_schema.customer_accounts.settings.info_customer_accounts"
       },
+      {
+        "type": "link_list",
+        "id": "customer_accounts_menu",
+        "label": "t:settings_schema.customer_accounts.settings.customer_accounts_menu.label",
+        "info": "t:settings_schema.customer_accounts.settings.customer_accounts_menu.info",
+        "default": "customer-account-main-menu"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.search.name",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "search_enable",
+        "label": "t:settings_schema.search.settings.search_enable.label",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.search.settings.header_predictive_search"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "label": "t:settings_schema.search.settings.predictive_search_enabled.label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_vendor",
+        "label": "t:settings_schema.search.settings.predictive_search_show_vendor.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_price",
+        "label": "t:settings_schema.search.settings.predictive_search_show_price.label"
+      }
+    ]
+  },
+  {
+    "name": "t:settings_schema.social_media.name",
+    "settings": [
       {
         "type": "text",
         "id": "social_facebook_link",
@@ -1056,6 +1063,12 @@
         "id": "social_instagram_link",
         "label": "t:settings_schema.social_media.settings.social_instagram_link.label",
         "info": "t:settings_schema.social_media.settings.social_instagram_link.info"
+      },
+      {
+        "type": "text",
+        "id": "social_threads_link",
+        "label": "t:settings_schema.social_media.settings.social_threads_link.label",
+        "info": "t:settings_schema.social_media.settings.social_threads_link.info"
       },
       {
         "type": "text",
@@ -1129,37 +1142,6 @@
     ]
   },
   {
-    "name": "t:settings_schema.search.name",
-    "settings": [
-      {
-        "type": "checkbox",
-        "id": "search_enable",
-        "label": "t:settings_schema.search.settings.search_enable.label",
-        "default": true
-      },
-      {
-        "type": "header",
-        "content": "t:settings_schema.search.settings.header_predictive_search"
-      },
-      {
-        "type": "checkbox",
-        "id": "predictive_search_enabled",
-        "label": "t:settings_schema.search.settings.predictive_search_enabled.label",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "predictive_search_show_vendor",
-        "label": "t:settings_schema.search.settings.predictive_search_show_vendor.label"
-      },
-      {
-        "type": "checkbox",
-        "id": "predictive_search_show_price",
-        "label": "t:settings_schema.search.settings.predictive_search_show_price.label"
-      }
-    ]
-  },
-  {
     "name": "t:settings_schema.extras.name",
     "settings": [
       {
@@ -1196,41 +1178,15 @@
     ]
   },
   {
-    "name": "Login",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Before Login"
-      },
-      {
-        "type": "image_picker",
-        "id": "bg_img",
-        "label": "Background Desktop Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "bg_mobimg",
-        "label": "Background Mobile Image"
-      },
-      {
-        "type": "header",
-        "content": "After Login"
-      },
-      {
-        "type": "image_picker",
-        "id": "bg_aimg",
-        "label": "Background Desktop Image"
-      },
-      {
-        "type": "image_picker",
-        "id": "bg_amobimg",
-        "label": "Background Mobile Image"
-      }
-    ]
-  },
-  {
     "name": "Swym Wishlist Product Button",
     "settings": [
+      {
+        "type": "checkbox",
+        "id": "swym_advanced_pdp_button_enabled",
+        "label": "Enable Advanced PDP Button",
+        "default": false,
+        "info": "Enable the advanced wishlist button on product pages. Controlled by the Swym Admin App during onboarding."
+      },
       {
         "type": "header",
         "content": "Button Placement",
@@ -1292,7 +1248,7 @@
         "id": "swym_wishlist_custom_button_css",
         "label": "Custom Styling (CSS)",
         "info": "Modify CSS here to fine-tune the button's design and ensure it matches your theme perfectly.",
-        "default": "/* Base button styles using CSS variables (set by JavaScript) */\n/* Loading state for user interactions */\n.swym-loading .swym-button-content button,\n.swym-loading .swym-button-content [role=\"button\"],\n.swym-loading .swym-button-content .btn,\n.swym-loading .swym-button-content a {\n  opacity: 0.6;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.swym-button-content > button,\n.swym-button-content > [role=\"button\"],\n.swym-button-content > span,\n.swym-button-content > a {\n  color: #fff;  \n  background: #000;\n  border: 1px solid #000;\n  font-family: inherit;\n  padding: 12px 16px;\n  font-size: 14px;\n  font-weight: normal;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  text-align: center;\n  pointer-events: auto;\n  min-height: 45px;\n  width: 100%;\n  letter-spacing: normal;\n}\n\n/* Focus styles for accessibility */\n.swym-button-content button:focus-visible,\n.swym-button-content [role=\"button\"]:focus-visible,\n.swym-button-content .btn:focus-visible,\n.swym-button-content a:focus-visible {\n  outline: 2px solid currentColor;\n  outline-offset: 2px;\n}\n/* Disabled state styles */\n.swym-button-content button:disabled,\n.swym-button-content [role=\"button\"][aria-disabled=\"true\"],\n.swym-button-content .btn:disabled,\n.swym-button-content a[aria-disabled=\"true\"] {\n  opacity: 0.5;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n/* Product image position styling (top-left default) */\n.swym-atw-btn-wrapper-for-img.swym-btn-position-product-img {\n  position: absolute;\n  top: 10px;\n  left: 10px;\n  z-index: 10;\n  width: fit-content!important;\n}\n.swym-custom-pdp-button.swym-btn-position-product-title {\n  width: fit-content;\n}\n.swym-button-content.swym-btn-custom-position {\n  margin-top: 8px;\n} \n.swym-button-content button.swym-icon-text svg {\n  margin-right: 5px;\n}\n/* ACCESSIBILITY IMPROVEMENTS */\n@media (prefers-reduced-motion: reduce) {\n  .swym-button-content,\n  .swym-button-content button,\n  .swym-button-content [role=\"button\"],\n  .swym-button-content .btn,\n  .swym-button-content a {\n    transition: none;\n    animation: none;\n  }  \n  .swym-button-content.swym-initialized button:hover,\n  .swym-button-content.swym-initialized [role=\"button\"]:hover,\n  .swym-button-content.swym-initialized .btn:hover,\n  .swym-button-content.swym-initialized a:hover {\n    transform: none;\n  }\n}\n/* HIGH CONTRAST MODE SUPPORT */\n@media (prefers-contrast: high) {\n  .swym-atw-btn-wrapper-for-img .swym-button-content button,\n  .swym-atw-btn-wrapper-for-img .swym-button-content [role=\"button\"],\n  .swym-atw-btn-wrapper-for-img .swym-button-content .btn,\n  .swym-atw-btn-wrapper-for-img .swym-button-content a {\n    border: 2px solid;\n    background: #fff;\n  }\n}"
+        "default": "/* Base button styles using CSS variables (set by JavaScript) */\n/* Loading state for user interactions */\n.swym-loading .swym-button-content button,\n.swym-loading .swym-button-content [role=\"button\"],\n.swym-loading .swym-button-content .btn,\n.swym-loading .swym-button-content a {\n  opacity: 0.6;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.swym-button-content > button,\n.swym-button-content > [role=\"button\"],\n.swym-button-content > span,\n.swym-button-content > a {\n  color: var(--swym-theme-layout-button-color-text-primary, #fff);\n  background: var(--swym-theme-layout-button-color-bg-primary, #000);\n  border-color: var(--swym-theme-layout-button-border-color-primary, #000);\n  border-width: var(--swym-theme-layout-button-border-width-primary, 1px);\n  border-style: var(--swym-theme-layout-button-border-style-primary, solid);\n  border-radius: var(--swym-theme-layout-button-border-radius-primary, 0px);\n  font-family: inherit;\n  padding: 12px 16px;\n  font-size: 14px;\n  font-weight: normal;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  text-align: center;\n  pointer-events: auto;\n  min-height: 45px;\n  width: 100%;\n  letter-spacing: normal;\n}\n\n/* Focus styles for accessibility */\n.swym-button-content button:focus-visible,\n.swym-button-content [role=\"button\"]:focus-visible,\n.swym-button-content .btn:focus-visible,\n.swym-button-content a:focus-visible {\n  outline: 2px solid currentColor;\n  outline-offset: 2px;\n}\n/* Disabled state styles */\n.swym-button-content button:disabled,\n.swym-button-content [role=\"button\"][aria-disabled=\"true\"],\n.swym-button-content .btn:disabled,\n.swym-button-content a[aria-disabled=\"true\"] {\n  opacity: 0.5;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n/* Product image position styling (top-left default) */\n.swym-atw-btn-wrapper-for-img.swym-btn-position-product-img {\n  position: absolute;\n  top: 10px;\n  left: 10px;\n  z-index: 10;\n  width: fit-content!important;\n}\n.swym-custom-pdp-button.swym-btn-position-product-title {\n  width: fit-content;\n}\n.swym-button-content.swym-btn-custom-position {\n  margin-top: 8px;\n}\n.swym-button-content button.swym-icon-text svg {\n  margin-right: 5px;\n}\n/* ACCESSIBILITY IMPROVEMENTS */\n@media (prefers-reduced-motion: reduce) {\n  .swym-button-content,\n  .swym-button-content button,\n  .swym-button-content [role=\"button\"],\n  .swym-button-content .btn,\n  .swym-button-content a {\n    transition: none;\n    animation: none;\n  }\n  .swym-button-content.swym-initialized button:hover,\n  .swym-button-content.swym-initialized [role=\"button\"]:hover,\n  .swym-button-content.swym-initialized .btn:hover,\n  .swym-button-content.swym-initialized a:hover {\n    transform: none;\n  }\n}\n/* HIGH CONTRAST MODE SUPPORT */\n@media (prefers-contrast: high) {\n  .swym-atw-btn-wrapper-for-img .swym-button-content button,\n  .swym-atw-btn-wrapper-for-img .swym-button-content [role=\"button\"],\n  .swym-atw-btn-wrapper-for-img .swym-button-content .btn,\n  .swym-atw-btn-wrapper-for-img .swym-button-content a {\n    border: 2px solid;\n    background: #fff;\n  }\n}"
       }
     ]
   },
@@ -1326,14 +1282,14 @@
         "type": "html",
         "id": "swym_advanced_collections_wishlist_button_before_html",
         "label": "Button HTML (Before Adding)",
-        "default": "<button\n  type=\"button\"\n  class=\"swym-advanced-wishlist-collections\"\n  aria-label=\"{{ADD_TO_WISHLIST}}\"\n  aria-pressed=\"false\"\n  style=\"color:{{ICON_COLOR}}; transform:{{ICON_POSITION}};\"\n>\n  <div class=\"swym-advanced-wishlist-collections-social-count\">\n    {{SOCIAL_COUNT}}\n  </div>\n  <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M19.6706 5.4736C17.6806 3.8336 14.7206 4.1236 12.8906 5.9536L12.0006 6.8436L11.1106 5.9536C9.29063 4.1336 6.32064 3.8336 4.33064 5.4736C2.05064 7.3536 1.93063 10.7436 3.97063 12.7836L11.6406 20.4536C11.8406 20.6536 12.1506 20.6536 12.3506 20.4536L20.0206 12.7836C22.0706 10.7436 21.9506 7.3636 19.6706 5.4736Z\" stroke=\"{{ICON_COLOR}}\" stroke-width=\"{{ICON_WIDTH}}\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n  </svg>\n</button>",
+        "default": "<button\n  type=\"button\"\n  class=\"swym-advanced-wishlist-collections\"\n  aria-label=\"{{ADD_TO_WISHLIST}}\"\n  aria-pressed=\"false\"\n  style=\"color:{{ICON_COLOR}}; transform:{{ICON_POSITION}};\"\n>\n  <div class=\"swym-advanced-wishlist-collections-social-count\">\n    {{SOCIAL_COUNT}}\n  </div>\n  <div class=\"swym-icon-bg\">\n    <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path d=\"M19.6706 5.4736C17.6806 3.8336 14.7206 4.1236 12.8906 5.9536L12.0006 6.8436L11.1106 5.9536C9.29063 4.1336 6.32064 3.8336 4.33064 5.4736C2.05064 7.3536 1.93063 10.7436 3.97063 12.7836L11.6406 20.4536C11.8406 20.6536 12.1506 20.6536 12.3506 20.4536L20.0206 12.7836C22.0706 10.7436 21.9506 7.3636 19.6706 5.4736Z\" stroke=\"{{ICON_COLOR}}\" stroke-width=\"{{ICON_WIDTH}}\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n    </svg>\n  </div>\n</button>",
         "info": "Custom HTML for the wishlist button before a product is added. Leave empty to use default"
       },
       {
         "type": "html",
         "id": "swym_advanced_collections_wishlist_button_after_html",
         "label": "Button HTML (After Adding)",
-        "default": "<button\n  type=\"button\"\n  class=\"swym-advanced-wishlist-collections\"\n  aria-label=\"{{ADDED_TO_WISHLIST}}\"\n  aria-pressed=\"true\"\n  style=\"color:{{ICON_COLOR}}; transform:{{ICON_POSITION}};\"\n>\n  <div class=\"swym-advanced-wishlist-collections-social-count\">\n    {{SOCIAL_COUNT}}\n  </div>\n  <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M19.6706 5.4736C17.6806 3.8336 14.7206 4.1236 12.8906 5.9536L12.0006 6.8436L11.1106 5.9536C9.29063 4.1336 6.32064 3.8336 4.33064 5.4736C2.05064 7.3536 1.93063 10.7436 3.97063 12.7836L11.6406 20.4536C11.8406 20.6536 12.1506 20.6536 12.3506 20.4536L20.0206 12.7836C22.0706 10.7436 21.9506 7.3636 19.6706 5.4736Z\" stroke=\"{{ICON_COLOR}}\" stroke-width=\"{{ICON_WIDTH}}\" fill=\"{{ICON_COLOR}}\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n  </svg>\n</button>",
+        "default": "<button\n  type=\"button\"\n  class=\"swym-advanced-wishlist-collections\"\n  aria-label=\"{{ADDED_TO_WISHLIST}}\"\n  aria-pressed=\"true\"\n  style=\"color:{{ICON_COLOR}}; transform:{{ICON_POSITION}};\"\n>\n  <div class=\"swym-advanced-wishlist-collections-social-count\">\n    {{SOCIAL_COUNT}}\n  </div>\n  <div class=\"swym-icon-bg\">\n    <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path d=\"M19.6706 5.4736C17.6806 3.8336 14.7206 4.1236 12.8906 5.9536L12.0006 6.8436L11.1106 5.9536C9.29063 4.1336 6.32064 3.8336 4.33064 5.4736C2.05064 7.3536 1.93063 10.7436 3.97063 12.7836L11.6406 20.4536C11.8406 20.6536 12.1506 20.6536 12.3506 20.4536L20.0206 12.7836C22.0706 10.7436 21.9506 7.3636 19.6706 5.4736Z\" stroke=\"{{ICON_COLOR}}\" stroke-width=\"{{ICON_WIDTH}}\" fill=\"{{ICON_COLOR}}\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n    </svg>\n  </div>\n</button>",
         "info": "Custom HTML for the wishlist button after a product is added. Leave empty to use default"
       },
       {
@@ -1344,7 +1300,7 @@
         "type": "textarea",
         "id": "swym_advanced_collections_wishlist_button_css",
         "label": "Button CSS",
-        "default": ".swym-advanced-wishlist-collections-container {\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding: 10px;\n  z-index: 5;\n  cursor: pointer;\n  width: 60px;\n  height: 40px;\n}\n\n.swym-advanced-wishlist-collections,\n.swym-advanced-wishlist-collections svg {\n  cursor: pointer;\n  background: unset;\n  border: unset;\n  display: flex;\n  align-items: center;\n  flex-direction: row-reverse;\n  gap: 5px;\n  color: currentColor;\n  min-width: 24px;\n  min-height: 24px;\n}\n\n.swym-advanced-wishlist-collections svg path {\n  stroke: currentColor;\n}\n\n.swym-advanced-wishlist-collections\n  .swym-advanced-wishlist-collections-social-count {\n  font-size: 14px;\n  font-weight: 500;\n  color: currentColor;\n}\n\n.swym-sr-only {\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  height: 1px;\n  width: 1px;\n  overflow: hidden;\n  white-space: nowrap;\n  position: absolute;\n}\n",
+        "default": ".swym-advanced-wishlist-collections-container {\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding: 10px;\n  z-index: 5;\n  cursor: pointer;\n  width: 60px;\n  height: 40px;\n}\n\n.swym-advanced-wishlist-collections,\n.swym-advanced-wishlist-collections svg {\n  cursor: pointer;\n  background: unset;\n  border: none;\n  box-shadow: none;\n  display: flex;\n  align-items: center;\n  flex-direction: row-reverse;\n  gap: 5px;\n  color: currentColor;\n  min-width: 24px;\n  min-height: 24px;\n}\n\nbutton.swym-advanced-wishlist-collections:hover {\n  background: none;\n  border: none;\n  box-shadow: none;\n}\n\n.swym-advanced-wishlist-collections svg path {\n  stroke: currentColor;\n}\n\n.swym-advanced-wishlist-collections .swym-advanced-wishlist-collections-social-count {\n  font-size: 14px;\n  font-weight: 500;\n  color: currentColor;\n}\n\n.swym-sr-only {\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  height: 1px;\n  width: 1px;\n  overflow: hidden;\n  white-space: nowrap;\n  position: absolute;\n}\n\n/* Circular background for icon */\n.swym-circular-bg button.swym-advanced-wishlist-collections {\n  position: relative;\n  flex-direction: unset;\n  padding: 0;\n  background: none;\n  border: none;\n  box-shadow: none;\n}\n\n.swym-circular-bg .swym-icon-bg {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  border-radius: 50%;\n  background: #fff;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);\n}\n\n/*for active*/\n/* Make button position: relative so badge positions correctly */\n.swym-circular-bg .swym-advanced-wishlist-collections {\n  position: relative;\n}\n\n/* Badge styling when social count is active */\n.swym-circular-bg .swym-social-count-active {\n  position: absolute;\n  top: -6px;\n  right: -6px;\n  background: #000000;\n  color: #FFFFFF;\n  border-radius: 50%;\n  width: 16px;\n  height: 16px;\n  font-size: 10px;\n  font-weight: 600;\n  line-height: 16px;\n  text-align: center;\n  z-index: 1;\n}\n",
         "info": "CSS styles for the wishlist button. Leave empty to use default styles."
       },
       {
@@ -1441,7 +1397,7 @@
         "type": "html",
         "id": "swym_header_icon_custom_html",
         "label": "Icon HTML",
-        "default": "not_found",
+        "default": "<svg xmlns='http://www.w3.org/2000/svg' width='24px' height='24px' viewBox='0 0 24 24' fill='none'><path d='M19.6706 5.4736C17.6806 3.8336 14.7206 4.1236 12.8906 5.9536L12.0006 6.8436L11.1106 5.9536C9.29063 4.1336 6.32064 3.8336 4.33064 5.4736C2.05064 7.3536 1.93063 10.7436 3.97063 12.7836L11.6406 20.4536C11.8406 20.6536 12.1506 20.6536 12.3506 20.4536L20.0206 12.7836C22.0706 10.7436 21.9506 7.3636 19.6706 5.4736Z' stroke='currentColor' stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/></svg>",
         "info": "Custom HTML for the wishlist icon. Leave empty to use default"
       },
       {
@@ -1459,7 +1415,7 @@
         "type": "textarea",
         "id": "swym_header_icon_custom_css",
         "label": "Custom CSS",
-        "default": "not_found",
+        "default": ".swym-header-icon-html { font-size: 22px; display: flex; } .swym-advanced-header-icon { align-items: center; vertical-align: middle; font-size: 17px; display: inline-flex; position: relative; } .swym-header-icon-count-bubble { color: var(--colorBody); top: 50%; background-color: var(--colorCartDot); width: 15px; right: -4px; display: block; position: absolute; border: 2px solid var(--colorBody); border-radius: 50%; height: 15px; }",
         "info": "CSS styles for the header icon. Leave empty to use default styles."
       },
       {
@@ -1470,15 +1426,39 @@
         "type": "text",
         "id": "swym_header_icon_selector_desktop",
         "label": "Desktop Placement Selector",
-        "default": "not_found",
+        "default": ".site-nav__icons a[href='/cart']",
         "info": "CSS selector for where to attach the icon on desktop view"
       },
       {
         "type": "text",
         "id": "swym_header_icon_selector_mobile",
         "label": "Mobile Placement Selector",
-        "default": "not_found",
+        "default": ".site-nav__icons a[href='/cart']",
         "info": "CSS selector for where to attach the icon on mobile view"
+      }
+    ]
+  },
+  {
+    "name": "Discount Feature",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "auto_discount",
+        "label": "Enable auto apply discount?",
+        "info": "if enabled, then discount will automatically applied after kalviyo form submit."
+      },
+      {
+        "type": "text",
+        "id": "discount_code",
+        "label": "Discount Code",
+        "default": "BENVENUTI15"
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_form_id",
+        "label": "klaviyo Form ID",
+        "default": "QRAYwh",
+        "info": "Enter the Klaviyo Form ID for the form that should trigger the discount after submission."
       }
     ]
   }

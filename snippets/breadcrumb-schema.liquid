@@ -1,0 +1,225 @@
+{%- comment -%}
+  Marco Dal Maso - Dynamic BreadcrumbList Schema
+
+  INSTALL
+    1. Is file ko snippets/breadcrumb-schema.liquid ke naam se save karein
+    2. layout/theme.liquid me <head> ke andar, canonical link ke neeche add karein:
+         {% raw %}{% render 'breadcrumb-schema' %}{% endraw %}
+
+  Theme ki koi doosri file change karne ki zaroorat nahi hai.
+
+  OUTPUT
+    Product            Home > [Collections >] Collection > Product
+    Collection         Home > [Collections >] Collection
+    Collection index   Home > Collections
+    Blog               Home > Blog
+    Article            Home > Blog > Article
+    Page               Home > Page
+    Home / cart /      kuch nahi
+    search / 404
+
+  PRODUCT COLLECTION LOGIC
+    Googlebot hamesha canonical URL (/products/<handle>) crawl karta hai, jahan
+    Liquid ka `collection` object khaali hota hai. Isliye har product ke liye ek
+    fixed primary collection chuna jaata hai:
+
+      1. product.metafields.custom.primary_collection  (manual override)
+      2. BC_PRIORITY list ka pehla match
+      3. URL wala collection, agar deny-list me na ho
+      4. product.collections ka pehla non-denied collection
+
+  ---------------------------------------------------------------------------
+  MAINTENANCE
+    Neeche do lists hain. Shopify admin > Products > Collections kholein aur
+    inhe apne actual handles se poora karein.
+
+    bc_priority = category collections, sabse specific pehle. Order matters.
+    bc_deny     = merchandising / seasonal collections jo breadcrumb me kabhi
+                  nahi aane chahiye (Best Sellers, New In, Sale waghairah).
+  ---------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign bc_templates = 'product,collection,list-collections,blog,article,page' | split: ',' -%}
+
+{%- if bc_templates contains template.name -%}
+
+  {%- liquid
+    assign origin = request.origin
+    assign home_url = routes.root_url | prepend: origin
+    assign collections_url = routes.collections_url | prepend: origin
+    assign pos = 1
+  -%}
+
+  {%- if template.name == 'product' -%}
+    {%- liquid
+      assign bc_priority = 'mens-sterling-silver-rings,mens-silver-rings,mens-rings,signet,mens-bracelets,silver-bracelets,lash-bracelets,mens-18kt-gold-bracelets,mens-necklaces,ulysses-necklaces,mens-pendants,mens-earrings,acies-earrings,clasps,initials,ulysses-collection,acies-collection,forged-transcendence,eclipse,continuum,triumph,mens,womens' | split: ','
+
+      assign bc_deny = 'all,vendors,best-sellers,mens-best-sellers,just-arrived,new-in,sale,black-friday,bfcm,gifts,gifts-for-her,gifts-under-250,gifts-under-500,personalised-gifts,summer-selection,exclusive-collection-preview,mdmexclusive,unisex,no-promos,collection-landing' | split: ','
+
+      assign bc_handle = ''
+
+      assign mf_handle = product.metafields.custom.primary_collection.value.handle
+      if mf_handle != blank
+        assign bc_handle = mf_handle
+      endif
+
+      if bc_handle == blank
+        assign product_handles = ','
+        for c in product.collections
+          assign product_handles = product_handles | append: c.handle | append: ','
+        endfor
+
+        for h in bc_priority
+          assign needle = h | prepend: ',' | append: ','
+          if product_handles contains needle
+            assign bc_handle = h
+            break
+          endif
+        endfor
+      endif
+
+      if bc_handle == blank and collection.handle != blank
+        unless bc_deny contains collection.handle
+          assign bc_handle = collection.handle
+        endunless
+      endif
+
+      if bc_handle == blank
+        for c in product.collections
+          unless bc_deny contains c.handle
+            assign bc_handle = c.handle
+            break
+          endunless
+        endfor
+      endif
+
+      assign bc_collection = collections[bc_handle]
+    -%}
+  {%- endif -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ home_url | json }}
+    }
+
+    {%- case template.name -%}
+
+      {%- when 'product' -%}
+
+        {%- if bc_collection != empty and bc_collection.handle != blank -%}
+
+          {%- if settings.show_breadcrumbs_collection_link -%}
+            {%- assign pos = pos | plus: 1 -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ pos }},
+              "name": "Collections",
+              "item": {{ collections_url | json }}
+            }
+          {%- endif -%}
+
+          {%- assign pos = pos | plus: 1 -%}
+          {%- assign bc_url = bc_collection.handle | prepend: '/' | prepend: collections_url -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ pos }},
+            "name": {{ bc_collection.title | json }},
+            "item": {{ bc_url | json }}
+          }
+
+        {%- endif -%}
+
+        {%- assign pos = pos | plus: 1 -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ pos }},
+          "name": {{ product.title | json }},
+          "item": {{ canonical_url | json }}
+        }
+
+      {%- when 'collection' -%}
+
+        {%- if collection.handle -%}
+
+          {%- if settings.show_breadcrumbs_collection_link -%}
+            {%- assign pos = pos | plus: 1 -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ pos }},
+              "name": "Collections",
+              "item": {{ collections_url | json }}
+            }
+          {%- endif -%}
+
+          {%- assign pos = pos | plus: 1 -%}
+          {%- assign bc_url = collection.handle | prepend: '/' | prepend: collections_url -%}
+          ,{
+            "@type": "ListItem",
+            "position": {{ pos }},
+            "name": {{ collection.title | json }},
+            "item": {{ bc_url | json }}
+          }
+
+        {%- endif -%}
+
+      {%- when 'list-collections' -%}
+
+        {%- assign pos = pos | plus: 1 -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ pos }},
+          "name": "Collections",
+          "item": {{ collections_url | json }}
+        }
+
+      {%- when 'blog' -%}
+
+        {%- assign pos = pos | plus: 1 -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ pos }},
+          "name": {{ blog.title | json }},
+          "item": {{ blog.url | prepend: origin | json }}
+        }
+
+      {%- when 'article' -%}
+
+        {%- assign pos = pos | plus: 1 -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ pos }},
+          "name": {{ blog.title | json }},
+          "item": {{ blog.url | prepend: origin | json }}
+        }
+
+        {%- assign pos = pos | plus: 1 -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ pos }},
+          "name": {{ article.title | json }},
+          "item": {{ canonical_url | json }}
+        }
+
+      {%- when 'page' -%}
+
+        {%- assign pos = pos | plus: 1 -%}
+        ,{
+          "@type": "ListItem",
+          "position": {{ pos }},
+          "name": {{ page.title | json }},
+          "item": {{ canonical_url | json }}
+        }
+
+    {%- endcase -%}
+  ]
+}
+</script>
+
+{%- endif -%}

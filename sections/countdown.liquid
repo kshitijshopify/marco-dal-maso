@@ -88,6 +88,11 @@
         </div>
       {% endif %}
       {% for block in section.blocks %}
+        {% if block.type == '@app' %}
+          <div class="countdown__block countdown__block--{{ block.type }}" {{ block.shopify_attributes }}>
+            {%- render block -%}
+          </div>
+        {% endif %}
         {% if block.type == 'timer' %}
           <div class="countdown__block countdown__block--{{ block.type }}" {{ block.shopify_attributes }}>
             <countdown-timer
@@ -97,7 +102,7 @@
               data-hour="{{ block.settings.hour }}"
               data-minute="{{ block.settings.minute }}"
               data-hide-timer="{{ block.settings.hide_timer }}"
-              data-complete-message="{{ block.settings.text }}"
+              data-complete-message="{{ block.settings.text | escape }}"
             >
               <div class="countdown__display countdown__display--visible" data-time-display>
                 <div class="countdown__display-block">
@@ -243,38 +248,23 @@
   ],
   "blocks": [
     {
+      "type": "@app"
+    },
+    {
       "type": "timer",
       "name": "t:sections.countdown.blocks.timer.name",
       "settings": [
         {
-          "type": "select",
+          "type": "number",
           "id": "year",
           "label": "t:sections.countdown.blocks.timer.settings.year.label",
-          "default": "2025",
-          "options": [
-            {
-              "value": "2023",
-              "label": "2023"
-            },
-            {
-              "value": "2024",
-              "label": "2024"
-            },
-            {
-              "value": "2025",
-              "label": "2025"
-            },
-            {
-              "value": "2026",
-              "label": "2026"
-            }
-          ]
+          "default": 2026
         },
         {
           "type": "select",
           "id": "month",
           "label": "t:sections.countdown.blocks.timer.settings.month.label",
-          "default": "01",
+          "default": "05",
           "options": [
             {
               "value": "01",
@@ -823,7 +813,8 @@
         {
           "type": "richtext",
           "id": "text",
-          "label": "t:sections.countdown.blocks.timer.settings.text.label"
+          "label": "t:sections.countdown.blocks.timer.settings.text.label",
+          "default": "<p>This promotion has ended. Explore our latest arrivals.</p>"
         }
       ],
       "limit": 1
@@ -836,7 +827,7 @@
           "type": "text",
           "id": "heading",
           "label": "t:sections.countdown.blocks.content.settings.heading.label",
-          "default": "Countdown"
+          "default": "Limited-Time Offer"
         },
         {
           "type": "select",
@@ -862,7 +853,7 @@
           "type": "richtext",
           "id": "text",
           "label": "t:sections.countdown.blocks.content.settings.text.label",
-          "default": "<p>Use this timer to create urgency and boost sales.</p>"
+          "default": "<p>Special pricing on featured items, ending soon.</p>"
         },
         {
           "type": "select",
@@ -925,6 +916,7 @@
   "presets": [
     {
       "name": "t:sections.countdown.presets.countdown.name",
+      "category": "t:sections.categories.banners",
       "blocks": [
         {
           "type": "content"

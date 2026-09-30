@@ -98,6 +98,11 @@
             </span>
           </button>
         {%- endif -%}
+
+        <div class="pdp-slider-counter">
+          <span class="slider-counter__current">1</span> /
+          <span class="slider-counter__total">{{ product.media.size }}</span>
+        </div>
       </div>
 
       <div style="display: none;"
@@ -219,5 +224,5 @@ Changes:
                         -%}
   to: "{%- render 'image-element', img: media.preview_image, alt: media.alt, split:
     '#', widths: '120, 360, 540, 720', sizeVariable: '80px', loading: loading -%}"
-  position: 7137..7291
+  position: 7331..7485
 {% endcomment %}

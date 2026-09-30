@@ -1,8 +1,12 @@
 <div id="tabmenu" class="recomm_recent_together">
   <ul id="nav" class="tabs">
     <li><a href="#tab-1">{{ section.settings.product_recommendations_heading }}</a></li>
-    <li><a href="#tab-2">{{ 'products.general.recent_products' | t }}</a></li>
+    {% unless section.settings.hide_recently_viewed %}
+      <li><a href="#tab-2">{{ 'products.general.recent_products' | t }}</a></li>
+    {% endunless %}
+    {% unless section.settings.hide_getlook %}
     {% if product.metafields.custom.product_look_book != blank %}<li><a href="#tab-3">{{ section.settings.title1 }}</a></li>{% endif %}
+    {% endunless %}
   </ul>
                      
   <div class="content" id="tab-1">
@@ -50,7 +54,8 @@
                 <div class="grid grid--uniform" data-aos="overflow__animation" aria-hidden="true">                  
                   {%- render 'product-grid-item',
                     product: product,
-                    quick_shop_enable: settings.quick_shop_enable
+                    quick_shop_enable: settings.quick_shop_enable,
+                    recommendation_item:true
                   -%}
                 </div>
               </div>
@@ -67,6 +72,7 @@
                       per_row: section.settings.products_per_row,
                       quick_shop_enable: settings.quick_shop_enable,
                       fallback: '39vw',
+                      recommendation_item:true
                     -%}
                   {%- endfor -%}
                 </div>
@@ -78,7 +84,8 @@
       </div>
     </product-recommendations>
   </div>
-                      
+ 
+  {% unless section.settings.hide_recently_viewed %}
   <div class="content" id="tab-2">
     {%- liquid
       assign row_of = section.settings.recent_count
@@ -118,7 +125,9 @@
       </div>
     </div>
   </div>
+  {% endunless %}
 
+  {% unless section.settings.hide_getlook %}
   {% if product.metafields.custom.product_look_book != blank %}
     <div class="content" id="tab-3">    
     <div data-section-id="{{ product.id }}" data-subsection data-section-type="collection-grid" class="">
@@ -149,7 +158,7 @@
             </div>
           </div>
           <div class="relative  grid__item medium-up--two-fifths">
-            <img class="pbimg" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="{{ section.settings.coll_image | img_url:'master'}}" width="" height="" alt="" loading="eager" />
+            <img class="pbimg" src="{{ section.settings.coll_image | img_url:'master'}}" width="" height="" alt="" loading="lazy" />
             {% for prod in related_products %}
               <div class="dot_products dot_{{ forloop.index }}">
                 <span class="dot_icon"></span>
@@ -170,6 +179,7 @@
     {{ section.settings.css | strip_html }}
     </style>
   </div>{% endif %}
+  {% endunless %}
 </div>           
 
 
@@ -178,6 +188,16 @@
 {
   "name": "t:sections.product-recommendations.name",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "hide_recently_viewed",
+      "label": "Hide Recently Viewed"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_getlook",
+      "label": "Hide Get the Look"
+    },
     {
       "type": "header",
       "content": "Get the Look"

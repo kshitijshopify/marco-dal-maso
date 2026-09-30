@@ -1,50 +1,92 @@
 <script>
-    document.addEventListener("globo.formbuilder.form.loaded", function(e) {
-        const eventCity = "{{ article.metafields.custom.event_city }}"
-        const eventDate = "{{ article.metafields.custom.event_start_date | date: '%b' }}, {{ article.metafields.custom.event_start_date | date: '%d' }} - {{ article.metafields.custom.event_end_date | date: '%d' }}"
-        console.log('eventCity', eventCity, eventDate)
-        const hiddenEventCity = event.detail.form.querySelector('[name="hidden-1"]')
-        const hiddenEventDate = event.detail.form.querySelector('[name="hidden-3"]')
+  (function () {
+    // Shopify Markets / storefront country the visitor is browsing in
+    var shopCountry = {{ localization.country.iso_code | json }};
+    if (!shopCountry || typeof shopCountry !== 'string') return;
+    shopCountry = shopCountry.toLowerCase();
 
+    function getItiInstance(input) {
+      if (!input) return null;
+      if (window.intlTelInputGlobals && typeof window.intlTelInputGlobals.getInstance === 'function') {
+        return window.intlTelInputGlobals.getInstance(input);
+      }
+      if (window.intlTelInput && typeof window.intlTelInput.getInstance === 'function') {
+        return window.intlTelInput.getInstance(input);
+      }
+      if (window.jQuery && window.jQuery.fn && window.jQuery.fn.intlTelInput) {
+        try {
+          return window.jQuery(input).data('plugin_intlTelInput') || null;
+        } catch (e) {}
+      }
+      return null;
+    }
 
-        console.log("FORM: ", event.detail.form)
-        const modal = event.detail.form.closest(".globo-form-publish-modal[data-id]")
-        console.log("MODAL: ", modal)
-        if(modal) {
-            const cID = modal.getAttribute('data-id')
-            const btn = document.querySelector(`.tool-tip-trigger__title[data-id="${cID}"]`)
-            if(btn) {
-                const eventCity = btn.getAttribute("data-event_city")
-                const eventCountry = btn.getAttribute("data-event_country")
-                const eventDate = btn.getAttribute("data-event_start_date")
+    function setPhoneCountry(form, country) {
+      if (!form || !country) return;
 
-                
+      var phoneInputs = form.querySelectorAll(
+        '.iti input[type="tel"], [data-type="phone"] input, [data-type="phone2"] input, input[type="tel"]'
+      );
 
-                if(eventCity && hiddenEventCity) {
-                    hiddenEventCity.value = eventCity
-                }
-
-                if(eventDate && hiddenEventDate) {
-                    hiddenEventDate.value = eventDate
-                }
-            }
+      phoneInputs.forEach(function (input) {
+        var iti = getItiInstance(input);
+        if (iti && typeof iti.setCountry === 'function') {
+          try {
+            iti.setCountry(country);
+            return;
+          } catch (e) {}
         }
 
+        // Fallback: click matching country in Globo/intl-tel-input dropdown
+        var wrapper = input.closest('.iti') || input.closest('.globo-form-control');
+        if (!wrapper) return;
+        var countryBtn = wrapper.querySelector(
+          '.iti__country[data-country-code="' + country + '"], ' +
+          '.iti__country[data-iso2="' + country + '"], ' +
+          '[data-country-code="' + country + '"]'
+        );
+        if (countryBtn) countryBtn.click();
+      });
+    }
 
+    function applyToForm(form) {
+      if (!form) return;
+      // Globo often inits phone slightly after form.loaded
+      setPhoneCountry(form, shopCountry);
+      setTimeout(function () { setPhoneCountry(form, shopCountry); }, 150);
+      setTimeout(function () { setPhoneCountry(form, shopCountry); }, 500);
+      setTimeout(function () { setPhoneCountry(form, shopCountry); }, 1200);
+    }
 
-        
+    document.addEventListener('globo.formbuilder.form.loaded', function (event) {
+      var form = event.detail && event.detail.form;
+      applyToForm(form);
 
-
-
-        {% comment %} if(hiddenEventCity){
-            hiddenEventCity.value = eventCity
+      // Existing event form hidden-field logic
+      var hiddenEventCity = form && form.querySelector('[name="hidden-1"]');
+      var hiddenEventDate = form && form.querySelector('[name="hidden-3"]');
+      var modal = form && form.closest('.globo-form-publish-modal[data-id]');
+      if (modal) {
+        var cID = modal.getAttribute('data-id');
+        var btn = document.querySelector('.tool-tip-trigger__title[data-id="' + cID + '"]');
+        if (btn) {
+          var eventCity = btn.getAttribute('data-event_city');
+          var eventDate = btn.getAttribute('data-event_start_date');
+          if (eventCity && hiddenEventCity) hiddenEventCity.value = eventCity;
+          if (eventDate && hiddenEventDate) hiddenEventDate.value = eventDate;
         }
-        if(hiddenEventDate){
-            if(eventDate && eventDate !== ',  - '){
-                hiddenEventDate.value = eventDate
-            }else{
-                hiddenEventDate.value = ''
-            }
-        } {% endcomment %}
+      }
     });
+
+    // When personalize button opens modal after form already loaded
+    document.addEventListener('click', function (e) {
+      var openBtn = e.target.closest('.globo-formbuilder-open, .globo-formbuilder-button-open');
+      if (!openBtn) return;
+      setTimeout(function () {
+        document.querySelectorAll('.globo-form-app form, .globo-form-publish-modal .globo-form-app').forEach(function (form) {
+          applyToForm(form);
+        });
+      }, 300);
+    });
+  })();
 </script>

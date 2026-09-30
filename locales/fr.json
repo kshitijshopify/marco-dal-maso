@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "accessibility": {
@@ -35,13 +44,15 @@
     },
     "social": {
       "share_on_facebook": "Partager",
-      "share_on_twitter": "Tweeter",
+      "share_on_x": "Partager",
       "share_on_pinterest": "Épingler",
       "alt_text": {
         "share_on_facebook": "Partager sur Facebook",
-        "share_on_twitter": "Tweeter sur Twitter",
-        "share_on_pinterest": "Épingler sur Pinterest"
-      }
+        "share_on_x": "Tweeter sur X",
+        "share_on_pinterest": "Épingler sur Pinterest",
+        "share_on_twitter": "Tweeter sur Twitter"
+      },
+      "share_on_twitter": "Tweeter"
     },
     "newsletter_form": {
       "newsletter_email": "Inscrivez-vous à notre infolettre",
@@ -322,7 +333,7 @@
       "add_to_cart": "Ajouter au panier",
       "preorder": "Pré-commander",
       "include_taxes": "Taxes incluses.",
-      "shipping_policy_html": "<a href='{{ link }}'>Frais d'expédition<\/a> calculés lors du passage à la caisse.",
+      "shipping_policy_html": "<a href='{{ link }}'>Frais d'expédition</a> calculés lors du passage à la caisse.",
       "will_not_ship_until": "Sera expédié après {{ date }}",
       "will_be_in_stock_after": "Sera en stock à compter de {{ date }}",
       "waiting_for_stock": "Inventaire sur le chemin",
@@ -330,14 +341,14 @@
       "view_in_space_label": "Affichage dans votre espace, charge l'article dans une fenêtre de réalité augmentée"
     }
   },
-  "store_availability":{
-    "general":{
+  "store_availability": {
+    "general": {
       "view_store_info": "Afficher les informations de magasin",
       "check_other_stores": "Vérifier la disponibilité dans d'autres magasins",
       "pick_up_available": "Récupération disponible",
       "pick_up_currently_unavailable": "Récupération actuellement indisponible",
-      "pick_up_available_at_html": "Récupération disponible à <strong> {{location_name}} <\/strong>",
-      "pick_up_unavailable_at_html": "Récupération actuellement indisponible à <strong> {{location_name}} <\/strong>"
+      "pick_up_available_at_html": "Récupération disponible à <strong> {{location_name}} </strong>",
+      "pick_up_unavailable_at_html": "Récupération actuellement indisponible à <strong> {{location_name}} </strong>"
     }
   },
   "gift_cards": {
@@ -353,7 +364,56 @@
       "add_to_apple_wallet": "Ajouter à Apple Wallet"
     }
   },
-  "date_formats":{
+  "recipient": {
+    "form": {
+      "checkbox": "Je veux envoyer ce produit comme cadeau",
+      "email_label": "E‑mail du destinataire",
+      "email": "E‑mail",
+      "name_label": "Nom du destinataire (facultatif)",
+      "name": "Nom",
+      "message_label": "Message (facultatif)",
+      "message": "Message",
+      "max_characters": "{{ max_chars }} caractères au maximum",
+      "send_on_label": "Envoyer (facultatif)"
+    }
+  },
+  "date_formats": {
     "month_day_year": "%d %B, %Y"
+  },
+  "info": {
+    "unable_to_add_item_to_cart": "Impossible d'ajouter l'article au panier",
+    "item_added_to_cart_html": "{{ product_title }} ajouté au panier!",
+    "low_stock_count": {
+      "one": "Stock faible - {{ count }} article restant",
+      "other": "Stock faible - {{ count }} articles restants"
+    },
+    "back_in_stock_on": "De retour en stock {{ date }}",
+    "backordered": "En rupture de stock, expédition prochainement",
+    "in_stock": "En stock",
+    "sold_out": "Épuisé",
+    "tax_included": "Taxes incluses.",
+    "shipping_policy_html": "<a href='{{ link }}'>Expédition</a> calculée à la caisse.",
+    "pick_up_available": "Récupération disponible",
+    "pick_up_currently_unavailable": "Récupération actuellement indisponible",
+    "pick_up_available_at_html": "Récupération disponible à <strong>{{ location_name }}</strong>",
+    "pick_up_unavailable_at_html": "Récupération actuellement indisponible à <strong>{{ location_name }}</strong>"
+  },
+  "labels": {
+    "quantity": "Quantité",
+    "search": "Rechercher",
+    "close": "Fermer",
+    "get_directions": "Obtenir des directions",
+    "view_store_info": "Afficher les informations du magasin",
+    "check_availability": "Vérifier la disponibilité dans d'autres magasins",
+    "show_all_results": "Afficher tous les résultats pour \"{{ terms }}\"",
+    "from_price": "à partir de {{ price }}"
+  },
+  "actions": {
+    "add_to_cart": "Ajouter au panier",
+    "close": "Fermer",
+    "get_directions": "Obtenir des directions",
+    "view_store_info": "Afficher les informations du magasin",
+    "check_availability": "Vérifier la disponibilité dans d'autres magasins",
+    "show_all_results": "Afficher tous les résultats pour \"{{ terms }}\""
   }
 }

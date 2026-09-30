@@ -1,0 +1,14 @@
+ <a class="site-nav__link site-nav__link--icon small--hide" href="{% if customer %}/pages/account-details{% else %}/account/login{% endif %}">
+       <svg xmlns="http://www.w3.org/2000/svg" width="25" height="26" viewBox="0 0 25 26" fill="none">
+      <path d="M12.25 10C14.7353 10 16.75 7.98528 16.75 5.5C16.75 3.01472 14.7353 1 12.25 1C9.76472 1 7.75 3.01472 7.75 5.5C7.75 7.98528 9.76472 10 12.25 10Z" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M23.5 25.0001C22.7875 11.0006 1.7125 11.0006 1 25.0001" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+        <span class="icon__fallback-text">
+          {%- if customer -%}
+            {{ 'layout.customer.account' | t }}
+          {%- else -%}
+            {{ 'layout.customer.log_in' | t }}
+          {%- endif -%}
+        </span>
+      </a>
+          

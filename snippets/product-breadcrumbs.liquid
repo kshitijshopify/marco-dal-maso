@@ -1,0 +1,105 @@
+<nav class="breadcrumb-pdp" role="navigation" aria-label="breadcrumbs" url="{{ request.path }}">
+  <a class="pdp_breadcrumb__link" href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+  <span class="pdp_breadcrumb__divider" aria-hidden="true">/</span>
+  <a class="pdp_breadcrumb__link pdp_breadcrumb_active" href="{{ product.url }}">{{ product.title }}</a>
+</nav>
+
+<script>
+  (function () {
+    var nav = document.querySelector('.breadcrumb-pdp');
+    if (!nav) return;
+
+    var productUrl = {{ product.url | json }};
+    var storageKey = 'pdpCollectionBreadcrumb';
+
+    function parseCollectionFromReferrer(referrer) {
+      try {
+        var url = new URL(referrer);
+        if (url.origin !== window.location.origin) return null;
+
+        var match = url.pathname.match(/^(.*\/collections\/([^/]+))/);
+        if (!match || match[2] === 'all' || match[2] === 'vendors') return null;
+
+        return {
+          path: match[1],
+          handle: match[2]
+        };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function insertCollectionCrumb(title, href) {
+      var activeLink = nav.querySelector('.pdp_breadcrumb_active');
+      if (!activeLink || nav.querySelector('[data-referrer-collection]')) return;
+
+      var divider = document.createElement('span');
+      divider.className = 'pdp_breadcrumb__divider';
+      divider.setAttribute('aria-hidden', 'true');
+      divider.textContent = '/';
+
+      var collectionLink = document.createElement('a');
+      collectionLink.className = 'pdp_breadcrumb__link';
+      collectionLink.href = href;
+      collectionLink.setAttribute('data-referrer-collection', '');
+      collectionLink.textContent = title;
+
+      nav.insertBefore(divider, activeLink);
+      nav.insertBefore(collectionLink, divider);
+    }
+
+    function saveToStorage(data) {
+      try {
+        sessionStorage.setItem(storageKey, JSON.stringify({
+          productUrl: productUrl,
+          title: data.title,
+          href: data.href,
+          handle: data.handle
+        }));
+      } catch (e) {}
+    }
+
+    function loadFromStorage() {
+      try {
+        var stored = sessionStorage.getItem(storageKey);
+        if (!stored) return null;
+
+        var data = JSON.parse(stored);
+        if (data.productUrl === productUrl && data.title && data.href) return data;
+      } catch (e) {}
+
+      return null;
+    }
+
+    function fetchAndInsert(collection) {
+      fetch(collection.path + '.json')
+        .then(function (response) {
+          if (!response.ok) throw new Error('Collection not found');
+          return response.json();
+        })
+        .then(function (data) {
+          var title = data && data.collection && data.collection.title;
+          if (!title) return;
+
+          insertCollectionCrumb(title, collection.path);
+          saveToStorage({
+            title: title,
+            href: collection.path,
+            handle: collection.handle
+          });
+        })
+        .catch(function () {});
+    }
+
+    var fromReferrer = document.referrer && parseCollectionFromReferrer(document.referrer);
+    if (fromReferrer) {
+      fetchAndInsert(fromReferrer);
+      return;
+    }
+
+    var stored = loadFromStorage();
+    if (stored) {
+      insertCollectionCrumb(stored.title, stored.href);
+    }
+  })();
+</script>

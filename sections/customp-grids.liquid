@@ -83,9 +83,9 @@
 
               {%- case block.type %}
                 {% when 'images' %}
-                  {% if block.settings.image != blank %}<div class="image_block"><img src="{{ block.settings.image | img_url:'master' }}"></div>{% endif %}
-                  {% if block.settings.image1 != blank %}<div class="image_block"><img src="{{ block.settings.image1 | img_url:'master' }}"></div>{% endif %}
-                  {% if block.settings.image2 != blank %}<div class="image_block"><img src="{{ block.settings.image2 | img_url:'master' }}"></div>{% endif %}
+                  {% if block.settings.image != blank %}<div class="image_block"><img src="{{ block.settings.image | img_url:'master' }} loading="lazy""></div>{% endif %}
+                  {% if block.settings.image1 != blank %}<div class="image_block"><img src="{{ block.settings.image1 | img_url:'master' }} loading="lazy""></div>{% endif %}
+                  {% if block.settings.image2 != blank %}<div class="image_block"><img src="{{ block.settings.image2 | img_url:'master' }} loading="lazy""></div>{% endif %}
                 {% when 'video' %}
                   <div class="video_block">
                     <video width="100%" height="auto" autoplay muted playsinline loop preload="none">

@@ -1,1 +1,1 @@
-{"parent":"product.json","context":{"market":"ca"},"sections":{"main":{"settings":{},"blocks":{"price":{"settings":{"taxes_text":"Final price includes all taxes and duties."}}}}}}
+{"parent":"product.json","context":{"market":"ca"},"sections":{"main":{"blocks":{"price":{"settings":{"taxes_text":"No additional duties or taxes on delivery"}}}}}}

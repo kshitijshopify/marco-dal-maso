@@ -826,12 +826,9 @@
       ],
       "name": "t:sections.rich-text.presets.rich_text.name",
       "settings": {
-        "desktop_hide": false,
-        "mobile_hide": false,
         "align_text": "left",
         "narrow_column": true,
-        "divider": true,
-        "padding_b": 0
+        "divider": true
       }
     }
   },

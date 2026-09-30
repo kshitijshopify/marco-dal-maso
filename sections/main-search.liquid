@@ -7,10 +7,26 @@
         {{ 'general.search.title' | t }}
       </h1>
     </header>
-    {% render 'predictive-search', section: section, context: 'header' %}
-  </div>
 
-  <div class="page-full">
+    {%- render 'predictive-search',
+      context: 'search-page',
+      exclude_pages: section.settings.exclude_pages
+    -%}
+
+    {%- if section.settings.exclude_pages and search.performed -%}
+      {%- if search.types contains 'page' -%}
+        <script>
+          (function () {
+            var url = new URL(window.location.href);
+            var type = url.searchParams.get('type') || '';
+            if (type && type.indexOf('page') === -1) return;
+            url.searchParams.set('type', 'product,article');
+            window.location.replace(url.toString());
+          })();
+        </script>
+      {%- endif -%}
+    {%- endif -%}
+
     {%- if search.performed -%}
       <hr class="hr--medium">
 
@@ -30,12 +46,13 @@
         <div id="CollectionAjaxContent" class="grid grid--uniform" data-scroll-to>
 
           <div class="grid__item medium-up--one-fifth grid__item--sidebar">
-            {%- render 'search-grid-filters',
+            {%- render 'collection-grid-filters',
               collection: search,
               enable_sidebar: section.settings.enable_sidebar,
               filter_style: section.settings.filter_style,
               collapsed: section.settings.collapsed,
-              enable_color_swatches: section.settings.enable_color_swatches
+              enable_color_swatches: section.settings.enable_color_swatches,
+              enable_swatch_labels: section.settings.enable_swatch_labels
             -%}
           </div>
 
@@ -48,8 +65,9 @@
               enable_sort: true,
               enable_collection_count: true,
               per_row: section.settings.per_row,
-              mobile_flush_grid: section.settings.mobile_flush_grid
-              quick_shop_enable: settings.quick_shop_enable
+              mobile_flush_grid: section.settings.mobile_flush_grid,
+              quick_shop_enable: settings.quick_shop_enable,
+              exclude_pages: section.settings.exclude_pages
             %}
 
             {%- if paginate.pages > 1 -%}
@@ -87,6 +105,13 @@
     },
     {
       "type": "checkbox",
+      "id": "exclude_pages",
+      "label": "Hide pages from search results",
+      "default": true,
+      "info": "When enabled, only products and articles are shown in search."
+    },
+    {
+      "type": "checkbox",
       "id": "enable_sidebar",
       "label": "t:sections.main-search.settings.enable_sidebar.label",
       "default": true,
@@ -101,20 +126,16 @@
     {
       "type": "select",
       "id": "filter_style",
-      "label": "t:sections.main-collection.settings.filter_style.label",
+      "label": "t:sections.main-search.settings.filter_style.label",
       "default": "sidebar",
       "options": [
         {
           "value": "sidebar",
-          "label": "t:sections.main-collection.settings.filter_style.options.sidebar.label"
-        },
-        {
-          "value": "horizontal",
-          "label": "Horizontal"
+          "label": "t:sections.main-search.settings.filter_style.options.sidebar.label"
         },
         {
           "value": "drawer",
-          "label": "t:sections.main-collection.settings.filter_style.options.drawer.label"
+          "label": "t:sections.main-search.settings.filter_style.options.drawer.label"
         }
       ]
     },
@@ -123,6 +144,12 @@
       "id": "enable_color_swatches",
       "label": "t:sections.main-search.settings.enable_color_swatches.label",
       "info": "t:sections.main-search.settings.enable_color_swatches.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_swatch_labels",
+      "label": "t:common.enable_swatch_labels.label",
+      "default": true
     },
     {
       "type": "range",
@@ -151,5 +178,3 @@
   ]
 }
 {% endschema %}
-
-

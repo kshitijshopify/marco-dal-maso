@@ -78,11 +78,23 @@
     </div>
   </div>
 </div>
-<script type="load">
-  $('.accordian_title').on('click', function() {
-    $('.accordian_title').toggleClass('active');
-    $(this).find('.accordian_content').toggle();
-  });
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const accordianTitles = document.querySelectorAll('.accordian_title');
+    accordianTitles.forEach(title => {
+        title.addEventListener('click', function() {
+
+            // Toggle 'active' class on the clicked title only
+            this.classList.toggle('active');
+
+            // Find the content inside this accordion and toggle it
+            const content = this.querySelector('.accordian_content');
+            if (content) {
+                content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+            }
+        });
+    });
+});
 </script>
 <style>
   .block_start_acc{display:none;}
@@ -90,7 +102,7 @@
   a.hash.active {
     text-decoration: underline;
     font-weight: bold;
-}
+  }
   .page-width.page-width--narrow{padding-bottom:0px;}
   .accordian_title.active  span.right svg{transform:rotate(180deg);}
   .accordian_content{display:none;}
@@ -107,80 +119,119 @@
   .sidebar_list li{padding:5px;}
   .stick_it{background: rgba(0,0,0,0.03);padding-top: 30px;} 
   
-@media only screen and (min-width:769px){
-  .stick_it{height:100vh;} 
-  .stick_it .sidebar_list {
-    position: sticky;
-    top: 80px;
-    left: 0;
-}
-}
-@media only screen and (max-width:768px){
-  .cst.grid__item.small-one-whole.medium-up--four-fifths{max-width: calc(100% - 80px);}
-  .stick_it{padding-bottom:30px;}
-  .sidebar_list{display:none;} 
-  .sidebar_list.active{display:block;} 
-  .mobile_dropdown {display: flex;align-items: center;justify-content: space-between;}
-}
-   .mobile_dropdown {
+  @media only screen and (min-width:769px){
+    .stick_it{height:100vh;} 
+    .stick_it .sidebar_list {
+      position: sticky;
+      top: 80px;
+      left: 0;
+    }
+  }
+  @media only screen and (max-width:768px){
+    .cst.grid__item.small-one-whole.medium-up--four-fifths{max-width: calc(100% - 80px);}
+    .stick_it{padding-bottom:30px;}
+    .sidebar_list{display:none;} 
+    .sidebar_list.active{display:block;} 
+    .mobile_dropdown {display: flex;align-items: center;justify-content: space-between;}
+  }
+  .mobile_dropdown {
     margin: 10px 40px;
     border: 1px solid #000;
     padding: 10px;
     background: #fff;
-}
-  body .testimonials--section{opacity:0;}
+  }
+  body .testimonials--section{opacity:1;}
 </style>
-<script type="load">  
-  $(document).ready(function() {
-	$('a.hash').click(function(){
-     
-      $('a.hash').removeClass('active');
-      $('.block_start_acc').removeClass('active');
-      $(this).addClass('active');
-      var id= $(this).attr('href');
-      console.log(id);
-      $(id).addClass('active'); 
-     
-        if ($(window).width() < 960) { 
-         
-      	    $('html, body').animate({
-      	        scrollTop: $( $.attr(this, 'href') ).offset().top + 220
-      	    }, 500);
-         
-       } else {
-         
-      	    $('html, body').animate({
-      	        scrollTop: $( $.attr(this, 'href') ).offset().top - 120
-      	    }, 500);
-               
-        }
-      
-	    return false;
-      
-	}); 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
 
-    
-	$('.mobile_dropdown').click(function(){
-      $('.sidebar_list').toggleClass('active');
-    });
-    
-	$('.sidebar_list li a').click(function(){
-      var tv = $(this).text();
-      console.log(tv);
-      $('.mobile_dropdown span.txt').text(tv); 
-      $('.sidebar_list').removeClass('active');
-    });
+      // ================== HASH LINK CLICK HANDLER ==================
+      const hashLinks = document.querySelectorAll('a.hash');
 
+      hashLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+              e.preventDefault();   // stop default jump
 
-    
-    console.log('working');
-    var ids = window.location.toString().split('#')[1];
-    console.log(ids);
-     console.log('a.hash[href="#'+ids+'"]');
-   $('a.hash[href="#'+ids+'"]').trigger('click');
-$("body .testimonials--section").css('opacity',1);
-    
-});
+              // Remove active class from all links and blocks
+              document.querySelectorAll('a.hash').forEach(item => item.classList.remove('active'));
+              document.querySelectorAll('.block_start_acc').forEach(item => item.classList.remove('active'));
+
+              // Add active to current link
+              this.classList.add('active');
+
+              // Get target ID
+              const targetId = this.getAttribute('href');
+              const targetElement = document.querySelector(targetId);
+
+              if (targetElement) {
+                  targetElement.classList.add('active');
+
+                  // Scroll with different offset for mobile & desktop
+                  const isMobile = window.innerWidth < 960;
+                  const offset = isMobile ? 220 : -120;
+
+                  const elementPosition = targetElement.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.scrollY + offset;
+
+                  window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                  });
+              }
+          });
+      });
+
+      // ================== MOBILE DROPDOWN ==================
+      const mobileDropdown = document.querySelector('.mobile_dropdown');
+      const sidebarList = document.querySelector('.sidebar_list');
+
+      if (mobileDropdown && sidebarList) {
+          mobileDropdown.addEventListener('click', function() {
+              sidebarList.classList.toggle('active');
+          });
+      }
+
+      // Close dropdown and update text when clicking on a sidebar link
+      const sidebarLinks = document.querySelectorAll('.sidebar_list li a');
+
+      sidebarLinks.forEach(link => {
+          link.addEventListener('click', function() {
+              const text = this.textContent.trim();
+              
+              const dropdownText = document.querySelector('.mobile_dropdown span.txt');
+              if (dropdownText) {
+                  dropdownText.textContent = text;
+              }
+
+              if (sidebarList) {
+                  sidebarList.classList.remove('active');
+              }
+          });
+      });
+
+      // ================== AUTO TRIGGER HASH ON PAGE LOAD ==================
+      function triggerHashOnLoad() {
+          const hash = window.location.hash;   // e.g. #section1
+
+          if (hash) {
+              const activeLink = document.querySelector(`a.hash[href="${hash}"]`);
+              if (activeLink) {
+                  activeLink.click();   // Trigger the click event
+              }
+          }
+      }
+
+      // Run after a small delay to ensure DOM and elements are ready
+      setTimeout(triggerHashOnLoad, 300);
+
+      // Optional: Show testimonials section
+      const testimonials = document.querySelector('.testimonials--section');
+      if (testimonials) {
+          testimonials.style.opacity = '1';
+      }
+
+      console.log('Hash navigation script loaded successfully');
+  });
 </script>
 {% schema %}
   {

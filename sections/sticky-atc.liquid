@@ -1,34 +1,105 @@
-{% assign product_tags = product.tags | join: ',' %}
-{% unless product_tags contains 'POA' %}  
-  {% if section.settings.enable_section and request.page_type == 'product' and product.available %}
+{% if request.page_type == 'product' and product != blank %}
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign poa_threshold_base = settings.poa_price_threshold | default: 5000
+  assign poa_threshold_minor = poa_threshold_base | times: 100
+
+  assign product_type_poa = product.type | strip | downcase
+  assign is_earring_product = false
+  if product_type_poa == 'earrings' or product_type_poa == 'earring'
+    assign is_earring_product = true
+  endif
+
+  assign earring_has_purchasable_single = false
+  if is_earring_product
+    for variant in product.variants
+      assign check_title = variant.title | downcase
+      assign check_o1 = variant.option1 | downcase
+      assign check_o2 = variant.option2 | downcase
+      assign check_o3 = variant.option3 | downcase
+      assign check_is_pair = false
+      if check_title == 'pair' or check_o1 == 'pair' or check_o2 == 'pair' or check_o3 == 'pair'
+        assign check_is_pair = true
+      endif
+      if check_is_pair == false and variant.price <= poa_threshold_minor
+        assign earring_has_purchasable_single = true
+      endif
+    endfor
+  endif
+
+  assign all_variants_poa = true
+  for variant in product.variants
+    assign is_earring_pair = false
+    if is_earring_product
+      assign v_title = variant.title | downcase
+      assign o1 = variant.option1 | downcase
+      assign o2 = variant.option2 | downcase
+      assign o3 = variant.option3 | downcase
+      if v_title == 'pair' or o1 == 'pair' or o2 == 'pair' or o3 == 'pair'
+        assign is_earring_pair = true
+      endif
+    endif
+    assign is_earring_pair_exempt = false
+    if is_earring_pair and earring_has_purchasable_single
+      assign is_earring_pair_exempt = true
+    endif
+
+    if is_earring_pair_exempt or variant.price <= poa_threshold_minor
+      assign all_variants_poa = false
+    endif
+  endfor
+
+  assign current_variant_poa = false
+  assign is_current_earring_pair = false
+  if is_earring_product
+    assign cv_title = current_variant.title | downcase
+    assign cv_o1 = current_variant.option1 | downcase
+    assign cv_o2 = current_variant.option2 | downcase
+    assign cv_o3 = current_variant.option3 | downcase
+    if cv_title == 'pair' or cv_o1 == 'pair' or cv_o2 == 'pair' or cv_o3 == 'pair'
+      assign is_current_earring_pair = true
+    endif
+  endif
+  if is_current_earring_pair and earring_has_purchasable_single
+    assign current_variant_poa = false
+  elsif current_variant.price > poa_threshold_minor
+    assign current_variant_poa = true
+  endif
+%}
+{% unless all_variants_poa %}  
+  {% if section.settings.enable_section and product.available %}
   {% liquid 
-        assign current_variant = product.selected_or_first_available_variant
         assign product_form_id = 'product-form-' | append: section.id
         assign image = current_variant.image | default: product.featured_image 
         assign img_size = section.settings.img_width | append: 'x' | append: section.settings.img_height
   %}
 
   <style>
+    html:not(.js-drawer-open) #shopify-section-sticky-atc {
+      position: relative;
+      z-index: 9999999999;
+    }
         #md-sticky-atc {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            z-index: 2;
-            padding-top: {{ section.settings.pt }}rem;
-            padding-bottom: {{ section.settings.pb }}rem;
+            z-index: 7;
+            padding-top: 0;
+            padding-bottom: 0;
             visibility: hidden;
             opacity: 0;
             transform: translateY(100%);
-            transition: all .15s ease-out;background: #fff;
-            border-top: 0.1rem solid rgba(var(--color-foreground),.08);box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+            transition: all .15s ease-out;
+            background: #fff;
+            {% comment %} border-top: 0.1rem solid rgba(var(--color-foreground),.08); {% endcomment %}
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+            border: 1px solid #E2E1DF;
         }
         #md-sticky-atc.show {
             visibility: visible;
             opacity: 1;
             transform: translateY(0);
-        }
-        #md-sticky-atc .page-width-inner {
         }
         @media (min-width: 990px) {
             #md-sticky-atc .page-width-inner {
@@ -115,60 +186,174 @@
       .select__select {
         padding-right: 0 !important;
 }
-
-@media (min-width: 769px) {
-#md-sticky-atc {
-    position: fixed;
-    top: 100px;
-    left: auto;
-    right: 2rem;
-    background: #ececec;
-    border-top: none;
-    box-shadow: none;bottom: auto;
-    max-width: 344px;padding: 0;
+.stickyflexitems_bottom {
+    border-top: 1px solid var(--color-base-cream-2, #F2EEE6);
+    padding: 8px 16px 12px;
+    display: none;
+    justify-content: end;
+    align-items: center;
 }
-  #md-sticky-atc .page-width {
-    padding: 10px;
+.stickyflexitems_securecheckout {
+    font-size: 10px;
+    line-height: 14px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: #6B6B6B;
+    display: flex;
+    gap: 6px;
+    align-items: center;
 }
-      #md-sticky-atc .product-content {
-        padding-right: 0;
-        flex: 0 0 25%;
-    }
-      #md-sticky-atc .page-width-inner {
-        display: flex;align-items: unset;
-        gap: 10px;
-    }
+.stickyflexitems {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+#md-sticky-atc form.product-single__form button{
+        flex: 0 0 45%;
+        max-width: 50%;
+        height: auto;
+        padding: 5px 5px;
+        font-size: 11.5px;
+        font-weight: 700;
+        background-color: #141414;
+        color: #FFF;
+        border: 1px solid;
+        letter-spacing: 2.99px;
+        min-height: 42px;
+        min-width: 163px;
+}
   .stickyflexitems .small--hide {
     display: flex;
     align-items: flex-start;
-        justify-content: space-between;
-}
-  .stickyflexitems {
-    flex: 1 1 80%;display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+    flex-direction: column;
+    gap: 2px;
 }
 .stickyflexitems .product__title {
-    letter-spacing: 0;
-    margin: 0;font-size: 13px;
-        max-width: 60%;
+    margin: 0;
+    font-size: 11px;
+    max-width: 100%;
+    line-height: 13px;
+    letter-spacing: 0.2px;
+    text-transform: unset;
+    margin-bottom: 4px;
+    font-family: 'Montserrat' !important;
+    font-weight: 700;
 }
-  div#price-sticky-atc span {
-    font-size: 14px;
+div#price-sticky-atc span {
+    font-size: 16px;
+    line-height: 19px;
+    letter-spacing: -0.5%;
+    color: #141414;
 }
-  #md-sticky-atc form.product-single__form select, #md-sticky-atc form.product-single__form button {
-    flex: 0 0 45%;
+#md-sticky-atc form.product-single__form {
+    display: flex;
+    gap: 10px;
+    flex-flow: row wrap;
+    margin-bottom: 0;
     max-width: 50%;
-    height: auto;
+    justify-content: flex-end;
+}
+.sticky_pdp_inventory .pdp_inventory_label {
+    margin-bottom: 0;
+}
+.sticky_pdp_inventory_flex {
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+  gap: 20px;
+}
+#md-sticky-atc .page-width {
+  padding: 12px 16px 12px !important; 
+}
+.sticky_pdp_inventory_desktop{
+  margin-top:4px;
+}
+@media (min-width: 769px) {
+  .sticky_pdp_inventory_mb{
+    display:none;
+  }
+  .stickyflexitems_content {
+    width: -webkit-fill-available;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #md-sticky-atc form.product-single__form {
+    display: flex;
+    gap: 12px;
+    min-width: 392px;
+  }
+
+  #md-sticky-atc form.product-single__form button {
+    height: 53px;
+    font-size: 11.5px;
+    letter-spacing: 2.99px;
+    padding: 0;
+    min-width: 220px;
+  }
+      #md-sticky-atc .product-content {
+        padding-right: 0;
+    }
+      #md-sticky-atc .page-width-inner {
+        display: flex;
+        align-items: unset;
+        gap: 12px;
+    }
+    {% comment %} #md-sticky-atc {
+      position: fixed;
+      top: 100px;
+      left: auto;
+      right: 2rem;
+      bottom: auto;
+      max-width: 440px;
+      padding: 0;
+  } {% endcomment %}
+  #md-sticky-atc form.product-single__form select {
     padding: 5px 5px;
     letter-spacing: 0;
     font-size: 12px;
-    font-weight: 400;background-color: transparent;
+    font-weight: 400;
+    background-color: transparent;
     color: #000;
     border: 1px solid;
+    height: 53px;
+    min-width: 160px;
+    padding-left:16px;
+  }
 }
-}
-      @media (max-width: 768px) {
+
+@media (max-width: 768px) {
+  .sticky_pdp_inventory_desktop{
+    display:none;
+  }
+  .stickyflexitems{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sticky_pdp_inventory_flex{
+    gap: 4px;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 0;
+  }
+  .stickyflexitems_content{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  #md-sticky-atc form.product-single__form{
+    max-width: 100%;
+    width: 100%;
+  }
+  #md-sticky-atc select.product-single__variants, #md-sticky-atc form.product-single__form button{
+    width: calc(50% - 4px);
+  }
     #md-sticky-atc .product-form .quantity-input-wrapper {
         display: flex;
         align-items: center;
@@ -176,11 +361,11 @@
     }
 
     #md-sticky-atc .product-form .select {
-        max-width: 40%; /* Increase width for mobile */
+        max-width: 40%;
     }
 
     .quantity {
-        width: 32%; /* Adjust width for better mobile layout */
+        width: 32%;
     }
 
     .button {
@@ -188,10 +373,6 @@
         font-size: 15px !important; /* Slightly smaller font for mobile */
       min-width: unset !important;
     }
-}
-#md-sticky-atc form.product-single__form {
-    display: flex;
-    gap: 10px;flex-flow: row wrap;
 }
 .p-0, .pr-1\.5 {
     font-size: 12px;
@@ -221,28 +402,41 @@
         );
       }
       function handleScroll() {
-        if (isInViewport(target)) {
-          stickyATC.classList.remove('show');
-          stickyATC.classList.add('hide');
-          document.body.style.paddingBottom = '0'
-        } else {
+        const rect = target.getBoundingClientRect();
+        const footer = document.querySelector('footer');
+        const footerRect = footer?.getBoundingClientRect();
+        const viewportHeight =
+          window.innerHeight || document.documentElement.clientHeight;
+
+        const isMobile = window.innerWidth <= 768;
+
+        // Only hide on mobile when footer is visible
+        const footerVisible =
+          isMobile && footerRect && footerRect.top < viewportHeight;
+
+        if (rect.bottom < 0 && !footerVisible) {
           stickyATC.classList.remove('hide');
           stickyATC.classList.add('show');
-          document.body.style.paddingBottom = `${stickyATC.clientHeight}px`
-          document.body.style.height = 'auto'  
+
+          document.body.style.paddingBottom = `${stickyATC.clientHeight}px`;
+          document.body.style.height = 'auto';
+        } else {
+          stickyATC.classList.remove('show');
+          stickyATC.classList.add('hide');
+
+          document.body.style.paddingBottom = '0';
         }
       }
+
       window.addEventListener('scroll', handleScroll);
       //window.addEventListener('load', handleScroll); // Run on page load too
           
       function checkWindowSize() {
         const width = window.innerWidth;
-        const height = window.innerHeight;          
-        console.log(`Width: ${width}, Height: ${height}`);
+        const height = window.innerHeight;
           
         // Example condition: if window width is less than 768px (mobile view)
         if (width <= 768) {
-          console.log("Mobile view");
           window.addEventListener('load', () => {
             stickyATCContent.classList.add('hide')             
           });
@@ -267,109 +461,161 @@
         if (value) {
           selectField.value = value
         }
-      })
+      });
 
-      document.querySelectorAll('.sync-select').forEach(select => {
-        select.addEventListener('change', function () {
-          const group = this.dataset.sync;
-          const selectsInGroup = document.querySelectorAll(`.sync-select[data-sync="${group}"]`);
-    
-          selectsInGroup.forEach(otherSelect => {
-            if (otherSelect === this) return;
-    
-            let selectedLabel = this.options[this.selectedIndex].textContent.trim();
-    
-            // Try to find an option in the other select that matches by label
-            for (let i = 0; i < otherSelect.options.length; i++) {
-              if (otherSelect.options[i].textContent.trim() === selectedLabel) {
-                otherSelect.selectedIndex = i;
-                break;
+        document.querySelectorAll('.sync-select').forEach(select => {
+          select.addEventListener('change', function () {
+            const group = this.dataset.sync;
+            const selectedValue = this.options[this.selectedIndex].textContent.trim();
+
+            const inputs = document.querySelectorAll(
+              `.variant-input-wrap[data-sync="${group}"] input[data-variant-input]`
+            );
+
+            inputs.forEach(input => {
+              if (input.value.trim() === selectedValue) {
+                input.checked = true;
+
+                // Trigger change event if Shopify listens for it
+                input.dispatchEvent(new Event('change', { bubbles: true }));
               }
-            }
+            });
           });
         });
-      });
     });
  
   </script>
 
-    <div id="md-sticky-atc" class="md-sticky-prd color-{{ section.settings.color_scheme }}" aria-hidden="true" data-offset="{{ section.settings.offset }}">
+    <div id="md-sticky-atc" class="md-sticky-prd color-{{ section.settings.color_scheme }}" aria-hidden="true" data-offset="{{ section.settings.offset }}"{% if current_variant_poa %} style="display:none"{% endif %}>
       <div class="page-width">
         <div class="page-width-inner">
-          <div class="product-content small--hide">
+          <div class="product-content small--hide md-sticky-media">
             {% if section.settings.show_img %}
-              <img src="{{ image | img_url: img_size, crop: 'center' }}" class="" width="{{ section.settings.img_width }}" height="{{ section.settings.img_height }}" loading="lazy">
+              <img src="{{ image | image_url: width: 200 }}" class="" width="{{ section.settings.img_width }}" height="{{ section.settings.img_height }}" loading="lazy">
             {% endif %}                    
           </div>
           <div class="stickyflexitems">
-            <div class="small--hide">
-                        <h3 class="product__title {{ section.settings.title_size }}">
-                            {{ product.title }}
-                        </h3>
-                        <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
-                            {%- assign hide_sale_price = true -%}
-                      {%- if product.compare_at_price_max > product.price -%}
-                        {%- if current_variant.compare_at_price > current_variant.price -%}
-                          {%- assign hide_sale_price = false -%}
-                        {%- endif -%}
-                        <span
-                          data-a11y-price
-                          class="visually-hidden"
-                          aria-hidden="{{ hide_sale_price }}">
-                            {{ 'products.general.regular_price' | t }}
-                        </span>
-                        <span data-product-price-wrap class="{% if hide_sale_price %} hide{% endif %}">
-                          <span data-compare-price class="product__price product__price--compare">
-                            {%- if current_variant.compare_at_price > current_variant.price -%}
-                              {{ current_variant.compare_at_price | money_without_trailing_zeros  }}
-                            {%- endif -%}
-                          </span>
-                        </span>
-                        <span data-compare-price-a11y class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
-                      {%- else -%}
-                        <span data-a11y-price class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-                      {%- endif -%}
-
-                      <span data-product-price
-                        class="price-item price-item--regular product__price{% if current_variant.compare_at_price > current_variant.price %} on-sale{% endif %}">
-                        {%- unless product.empty? -%}
-                          {{ current_variant.price | money_without_trailing_zeros  }}
-                        {%- else -%}
-                          {{ 1999 | money_without_trailing_zeros  }}
-                        {%- endunless -%}
-                      </span>
-
-                      {%- if settings.product_save_amount -%}
-                        {%- if settings.product_save_type == 'dollar' -%}
-                          {%- capture saved_amount -%}{{ current_variant.compare_at_price | minus: current_variant.price | money_without_trailing_zeros  }}{%- endcapture -%}
-                        {%- else -%}
-                          {%- capture saved_amount -%}{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round }}%{%- endcapture -%}
-                        {%- endif -%}
-                        <span data-save-price class="product__price-savings{% if hide_sale_price %} hide{% endif %}">
-                          {%- unless hide_sale_price -%}
-                            {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
-                          {%- endunless -%}
-                        </span>
-                      {%- endif -%}
-
-                      <div
-                        data-unit-price-wrapper
-                        class="product__unit-price product__unit-price--spacing {% unless current_variant.unit_price_measurement %} hide{% endunless %}">
-                        {%- capture unit_price_base_unit -%}
-                          <span data-unit-base>
-                            {%- if current_variant.unit_price_measurement -%}
-                              {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
-                                {{ current_variant.unit_price_measurement.reference_value }}
+                  <div class="stickyflexitems_content">
+                        <div class="stickyflexitems_one">
+                            <h3 class="product__title {{ section.settings.title_size }}">
+                              {{ product.title }}
+                            </h3>
+                            <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                                    {%- assign hide_sale_price = true -%}
+                              {%- if product.compare_at_price_max > product.price -%}
+                                {%- if current_variant.compare_at_price > current_variant.price -%}
+                                  {%- assign hide_sale_price = false -%}
+                                {%- endif -%}
+                                <span
+                                  data-a11y-price
+                                  class="visually-hidden"
+                                  aria-hidden="{{ hide_sale_price }}">
+                                    {{ 'products.general.regular_price' | t }}
+                                </span>
+                                <span data-product-price-wrap class="{% if hide_sale_price %} hide{% endif %}">
+                                  <span data-compare-price class="product__price product__price--compare">
+                                    {%- if current_variant.compare_at_price > current_variant.price -%}
+                                      {{ current_variant.compare_at_price | money_without_trailing_zeros  }}
+                                    {%- endif -%}
+                                  </span>
+                                </span>
+                                <span data-compare-price-a11y class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+                              {%- else -%}
+                                <span data-a11y-price class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
                               {%- endif -%}
-                              {{ current_variant.unit_price_measurement.reference_unit }}
-                            {%- endif -%}
-                          </span>
-                        {%- endcapture -%}
 
-                        <span data-unit-price>{{ current_variant.unit_price | money_without_trailing_zeros  }}</span>/{{ unit_price_base_unit }}
-                      </div>
+                              <span data-product-price
+                                class="price-item price-item--regular product__price{% if current_variant.compare_at_price > current_variant.price %} on-sale{% endif %}">
+                                {%- unless product.empty? -%}
+                                  {{ current_variant.price | money_without_trailing_zeros  }}
+                                {%- else -%}
+                                  {{ 1999 | money_without_trailing_zeros  }}
+                                {%- endunless -%}
+                              </span>
+
+                              {%- if settings.product_save_amount -%}
+                                {%- if settings.product_save_type == 'dollar' -%}
+                                  {%- capture saved_amount -%}{{ current_variant.compare_at_price | minus: current_variant.price | money_without_trailing_zeros  }}{%- endcapture -%}
+                                {%- else -%}
+                                  {%- capture saved_amount -%}{{ current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round }}%{%- endcapture -%}
+                                {%- endif -%}
+                                <span data-save-price class="product__price-savings{% if hide_sale_price %} hide{% endif %}">
+                                  {%- unless hide_sale_price -%}
+                                    {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                                  {%- endunless -%}
+                                </span>
+                              {%- endif -%}
+
+                              <div
+                                data-unit-price-wrapper
+                                class="product__unit-price product__unit-price--spacing {% unless current_variant.unit_price_measurement %} hide{% endunless %}">
+                                {%- capture unit_price_base_unit -%}
+                                  <span data-unit-base>
+                                    {%- if current_variant.unit_price_measurement -%}
+                                      {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+                                        {{ current_variant.unit_price_measurement.reference_value }}
+                                      {%- endif -%}
+                                      {{ current_variant.unit_price_measurement.reference_unit }}
+                                    {%- endif -%}
+                                  </span>
+                                {%- endcapture -%}
+
+                                <span data-unit-price>{{ current_variant.unit_price | money_without_trailing_zeros  }}</span>/{{ unit_price_base_unit }}
+                              </div>
+                            </div>
+
+                            <div class="sticky_pdp_inventory_desktop">
+                              <div class="sticky_pdp_inventory">
+                                {%- assign inventory_stock = false -%}
+                                  {%- if current_variant.inventory_management == 'shopify' -%}
+                                    {%- if current_variant.inventory_quantity > 0 -%}
+                                      {%- assign inventory_stock = true -%}
+                                    {%- endif -%}
+                                  {%- endif -%}
+                                  {% if current_variant.inventory_policy == 'continue' %}
+                                    {%- assign inventory_stock = true -%}
+                                  {% endif %}
+                                <div class="pdp_inventory_label {% if inventory_stock == false %}pdp_inventory_soldout{% endif %}">
+                                  <div class="pdp_inventory_stock">
+                                    <span class="icon-pdp-inventory"></span>
+                                    <span>In Stock</span>
+                                  </div>
+                                  <div class="pdp_inventory_sold">
+                                    <span class="icon-pdp-inventory"></span>
+                                    Sold Out
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
                         </div>
-                    </div>
+                        <div class="sticky_pdp_inventory_flex">
+                          <div class="sticky_pdp_inventory_mb">
+                            <div class="sticky_pdp_inventory">
+                              {%- assign inventory_stock = false -%}
+                                {%- if current_variant.inventory_management == 'shopify' -%}
+                                  {%- if current_variant.inventory_quantity > 0 -%}
+                                    {%- assign inventory_stock = true -%}
+                                  {%- endif -%}
+                                {%- endif -%}
+                                {% if current_variant.inventory_policy == 'continue' %}
+                                  {%- assign inventory_stock = true -%}
+                                {% endif %}
+                              <div class="pdp_inventory_label {% if inventory_stock == false %}pdp_inventory_soldout{% endif %}">
+                                <div class="pdp_inventory_stock">
+                                  <span class="icon-pdp-inventory"></span>
+                                  <span>In Stock</span>
+                                </div>
+                                <div class="pdp_inventory_sold">
+                                  <span class="icon-pdp-inventory"></span>
+                                  Sold Out
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="show_error_msg">Please select your size</div>
+                        </div>
+                  </div>
             {%- form 'product', product, id: form_id, class: 'product-single__form' -%}
               {%- liquid
                     assign enable_dynamic_buttons = false
@@ -393,21 +639,23 @@
                         assign button_text = 'products.product.sold_out' | t
                       endunless
               -%}
-              {% if product.variants.size == 1 %}
-  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-{% else %}
+              {% if product.has_only_default_variant %}
+                <input type="hidden" name="id" class="sticky_form_id" value="{{ product.variants.first.id }}">
+              {% else %}
               <select name="id" data-product-select class="sync-select select_pop product-single__variants no-js" data-sync="size">
                      <option selected="selected" disabled>
         {% if product.type == 'Earrings' %}
         Select QTY
         {% else %}
         Select Size{% endif %}</option>
+        {% assign first_active = false %}
                     {%- for variant in product.variants -%}
                       {%- if variant.available -%}
                         <option
                           value="{{ variant.id }}">
                           {{ variant.title }}
                         </option>
+                        {% assign first_active = true %}
                       {%- else -%}
                         <option disabled="disabled">
                           {{ variant.title }} - {{ 'products.product.sold_out' | t }}
@@ -438,12 +686,30 @@
                   {%- endif -%}
               {% endunless %}
               <div class="shopify-payment-terms product__policies">{{ form | payment_terms }}</div>
-                  <div class="show_error_msg">Please select Size.</div>
             {%- endform -%}
         
           </div>
         </div>
       </div>
+          <div class="stickyflexitems_bottom">
+            {% assign secure_checkout = 'cart.general.secure_checkout' | t %}
+            {% if secure_checkout != blank %}
+              <span class="stickyflexitems_securecheckout">
+                <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_629_680)">
+                  <path d="M8.6369 4.61548H1.36417C0.862092 4.61548 0.455078 5.02875 0.455078 5.53856V10.6155C0.455078 11.1253 0.862092 11.5386 1.36417 11.5386H8.6369C9.13897 11.5386 9.54599 11.1253 9.54599 10.6155V5.53856C9.54599 5.02875 9.13897 4.61548 8.6369 4.61548Z" stroke="#3A3A3A"/>
+                  <path d="M2.45508 4.61549V3.13857C2.45508 2.45309 2.72326 1.79568 3.20062 1.31097C3.67799 0.826262 4.32544 0.553955 5.00053 0.553955C5.67563 0.553955 6.32308 0.826262 6.80044 1.31097C7.27781 1.79568 7.54599 2.45309 7.54599 3.13857V4.61549" stroke="#3A3A3A"/>
+                  </g>
+                  <defs>
+                  <clipPath id="clip0_629_680">
+                  <rect width="10" height="12" fill="white"/>
+                  </clipPath>
+                  </defs>
+                </svg>
+                {{secure_checkout}}
+              </span>
+            {% endif %}
+          </div>
     </div>
 {% endif %}
 
@@ -452,6 +718,7 @@
   .show_error_msg.active{display:block;}
 </style>
 {% endunless %}
+{% endif %}
 {% schema %}
 {
     "name": "Sticky ATC",
@@ -528,29 +795,6 @@
             "step": 10,
             "default": 0,
             "info": "Adjust the offset value when showing the Sticky ATC section related to the main product form."
-        },
-        {
-            "type": "header",
-            "content": "Spacing",
-            "info": "Based on 'rem' values [Learn more](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units)"
-        },
-        {
-            "type": "range",
-            "id": "pt",
-            "label": "Padding top",
-            "min": 0,
-            "max": 5,
-            "step": 0.5,
-            "default": 0.5
-        },
-        {
-            "type": "range",
-            "id": "pb",
-            "label": "Padding bottom",
-            "min": 0,
-            "max": 5,
-            "step": 0.5,
-            "default": 0.5
         }
     ]
 }

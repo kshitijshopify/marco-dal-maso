@@ -21,14 +21,15 @@
   data-row-of="{{ row_of }}"
   data-image-sizes="{{ sizes }}"
 >
+  <hr class="hr--large">
   <div class="index-section index-section--small">
     <div class="page-width">
       <header class="section-header">
-        <h2 class="section-header__title">{{ 'products.general.recent_products' | t }}</h2>
+        <h3 class="section-header__title">{{ 'products.general.recent_products' | t }}</h3>
       </header>
     </div>
 
-    <div class="page-width">
+    <div class="page-width page-width--flush-small">
       <div class="grid-overflow-wrapper">
         <div id="RecentlyViewed-{{ section.id }}" class="grid grid--uniform" data-aos="overflow__animation"></div>
       </div>

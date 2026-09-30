@@ -117,7 +117,7 @@
               {% if block.settings.image  != blank %}
                     <div class="grid__item grid-product small--one-half medium-up--one-half">
                       {% if   block.settings.link  != blank %}<a href="{{  block.settings.link  }}">{% endif %}
-                          <img src="{{ block.settings.image | img_url:'master' }}" />
+                          <img loading="lazy" src="{{ block.settings.image | img_url:'master' }}" />
                       {% if   block.settings.link  != blank %}</a>{% endif %}
                     </div>
               {% endif %}

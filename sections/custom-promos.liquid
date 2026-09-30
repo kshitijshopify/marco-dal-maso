@@ -171,7 +171,7 @@ button.slick-prev {
                         {%- if block.settings.cta_link != blank -%}
                           <a href="{{ block.settings.cta_link }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text }}"></a>
                         {%- endif -%}
-                        <img src="{{ block.settings.image | img_url:'master' }}">
+                        <img src="{{ block.settings.image | image_url: 800 }}" loading="lazy">
                         {%- if block.settings.heading != blank -%}
                           <div class="promo-grid__content">
                             <div class="promo-grid__text">                          
@@ -188,7 +188,7 @@ button.slick-prev {
                         {%- if block.settings.cta_link1 != blank -%}
                           <a href="{{ block.settings.cta_link1 }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text1 }}"></a>
                         {%- endif -%}
-                        <img src="{{ block.settings.image1 | img_url:'master' }}">
+                        <img src="{{ block.settings.image1 | image_url }}" loading="lazy">
                         {%- if block.settings.heading1 != blank -%}
                           <div class="promo-grid__content">
                             <div class="promo-grid__text">                          
@@ -205,7 +205,7 @@ button.slick-prev {
                         {%- if block.settings.cta_link2 != blank -%}
                           <a href="{{ block.settings.cta_link2 }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text2 }}"></a>
                         {%- endif -%}
-                        <img src="{{ block.settings.image2 | img_url:'master' }}">
+                        <img src="{{ block.settings.image2 | img_url:'master' }}" loading="lazy">
                         {%- if block.settings.heading2 != blank -%}
                           <div class="promo-grid__content">
                             <div class="promo-grid__text">                          
@@ -222,7 +222,7 @@ button.slick-prev {
                         {%- if block.settings.cta_link3 != blank -%}
                           <a href="{{ block.settings.cta_link3 }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text3 }}"></a>
                         {%- endif -%}
-                        <img src="{{ block.settings.image3 | img_url:'master' }}">
+                        <img src="{{ block.settings.image3 | img_url:'master' }}" loading="lazy">
                         {%- if block.settings.heading3 != blank -%}
                           <div class="promo-grid__content">
                             <div class="promo-grid__text">                          
@@ -239,7 +239,7 @@ button.slick-prev {
                         {%- if block.settings.cta_link4 != blank -%}
                           <a href="{{ block.settings.cta_link4 }}" class="promo-grid__slide-link" aria-hidden="true" aria-label="{{ block.settings.cta_text4 }}"></a>
                         {%- endif -%}
-                        <img src="{{ block.settings.image4 | img_url:'master' }}">
+                        <img src="{{ block.settings.image4 | img_url:'master' }}" loading="lazy">
                         {%- if block.settings.heading4 != blank -%}
                           <div class="promo-grid__content">
                             <div class="promo-grid__text">                          
@@ -261,7 +261,7 @@ button.slick-prev {
               {%- case block.type %}
               {% when 'video' %}
                 {% if block.settings.image != blank %}
-                  <img src="{{ block.settings.image | img_url:'master' }}">
+                  <img src="{{ block.settings.image | img_url:'master' }}" loading="lazy">
                 {% else %}
                   
                     <div class="video_block">

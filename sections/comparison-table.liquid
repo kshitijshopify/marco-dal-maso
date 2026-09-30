@@ -1,0 +1,577 @@
+{%- comment -%}
+  Comparison table
+  - Desktop: table with up to 4 comparison columns (a column shows only if it has a title)
+  - Mobile: one card per column, or one card per row, or a sideways-scrolling table
+{%- endcomment -%}
+
+{%- liquid
+  assign columns = ''
+  for i in (1..4)
+    assign key = 'col_' | append: i | append: '_title'
+    if section.settings[key] != blank
+      assign columns = columns | append: i | append: ','
+    endif
+  endfor
+  assign columns = columns | split: ','
+  assign col_count = columns.size
+
+  if col_count > 0
+    assign label_width = section.settings.label_width
+    assign remaining = 100 | minus: label_width
+    assign col_width = remaining | divided_by: col_count
+  endif
+
+  assign label_size = section.settings.body_size
+  assign value_size = section.settings.body_size | plus: 3
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .ct {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+  }
+  #shopify-section-{{ section.id }} .ct__inner {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding-left: 72px;
+    padding-right: 72px;
+  }
+  #shopify-section-{{ section.id }} .ct__heading {
+    margin: 0 0 2rem;
+    font-size: {{ section.settings.heading_size }}px;
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: {{ section.settings.heading_color }};
+    text-transform: inherit;
+  }
+  #shopify-section-{{ section.id }} .ct__scroller {
+    {% if section.settings.mobile_layout == 'scroll' %}overflow-x: auto;
+    -webkit-overflow-scrolling: touch;{% endif %}
+  }
+  #shopify-section-{{ section.id }} .ct__table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    text-align: left;
+    {% if section.settings.mobile_layout == 'scroll' %}min-width: 720px;{% endif %}
+  }
+  #shopify-section-{{ section.id }} .ct__table th,
+  #shopify-section-{{ section.id }} .ct__table td {
+    padding: 1.15rem 1.5rem 1.15rem 0;
+    vertical-align: top;
+    font-size: {{ section.settings.body_size }}px;
+    line-height: 1.55;
+    font-weight: 400;
+    align-content: center;
+    border-bottom: 1px solid {{ section.settings.line_color }};
+  }
+  #shopify-section-{{ section.id }} .ct__table td p {
+    margin-bottom: 0;
+  }
+  #shopify-section-{{ section.id }} .ct__table thead th {
+    padding-top: 0;
+    padding-bottom: 0.9rem;
+    font-size: {{ label_size }}px;
+    font-weight: 700;
+    color: {{ section.settings.heading_color }};
+  }
+  #shopify-section-{{ section.id }} .ct__label {
+    font-weight: 700;
+    color: {{ section.settings.heading_color }};
+    padding-right: 1rem;
+  }
+  #shopify-section-{{ section.id }} .ct__table tbody tr:last-child th,
+  #shopify-section-{{ section.id }} .ct__table tbody tr:last-child td {
+    border-bottom: {% if section.settings.close_table %}1px solid {{ section.settings.line_color }}{% else %}0{% endif %};
+  }
+  #shopify-section-{{ section.id }} .ct__cell-label { display: none; }
+  #shopify-section-{{ section.id }} .ct__empty { opacity: 0.4; }
+  #shopify-section-{{ section.id }} .ct__cards { display: none; }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .ct__inner {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+    #shopify-section-{{ section.id }} .ct__heading {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+      margin-bottom: 1.5rem;
+    }
+
+    {%- if section.settings.mobile_layout == 'cards' -%}
+    #shopify-section-{{ section.id }} .ct--cards .ct__scroller { display: none; }
+    #shopify-section-{{ section.id }} .ct--cards .ct__cards {
+      display: grid;
+      gap: 1.5rem;
+    }
+    #shopify-section-{{ section.id }} .ct__card {
+      background: {{ section.settings.card_color }};
+      border-radius: {{ section.settings.card_radius }}px;
+      padding: 1.5rem;
+    }
+    #shopify-section-{{ section.id }} .ct__card-title {
+      margin: 0 0 1.5rem;
+      font-size: 16px;
+      line-height: 1.3;
+      font-weight: 700;
+      color: {{ section.settings.heading_color }};
+      text-transform: inherit;
+    }
+    #shopify-section-{{ section.id }} .ct__field {
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid {{ section.settings.card_line_color }};
+    }
+    #shopify-section-{{ section.id }} .ct__field:last-child {
+      margin-bottom: 0;
+      {% unless section.settings.close_table %}padding-bottom: 0; border-bottom: 0;{% endunless %}
+    }
+    #shopify-section-{{ section.id }} .ct__field-label {
+      margin-bottom: 0.35rem;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 1px;
+      color: {{ section.settings.text_color }};
+    }
+    #shopify-section-{{ section.id }} .ct__field-value {
+      font-size: {{ section.settings.card_text_size }}px;
+      line-height: 1.45;
+      color: {{ section.settings.heading_color }};
+    }
+    #shopify-section-{{ section.id }} .ct__field-value > p { margin: 0; }
+    {%- endif -%}
+
+    {%- if section.settings.mobile_layout == 'stack' -%}
+    #shopify-section-{{ section.id }} .ct--stack .ct__table,
+    #shopify-section-{{ section.id }} .ct--stack .ct__table tbody,
+    #shopify-section-{{ section.id }} .ct--stack .ct__table tr,
+    #shopify-section-{{ section.id }} .ct--stack .ct__table th,
+    #shopify-section-{{ section.id }} .ct--stack .ct__table td {
+      display: block;
+      width: auto;
+    }
+    #shopify-section-{{ section.id }} .ct--stack .ct__table thead { display: none; }
+    #shopify-section-{{ section.id }} .ct--stack .ct__table tr {
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid {{ section.settings.line_color }};
+    }
+    #shopify-section-{{ section.id }} .ct--stack .ct__table tr:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: {% if section.settings.close_table %}1px solid {{ section.settings.line_color }}{% else %}0{% endif %};
+    }
+    #shopify-section-{{ section.id }} .ct--stack .ct__table th,
+    #shopify-section-{{ section.id }} .ct--stack .ct__table td {
+      border-bottom: 0;
+      padding: 0 0 0.85rem;
+    }
+    #shopify-section-{{ section.id }} .ct--stack .ct__label {
+      font-size: {{ value_size }}px;
+      padding-bottom: 1rem;
+    }
+    #shopify-section-{{ section.id }} .ct--stack .ct__cell-label {
+      display: block;
+      margin-bottom: 0.15rem;
+      font-weight: 600;
+      opacity: 0.6;
+    }
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
+<div class="ct ct--{{ section.settings.mobile_layout }}">
+  <div class="ct__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="ct__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if col_count > 0 and section.blocks.size > 0 -%}
+      <div class="ct__scroller">
+        <table class="ct__table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: {{ label_width }}%;">
+                <span class="visually-hidden">{{ section.settings.label_column_title | default: 'Feature' | escape }}</span>
+              </th>
+              {%- for c in columns -%}
+                {%- assign key = 'col_' | append: c | append: '_title' -%}
+                <th scope="col" style="width: {{ col_width }}%;">{{ section.settings[key] | escape }}</th>
+              {%- endfor -%}
+            </tr>
+          </thead>
+          <tbody>
+            {%- for block in section.blocks -%}
+              <tr {{ block.shopify_attributes }}>
+                <th scope="row" class="ct__label">{{ block.settings.label | escape }}</th>
+                {%- for c in columns -%}
+                  {%- liquid
+                    assign cell_key = 'cell_' | append: c
+                    assign head_key = 'col_' | append: c | append: '_title'
+                    assign cell = block.settings[cell_key]
+                  -%}
+                  <td>
+                    <span class="ct__cell-label">{{ section.settings[head_key] | escape }}</span>
+                    {%- if cell != blank -%}
+                      {{ cell }}
+                    {%- else -%}
+                      <span class="ct__empty">{{ section.settings.empty_text | escape }}</span>
+                    {%- endif -%}
+                  </td>
+                {%- endfor -%}
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+
+      {%- if section.settings.mobile_layout == 'cards' -%}
+        <div class="ct__cards">
+          {%- for c in columns -%}
+            {%- assign head_key = 'col_' | append: c | append: '_title' -%}
+            <div class="ct__card">
+              <h3 class="ct__card-title">{{ section.settings[head_key] | escape }}</h3>
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign cell_key = 'cell_' | append: c
+                  assign cell = block.settings[cell_key]
+                -%}
+                <div class="ct__field">
+                  <div class="ct__field-label">{{ block.settings.label | escape }}</div>
+                  <div class="ct__field-value">
+                    {%- if cell != blank -%}
+                      {{ cell }}
+                    {%- else -%}
+                      <span class="ct__empty">{{ section.settings.empty_text | escape }}</span>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p>Add a column title and at least one row to build the table.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Comparison table",
+  "tag": "section",
+  "class": "section-comparison-table",
+  "max_blocks": 16,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sterling silver, gold vermeil and solid gold compared"
+    },
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "paragraph",
+      "content": "Leave a title empty to hide that column."
+    },
+    {
+      "type": "text",
+      "id": "col_1_title",
+      "label": "Column 1 title",
+      "default": "Sterling Silver"
+    },
+    {
+      "type": "text",
+      "id": "col_2_title",
+      "label": "Column 2 title",
+      "default": "Gold Vermeil"
+    },
+    {
+      "type": "text",
+      "id": "col_3_title",
+      "label": "Column 3 title",
+      "default": "Solid Gold"
+    },
+    {
+      "type": "text",
+      "id": "col_4_title",
+      "label": "Column 4 title"
+    },
+    {
+      "type": "text",
+      "id": "label_column_title",
+      "label": "Row label column name",
+      "info": "Hidden visually, read by screen readers.",
+      "default": "Feature"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Placeholder for empty cells",
+      "default": "—"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "On mobile",
+      "options": [
+        { "value": "cards", "label": "One card per column" },
+        { "value": "stack", "label": "One card per row" },
+        { "value": "scroll", "label": "Scroll table sideways" }
+      ],
+      "default": "cards"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content width",
+      "min": 800,
+      "max": 1680,
+      "step": 20,
+      "unit": "px",
+      "default": 1120
+    },
+    {
+      "type": "range",
+      "id": "label_width",
+      "label": "Row label column width",
+      "min": 10,
+      "max": 35,
+      "step": 1,
+      "unit": "%",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size on mobile",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Table text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "close_table",
+      "label": "Show line under the last row",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading and labels",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body text",
+      "default": "#3D3D3D"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Divider lines",
+      "default": "#E3E3E3"
+    },
+    {
+      "type": "header",
+      "content": "Mobile cards"
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Card background",
+      "default": "#F4F4F4"
+    },
+    {
+      "type": "color",
+      "id": "card_line_color",
+      "label": "Card divider lines",
+      "default": "#DCDCDC"
+    },
+    {
+      "type": "range",
+      "id": "card_text_size",
+      "label": "Card text size",
+      "min": 13,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Row label",
+          "default": "Composition"
+        },
+        {
+          "type": "richtext",
+          "id": "cell_1",
+          "label": "Column 1"
+        },
+        {
+          "type": "richtext",
+          "id": "cell_2",
+          "label": "Column 2"
+        },
+        {
+          "type": "richtext",
+          "id": "cell_3",
+          "label": "Column 3"
+        },
+        {
+          "type": "richtext",
+          "id": "cell_4",
+          "label": "Column 4"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison table",
+      "blocks": [
+        {
+          "type": "row",
+          "settings": {
+            "label": "Composition",
+            "cell_1": "<p>925 sterling silver throughout</p>",
+            "cell_2": "<p>18kt gold over solid sterling silver</p>",
+            "cell_3": "<p>18kt gold throughout</p>"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Color",
+            "cell_1": "<p>Cool and bright; oxidized finishes read darker by design</p>",
+            "cell_2": "<p>Warm gold on the surface</p>",
+            "cell_3": "<p>Warm, and consistent through the whole piece</p>"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Tarnish",
+            "cell_1": "<p>Tarnishes naturally over time</p>",
+            "cell_2": "<p>The silver beneath can darken where the layer wears</p>",
+            "cell_3": "<p>Does not tarnish</p>"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Over time",
+            "cell_1": "<p>Develops a patina; oxidized finishes deepen</p>",
+            "cell_2": "<p>Finish softens gradually with wear</p>",
+            "cell_3": "<p>Unchanged — the color runs throughout</p>"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Care",
+            "cell_1": "<p>Polish, or leave oxidized finishes to darken</p>",
+            "cell_2": "<p>Avoid abrasives; store dry and separately</p>",
+            "cell_3": "<p>Minimal</p>"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Best for",
+            "cell_1": "<p>Everyday wear and structural design</p>",
+            "cell_2": "<p>Warmth in signets, bracelets and necklaces</p>",
+            "cell_3": "<p>Milestones and long-term ownership</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

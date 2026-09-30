@@ -80,9 +80,7 @@
       "type": "apps",
       "settings": {
         "full_width": false,
-        "space_around": false,
-        "image_width": "50",
-        "layout": "right"
+        "space_around": false
       }
     }
   },

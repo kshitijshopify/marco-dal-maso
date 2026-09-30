@@ -31,8 +31,18 @@ endcomment
 
 
 -%}
+{% assign product_type = product.type | strip | downcase %}
 <div class="variant-wrapper variant-wrapper--dropdown js {% if option.values.size == 1 %}hide hiddenoptions{% endif %}" data-type="dropdown">  
   <div class="flexdiv relative">  
+    <div class="custom_error_msg" style="display: none;">
+      {% if product_type == 'earrings' %}
+        {{ 'products.product.select_quantity_earrings' | t }}
+      {% elsif product_type == 'necklaces' %}
+        {{ 'products.product.select_quantity_necklaces' | t }}
+      {% else %}
+        {{ 'products.product.select_quantity' | t }}
+      {% endif %}
+    </div>
     <label class="variant__label{% if option.name == 'Default' or option.name == 'Title' %} hidden-label{% endif %}{% unless variant_labels %} hidden-label{% endunless %}"
       for="SingleOptionSelector-{{ section_id }}-{{ product.id }}-option-{{ forloop.index0 }}">
       {% unless option.name contains 'Buy' %}<span>{{ option.name }}</span>{% endunless %}    
@@ -66,7 +76,6 @@ endcomment
       id="SingleOptionSelector-{{ section_id }}-{{ product.id }}-option-{{ forloop.index0 }}"
       data-index="option{{ forloop.index }}" data-sync="size">
       <option selected="selected" disabled>
-        {% assign product_type = product.type | strip | downcase %}
         {% if product_type == 'earrings' %}
           Select QTY
         {% elsif product_type == 'necklaces' %}
@@ -101,7 +110,7 @@ endcomment
   </div>
 </div>
 <script>
-// Open drawer
+  
 document.querySelectorAll('.size_popup').forEach(function (btn) {
   btn.addEventListener('click', function () {
     document.querySelectorAll('.size_drawer').forEach(function (drawer) {
@@ -110,7 +119,6 @@ document.querySelectorAll('.size_popup').forEach(function (btn) {
   });
 });
 
-// Close drawer via close button
 document.querySelectorAll('.size__close').forEach(function (closeBtn) {
   closeBtn.addEventListener('click', function () {
     const drawer = closeBtn.closest('.size_drawer');
@@ -118,14 +126,12 @@ document.querySelectorAll('.size__close').forEach(function (closeBtn) {
   });
 });
 
-// ✅ Close drawer when clicking outside inner content
 document.querySelectorAll('.size_drawer').forEach(function (drawer) {
   drawer.addEventListener('click', function () {
     drawer.classList.remove('open');
   });
 });
 
-// ✅ Prevent closing when clicking inside drawer content
 document.querySelectorAll('.size__inner').forEach(function (inner) {
   inner.addEventListener('click', function (e) {
     e.stopPropagation();

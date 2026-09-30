@@ -1,0 +1,71 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "size_charts": {
+      "type": "size-charts",
+      "name": "Size charts",
+      "settings": {
+        "heading": "",
+        "top_bar_details": "",
+        "top_bar_link_label": "",
+        "top_bar_link": "",
+        "show_tabs": false,
+        "active_tab": "1",
+        "tab_1_label": "",
+        "tab_1_title": "",
+        "tab_1_intro": "",
+        "tab_1_text_above_image": "Necklace length determines where the piece sits against the neck and chest. Use the visual guide to compare the available lengths and find the placement you prefer.  <br><br><strong>WOMEN'S NECKLACE LENGTHS</strong>  <br><br>The image shows the approximate position of each length on the body. The final placement may vary slightly depending on neck size, body proportions, chain structure and the size of the pendant.",
+        "tab_1_image_1": "shopify://shop_images/Female_Necklace_Guide.webp",
+        "tab_1_text_below_image": "<strong>COMPARE WITH A NECKLACE YOU OWN</strong> <br><br>\nYou can also compare the length with a necklace that already sits where you prefer.",
+        "tab_1_steps": "Lay the necklace flat.\nMeasure from one end of the chain to the other, including the clasp.\nCompare the measurement with the lengths available on the product page.",
+        "tab_1_columns": 5,
+        "tab_1_col_1": "",
+        "tab_1_col_2": "",
+        "tab_1_col_3": "",
+        "tab_1_col_4": "",
+        "tab_1_col_5": "",
+        "tab_1_note": "For pendant necklaces, consider the dimensions of the pendant as this will extend below the chain.",
+        "tab_2_label": "",
+        "tab_2_title": "",
+        "tab_2_intro": "",
+        "tab_2_steps": "",
+        "tab_2_columns": 5,
+        "tab_2_col_1": "",
+        "tab_2_col_2": "",
+        "tab_2_col_3": "",
+        "tab_2_col_4": "",
+        "tab_2_col_5": "",
+        "tab_2_note": "",
+        "bottom_bar_details": "Still unsure?<a href=\"/pages/contact-us\" title=\"Contact Us\"> <span style=\"text-decoration:underline\"><strong>Contact Us</strong></span></a>",
+        "ring_sizer_heading": "Request A Ring Sizer",
+        "ring_sizer_body": "Order your complimentary ring sizer to ensure the perfect fit for your next MARCO DAL MASO piece. Your request will be processed and dispatched within [X] business days.",
+        "ring_sizer_cta": "Order your complimentary ring sizer",
+        "ring_sizer_success": "Thank you — your ring sizer request has been received. A confirmation is on its way to your inbox.",
+        "text_color": "#000000",
+        "muted_color": "#000000",
+        "border_color": "#e3e3e3",
+        "tabs_bg_color": "#f2f2f2",
+        "max_width": 640,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "size_charts"
+  ]
+}

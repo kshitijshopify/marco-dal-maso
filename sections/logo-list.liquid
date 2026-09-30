@@ -2,31 +2,14 @@
 .logo-bar--{{ section.id }} {
   opacity: {{ section.settings.logo_opacity | divided_by: 100.0 }};
 }
-{% if template contains 'uncaged' %}
-.logo-bar__item:first-child {
-    position: relative;
+
+/* Make logo placeholders square only in this section */
+.logo-bar--{{ section.id }} .placeholder-svg {
+  padding: 0;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
 }
-.logo-bar__item:first-child:after {
-    content: "X";
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: calc(100% + 45px);
-    font-size: 25px;
-    font-weight: bold;
-}
-@media (max-width: 767px) {
-    .logo-bar__item:first-child::after {
-        content: "X";
-        position: absolute;
-        top: calc(100% + 25px);
-        transform: translateX(-50%);
-        left: 50%;
-        font-size: 25px;
-        font-weight: bold;
-    }
-}
-{% endif %}
 {%- endstyle -%}
 
 {%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
@@ -41,18 +24,20 @@
   {%- if section.blocks.size > 0 -%}
     <div class="logo-bar logo-bar--{{ section.id }}">
       {%- for block in section.blocks -%}
-        <div class="logo-bar__item r5555" {{ block.shopify_attributes }}>
+        <div class="logo-bar__item" {{ block.shopify_attributes }}>
           {%- if block.settings.link != blank -%}
-            <a href="{{ block.settings.link }}" {% if section.settings.targetblank %} target="_blank"{% endif %} class="logo-bar__link">
+            <a href="{{ block.settings.link }}" class="logo-bar__link">
           {%- endif -%}
           {%- if block.settings.image != blank -%}
-            
-        <image-element>
-           <img src="{{ block.settings.image | img_url:'master' }}" alt="" srcset="{{ block.settings.image | img_url:'master' }}" loading="lazy" class="logo-bar__image image-element" >
-        </image-element>
-            
+            {%- render 'image-element',
+              img: block.settings.image,
+              widths: '180, 360, 540, 720',
+              classes: 'logo-bar__image',
+              sizeVariable: '160px',
+              fallback: '110px',
+            -%}
           {%- else -%}
-            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           {%- endif -%}
           {%- if block.settings.link != blank -%}
             </a>
@@ -68,29 +53,24 @@
 {% schema %}
 {
   "name": "t:sections.logo-list.name",
-  "class": "index-section custom-logo-list",
+  "class": "index-section",
   "max_blocks": 10,
   "settings": [
     {
       "type": "text",
       "id": "title",
-      "label": "t:sections.logo-list.settings.title.label"
+      "label": "t:sections.logo-list.settings.title.label",
+      "default": "Logo list"
     },
     {
       "type": "range",
       "id": "logo_opacity",
       "label": "t:sections.logo-list.settings.logo_opacity.label",
-      "default": 76,
+      "default": 100,
       "min": 0,
       "max": 100,
       "step": 2,
       "unit": "%"
-    },
-    {
-      "type": "checkbox",
-      "id": "targetblank",
-      "label": "t:sections.logo-list.settings.divider.label",
-      "default": false
     },
     {
       "type": "checkbox",
@@ -121,6 +101,7 @@
   "presets": [
     {
       "name": "t:sections.logo-list.presets.logo_list.name",
+      "category": "t:sections.categories.info_trust",
       "blocks": [
         {
           "type": "logo_image"

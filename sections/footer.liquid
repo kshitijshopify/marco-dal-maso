@@ -26,7 +26,6 @@
 
 <footer class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer-section">
   <div class="page-full">
-
     <div class="grid">
       {%- assign row_width = 0 -%}
       {%- for block in section.blocks -%}
@@ -36,7 +35,11 @@
           {%- assign row_width = row_width | minus: 100 -%}
         {%- endif -%}
 
-        <div {{ block.shopify_attributes }} class="grid__item footer__item--{{ block.id }} {% if block.settings.mobile_menu %}only-mobile-menu{% endif %}" data-type="{{ block.type }}">
+        <div
+          {{ block.shopify_attributes }}
+          class="grid__item footer__item--{{ block.id }} {% if block.settings.mobile_menu %}only-mobile-menu{% endif %}"
+          data-type="{{ block.type }}"
+        >
           {%- style -%}
             @media only screen and (min-width: 769px) and (max-width: 959px) {
               .footer__item--{{ block.id }} {
@@ -78,8 +81,6 @@
       {%- endfor -%}
     </div>
 
-   
-
     {%- if section.settings.show_payment_icons -%}
       {%- unless shop.enabled_payment_types == empty -%}
         <ul class="inline-list payment-icons footer__section">
@@ -92,54 +93,48 @@
       {%- endunless -%}
     {%- endif -%}
 
-  
     <!-- <p class="footer__small-text">{{ powered_by_link }}</p> -->
-
   </div>
   <div class="for-mobile">
-      {% render 'social-icons' %}
+    {% render 'social-icons' %}
   </div>
   <div class="footer__section">
-     {%- if show_selectors -%}
+    {%- if show_selectors -%}
       <div class="page-full ">
         <div class="inner-sec">
-        <div>
-          <button id="myButton3"><selector-root data-id=PH712938 id="PH712938"></selector-root></button>
-              <script>
-document.getElementById("myButton3").addEventListener("click", function() {
-window.$selector.push(["do", "markets-recommendations:show"]);
-});
-</script>
-        {% comment %} {%- render 'multi-selectors',
-          locale_selector: locale_selector,
-          currency_selector: currency_selector,
-          show_currency_flags: section.settings.show_currency_flags
-          location: 'footer'
-        -%} {% endcomment %}
+          <div>
+            <button id="myButton3"><selector-root data-id="PH712938" id="PH712938"></selector-root></button>
+            <script>
+              document.getElementById('myButton3').addEventListener('click', function () {
+                window.$selector.push(['do', 'markets-recommendations:show']);
+              });
+            </script>
+          </div>
+          <div>
+            <ul class="policy-list">
+              <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+              <li><a href="/policies/terms-of-service">Terms and Conditions</a></li>
+              {% comment %} <li><a href="/pages/terms-conditions">Terms and Conditions</a></li> {% endcomment %}
+            </ul>
+          </div>
         </div>
-        <div>
-       <ul>                  
-        <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
-        <li><a href="/pages/terms-conditions">Terms and Conditions</a></li>
-      </ul>
-        </div>
-        </div>
-          {%- if section.settings.show_copyright -%}
-      <p class="footer__small-text">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
-        {%- if section.settings.copyright_text != blank -%}
-          {{ section.settings.copyright_text }}
+        {%- if section.settings.show_copyright -%}
+          <p class="footer__small-text">
+            &copy; {{ 'now' | date: '%Y' }}
+            {{ shop.name }}
+            {%- if section.settings.copyright_text != blank -%}
+              {{ section.settings.copyright_text }}
+            {%- endif -%}
+          </p>
         {%- endif -%}
-      </p>
-    {%- endif -%}
       </div>
     {%- endif -%}
   </div>
 </footer>
 <style>
-  .footer__section {
-    display: flex;
-}
+    .footer__section {
+      display: flex;
+  }
 </style>
 {% schema %}
 {
@@ -255,7 +250,7 @@ window.$selector.push(["do", "markets-recommendations:show"]);
           "type": "checkbox",
           "id": "mobile_menu",
           "label": "Show For Mobile"
-        },
+        }
       ]
     },
     {

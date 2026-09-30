@@ -87,20 +87,33 @@
     assign alt = img.alt | default: ''
   endif
 
+  if animation == blank
+    assign animation = 'image-fade-in'
+  else
+    assign animation = animation
+  endif
+
   # Add a class to the image so we can target theme images
   assign classes = classes | append: ' image-element'
 %}
 
-<image-element data-aos="image-fade-in"{% if template contains 'all' %}{% else %}{% endif %}>
+<image-element>
 
 {% if type == blank %}
   {% if widths != blank %}
-    {% if img_width == blank %}
-      {% assign img_width = widths | split: ',' | last %}
-    {% endif %}
+    {%- if img_width == blank -%}
+      {%- assign img_width = widths | split: ',' | last | strip -%}
+    {%- endif -%}
+    {%- if img_tag_width == blank -%}
+      {%- assign img_tag_width = img_width | strip -%}
+    {%- endif -%}
+    {%- if img_tag_height == blank -%}
+      {%- assign img_tag_height = img_tag_width | divided_by: img.aspect_ratio -%}
+    {%- endif -%}
     {{ img
       | image_url: width: img_width, format: format
-      | image_tag: height: img_height,
+      | image_tag: preload: preload,
+                  height: img_tag_height,
                   width: img_tag_width,
                   class: classes,
                   loading: loading,
@@ -110,15 +123,22 @@
                   itemprop: itemprop,
                   role: role,
                   aria-hidden: ariaHidden,
-                  style: style | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' 
+                  style: style
     }}
   {% else %}
-    {% if img_width == blank %}
-      {% assign img_width = img.width | times: 2 | round %}
-    {% endif %}
+    {%- if img_width == blank -%}
+      {%- assign img_width = img.width | times: 2 | round -%}
+    {%- endif -%}
+    {%- if img_tag_width == blank -%}
+      {%- assign img_tag_width = img_width -%}
+    {%- endif -%}
+    {%- if img_tag_height == blank -%}
+      {%- assign img_tag_height = img_tag_width | divided_by: img.aspect_ratio -%}
+    {%- endif -%}
     {{ img
       | image_url: width: img_width, format: format
-      | image_tag: height: img_height,
+      | image_tag: preload: preload,
+                  height: img_tag_height,
                   width: img_tag_width,
                   class: classes,
                   loading: loading,
@@ -127,7 +147,7 @@
                   itemprop: itemprop,
                   role: role,
                   aria-hidden: ariaHidden,
-                  style: style | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' 
+                  style: style
     }}
   {% endif %}
 {% elsif type == 'photoswipe' %}
@@ -137,14 +157,15 @@
       {{ media | image_url: width: width }} {{ width | append: 'w' }},
     {% endfor %}
   {%- endcapture -%}
-  {% assign img_width = widthsArray | last %}
-  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="{{ img | image_url: width: img_width }}"
-    width
-    height
+  {% assign img_width = widthsArray | last | strip %}
+  {% assign img_height = img_width | divided_by: img.aspect_ratio %}
+  <img src="{{ img | image_url: width: img_width }}"
+    width="{{ img_width }}"
+    height="{{ img_height }}"
     class="{{ classes }}"
     loading="{{ loading }}"
     alt="{{ alt }}"
-    dt="{{ img_widths }}"
+    srcset="{{ img_widths }}"
     data-photoswipe-src="{{ img | image_url: width: product_zoom_size, format: format }}"
     data-photoswipe-width="{{ media_width }}"
     data-photoswipe-height="{{ media_height }}"
@@ -166,34 +187,16 @@
       {{ asset | asset_img_url: '1080x' }} 1080w
     {% endif %}
   {%- endcapture -%}
-  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="{{ img_src }}"
+  <img src="{{ img_src }}"
        width="{{ img_width }}"
        height="{{ img_height }}"
        class="{{ classes }}"
        loading="{{ loading }}"
        alt="{{ alt }}"
-       {% if img_widths != blank %}dt="{{ img_widths }}"{% endif %}
+       {% if img_widths != blank %}srcset="{{ img_widths }}"{% endif %}
        {% if data-name and data-value %}data-{{ data-name }}="{{ data-value }}"{% endif %}
        sizes="{{ sizes }}"
   >
 {% endif %}
 
 </image-element>
-
-{% comment %}
-
- - snippet is used for all images across the theme, for hosted assets, and photoswipe
-
- - collection-grid-item snippet, in some themes the collection list allows for an image upload so we don't need the focal point section setting. But in other themes the collection image or first product image is used and so our existing focal point setting still makes sense to keep because it is value added.
-
- - using the loading="lazy" attribute, can potentially have a negative performance impact if it is used on images that are already within the browser viewport on load. Therefore it’s advised that you only use it on images lower down on the page.
-
-- using preload: for key images, it may also be useful to prioritise the loading of those images to reduce “layout shift” and display key content to the visitor faster. It’s ideal for the first image on a product page, or a large banner image on the homepage, for example.
-
-  could add section settings for merchants to enable lazyloading/preload for a section if below the fold, by default we disable it for these sections ie. slideshow
-  static sections like collection hero would not be lazyloaded but collection grid would be lazyloaded
-  add info text to that setting to let merchant know it should only be used for section if below the fold otherwise might impact performance
-
-TODO: when we convert image element to a custom HTML element we can add back certain loading styles
-
-{% endcomment %}

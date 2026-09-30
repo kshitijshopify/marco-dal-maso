@@ -67,6 +67,7 @@
         {{ button_text }}
       </span>
     </button>
+    
     {% endif %}
 
   {% unless template contains 'gift-card' %}
@@ -79,13 +80,14 @@
     </div>
   {%- endif -%}
 {% endunless %}
+
   <div class="shopify-payment-terms product__policies">{{ form | payment_terms }}</div>
 
   <select name="id" data-product-select class="product-single__variants no-js">
     {%- for variant in product.variants -%}
       {%- if variant.available -%}
-        <option {% if variant == product.selected_or_first_available_variant %}
-          selected="selected"{% endif %}
+        <option 
+          {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
           value="{{ variant.id }}">
           {{ variant.title }} - {{ variant.price | money_with_currency }}
         </option>

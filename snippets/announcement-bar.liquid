@@ -1,11 +1,7 @@
-{% comment %} <div class="salemsg withtimer">
-  <p>Private Sale Opens in</p> <div id="countdown"></div>
-</div> {% endcomment %}
-    
-    {%- assign show_announcement = false -%}
+{%- assign show_announcement = false -%}
 {%- assign announcement_block_count = 0 -%}
 {%- for block in section.blocks -%}
-  {%- if block.type == 'announcement' -%}
+  {%- if block.type == 'announcement' or block.type == '@app' -%}
     {%- assign show_announcement = true -%}
     {%- assign announcement_block_count = announcement_block_count | plus: 1 -%}
   {%- endif -%}
@@ -33,12 +29,24 @@
           data-block-count="{{ announcement_block_count }}">
           {%- assign slide_index = 0 -%}
           {%- for block in section.blocks -%}
+            {%- if block.type == '@app' -%}
+              <div
+                id="AnnouncementSlide-{{ block.id }}"
+                class="announcement-slider__slide"
+                data-index="{{ slide_index }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- render block -%}
+              </div>
+              {%- assign slide_index = slide_index | plus: 1 -%}
+            {%- endif -%}
             {%- if block.type == 'announcement' -%}
               <div
                 id="AnnouncementSlide-{{ block.id }}"
                 class="announcement-slider__slide"
                 data-index="{{ slide_index }}"
-                {{ block.shopify_attributes }}>
+                {{ block.shopify_attributes }}
+              >
                 {%- if block.settings.link != blank -%}
                   <a class="announcement-link" href="{{ block.settings.link }}">
                 {%- endif -%}
@@ -58,9 +66,6 @@
         </div>
       </div>
     </div>
-    
-
-    {% comment %} <div id="glc-switcher-manual-desktop"></div> {% endcomment %}
   </div>
 
 {% endif %}

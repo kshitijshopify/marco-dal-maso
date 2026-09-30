@@ -1,0 +1,287 @@
+{%- style -%}
+  .newsletter-{{ section.id }} {
+    background-color: {{ section.settings.color_background }};
+  }
+  .newsletter-{{ section.id }} .newsletter__input::-webkit-input-placeholder { color: #8F8A80; }
+  .newsletter-{{ section.id }} .newsletter__input::-moz-placeholder { color: #8F8A80; }
+  .newsletter-{{ section.id }} .newsletter__input::-ms-input-placeholder { color: #8F8A80; }
+.pnewsletter-caption {
+    font-size: 10.5px;
+    color: #8F8A80;
+    text-transform: uppercase;
+    letter-spacing: 2.94px;
+    line-height: 17.33px;
+    margin-bottom: 24px;
+}
+.pnewsletter-title {
+    font-size: 30px;
+    letter-spacing: 2.4px;
+    line-height: 49.5px;
+    text-transform: uppercase;
+    margin-bottom: 29px;
+    color:#111111;
+}
+.pnewsletter-text {
+    font-size: 14.5px;
+    color: #4A4A45;
+    line-height: 25.38px;
+    margin-bottom: 43px;
+}
+.newsletter-{{ section.id }} .pnewsletter-block form input[name="email"]{
+    background: transparent;
+    font-size: 14px !important;
+    line-height: 100%;
+    padding-left: 0;
+    border: none;
+}
+.newsletter-{{ section.id }} .pnewsletter-block form input[name="email"]:focus-visible{
+    outline:none;
+}
+.newsletter-{{ section.id }} .pnewsletter-block form input[name="email"]::placeholder{
+    color: #8F8A80;
+    font-size: 14px;
+}
+.newsletter-{{ section.id }} .pnewsletter-block form{
+    max-width:480px!important;
+}
+.newsletter-{{ section.id }} .pnewsletter-block form .klaviyo-form-button{
+    background: transparent;
+    color: #000;
+    font-size: 10.5px;
+    line-height: 100%;
+    letter-spacing: 2.52px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.newsletter-{{ section.id }} .pnewsletter-block form [data-testid="form-row"]{
+    border-bottom: 1px solid #111111;
+}
+@media (min-width:768px){
+    .newsletter-{{ section.id }} .newsletter-section{
+        padding-top:{{ section.settings.top }}px;
+        padding-bottom:{{ section.settings.bottom }}px;
+    }
+}
+@media (max-width:767px){
+    .newsletter-{{ section.id }} .newsletter-section{
+        padding-top:{{ section.settings.top_m }}px !important;
+        padding-bottom:{{ section.settings.bottom_m }}px !important;
+    }
+    .pnewsletter-caption {
+        font-size: 10px;
+        margin-bottom: 14px;
+    }
+    .pnewsletter-title{
+        font-size: 24px;
+        margin-bottom: 14px;
+    }
+    .pnewsletter-text {
+        font-size: 12px;
+        line-height: 140%;
+        margin-bottom: 46px;
+    }
+    .newsletter-{{ section.id }} .newsletter-section__content{
+        max-width: 360px;
+    }
+}
+{%- endstyle -%}
+
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+<div class="index-section newsletter-container newsletter-{{ section.id }} color-scheme-{{ section.settings.color_scheme }}">
+  {%- if section.settings.color_scheme and section.settings.color_scheme != 'none' -%}
+    {%- render 'color-scheme-texture', color_scheme: section.settings.color_scheme -%}
+  {%- endif -%}
+
+  <div class="page-width text-{{ section.settings.align_text }}">
+    <div class="newsletter-section">
+      <div class="newsletter-section__content">
+        {%- for block in section.blocks -%}
+          <div class="pnewsletter-block" {{ block.shopify_attributes }}>
+            {%- case block.type -%}
+              {%- when '@app' -%}
+                {% render block %}
+              {%- when 'title' -%}
+                {%- if block.settings.title != blank -%}
+                  <p class="pnewsletter-title">{{ block.settings.title | escape }}</p>
+                {%- endif -%}
+            {%- when 'caption' -%}
+                {%- if block.settings.text != blank -%}
+                    <div class="pnewsletter-caption">
+                      {{ block.settings.text }}
+                    </div>
+                {%- endif -%}
+              {%- when 'text' -%}
+                {%- if block.settings.text != blank -%}
+                    <div class="pnewsletter-text">
+                      {{ block.settings.text }}
+                    </div>
+                {%- endif -%}
+              {%- when 'form' -%}
+                {%- render 'newsletter-form', section_id: section.id, snippet_context: 'section' -%}
+              {%- when 'share_buttons' -%}
+                {%- render 'social-sharing' -%}
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+
+
+{% schema %}
+  {
+    "name": "Newsletter - PDP",
+    "max_blocks": 6,
+    "blocks": [
+      {
+        "type": "@app"
+      },
+      {
+        "type": "title",
+        "name": "t:sections.newsletter.blocks.title.name",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "t:sections.newsletter.blocks.title.settings.title.label",
+            "default": "Sign up and save"
+          }
+        ]
+      },
+      {
+        "type": "caption",
+        "name": "Caption",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "t:sections.newsletter.blocks.text.settings.text.label",
+            "default": "Letters from Vicenza"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "t:sections.newsletter.blocks.text.name",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "t:sections.newsletter.blocks.text.settings.text.label",
+            "default": "<p>Be the first to know about new arrivals and special offers.</p>"
+          }
+        ]
+      },
+      {
+        "type": "form",
+        "name": "t:sections.newsletter.blocks.form.name",
+        "limit": 1
+      },
+      {
+        "type": "share_buttons",
+        "name": "t:sections.newsletter.blocks.share_buttons.name",
+        "limit": 1
+      }
+    ],
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "t:sections.newsletter.settings.content"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "t:sections.newsletter.settings.align_text.label",
+        "default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "t:sections.newsletter.settings.align_text.options.left.label"
+          },
+          {
+            "value": "center",
+            "label": "t:sections.newsletter.settings.align_text.options.center.label"
+          },
+          {
+            "value": "right",
+            "label": "t:sections.newsletter.settings.align_text.options.right.label"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "t:sections.newsletter.settings.color_background.label",
+        "default": "#f9f9f9"
+      },
+      {
+        "type": "checkbox",
+        "id": "top_padding",
+        "label": "t:sections.newsletter.settings.top_padding.label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "bottom_padding",
+        "label": "t:sections.newsletter.settings.bottom_padding.label",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Padding - Desktop"
+        },
+        {
+            "type": "number",
+            "id":"top",
+            "label":"Top",
+            "info":"unit px."
+        },
+        {
+            "type": "number",
+            "id":"bottom",
+            "label":"Bottom",
+            "info":"unit px."
+        },
+        {
+            "type": "header",
+            "content": "Padding - Mobile"
+        },
+        {
+            "type": "number",
+            "id":"top_m",
+            "label":"Top",
+            "info":"unit px."
+        },
+        {
+            "type": "number",
+            "id":"bottom_m",
+            "label":"Bottom",
+            "info":"unit px."
+        }
+    ],
+    "presets": [
+      {
+        "name": "Newsletter - PDP",
+        "category": "t:sections.categories.forms",
+        "blocks": [
+          {
+            "type": "title"
+          },
+          {
+            "type": "text"
+          },
+          {
+            "type": "form"
+          }
+        ]
+      }
+    ],
+    "disabled_on": {
+      "groups": ["custom.popups"]
+    }
+  }
+{% endschema %}

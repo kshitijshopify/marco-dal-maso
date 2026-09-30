@@ -1,0 +1,290 @@
+{%- comment -%}
+  Load the size-charts custom element ONCE on this page so any injected
+  <size-charts> element upgrades and its inner tabs work.
+{%- endcomment -%}
+<script src="{{ 'size-charts.js' | asset_url }}" defer></script>
+
+<style>
+  .sg-container { margin: 0 auto; }
+
+  ul.sg-tabs {
+    margin-left: 0;
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+  }
+  ul.sg-tabs li.sg-tab.current { border-bottom: 3px #000 solid; }
+  ul.sg-tabs li.sg-tab {
+    display: inline-flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .sg-tab-content { display: none; padding: 15px; line-height: 1.4; }
+  .sg-tab-content.current { display: block; }
+
+  .accordionButton:first-child { border-top: 0 solid transparent; }
+  .accordionButton {
+    text-align: left;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px 0;
+    border-top: 1px dashed rgba(0,0,0,.2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  .accordionButton svg { width: 20px; height: 20px; transition: transform .25s ease; }
+  .accordionButton.on svg { transform: rotate(180deg); }
+
+  .accordionContent { text-align: left; padding: 20px 0; display: none; }
+
+  .sg-loading { padding: 24px 0; text-align: center; font-size: 14px; opacity: .6; }
+  .size-guide .SizeCharts-bottom-bar {
+    position:unset;
+  }
+</style>
+
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+<div class="text-{{ section.settings.align_text }} page-width{% if section.settings.narrow_column %} page-width--narrow{% endif %}">
+  <div class="sg-container">
+
+    {%- comment -%} ---- Collect unique tab labels in order ---- {%- endcomment -%}
+    {%- assign all_labels = '' -%}
+    {%- for block in section.blocks -%}
+      {%- assign lbl = block.settings.tab_label | default: 'Size Guide' -%}
+      {%- assign all_labels = all_labels | append: lbl | append: '|||' -%}
+    {%- endfor -%}
+    {%- assign all_labels = all_labels | split: '|||' -%}
+
+    {%- assign uniq = '' -%}
+    {%- for l in all_labels -%}
+      {%- assign needle = '|||' | append: l | append: '|||' -%}
+      {%- assign hay = '|||' | append: uniq | append: '|||' -%}
+      {%- unless hay contains needle -%}
+        {%- assign uniq = uniq | append: l | append: '|||' -%}
+      {%- endunless -%}
+    {%- endfor -%}
+    {%- assign tab_labels = uniq | split: '|||' -%}
+
+    {%- comment -%} ---- Tabs (hidden if only one group) ---- {%- endcomment -%}
+    {%- if tab_labels.size > 1 -%}
+      <ul class="sg-tabs">
+        {%- for label in tab_labels -%}
+          <li class="sg-tab{% if forloop.first %} current{% endif %}" data-tab="sg-tab-{{ forloop.index }}">{{ label }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- comment -%} ---- Tab panels ---- {%- endcomment -%}
+    {%- for label in tab_labels -%}
+      <div id="sg-tab-{{ forloop.index }}" class="sg-tab-content{% if forloop.first %} current{% endif %}">
+        {%- for block in section.blocks -%}
+          {%- assign block_label = block.settings.tab_label | default: 'Size Guide' -%}
+          {%- if block_label == label -%}
+            {%- assign chart_page = block.settings.page -%}
+            {%- assign source = block.settings.content_source | default: 'page' -%}
+            <div {{ block.shopify_attributes }}>
+              <div class="accordionButton">{{ block.settings.heading }} {% render 'icon-arrow' %}</div>
+              {%- if source == 'custom' -%}
+                {%- comment -%} Shown as-is, no fetch (no sg-chart class) {%- endcomment -%}
+                <div class="accordionContent">
+                  {%- if block.settings.custom_html != blank -%}
+                    {{ block.settings.custom_html }}
+                  {%- else -%}
+                    <p><em>Add your custom content in the theme editor.</em></p>
+                  {%- endif -%}
+                </div>
+              {%- else -%}
+                <div
+                  class="accordionContent sg-chart"
+                  {% if chart_page != blank %}data-url="{{ chart_page.url }}"{% endif %}
+                >
+                  {%- if chart_page == blank -%}
+                    <p><em>Select a page for this size guide in the theme editor.</em></p>
+                  {%- else -%}
+                    <div class="sg-loading">Loading…</div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+
+  </div>
+</div>
+{%- if section.settings.divider -%}</div>{%- endif -%}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var root = document.getElementById('shopify-section-{{ section.id }}') || document;
+
+  // ---------- helpers ----------
+  // Pull the rendered <size-charts> (with its <style> + inline scripts) out of a full page.
+  function extractSizeChartHtml(doc) {
+    var el = doc.querySelector('size-charts');
+    if (!el) return '';
+    var section = el.closest('.shopify-section');
+    return section ? section.innerHTML : el.outerHTML;
+  }
+
+  // Re-run inline scripts (e.g. the ring-sizer popup). External src scripts are
+  // skipped on purpose - size-charts.js is already loaded at the top of this section.
+  function runInlineScripts(container) {
+    container.querySelectorAll('script:not([src])').forEach(function (oldScript) {
+      var s = document.createElement('script');
+      for (var i = 0; i < oldScript.attributes.length; i++) {
+        s.setAttribute(oldScript.attributes[i].name, oldScript.attributes[i].value);
+      }
+      s.textContent = oldScript.textContent;
+      oldScript.parentNode.replaceChild(s, oldScript);
+    });
+  }
+
+  async function loadChart(target) {
+    if (!target.dataset.url || target.dataset.loaded) return;
+    target.dataset.loaded = 'true'; // mark early to prevent a double fetch
+
+    try {
+      var res = await fetch(target.dataset.url);
+      if (!res.ok) throw new Error('page fetch failed');
+      var html = await res.text();
+      var doc = new DOMParser().parseFromString(html, 'text/html');
+      var chartHtml = extractSizeChartHtml(doc);
+      if (!chartHtml) throw new Error('no size-charts element on page');
+
+      target.innerHTML = chartHtml;
+
+      // Upgrade the injected custom element so its tabs work, then run inline scripts.
+      if (window.customElements && customElements.upgrade) {
+        target.querySelectorAll('size-charts').forEach(function (el) { customElements.upgrade(el); });
+      }
+      runInlineScripts(target);
+    } catch (e) {
+      target.dataset.loaded = ''; // allow a retry on next open
+      target.innerHTML = '<p>Sorry, this size guide could not be loaded. <a href="/pages/contact-us">Contact our team</a>.</p>';
+    }
+  }
+
+  // ---------- tabs ----------
+  root.querySelectorAll('ul.sg-tabs li').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var id = this.getAttribute('data-tab');
+      root.querySelectorAll('ul.sg-tabs li').forEach(function (i) { i.classList.remove('current'); });
+      root.querySelectorAll('.sg-tab-content').forEach(function (c) { c.classList.remove('current'); });
+      this.classList.add('current');
+      var active = root.querySelector('#' + id);
+      if (active) active.classList.add('current');
+    });
+  });
+
+  // ---------- prefetch every chart on page load (so there's no wait on open) ----------
+  root.querySelectorAll('.accordionContent.sg-chart').forEach(function (t) { loadChart(t); });
+
+  // ---------- accordion (one open at a time) ----------
+  var buttons = root.querySelectorAll('.accordionButton');
+  buttons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var content = this.nextElementSibling;
+      var isOpen = this.classList.contains('on');
+
+      buttons.forEach(function (btn) {
+        btn.classList.remove('on');
+        var c = btn.nextElementSibling;
+        if (c && c.classList.contains('accordionContent')) c.style.display = 'none';
+      });
+
+      if (!isOpen && content && content.classList.contains('accordionContent')) {
+        this.classList.add('on');
+        content.style.display = 'block';
+        loadChart(content); // fetch only on first open
+      }
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Size guide tabs",
+  "settings": [
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    { "type": "checkbox", "id": "narrow_column", "label": "Narrow column", "default": true },
+    { "type": "checkbox", "id": "divider", "label": "Show divider", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "size_guide",
+      "name": "Size guide item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab label",
+          "info": "Items with the same label group under one tab (e.g. Men / Women).",
+          "default": "Men"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Accordion heading",
+          "default": "Size Guide"
+        },
+        {
+          "type": "select",
+          "id": "content_source",
+          "label": "Content source",
+          "default": "page",
+          "options": [
+            { "value": "page", "label": "From a page" },
+            { "value": "custom", "label": "Custom content (paste HTML)" }
+          ]
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Size chart page",
+          "info": "Used when Content source is \"From a page\". Pick the page that has your Size chart section."
+        },
+        {
+          "type": "html",
+          "id": "custom_html",
+          "label": "Custom content",
+          "info": "Used when Content source is \"Custom\". Paste HTML here (text, list, image, table) — shown exactly as-is."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size guide tabs",
+      "blocks": [
+        { "type": "size_guide", "settings": { "tab_label": "Men", "heading": "Men's Bracelet Size Guide" } },
+        { "type": "size_guide", "settings": { "tab_label": "Men", "heading": "Men's Ring Size Guide" } },
+        { "type": "size_guide", "settings": { "tab_label": "Women", "heading": "Women's Ring Size Guide" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -405,7 +405,7 @@ Arguments
                 class="color-swatch color-swatch--small color-swatch--{{ value | handle }}{% if variant.image %} color-swatch--with-image{% endif %}"
                 {% if variant.image %}
                   data-variant-id="{{ variant.id }}"
-                  data-variant-image="{{ variant.image | img_url: '400x' }}"
+                  data-variant-image="{{ variant.image | image_url: width: 320 }}"
                 {% endif %}
                 aria-label="{{ product.title }} - {{ value }}"
                 style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}">
@@ -441,10 +441,10 @@ Arguments
               {% unless product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}
             <li {% if product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}class="activeprod"{% endif %} 
               data-te="{{ product.metafields.custom.subtitle }}--{{ related_product.metafields.custom.subtitle }}">
-              <a title="{{ related_product.metafields.custom.subtitle }}" data-img="{{related_product.featured_media.preview_image |img_url: '1000x' }}" data-title="{{ related_product.metafields.custom.subtitle }}"
+              <a title="{{ related_product.metafields.custom.subtitle }}" data-img="{{ related_product.featured_media.preview_image | image_url: width: 480 }}" data-srcset="{{ related_product.featured_media.preview_image | image_url: width: 200 }} 200w, {{ related_product.featured_media.preview_image | image_url: width: 240 }} 240w, {{ related_product.featured_media.preview_image | image_url: width: 320 }} 320w, {{ related_product.featured_media.preview_image | image_url: width: 360 }} 360w, {{ related_product.featured_media.preview_image | image_url: width: 420 }} 420w, {{ related_product.featured_media.preview_image | image_url: width: 480 }} 480w, {{ related_product.featured_media.preview_image | image_url: width: 540 }} 540w" data-title="{{ related_product.metafields.custom.subtitle }}"
                 data-href="{{related_product.url }}"
                 data-price="{{ related_product.price | money_without_trailing_zeros  }}">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="{{related_product.featured_media.preview_image |img_url: '100x' }}" alt="{{ related_product.featured_media.alt | default: related_product.metafields.custom.subtitle }}">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" srcset="{{ related_product.featured_media.preview_image | image_url: width: 96 }} 96w, {{ related_product.featured_media.preview_image | image_url: width: 160 }} 160w" sizes="96px" loading="lazy" decoding="async" fetchpriority="low" width="96" height="96" d-src="{{ related_product.featured_media.preview_image | image_url: width: 100 }}" alt="{{ related_product.featured_media.alt | default: related_product.metafields.custom.subtitle }}">
               </a>
             </li>
                 {% endunless %}

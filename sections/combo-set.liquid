@@ -1,0 +1,529 @@
+{% if product.metafields.custom.combo_products != blank %}
+
+{% style %}
+.combo-set-main {
+    {% if section.settings.full_width %}padding: 0 40px;{% endif %}
+}
+.combo-set-wrapper {
+    display: flex;
+}
+.combo-set-media {
+    width: 46.84%;
+    display: flex;
+    min-width: 46.84%;
+}
+.combo-set-media img {
+    object-fit: cover;
+}
+.combo-set-offer {
+    padding-left: 38px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    gap:48px;
+}
+.csh-title {
+    font-size: 40px;
+    line-height: 44.8px;
+    letter-spacing: -0.2px;
+    font-family: Montserrat !important;
+    text-transform: unset!important;
+    margin-bottom: 10px;
+}
+.csh-text {
+    font-size: 12px;
+    letter-spacing: 2.16px;
+    line-height: 19.8px;
+    color: #8F8A80;
+    text-transform: uppercase;
+}
+.csp-item {
+    padding: 24px;
+    border: 1px solid #EAE7DF;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+.csp-item-media {
+    min-width: 88px;
+}
+.combo-set-products {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.csp-item-content-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+.csp-item-title {
+    font-size: 17px;
+    line-height: 28.05px;
+    letter-spacing: -0.09px;
+    font-family: Montserrat !important;
+    text-transform: unset!important;
+    margin-bottom: 0;
+}
+.csp-item-text {
+    font-size: 12px;
+    color: #8F8A80;
+    line-height: 18.6px;
+    letter-spacing: 0.24px;
+}
+.csp-item-text-price{
+    color:#2E2E2A;
+}
+.csp-item-btns {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    min-height: 35px;
+}
+.csp-item-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: 1px solid #D9D4C8;
+    width: 100%;
+}
+.csp-item-wishlist{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: 1px solid #D9D4C8;
+    width: 100%;
+    gap: 6px;
+}
+.csp-item-atc{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    width: 100%;
+    color:#fff;
+    background:#111111;
+    position:relative;
+}
+.combo-set-footer {
+    padding: 27px 34px 29px 18px;
+    background: #0B0B0B;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.csf-left-title {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 2.52px;
+    line-height: 17.33px;
+    margin-bottom: 10px;
+    color: #CFC7B7;
+    display: block;
+}
+.csf-left-info {
+    font-size: 11.5px;
+    line-height: 18.98px;
+    color: #B8B2A5;
+}
+.csf-left-price .glc-money {
+    font-size: 18px;
+    line-height: 29.7px;
+    color: #fff;
+    display: block;
+}
+.combo-set-atc {
+    height: 44px;
+    background: #fff;
+    color: #0B0B0B;
+    font-size: 10.5px;
+    width: 130px;
+    text-transform: uppercase;
+    letter-spacing: 2.52px;
+    font-weight: 500;
+    position:relative;
+}
+.cst-swym-icon-filled{
+    display:none;
+}
+.csp-item-wishlist.swym-added .cst-swym-icon-filled{
+    display:block;
+}
+.csp-item-wishlist.swym-added .cst-swym-icon-unfilled{
+    display:none;
+}
+.csp-item-text-track {
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: 1.89px;
+    text-transform: uppercase;
+    color: #5A7A2F;
+    margin-left: 8px;
+    padding-left: 11px;
+    position: relative;
+}
+.csp-item-text-track:before {
+    content: "";
+    display: block;
+    background: #5A7A2F;
+    min-width: 6px;
+    max-height: 6px;
+    height: 5px;
+    border-radius: 36px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+@media (min-width:768px){
+    .combo-set-{{ section.id }}{
+        margin-top:{{ section.settings.top }}px;
+        margin-bottom:{{ section.settings.bottom }}px;
+    }
+    .csp-item-wishlist{
+        min-width: 168px;
+    }
+    .csp-item-link{
+        min-width: 132px;
+    }
+}
+@media (max-width:767px){
+    .combo-set-{{ section.id }}{
+        margin-top:{{ section.settings.top_m }}px;
+        margin-bottom:{{ section.settings.bottom_m }}px;
+    }
+    .combo-set-main{
+        padding:0;
+    }
+    .combo-set-wrapper {
+        flex-direction: column;
+    }
+    .combo-set-media {
+        width: 100%;
+        min-width: 100%;
+    }
+    .combo-set-offer {
+        padding: 24px 16px;
+        gap: 24px;
+    }
+    .csh-title {
+        font-size: 32px;
+        line-height: 120%;
+        margin-bottom: 8px;
+    }
+    .csp-item-media {
+        min-width: 83px;
+    }
+    .csp-item {
+        padding: 4px;
+        gap: 8px;
+    }
+    .csp-item-title{
+        font-size: 12px;
+    }
+    .csp-item-text {
+        font-size: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .csp-item-content-flex {
+        gap: 8px;
+    }
+    .csp-item-btns{
+        min-height: 28px;
+    }
+    .csp-item-wishlist svg{
+        display:none !important;
+    }
+    .csp-item-atc, .csp-item-wishlist, .csp-item-link{
+        font-size: 8px;
+        letter-spacing: 0.3px;
+    }
+    .combo-set-footer{
+        padding:16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .csf-right, .combo-set-atc {
+        width: 100%;
+    }
+    .csp-item-text-track{
+        font-size: 8px;
+        margin-left: 0;
+    }
+    .csp-item-text-track:before{
+        height: 6px;
+    }
+}
+{% endstyle %}
+
+<div class="combo-set-main combo-set-{{ section.id }}">
+
+{%- unless section.settings.full_width -%}
+  <div class="page-width custom__appsection">
+{%- endunless -%}
+
+    <div class="combo-set-wrapper">
+        <div class="combo-set-media">
+            {% if product.metafields.custom.combo_products_image != blank %}
+                {{
+                    product.metafields.custom.combo_products_image
+                    | image_url: width: 1200
+                    | image_tag:
+                        class: 'combo_set_image',
+                        width: 'auto',
+                        height: 880,
+                        widths: '420,768,1200',
+                        sizes: '100vw',
+                        loading: 'eager',
+                        fetchpriority: 'high',
+                        preload: false,
+                        alt: section.settings.image.alt | escape
+                }}
+            {% elsif section.settings.image != blank %}
+                {{
+                    section.settings.image
+                    | image_url: width: 1200
+                    | image_tag:
+                        class: 'combo_set_image',
+                        width: 'auto',
+                        height: 880,
+                        widths: '420,768,1200',
+                        sizes: '100vw',
+                        loading: 'eager',
+                        fetchpriority: 'high',
+                        preload: false,
+                        alt: section.settings.image.alt | escape
+                }}
+            {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+        </div>
+        <div class="combo-set-offer">
+            <div class="combo-set-header">
+                {% if section.settings.heading != blank %}
+                    <h2 class="csh-title">{{ section.settings.heading }}</h2>
+                {% endif %}
+                {% if section.settings.text != blank %}
+                    <span class="csh-text">{{ section.settings.text }}</span>
+                {% endif %}
+            </div>
+            <div class="combo-set-products">
+                {% assign count = 0 %}
+                {% assign total = 0 %}
+                {% for item in product.metafields.custom.combo_products.value limit:3 %}
+                    {% assign selected_variant = item.selected_or_first_available_variant %}
+                    <div class="csp-item">
+                        <div class="csp-item-media">
+                            <img src="{{ item.featured_image | image_url:width:120 }}" width="88px" height="88px" alt="{{ item.title }}"/>
+                        </div>
+                        <div class="csp-item-content-flex">
+                            <div class="csp-item-content">
+                                <h3 class="csp-item-title">{{ item.title }}</h3>
+                                <span class="csp-item-text">{{ item.metafields.custom.subtitle }} · <span class="csp-item-text-price">{{ selected_variant.price | money }}</span>
+                                    {% if selected_variant.available %}<span class="csp-item-text-track">Ready to ship</span>{%endif %}
+                                </span>
+                            </div>
+                            <div class="csp-item-btns">
+                                <button class="csp-item-atc" variant_id="{{ selected_variant.id }}">Add to Cart</button>
+                                <button class="csp-item-wishlist" 
+                                    id="swym-custom-collections_product_{{ item.id }}"
+                                    data-with-epi="true"
+                                    data-swaction="addToWishlist"
+                                    data-product-id="{{item.id | json}}"
+                                    data-variant-id="{{item.variants[0].id}}"
+                                    data-product-url="{{ shop.url }}{{ item.url }}"
+                                >
+                                    <svg class="cst-swym-icon-unfilled" width="14px" height="14px" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.27865 0.726685L6.69948 3.61418L9.86198 4.07252L7.57031 6.27252L8.12031 9.43502L5.27865 7.96835L2.43698 9.43502L2.98698 6.27252L0.695312 4.07252L3.85781 3.61418L5.27865 0.726685Z" stroke="black" stroke-opacity="0.5" stroke-width="0.641667"></path>
+                                    </svg>
+                                    <svg class="cst-swym-icon-filled" width="14px" height="14px" viewBox="0 0 11 11" fill="#000" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.27865 0.726685L6.69948 3.61418L9.86198 4.07252L7.57031 6.27252L8.12031 9.43502L5.27865 7.96835L2.43698 9.43502L2.98698 6.27252L0.695312 4.07252L3.85781 3.61418L5.27865 0.726685Z" stroke="black" stroke-opacity="0.5" stroke-width="0.641667"></path>
+                                    </svg>
+                                    Add to Wishlist
+                                </button>
+                                <a class="csp-item-link" href="{{ item.url }}">View Product</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% assign total = total | plus:selected_variant.price %}
+                    {% assign count = count | plus:1 %}
+                {% endfor %}
+            </div>
+
+            <div class="combo-set-footer">
+                <div class="csf-left">
+                    <span class="csf-left-title">Shop the full edit</span>
+                    <span class="csf-left-price">{{ total | money }}</span>
+                    <span class="csf-left-info">All {{ count }} pieces as a set. Free express shipping included</span>
+                </div>
+                <div class="csf-right">
+                    <button class="combo-set-atc">Add all {{ count }}</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{%- unless section.settings.full_width -%}
+  </div>
+{%- endunless -%}
+
+</div>
+
+<script>
+document.addEventListener('click', async (e) => {
+  const itemAtc = e.target.closest('.csp-item-atc');
+  const comboAtc = e.target.closest('.combo-set-atc');
+
+  if (!itemAtc && !comboAtc) return;
+
+  const button = itemAtc || comboAtc;
+
+  try {
+    button.classList.add('btn--loading');
+    button.disabled = true;
+
+    let items = [];
+
+    // Single Product
+    if (itemAtc) {
+      const variantId = itemAtc.getAttribute('variant_id');
+
+      if (!variantId) return;
+
+      items.push({
+        id: Number(variantId),
+        quantity: 1
+      });
+    }
+
+    // Combo Product
+    if (comboAtc) {
+      items = [...document.querySelectorAll('.csp-item-atc')]
+        .map(btn => Number(btn.getAttribute('variant_id')))
+        .filter(Boolean)
+        .map(id => ({
+          id,
+          quantity: 1
+        }));
+
+      if (!items.length) return;
+    }
+
+    const response = await fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ items })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Add to cart failed (${response.status})`);
+    }
+
+    const data = await response.json();
+
+    // Refresh cart drawer
+    document.dispatchEvent(new CustomEvent('ajaxProduct:added'));
+
+  } catch (error) {
+    console.error('Error adding product:', error);
+  } finally {
+    button.classList.remove('btn--loading');
+    button.disabled = false;
+  }
+});
+</script>
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "Combo Set",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "t:sections.apps.settings.full_width.label",
+      "default": false
+    },
+    {
+        "type": "image_picker",
+        "id":"image",
+        "label":"Image"
+    },
+    {
+        "type": "text",
+        "id":"heading",
+        "label":"Heading",
+        "default":"Complete the Set"
+    },
+    {
+        "type": "text",
+        "id":"text",
+        "label":"Text",
+        "default":"Most popular combo"
+    },
+    {
+        "type": "header",
+        "content": "Margin Desktop"
+    },
+    {
+        "type": "number",
+        "id":"top",
+        "label":"Top",
+        "info":"unit px."
+    },
+    {
+        "type": "number",
+        "id":"bottom",
+        "label":"Bottom",
+        "info":"unit px."
+    },
+    {
+        "type": "header",
+        "content": "Margin Mobile"
+    },
+    {
+        "type": "number",
+        "id":"top_m",
+        "label":"Top",
+        "info":"unit px."
+    },
+    {
+        "type": "number",
+        "id":"bottom_m",
+        "label":"Bottom",
+        "info":"unit px."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Combo Set"
+    }
+  ]
+}
+{% endschema %}

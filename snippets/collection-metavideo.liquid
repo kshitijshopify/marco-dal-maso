@@ -1,16 +1,136 @@
 {%- style -%}
-    .hero--{{ section.id }} .hero__title {
+    .hero--{{ block.id }} .hero__title {
       font-size: {{ block.settings.title_size | times: 0.5 }}px;
     }
     @media only screen and (min-width: 769px) {
-      .hero--{{ section.id }} .hero__title {
+      .hero--{{ block.id }} .hero__title {
         font-size: {{ block.settings.title_size }}px;
       }
     }
+
+    .collection-promo--root__videoblock[data-textpos="absoluted_onimage"] .sectionbgandpadd {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .collection-promo--root__videoblock:not([data-textpos="absoluted_onimage"]) .sectionbgandpadd {
+      height: 100%;
+      position: relative;
+    }
+    .collection-promo--root__videoblock .sectionbgandpadd .video-parent-section {
+      overflow: hidden;
+      position: relative;
+      height: 100%;
+      min-height: 0;
+    }
+    .collection-promo--root__videoblock .sectionbgandpadd .video-parent-section.hero--450px,
+    .collection-promo--root__videoblock .sectionbgandpadd .video-parent-section.hero--550px,
+    .collection-promo--root__videoblock .sectionbgandpadd .video-parent-section.hero--650px,
+    .collection-promo--root__videoblock .sectionbgandpadd .video-parent-section.hero--750px,
+    .collection-promo--root__videoblock .sectionbgandpadd .video-parent-section.hero--100vh {
+      height: 100%;
+      min-height: 0;
+    }
+    .collection-promo--root__videoblock[data-desktop-height="auto"] .sectionbgandpadd .video-parent-section.hero--auto {
+      height: auto;
+      min-height: 0;
+    }
+
+    .hero--{{ block.id }} .hero__media-container,
+    .hero--{{ block.id }} .hero__media {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+    {% if block.settings.section_height == 'auto' %}
+    @media only screen and (min-width: 769px) {
+      .hero--{{ block.id }}.hero--auto .hero__media-container,
+      .hero--{{ block.id }}.hero--auto .hero__media {
+        height: auto;
+        left: auto;
+        position: relative;
+        top: auto;
+      }
+      .hero--{{ block.id }}.hero--auto .hero__media video {
+        height: auto;
+        object-fit: contain;
+        position: relative;
+        width: 100%;
+      }
+      .hero--{{ block.id }}.hero--auto .hero__media iframe {
+        height: auto;
+        left: auto;
+        max-width: 100%;
+        position: relative;
+        top: auto;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+      }
+      .hero--{{ block.id }}.hero--auto .hero__text-wrap,
+      .hero--{{ block.id }}.hero--auto .hero__text-wrap .page-width {
+        height: auto;
+      }
+    }
+    {% endif %}
+    .hero--{{ block.id }} .hero__media {
+      background-position: top;
+      background-repeat: no-repeat;
+      background-size: cover;
+      z-index: 1;
+    }
+    .hero--{{ block.id }} .hero__media iframe,
+    .hero--{{ block.id }} .hero__media video {
+      height: 100%;
+      pointer-events: none;
+      width: 100%;
+    }
+    .hero--{{ block.id }} .hero__media video {
+      object-fit: cover;
+      position: relative;
+    }
+    .hero--{{ block.id }} .hero__media iframe {
+      left: -100%;
+      max-width: none;
+      position: absolute;
+      top: 0;
+      width: 300%;
+    }
+    @media screen and (min-width: 1140px) {
+      .hero--{{ block.id }} .hero__media iframe {
+        height: 300%;
+        left: auto;
+        top: -100%;
+        width: 100%;
+      }
+    }
+    .hero--{{ block.id }} .hero__text-wrap {
+      color: #fff;
+      height: 100%;
+      position: relative;
+    }
+    .hero--{{ block.id }} .hero__text-wrap .page-width {
+      display: table;
+      height: 100%;
+      width: 100%;
+    }
+    .hero--{{ block.id }} .hero__text-content {
+      padding: 15px 0;
+      position: relative;
+      z-index: 4;
+    }
+    @media only screen and (min-width: 769px) {
+      .hero--{{ block.id }} .hero__text-content {
+        padding: 45px 0;
+      }
+    }
+
   .hero__media:before{display: none;}
     {%- assign button_alpha = block.settings.color_accent | color_extract: 'alpha' -%}
     {% unless button_alpha == 0.0 %}
-      .hero--{{ section.id }} .btn {
+      .hero--{{ block.id }} .btn {
         background: {{ block.settings.color_accent }} !important;
         border-color: {{ block.settings.color_accent }} !important;
   
@@ -22,8 +142,8 @@
       }
   
       {% if settings.button_style == 'angled' %}
-        .hero--{{ section.id }} .btn:before,
-        .hero--{{ section.id }} .btn:after {
+        .hero--{{ block.id }} .btn:before,
+        .hero--{{ block.id }} .btn:after {
           background: {{ block.settings.color_accent }} !important;
           border-color: {{ block.settings.color_accent }} !important;
         }
@@ -38,7 +158,7 @@
     margin-right: 0;
 }
     {% if block.settings.overlay_opacity > 0 %}
-      .hero--{{ section.id }} .hero__text-wrap:after {
+      .hero--{{ block.id }} .hero__text-wrap:after {
         content: '';
         position: absolute;
         left: 0;
@@ -50,24 +170,28 @@
         opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
       }
     {% endif %}
+    .collection-promo--root .hero__text-wrap .aanimation-contents p:first-child, .stacked-text--description p {
+        font-size: 20px;
+        text-transform: capitalize;
+    }
   {%- endstyle -%}
   
   <div class="sectionbgandpadd">
     <div
-      data-section-id="{{ section.id }}"
+      data-section-id="{{ block.id }}"
       data-section-type="video-section"
-      class="video-parent-section hero hero--{{ section.id }} hero--{{ block.settings.section_height }} hero--mobile--{{ block.settings.mobile_height }}"
+      class="video-parent-section hero hero--{{ block.id }} hero--{{ block.settings.section_height }} hero--mobile--{{ block.settings.mobile_height }}"
       data-mobile-natural="false"
-      data-aos="hero__animation">
+      data-promo-video="true">
     
-      <div class="hero__media {% if block.settings.colltitle != blank or block.settings.subheading != blank or block.settings.link != blank %} hero__media_customhyt{% endif %} hero__media--{{ section.id }}">
+      <div class="hero__media {% if block.settings.colltitle != blank or block.settings.subheading != blank or block.settings.link != blank %} hero__media_customhyt{% endif %} hero__media--{{ block.id }}">
         <div class="{{ block.settings.video_url }} hero__media-container">
     
           {%- if block.settings.video_url contains 'youtube.com/watch' -%}
             {%- assign video_id = block.settings.video_url | split: 'v=' -%}
             {%- assign video_id = video_id[1] | split: '&' | first -%}
             <div
-              id="YouTubeVideo-{{ section.id }}"
+              id="YouTubeVideo-{{ block.id }}"
               class="video-div"
               data-type="youtube"
               data-video-id="{{ video_id }}"></div>
@@ -77,7 +201,7 @@
             {%- assign video_id = block.settings.video_url | split: '.be/' -%}
             {%- assign video_id = video_id[1] | split: '&' | first -%}
             <div
-              id="YouTubeVideo-{{ section.id }}"
+              id="YouTubeVideo-{{ block.id }}"
               class="video-div"
               data-type="youtube"
               data-video-id="{{ video_id }}"></div>
@@ -87,7 +211,7 @@
             {%- assign video_id = block.settings.video_url | split: '.com/' -%}
             {%- assign video_id = video_id[1] | split: '/' | first -%}
             <div
-              id="Vimeo-{{ section.id }}"
+              id="Vimeo-{{ block.id }}"
               class="video-div"
               data-type="vimeo"
               data-video-id="{{ video_id }}"></div>
@@ -95,11 +219,11 @@
     
           {%- if block.settings.video_url contains '.mp4' or block.settings.video_url contains '.MP4' or block.settings.video_url contains '.mov' -%}
             <video
-              id="Mp4Video-{{ section.id }}"
+              id="Mp4Video-{{ block.id }}"
               class="video-div"
               data-type="mp4"
               src="{{ block.settings.video_url }}"
-              loop muted controls playsinline autoplay></video>
+              loop muted playsinline autoplay preload="auto"></video>
           {%- endif -%}
     
         </div>
@@ -111,7 +235,7 @@
           <div class="hero__text-content {{ block.settings.text_align }}">
             <div class="hero__text-shadow">
               {%- if block.settings.video_url contains 'vimeo.com' -%}
-                <button type="button" id="VimeoTrigger-{{ section.id }}" class="vimeo-mobile-trigger medium-up--hide">
+                <button type="button" id="VimeoTrigger-{{ block.id }}" class="vimeo-mobile-trigger medium-up--hide">
                   <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-play" viewBox="18.24 17.35 24.52 28.3"><path fill="#323232" d="M22.1 19.151v25.5l20.4-13.489-20.4-12.011z"/></svg>
                 </button>
               {%- endif -%}
@@ -161,3 +285,35 @@
       {%- endif -%}
     </div>
   </div>
+
+  {%- if block.settings.video_url contains '.mp4' or block.settings.video_url contains '.MP4' or block.settings.video_url contains '.mov' -%}
+  <script>
+    (function () {
+      var videoId = 'Mp4Video-{{ block.id }}';
+      function playPromoMp4() {
+        var video = document.getElementById(videoId);
+        if (!video) return;
+        var parent = video.closest('.video-parent-section');
+        video.muted = true;
+        video.setAttribute('playsinline', '');
+        var playPromise = video.play();
+        if (playPromise && playPromise.then) {
+          playPromise.then(function () {
+            if (parent) parent.classList.add('loaded');
+          }).catch(function () {});
+        } else if (parent) {
+          parent.classList.add('loaded');
+        }
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', playPromoMp4);
+      } else {
+        playPromoMp4();
+      }
+      window.addEventListener('load', function () {
+        playPromoMp4();
+        setTimeout(playPromoMp4, 600);
+      });
+    })();
+  </script>
+  {%- endif -%}

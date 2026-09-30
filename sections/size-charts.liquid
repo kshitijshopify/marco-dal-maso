@@ -1,0 +1,728 @@
+{%- liquid
+  assign s = section.settings
+  assign active_tab = s.active_tab | plus: 0
+  assign show_tabs = s.show_tabs
+  assign visible_tab_count = 0
+
+  if s.tab_1_label != blank
+    assign visible_tab_count = visible_tab_count | plus: 1
+  endif
+  if s.tab_2_label != blank
+    assign visible_tab_count = visible_tab_count | plus: 1
+  endif
+
+  if show_tabs == false or visible_tab_count < 2
+    assign render_tab_bar = false
+  else
+    assign render_tab_bar = true
+  endif
+
+  if active_tab == 1 and s.tab_1_label == blank and s.tab_2_label != blank
+    assign active_tab = 2
+  elsif active_tab == 2 and s.tab_2_label == blank and s.tab_1_label != blank
+    assign active_tab = 1
+  endif
+-%}
+
+<script src="{{ 'size-charts.js' | asset_url }}" defer></script>
+
+<style>
+  #SizeCharts-{{ section.id }} {
+    display: block;
+    --sc-border: {{ s.border_color }};
+    --sc-bg: {{ s.tabs_bg_color }};
+    --sc-text: {{ s.text_color }};
+    --sc-muted: {{ s.muted_color }};
+    max-width: {{ s.max_width }}px;
+    margin: 0;
+    padding: {{ s.padding_top }}px 0 {{ s.padding_bottom }}px;
+    color: var(--sc-text);
+  }
+  #SizeCharts-{{ section.id }} .sc-heading { font-size: 13px; font-weight: 600; margin: 0 0 16px; }
+  #SizeCharts-{{ section.id }} .sc-tabs {
+    display: grid;
+    grid-template-columns: repeat({{ visible_tab_count | at_least: 1 }}, 1fr);
+    gap: 4px;
+    background: var(--sc-bg);
+    border-radius: 0px;
+    padding: 12px;
+    margin-bottom: 28px;
+  }
+  #SizeCharts-{{ section.id }} .sc-richtext {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 18px;
+    text-wrap: auto;
+  }
+  #SizeCharts-{{ section.id }} .sc-tab {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--sc-muted);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 8px;
+    border-radius: 0px;
+    cursor: pointer;
+    transition: background .18s ease, color .18s ease;
+  }
+  #SizeCharts-{{ section.id }} .sc-tab[aria-selected="true"] {
+    background: #fff;
+    color: var(--sc-text);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0,0,0,.06);
+  }
+  #SizeCharts-{{ section.id }} .sc-tab:focus-visible { outline: 2px solid var(--sc-text); outline-offset: 2px; }
+  #SizeCharts-{{ section.id }} .sc-panel[hidden] { display: none; }
+  #SizeCharts-{{ section.id }} .sc-title { font-size: 14px; font-weight: 600; margin: 0 0 14px; }
+  #SizeCharts-{{ section.id }} .sc-intro { font-size: 13px; line-height: 1.6; margin: 0 0 18px; }
+  #SizeCharts-{{ section.id }} .sc-steps {
+    list-style: none;
+    counter-reset: sc-step;
+    margin: 0 0 24px;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  #SizeCharts-{{ section.id }} .sc-step {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    font-size: 13px;
+    line-height: 1.55;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  #SizeCharts-{{ section.id }} .sc-step__num {
+    counter-increment: sc-step;
+    width: 28px;
+    font-weight: bold;
+    height: 28px;
+    flex-shrink: 0;
+    border: 1px solid var(--sc-border);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+  }
+  #SizeCharts-{{ section.id }} .sc-step__num::before { content: counter(sc-step); }
+  #SizeCharts-{{ section.id }} .sc-step__text {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  #SizeCharts-{{ section.id }} .sc-media { margin: 0 0 24px; border-radius: 4px; overflow: hidden; background: #000; }
+  #SizeCharts-{{ section.id }} .sc-media img { display: block; width: 100%; height: auto; }
+  #SizeCharts-{{ section.id }} .sc-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  #SizeCharts-{{ section.id }} table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  #SizeCharts-{{ section.id }} th,
+  #SizeCharts-{{ section.id }} td {
+    text-align: left;
+    padding: 12px 8px;
+    border: 1px solid var(--sc-border);
+    white-space: nowrap;
+  }
+  #SizeCharts-{{ section.id }} th { font-weight: 600; }
+  #SizeCharts-{{ section.id }} .sc-note { font-size: 12px; line-height: 1.6; color: var(--sc-muted); margin: 14px 0 0; text-wrap-mode: wrap;}
+
+  /* 4+ columns: tighten padding so the table still fits a narrow drawer */
+  #SizeCharts-{{ section.id }} .sc-table--wide th,
+  #SizeCharts-{{ section.id }} .sc-table--wide td { padding: 10px 8.5px; font-size: 11px !important; }
+  .SizeCharts-top-bar {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    text-wrap-mode: wrap;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #DDDDDD;
+    {% comment %} padding-bottom: 18px; {% endcomment %}
+  }
+  .SizeCharts-top-bar a {
+    background: black;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    max-width: fit-content;
+    cursor: pointer;
+    margin-bottom: 15px;
+  }
+  .SizeCharts-bottom-bar {
+    background: #E9E9E9;
+    padding: 15px 25px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    position: absolute;
+    left: 0;
+    width: 100%;
+  }
+  p.sc-note {
+    color: black !important;
+  }
+  @media only screen and (max-width: 749px) {
+    .SizeCharts-bottom-bar {
+      padding: 15px;
+      min-width: 0;
+      width: 100%;
+      max-width: 100%;
+      text-wrap: auto;
+    }
+    .SizeCharts-top-bar a {
+      font-size: 10px;
+      padding: 8px 12px
+    }
+    #SizeCharts-{{ section.id }} .sc-tabs {
+      padding: 8px;
+    }
+    #SizeCharts-{{ section.id }} .sc-table--wide th,
+    #SizeCharts-{{ section.id }} .sc-table--wide td { padding: 7px 6px; font-size: 10px !important; }
+  }
+
+  /* ---- Ring sizer request popup ---- */
+  #RingSizerModal-{{ section.id }} {
+    /* Self-contained theme vars so colours still work after the dialog
+       is moved to <body> (out of the #SizeCharts scope) on open. */
+    --sc-border: {{ s.border_color }};
+    --sc-text: {{ s.text_color }};
+    --sc-muted: {{ s.muted_color }};
+    position: fixed;
+    inset: 0;
+    margin: auto;            /* dead-centre in the viewport */
+    width: min(92vw, 480px);
+    max-height: 90vh;
+    overflow: hidden;        /* keep rounded corners; inner panel scrolls */
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+    color: var(--sc-text);
+    background: #fff;
+    box-shadow: 0 24px 60px rgba(0,0,0,.28);
+  }
+  #RingSizerModal-{{ section.id }}::backdrop { background: rgba(0,0,0,.55); }
+  #RingSizerModal-{{ section.id }} .sc-modal__inner {
+    padding: 34px 30px;
+    max-height: 90vh;
+    overflow-y: auto;                    /* long form stays fully visible */
+    -webkit-overflow-scrolling: touch;
+  }
+  #RingSizerModal-{{ section.id }} .sc-modal__close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    background: transparent;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--sc-muted);
+  }
+  #RingSizerModal-{{ section.id }} .sc-modal__close:hover { color: var(--sc-text); }
+  #RingSizerModal-{{ section.id }} .sc-modal__heading {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    padding-right: 24px;
+    letter-spacing: .01em;
+  }
+  #RingSizerModal-{{ section.id }} .sc-modal__body {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 22px;
+    color: var(--sc-text);
+  }
+  #RingSizerModal-{{ section.id }} .sc-field { margin-bottom: 14px; }
+  #RingSizerModal-{{ section.id }} .sc-field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+    color: var(--sc-muted);
+  }
+  #RingSizerModal-{{ section.id }} .sc-field-optional { font-weight: 400; text-transform: none; letter-spacing: 0; }
+  #RingSizerModal-{{ section.id }} .sc-field input,
+  #RingSizerModal-{{ section.id }} .sc-field select,
+  #RingSizerModal-{{ section.id }} .sc-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font: inherit;
+    font-size: 14px;
+    padding: 11px 12px;
+    border: 1px solid var(--sc-border);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--sc-text);
+  }
+  #RingSizerModal-{{ section.id }} .sc-field textarea { min-height: 74px; resize: vertical; }
+  #RingSizerModal-{{ section.id }} .sc-field input:focus,
+  #RingSizerModal-{{ section.id }} .sc-field select:focus,
+  #RingSizerModal-{{ section.id }} .sc-field textarea:focus {
+    outline: 2px solid var(--sc-text);
+    outline-offset: 1px;
+  }
+  #RingSizerModal-{{ section.id }} .sc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  #RingSizerModal-{{ section.id }} .sc-submit {
+    width: 100%;
+    margin-top: 8px;
+    border: 0;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 15px 20px;
+  }
+  #RingSizerModal-{{ section.id }} .sc-submit:hover { opacity: .88; }
+  #RingSizerModal-{{ section.id }} .sc-form-status {
+    font-size: 13px;
+    line-height: 1.55;
+    padding: 12px 14px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+  }
+  #RingSizerModal-{{ section.id }} .sc-form-status--success { background: #edf7ed; color: #1e4620; }
+  #RingSizerModal-{{ section.id }} .sc-form-status--error { background: #fdecea; color: #611a15; }
+  #RingSizerModal-{{ section.id }} .sc-form-status ul { margin: 0; padding-left: 18px; }
+  @media only screen and (max-width: 480px) {
+    #RingSizerModal-{{ section.id }} .sc-row { grid-template-columns: 1fr; gap: 0; }
+    #RingSizerModal-{{ section.id }} .sc-modal__inner { padding: 28px 20px; }
+  }
+  .size-guide .accordionContent.sg-chart[data-url="/pages/sizes-mensbracelets"] .sc-tabs,
+  .size-guide .accordionContent.sg-chart[data-url="/pages/sizes-mensbracelets"] .sc-heading,
+  .size-guide .accordionContent.sg-chart[data-url="/pages/sizes-menscuffs"] .sc-tabs,
+  .size-guide .accordionContent.sg-chart[data-url="/pages/sizes-menscuffs"] .sc-heading
+  {
+      display: none !important;
+  }
+  .size_drawer p, .size_drawer td, .SizeCharts-top-bar p{
+    color: #000000;
+    line-height: 23.63px;
+  }
+  .size_drawer td{
+    font-size: 13.5px;
+    color: black;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  .size_drawer th {
+      font-size: 11px !important;
+      letter-spacing: -0.4px;
+  }
+  .size_drawer p, .size_drawer td {
+      font-size: 12px;
+      line-height: 1.5;
+  }
+</style>
+
+<size-charts id="SizeCharts-{{ section.id }}" class="sc" data-section-id="{{ section.id }}">
+  {% if section.settings.top_bar_details != blank %}
+    <div class="SizeCharts-top-bar" style="font-size: 13px;">
+      <p>{{ section.settings.top_bar_details }}</p>
+      {% if section.settings.top_bar_link_label != blank %}
+        <a class="SizeCharts-ring-sizer-request" href="{{ section.settings.top_bar_link | default: '#' }}">
+          {{ section.settings.top_bar_link_svg }}
+          {{ section.settings.top_bar_link_label }}
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+  {%- if s.heading != blank -%}
+    <h2 class="sc-heading">{{ s.heading }}</h2>
+  {%- endif -%}
+
+  {%- if render_tab_bar -%}
+    <div class="sc-tabs" role="tablist" aria-label="{{ s.heading | default: 'Size charts' | escape }}">
+      {%- for i in (1..2) -%}
+        {%- liquid
+          assign label_key = 'tab_' | append: i | append: '_label'
+          if s[label_key] == blank
+            continue
+          endif
+          if active_tab == i
+            assign is_active = true
+          else
+            assign is_active = false
+          endif
+        -%}
+        <button
+          type="button"
+          class="sc-tab"
+          role="tab"
+          id="SizeChartsTab-{{ section.id }}-{{ i }}"
+          aria-controls="SizeChartsPanel-{{ section.id }}-{{ i }}"
+          aria-selected="{% if is_active %}true{% else %}false{% endif %}"
+          tabindex="{% if is_active %}0{% else %}-1{% endif %}"
+        >{{ s[label_key] }}</button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- for i in (1..2) -%}
+    {%- liquid
+      assign prefix = 'tab_' | append: i
+      assign label_key = prefix | append: '_label'
+      assign title_key = prefix | append: '_title'
+      assign intro_key = prefix | append: '_intro'
+      assign steps_key = prefix | append: '_steps'
+      assign image_key = prefix | append: '_image'
+      assign image_key_1 = prefix | append: '_image_1'
+      assign text_above_key = prefix | append: '_text_above_image'
+      assign text_below_key = prefix | append: '_text_below_image'
+      assign note_key = prefix | append: '_note'
+      assign cols_key = prefix | append: '_columns'
+      assign row_type = prefix | append: '_row'
+
+      if show_tabs and s[label_key] == blank
+        continue
+      endif
+
+      if show_tabs == false and active_tab != i
+        continue
+      endif
+
+      assign image = s[image_key]
+      assign image_1 = s[image_key_1]
+      assign steps = s[steps_key] | strip | newline_to_br | split: '<br />'
+      assign col_count = s[cols_key] | default: 3
+
+      if active_tab == i
+        assign is_active = true
+      else
+        assign is_active = false
+      endif
+    -%}
+
+    <div
+      class="sc-panel"
+      role="tabpanel"
+      id="SizeChartsPanel-{{ section.id }}-{{ i }}"
+      {% if render_tab_bar %}aria-labelledby="SizeChartsTab-{{ section.id }}-{{ i }}"{% endif %}
+      tabindex="0"
+      {% unless is_active %}hidden{% endunless %}
+    >
+      {%- if s[title_key] != blank -%}<h3 class="sc-title">{{ s[title_key] }}</h3>{%- endif -%}
+      {%- if s[intro_key] != blank -%}<p class="sc-intro">{{ s[intro_key] }}</p>{%- endif -%}
+
+      {%- if i == 1 and s[text_above_key] != blank -%}
+        <div class="sc-richtext">{{ s[text_above_key] }}</div>
+      {%- endif -%}
+
+      {%- if image_1 != blank -%}
+        <figure class="sc-media">
+          {{ image_1 | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 640px, 100vw', widths: '400, 600, 800, 1000, 1200' }}
+        </figure>
+      {%- endif -%}
+
+      {%- if i == 1 and s[text_below_key] != blank -%}
+        <div class="sc-richtext">{{ s[text_below_key] }}</div>
+      {%- endif -%}
+
+      {%- if steps.size > 0 -%}
+        <ol class="sc-steps">
+          {%- for step in steps -%}
+            {%- assign step_text = step | strip -%}
+            {%- if step_text != blank -%}
+              <li class="sc-step">
+                <span class="sc-step__num" aria-hidden="true"></span>
+                <span class="sc-step__text">{{ step_text }}</span>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ol>
+      {%- endif -%}
+
+      {%- if image != blank -%}
+        <figure class="sc-media">
+          {{ image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 640px, 100vw', widths: '400, 600, 800, 1000, 1200' }}
+        </figure>
+      {%- endif -%}
+
+      {%- assign row_count = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == row_type -%}{%- assign row_count = row_count | plus: 1 -%}{%- endif -%}
+      {%- endfor -%}
+
+      {%- if row_count > 0 -%}
+        <div class="sc-table-wrap">
+          <table class="{% if col_count > 3 %}sc-table--wide{% endif %}">
+            <thead>
+              <tr>
+                {%- for c in (1..col_count) -%}
+                  {%- assign head_key = prefix | append: '_col_' | append: c -%}
+                  <th scope="col">{{ s[head_key] }}</th>
+                {%- endfor -%}
+              </tr>
+            </thead>
+            <tbody>
+              {%- for block in section.blocks -%}
+                {%- if block.type == row_type -%}
+                  <tr {{ block.shopify_attributes }}>
+                    {%- for c in (1..col_count) -%}
+                      {%- assign cell_key = 'col_' | append: c -%}
+                      <td>{{ block.settings[cell_key] }}</td>
+                    {%- endfor -%}
+                  </tr>
+                {%- endif -%}
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      {%- endif -%}
+
+      {%- if s[note_key] != blank -%}<p class="sc-note">{{ s[note_key] }}</p>{%- endif -%}
+    </div>
+  {%- endfor -%}
+  <div class="SizeCharts-bottom-bar">
+    <p>{{ section.settings.bottom_bar_details }}</p>
+  </div>
+
+  {%- comment -%} ---- Ring sizer request popup ---- {%- endcomment -%}
+  {%- assign ring_form_id = 'RingSizerForm-' | append: section.id -%}
+  <dialog id="RingSizerModal-{{ section.id }}" class="sc-modal" aria-labelledby="RingSizerHeading-{{ section.id }}">
+    <div class="sc-modal__inner">
+      <button type="button" class="sc-modal__close" data-sc-close aria-label="Close">&times;</button>
+
+      <h2 id="RingSizerHeading-{{ section.id }}" class="sc-modal__heading">
+        {{ s.ring_sizer_heading | default: 'Request A Ring Sizer' }}
+      </h2>
+
+      {%- if s.ring_sizer_body != blank -%}
+        <p class="sc-modal__body">{{ s.ring_sizer_body }}</p>
+      {%- endif -%}
+
+      {%- form 'contact', id: ring_form_id, class: 'sc-ringform' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="sc-form-status sc-form-status--success" data-sc-form-status>
+            {{ s.ring_sizer_success | default: 'Thank you — your ring sizer request has been received. A confirmation is on its way to your inbox.' }}
+          </p>
+        {%- elsif form.errors -%}
+          <div class="sc-form-status sc-form-status--error" data-sc-form-status>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="sc-row">
+          <div class="sc-field">
+            <label for="RingSizer-FirstName-{{ section.id }}">First name</label>
+            <input type="text" id="RingSizer-FirstName-{{ section.id }}" name="contact[First name]" autocomplete="given-name" required>
+          </div>
+          <div class="sc-field">
+            <label for="RingSizer-LastName-{{ section.id }}">Last name</label>
+            <input type="text" id="RingSizer-LastName-{{ section.id }}" name="contact[Last name]" autocomplete="family-name" required>
+          </div>
+        </div>
+
+        <div class="sc-field">
+          <label for="RingSizer-Email-{{ section.id }}">Email address</label>
+          <input type="email" id="RingSizer-Email-{{ section.id }}" name="contact[email]" autocomplete="email" required>
+        </div>
+
+        <div class="sc-field">
+          <label for="RingSizer-Country-{{ section.id }}">Country</label>
+          <select id="RingSizer-Country-{{ section.id }}" name="contact[Country]" required>
+            <option value="" disabled selected>Select a country</option>
+            {{ all_country_option_tags }}
+          </select>
+        </div>
+
+        <div class="sc-field">
+          <label for="RingSizer-Address-{{ section.id }}">Shipping address</label>
+          <textarea id="RingSizer-Address-{{ section.id }}" name="contact[Shipping address]" autocomplete="street-address" required></textarea>
+        </div>
+
+        <div class="sc-field">
+          <label for="RingSizer-Product-{{ section.id }}">
+            What product are you interested in? <span class="sc-field-optional">(optional)</span>
+          </label>
+          <input type="text" id="RingSizer-Product-{{ section.id }}" name="contact[Product of interest]">
+        </div>
+
+        <button type="submit" class="sc-submit">
+          {{ s.ring_sizer_cta | default: 'Order your complimentary ring sizer' }}
+        </button>
+      {%- endform -%}
+    </div>
+  </dialog>
+</size-charts>
+
+<script>
+  (function () {
+    var root = document.getElementById('SizeCharts-{{ section.id }}');
+    var modal = document.getElementById('RingSizerModal-{{ section.id }}');
+    if (!root || !modal) return;
+
+    function openModal() {
+      if (modal.open) return;
+      // Escape any transformed ancestor (e.g. a slide-in drawer) so the
+      // dialog centres against the viewport instead of the drawer.
+      if (modal.parentNode !== document.body) { document.body.appendChild(modal); }
+      if (typeof modal.showModal === 'function') { modal.showModal(); }
+      else { modal.setAttribute('open', ''); }
+    }
+    function closeModal() {
+      if (typeof modal.close === 'function') { modal.close(); }
+      else { modal.removeAttribute('open'); }
+    }
+
+    root.querySelectorAll('.SizeCharts-ring-sizer-request, a[href*="#ring-sizer"]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) { 
+        e.preventDefault(); 
+        window._klOnsite = window._klOnsite || [];
+        window._klOnsite.push(['openForm', 'UkhXUC']);
+        return;
+        //openModal(); 
+      });
+    });
+
+    modal.querySelectorAll('[data-sc-close]').forEach(function (el) {
+      el.addEventListener('click', closeModal);
+    });
+
+    // Close when clicking the backdrop (outside the inner panel).
+    modal.addEventListener('click', function (e) {
+      var box = modal.querySelector('.sc-modal__inner');
+      if (box && !box.contains(e.target)) { closeModal(); }
+    });
+
+    // Re-open automatically after submit so the shopper sees the success/error message.
+    if (modal.querySelector('[data-sc-form-status]')) { openModal(); }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Size chart",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Size Charts" },
+    { "type": "text", "id": "top_bar_details", "label": "Heading", "default": "Size Charts" },
+    { "type": "html", "id": "top_bar_link_svg", "label": "Button icon" },
+    { "type": "text", "id": "top_bar_link_label", "label": "Button label" },
+    { "type": "url", "id": "top_bar_link", "label": "Button link (fallback if JS is disabled)"},
+    {
+      "type": "checkbox",
+      "id": "show_tabs",
+      "label": "Show tabs",
+      "default": true,
+      "info": "Turn off if you only need one chart with no tab bar."
+    },
+    {
+      "type": "select",
+      "id": "active_tab",
+      "label": "Tab open by default",
+      "options": [
+        { "value": "1", "label": "Tab 1" },
+        { "value": "2", "label": "Tab 2" }
+      ],
+      "default": "2"
+    },
+
+    { "type": "header", "content": "Tab 1" },
+    { "type": "text", "id": "tab_1_label", "label": "Tab label", "default": "Bracelets", "info": "Leave blank to hide this tab." },
+    { "type": "text", "id": "tab_1_title", "label": "Title", "default": "Measure Your Wrist" },
+    { "type": "textarea", "id": "tab_1_intro", "label": "Intro text", "default": "To determine your wrist size for a bracelet, follow these steps:" },
+    { "type": "textarea", "id": "tab_1_text_above_image", "label": "Text above image" },
+    { "type": "image_picker", "id": "tab_1_image_1", "label": "Image" },
+    { "type": "textarea", "id": "tab_1_text_below_image", "label": "Text below image" },
+    { "type": "textarea", "id": "tab_1_steps", "label": "Steps (one per line)", "info": "Each line becomes a numbered step.", "default": "Use a Tape Measure: wrap it around your wrist just below the wrist bone, ensuring the numbers face out.\nMark and Measure: note where the ends meet and measure the length with a ruler.\nAdjust for Comfort: ensure the measurement fits comfortably around your wrist." },
+    { "type": "image_picker", "id": "tab_1_image", "label": "Image" },
+    { "type": "range", "id": "tab_1_columns", "min": 2, "max": 5, "step": 1, "label": "Number of columns", "default": 3 },
+    { "type": "text", "id": "tab_1_col_1", "label": "Column 1 heading", "default": "Bracelet Size" },
+    { "type": "text", "id": "tab_1_col_2", "label": "Column 2 heading", "default": "Wrist Size (mm)" },
+    { "type": "text", "id": "tab_1_col_3", "label": "Column 3 heading", "default": "Wrist Size (in)" },
+    { "type": "text", "id": "tab_1_col_4", "label": "Column 4 heading" },
+    { "type": "text", "id": "tab_1_col_5", "label": "Column 5 heading" },
+    { "type": "textarea", "id": "tab_1_note", "label": "Note below table", "default": "If you fall between two sizes, we recommend choosing the larger size for a better fit." },
+
+    { "type": "header", "content": "Tab 2" },
+    { "type": "text", "id": "tab_2_label", "label": "Tab label", "default": "Cuffs", "info": "Leave blank to hide this tab." },
+    { "type": "text", "id": "tab_2_title", "label": "Title", "default": "Measure Your Wrist" },
+    { "type": "textarea", "id": "tab_2_intro", "label": "Intro text", "default": "To determine your wrist size for a cuff, follow these steps:" },
+    { "type": "image_picker", "id": "tab_2_image_1", "label": "Image" },
+    { "type": "textarea", "id": "tab_2_steps", "label": "Steps (one per line)", "info": "Each line becomes a numbered step.", "default": "Use a Tape Measure: wrap it around your wrist just below the wrist bone, ensuring the numbers face out.\nMark and Measure: note where the ends meet and measure the length with a ruler.\nAdjust for Comfort: ensure the measurement fits comfortably around your wrist." },
+    { "type": "image_picker", "id": "tab_2_image", "label": "Image" },
+    { "type": "range", "id": "tab_2_columns", "min": 2, "max": 5, "step": 1, "label": "Number of columns", "default": 3 },
+    { "type": "text", "id": "tab_2_col_1", "label": "Column 1 heading", "default": "Cuff Size" },
+    { "type": "text", "id": "tab_2_col_2", "label": "Column 2 heading", "default": "Wrist Size (mm)" },
+    { "type": "text", "id": "tab_2_col_3", "label": "Column 3 heading", "default": "Wrist Size (in)" },
+    { "type": "text", "id": "tab_2_col_4", "label": "Column 4 heading" },
+    { "type": "text", "id": "tab_2_col_5", "label": "Column 5 heading" },
+    { "type": "textarea", "id": "tab_2_note", "label": "Note below table", "default": "If you fall between two sizes, we recommend choosing the larger size for a better fit." },
+
+    { "type": "header", "content": "Bottom bar" },
+    { "type": "inline_richtext", "id": "bottom_bar_details", "label": "Bottom content" },
+
+    { "type": "header", "content": "Ring sizer popup" },
+    { "type": "paragraph", "content": "Opens when a visitor clicks the top-bar button (any element with the class SizeCharts-ring-sizer-request). Submissions are emailed to your store contact email." },
+    { "type": "text", "id": "ring_sizer_heading", "label": "Popup heading", "default": "Request A Ring Sizer" },
+    { "type": "textarea", "id": "ring_sizer_body", "label": "Popup body copy", "default": "Order your complimentary ring sizer to ensure the perfect fit for your next MARCO DAL MASO piece. Your request will be processed and dispatched within [X] business days." },
+    { "type": "text", "id": "ring_sizer_cta", "label": "Submit button label", "default": "Order your complimentary ring sizer" },
+    { "type": "textarea", "id": "ring_sizer_success", "label": "Success message", "default": "Thank you — your ring sizer request has been received. A confirmation is on its way to your inbox." },
+
+    { "type": "header", "content": "Appearance" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "muted_color", "label": "Muted text", "default": "#000000" },
+    { "type": "color", "id": "border_color", "label": "Borders", "default": "#e3e3e3" },
+    { "type": "color", "id": "tabs_bg_color", "label": "Tab bar background", "default": "#f2f2f2" },
+    { "type": "range", "id": "max_width", "min": 400, "max": 1200, "step": 20, "unit": "px", "label": "Max width", "default": 640 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Top padding", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Bottom padding", "default": 8 }
+  ],
+  "blocks": [
+    {
+      "type": "tab_1_row",
+      "name": "Tab 1 row",
+      "settings": [
+        { "type": "text", "id": "col_1", "label": "Column 1", "default": "S" },
+        { "type": "text", "id": "col_2", "label": "Column 2", "default": "157-167" },
+        { "type": "text", "id": "col_3", "label": "Column 3", "default": "6.18\"-6.57\"" },
+        { "type": "text", "id": "col_4", "label": "Column 4" },
+        { "type": "text", "id": "col_5", "label": "Column 5" }
+      ]
+    },
+    {
+      "type": "tab_2_row",
+      "name": "Tab 2 row",
+      "settings": [
+        { "type": "text", "id": "col_1", "label": "Column 1", "default": "S" },
+        { "type": "text", "id": "col_2", "label": "Column 2", "default": "157-167" },
+        { "type": "text", "id": "col_3", "label": "Column 3", "default": "6.18\"-6.57\"" },
+        { "type": "text", "id": "col_4", "label": "Column 4" },
+        { "type": "text", "id": "col_5", "label": "Column 5" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size chart",
+      "blocks": [
+        { "type": "tab_1_row", "settings": { "col_1": "S", "col_2": "157-167", "col_3": "6.18\"-6.57\"" } },
+        { "type": "tab_1_row", "settings": { "col_1": "M", "col_2": "166-176", "col_3": "6.54\"-6.93\"" } },
+        { "type": "tab_1_row", "settings": { "col_1": "L", "col_2": "175-185", "col_3": "6.89\"-7.28\"" } },
+        { "type": "tab_1_row", "settings": { "col_1": "XL", "col_2": "185-195", "col_3": "7.28\"-7.68\"" } },
+        { "type": "tab_2_row", "settings": { "col_1": "S", "col_2": "157-167", "col_3": "6.18\"-6.57\"" } },
+        { "type": "tab_2_row", "settings": { "col_1": "M", "col_2": "166-176", "col_3": "6.54\"-6.93\"" } },
+        { "type": "tab_2_row", "settings": { "col_1": "L", "col_2": "175-185", "col_3": "6.89\"-7.28\"" } },
+        { "type": "tab_2_row", "settings": { "col_1": "XL", "col_2": "185-195", "col_3": "7.28\"-7.68\"" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

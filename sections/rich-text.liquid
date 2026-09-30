@@ -1,3 +1,13 @@
+{%- for block in section.blocks -%}
+  {%- if block.type == 'text' and block.settings.text == blank -%}
+    <style>
+      #shopify-section-{{ section.id }} {
+        margin: 0 !important;
+      }
+    </style>
+  {%- endif -%}
+{%- endfor -%}
+
 {%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
 <style>
   .{{ section.id }}_for_bottom_padding{padding-bottom:{{ section.settings.padding_b }}px;}
@@ -23,8 +33,8 @@
               {%- if block.settings.enlarge_text %}<div class="enlarge-text">{% endif -%}
               {{ block.settings.text }}
               {%- if block.settings.enlarge_text %}</div>{% endif -%}
-            {%- else -%}
-              {{ 'home_page.onboarding.no_content' | t }}
+            {% comment %} {%- else -%}
+              {{ 'home_page.onboarding.no_content' | t }} {% endcomment %}
             {%- endif -%}
           </div>
         {%- when 'html' -%}

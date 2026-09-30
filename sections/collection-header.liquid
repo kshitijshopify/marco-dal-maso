@@ -1,3 +1,43 @@
+<style>
+  .collection-hero__content .section-header__title {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin: 0;
+    text-align: left;
+  }
+  .collection-hero__content .section-header__title .title-main {
+    font-weight: 500;
+    line-height: 1.05;
+    color: #fff;
+    letter-spacing: .5px;
+  }
+  .collection-hero__content .section-header__title .title-sub {
+      font-weight: 300;
+      color: #eaeaea;
+      letter-spacing: .3px;
+      margin-top: 15px;
+      width: 100%;
+      text-transform: none;
+      font-size: 20px;
+      font-family: Montserrat;
+      line-height: 1.2;
+      display: none;
+  }
+  .collection-hero__content .section-header__title .title-sub::before {
+    content: "";
+    display: block;
+    width: 70px;
+    height: 1px;
+    background: #f0c691;
+    margin-bottom: 15px;
+  }
+  @media only screen and (max-width: 768px) {
+    .collection-hero__content .section-header__title .title-sub::before {
+      margin-bottom: 15px;
+    }
+  }
+</style>
 {%- assign disable_sticky_header = false -%}
 
 {%- if section.settings.enable -%}
@@ -17,10 +57,11 @@
 
           {%- render 'image-element',
               img: collection.image,
-              img_width: 2400,
               classes: 'collection-hero__image image-fit',
               preload: true,
               loading: 'eager',
+              sizes: '(max-width: 768px) 100vw, 100vw',
+              widths: '480, 720, 960, 1200, 1600',
           -%}
 
         {%- if section.settings.parallax -%}
@@ -33,28 +74,21 @@
             <header class="section-header section-header--hero">
               <div class="section-header__shadow">
                 {%- render 'breadcrumbs' -%}
-                {% if collection.handle contains 'black-friday' %}
-                  {% comment %}<style>.collection-hero__content:before{display: none;}</style>
-                  <h1 class="section-header__title">30% OFF
-                  </h1>
-                  <span class="coll_desc">Minimum spend $200.</span>
-                  <h1 class="section-header__title">35% OFF
-                  </h1>
-                  <span class="coll_desc">Minimum spend $1000.</span>
-                  <small>Discount automatically applied at checkout</small>{% endcomment %}
-                {% else %}
                 <h1 class="section-header__title">
-                  {{ collection.title }} 
-                  
-    {% comment %}{% if collection.description != blank %}
-                    <span class="coll_Desc">{{ collection.description }}</span>                 
-                    {%  endif %}{% endcomment %}
-                </h1>
-                {% comment %} <span class="coll_Descx">The Annual Event is live - 30% applied at checkout.</span>   {% endcomment %}
+                  <span class="title-main">{{ collection.title }}</span>
+                  {% if collection.metafields.custom.collection_title != blank %}
+                    <span class="title-sub">{{ collection.metafields.custom.collection_title.value }}</span>
                   {% endif %}
+                </h1>
+                {% comment %} <h1 class="section-header__title">
+                  {% if collection.metafields.custom.collection_title != blank %}
+                    {{ collection.metafields.custom.collection_title.value }}
+                  {% else %}
+                    {{ collection.title }}
+                  {% endif %}
+                </h1> {% endcomment %}
               </div>
             </header>
-
           </div>
         </div>
       </div>
@@ -129,34 +163,3 @@
   }
 }
 {% endschema %}
-   <style>
-.coll_Desc{padding: 2px 0 2px 30px;font-size: 1rem;line-height: 24px;position:relative;top: 0px;margin-left: 30px;}
-.coll_Desc::before {content: "";opacity: .3;background: #fff;width: 1px;height: 100%;position: absolute;top: 0;left: 0;}
-.collection-hero__content .section-header__title{display: flex;align-items: center;justify-content: center;}
- .transition-body .announcement-bar {
-  /* background: transparent; */
-  /* position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 9999; */
-  width: 100%;
-}
-    .collection-hero__content small {
-    margin-top: 10px;
-    font-size: 12px;
-}
-@media screen and (max-width:640px){
-.collection-hero__content .section-header__title {
-    max-width: 100%;
-}
-  .coll_Desc {
-    padding: 2px 0 2px 0px;
-    font-size: 12px;
-    line-height: 16px;
-    margin-left: 0;
-}
-  /* .collection-hero {
-    height: auto;
-} */
-}
-</style>

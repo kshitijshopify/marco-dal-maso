@@ -8,7 +8,6 @@
  * ------------------------------------------------------------
  */
 {
-  "layout": "theme",
   "sections": {
     "hero_video_dKjDgN": {
       "type": "hero-video",
@@ -23,8 +22,6 @@
       ],
       "name": "t:sections.hero-video.presets.video_hero.name",
       "settings": {
-        "full_width": true,
-        "color_bg": "#ffffff",
         "title": "A Considered Gesture",
         "title_size": 40,
         "subheading": "<p>Gift Cards delivered instantly</p>",
@@ -32,7 +29,6 @@
         "link": "shopify://products/gift-card",
         "color_accent": "#ffffff",
         "text_align": "vertical-center horizontal-center",
-        "video_1": "shopify://files/videos/16-9.MOV",
         "video_url": "",
         "overlay_opacity": 0,
         "section_height": "750px",
@@ -46,20 +42,20 @@
           "type": "image",
           "settings": {
             "top_subheading": "",
-            "title": "SPRING, MADE IN ITALY",
+            "title": "Innovation in Form",
             "title_size": 35,
-            "subheading": "",
+            "subheading": "Shape-memory core. \nItalian craftsmanship.",
             "text_color": "#ffffff",
-            "link": "shopify://collections/spring-collection",
-            "link_text": "DISCOVER THE EDIT",
+            "link": "https://marcodalmaso.com/products/acies-leather-cuff-oxidized-silver-black-enamel-black-leather-agsc22-01bvpn",
+            "link_text": "Discover Acies",
             "link_2": "",
             "link_text_2": "",
-            "color_accent": "#ffffff",
+            "color_accent": "rgba(0,0,0,0)",
             "text_align": "vertical-center horizontal-left",
-            "text_align_mobiles": "mobvertical-center mobhorizontal-left",
-            "image": "shopify://shop_images/Marco_Dal_Maso_male_model_wearing_the_moneta_lapis_ring_-_Edited_cda4705e-29ac-4655-9386-84dba36db4c3.jpg",
+            "text_align_mobiles": "mobvertical-bottom mobhorizontal-center",
+            "image": "shopify://shop_images/HP_Banner_Model_Weating_Acies_Leather_Cuff.jpg",
             "video": "",
-            "image_mobile": "shopify://shop_images/Marco_Dal_Maso_male_model_wearing_the_moneta_lapis_ring_-_Edited.jpg",
+            "image_mobile": "shopify://shop_images/HP_Banner_Model_Weating_Acies_Leather_Cuff_Mobile.jpg",
             "video_mobile": "",
             "object-position": "center",
             "parallax_direction": "top",
@@ -70,9 +66,10 @@
       "block_order": [
         "image_NzY94c"
       ],
+      "disabled": true,
       "custom_css": [
         ".hero__title,.hero__subtitle {text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);}",
-        ".btn {background: #fff !important; color: #000 !important;}",
+        ".btn {background: #ffffff !important; color: #000000 !important;}",
         ".slider-buttons,.slideshow__controls {bottom: 6px !important;}",
         "@media (max-width: 767px) {.hero__title, .hero__subtitle {color: #ffffff !important; } .hero__title {font-size: 28px !important; } .hero__subtitle {font-size: 16px !important; line-height: 24px !important; } .banner__buttons {margin-bottom: 14px !important; }}"
       ],
@@ -88,70 +85,65 @@
           "type": "image",
           "settings": {
             "top_subheading": "",
-            "title": "NEW IN",
-            "title_size": 40,
-            "subheading": "The newly released Iron Snake Collection",
-            "text_color": "#000000",
-            "link": "shopify://collections/iron-snake",
-            "link_text": "Discover Now",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "#ffffff",
-            "text_align": "vertical-bottom horizontal-left",
-            "text_align_mobiles": "mobvertical-top mobhorizontal-center",
-            "image": "shopify://shop_images/Frame_135.jpg",
-            "video": "",
-            "image_mobile": "shopify://shop_images/Frame_138.jpg",
-            "video_mobile": "",
-            "object-position": "center",
-            "parallax_direction": "top",
-            "overlay_opacity": 0
-          }
-        },
-        "image_XmBDXx": {
-          "type": "image",
-          "settings": {
-            "top_subheading": "",
-            "title": "THE FALL EDIT",
-            "title_size": 40,
-            "subheading": "Refined pieces for the season ahead.",
-            "text_color": "#ffffff",
-            "link": "shopify://collections/fall-edit",
-            "link_text": "Shop Collection",
+            "title": "Silver, Engineered.",
+            "subheading": "",
+            "link": "shopify://collections/silver-bracelets",
+            "link_text": "Explore Bracelets",
             "link_2": "",
             "link_text_2": "",
             "color_accent": "#ffffff",
             "text_align": "vertical-center horizontal-left",
-            "text_align_mobiles": "mobvertical-bottom mobhorizontal-left",
-            "image": "shopify://shop_images/Group_40.jpg",
-            "video": "",
-            "video_mobile": "https://cdn.shopify.com/videos/c/o/v/df26a5d4c8db456087489c380854e0a2.mp4",
-            "object-position": "center",
+            "text_align_mob": "mobvertical-bottom mobhorizontal-center",
+            "image": "shopify://shop_images/image_1_dc0d7edd-7faf-4155-a0eb-e4995452550f.jpg",
+            "image_mobile": "shopify://shop_images/image_2_30e5df3e-6a12-4a71-bdd5-ad8b9a0c1c17.jpg",
             "parallax_direction": "top",
             "overlay_opacity": 0
           }
         }
       },
       "block_order": [
-        "image_zK4hay",
-        "image_XmBDXx"
+        "image_zK4hay"
       ],
       "disabled": true,
       "custom_css": [
-        ".btn {font-size: 14px; font-weight: 700; text-align: center; padding: 11px 12px; letter-spacing: 0; width: auto; border: none; transition: 0.5s !important;}",
-        ".hero__image-wrapper:before,.hero__media:before {background-color: transparent !important;}",
-        ".hero__text-shadow:before {background: none;}",
-        ".hero__subtitle {font-size: 18px; font-weight: 500; line-height: 28px; text-underline-position: from-font; text-decoration-skip-ink: none; max-width: 609px; width: 100%; margin-bottom: 30px; margin-top: 10px;}"
+        "@media only screen and (max-width: 768px) {.hero__title {font-size: 28px !important; }}"
       ],
       "settings": {
-        "section_height": "natural",
-        "mobile_height": "auto",
-        "first_section": true,
+        "section_height": "81vh",
+        "mobile_height": "78vh",
         "parallax": false,
         "style": "dots",
         "autoplay": true,
         "autoplay_speed": 7,
-        "lazyload_images": false
+        "lazyload_images": false,
+        "custom_class": ""
+      }
+    },
+    "image_overlay_content_TajyxJ": {
+      "type": "image-overlay-content",
+      "name": "Image Overlay Content",
+      "settings": {
+        "desktop_image": "shopify://shop_images/Summer_Selection_from_Marco_Dal_Maso_60bea955-0e3d-499c-bdde-484886608cc9.png",
+        "mobile_image": "shopify://shop_images/summer_time_jewelry_by_marco_dal_maso.png",
+        "overline": "",
+        "heading": "Built for Summer",
+        "h1_true": true,
+        "description": "<p>Structure, contrast, and Italian craft.</p>",
+        "button_label": "Shop the edit",
+        "button_link": "shopify://collections/summer-selection",
+        "text_color": "#ffffff",
+        "button_bg": "#ffffff",
+        "button_text": "#000000",
+        "overlay_strength": 20,
+        "content_position": "left",
+        "desktop_height": 81,
+        "desktop_height_unit": "vh",
+        "desktop_heading_size": 35,
+        "mobile_height": 78,
+        "mobile_height_unit": "vh",
+        "mobile_heading_size": 22,
+        "mobile_content_position": "center",
+        "mobile_text_align": "center"
       }
     },
     "featured_collection_hmrRFp": {
@@ -188,13 +180,13 @@
             "image1": "shopify://shop_images/Frame_228.jpg",
             "title1": "Earrings",
             "collection2": "mens-necklaces",
-            "image2": "shopify://shop_images/Combining_oxidized_sterling_silver_with_natural_pearl_beads_-_AGEL0005-03BV-2.jpg",
+            "image2": "shopify://shop_images/ULYSSES_FACETED_CHAIN_72238c3a-d840-4877-a4ba-1888edaafec7.png",
             "title2": "Necklaces",
             "collection3": "mens-bracelets",
-            "image3": "shopify://shop_images/GBR35-01WHPM2_M_2.jpg",
+            "image3": "shopify://shop_images/Frame_227.jpg",
             "title3": "Bracelets",
             "collection4": "mens-rings",
-            "image4": "shopify://shop_images/AGAN42-01WY_M.jpg",
+            "image4": "shopify://shop_images/Marco_Dal_Maso_male_model_wearing_the_moneta_lapis_ring_-_Edited.jpg",
             "title4": "Rings",
             "collection5": "",
             "image5": "shopify://shop_images/Frame_77.png",
@@ -228,7 +220,7 @@
             "mobimage3": "shopify://shop_images/Frame_226.jpg",
             "title3": "Necklaces",
             "collection4": "womens-rings",
-            "image4": "shopify://shop_images/AN_13_4217_2.jpg",
+            "image4": "shopify://shop_images/18k_nail_ring_from_Forged_Trancendence_Collection_by_Marco_Dal_Maso_on_a_female_hand.png",
             "mobimage4": "shopify://shop_images/AN_13_4217_2.jpg",
             "title4": "Rings",
             "collection5": "",
@@ -264,9 +256,76 @@
         "text_color": "rgba(0,0,0,0)",
         "button_background": "rgba(0,0,0,0)",
         "button_text_color": "rgba(0,0,0,0)",
-        "padding_top": 32,
+        "padding_top": 44,
         "padding_bottom": 36,
         "enable_gutter": false
+      }
+    },
+    "promo_grid_8riEYW": {
+      "type": "promo-grid",
+      "blocks": {
+        "advanced_qKe8b7": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "SUMMER ESSENTIALS",
+            "textarea": "",
+            "cta_text1": "SHOP EARRINGS",
+            "cta_link1": "shopify://collections/mens-earrings",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/summer_earrings_vermeil.jpg",
+            "video_url": "",
+            "width": "50",
+            "height": 800,
+            "text_size": 100,
+            "text_align": "vertical-bottom horizontal-left",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        },
+        "advanced_KUi9K3": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "THE FINEST SELECTION",
+            "textarea": "",
+            "cta_text1": "SHOP 18K GOLD BRACELETS",
+            "cta_link1": "shopify://collections/mens-18kt-gold-bracelets",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/gold_bracelet_men.jpg",
+            "video_url": "",
+            "width": "50",
+            "height": 800,
+            "text_size": 100,
+            "text_align": "vertical-bottom horizontal-left",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        }
+      },
+      "block_order": [
+        "advanced_qKe8b7",
+        "advanced_KUi9K3"
+      ],
+      "custom_css": [
+        "h2.rte--block ~ div.rte--block {margin-bottom: 26px;}",
+        "h2.rte--block {margin-bottom: 0; padding-left: 0 !important; padding-right: 0 !important;}",
+        "@media screen and (max-width: 768px) {.custom-promo-grid .flex-grid {gap: 20px; } .promo-grid--space-top {padding-bottom: 30px; } .flex-grid.flex-grid--gutters {row-gap: 30px; }}",
+        "@media screen and (min-width: 769px) {.flex-grid.flex-grid--gutters {column-gap: 17px; margin-left: -17px; row-gap: 0; flex-wrap: nowrap; }}"
+      ],
+      "settings": {
+        "custom_class": "",
+        "full_width": true,
+        "customblock": false,
+        "gutter_size": 0,
+        "space_above": true,
+        "space_below": true,
+        "lazyload_images": true,
+        "ms": false
       }
     },
     "promo_grid_6p8aYH": {
@@ -319,6 +378,7 @@
         "advanced_Lp64zq",
         "advanced_BfDKRm"
       ],
+      "disabled": true,
       "custom_css": [
         "h2.rte--block ~ div.rte--block {margin-bottom: 26px;}",
         "h2.rte--block {margin-bottom: 0; padding-left: 0 !important; padding-right: 0 !important;}",
@@ -326,17 +386,42 @@
         "@media screen and (min-width: 769px) {.flex-grid.flex-grid--gutters {column-gap: 17px; margin-left: -17px; row-gap: 0; flex-wrap: nowrap; }}"
       ],
       "settings": {
-        "custom_class": "",
+        "custom_class": "custom-promo-grid",
         "full_width": true,
         "customblock": false,
         "gutter_size": 0,
-        "space_above": true,
-        "space_below": true,
+        "space_above": false,
+        "space_below": false,
         "lazyload_images": true,
         "ms": false
       }
     },
     "background_image_text_9Yjtyj": {
+      "type": "background-image-text",
+      "disabled": true,
+      "custom_css": [
+        "@media screen and (min-width: 768px) {{display: none; }}"
+      ],
+      "settings": {
+        "classes": "custom-banner-img",
+        "subtitle": "",
+        "title": "",
+        "text": "",
+        "text_color": "#000000",
+        "button_label": "",
+        "button_link": "shopify://collections/eclipse",
+        "bg_color": "#000000",
+        "btn_color": "#ffffff",
+        "image": "shopify://shop_images/Frame_157.jpg",
+        "layout": "left",
+        "height": 650,
+        "framed": false,
+        "parallax": true,
+        "parallax_direction": "top",
+        "lazyload_images": true
+      }
+    },
+    "background_image_text_7EhP77": {
       "type": "background-image-text",
       "custom_css": [
         "@media screen and (min-width: 768px) {.bgimg__with__parallax_option {display: none; }}"
@@ -351,7 +436,7 @@
         "button_link": "shopify://collections/eclipse",
         "bg_color": "#000000",
         "btn_color": "#ffffff",
-        "image": "shopify://shop_images/AGBR0155-02BLSBP_7.jpg",
+        "image": "shopify://shop_images/lash_bracelets_summer.jpg",
         "layout": "left",
         "height": 650,
         "framed": false,
@@ -360,17 +445,126 @@
         "lazyload_images": true
       }
     },
-    "featured_collection_p7AV6W": {
+    "featured_collection_PP8qRi": {
       "type": "featured-collection",
       "custom_css": [
         "@media (max-width: 768px) {.custom-feature-product {padding-bottom: 100px !important; } .grid__item--view-all {padding-top: 30px; } .grid-product {margin-bottom: 15px; }}",
         "@media (min-width: 769px) {.grid-product .variant-wrapper {text-align: left; min-height: 45px; } .btn {margin-bottom: 45px; }}"
       ],
       "settings": {
-        "title": "MONETA",
+        "title": "lash",
         "enlarge_text": true,
         "text": "<p>Discover The Featured Collection</p>",
-        "home_featured_products": "moneta-collection",
+        "home_featured_products": "lash-collection",
+        "per_row": 4,
+        "rows": 1,
+        "mobile_scrollable": false,
+        "carousel": false,
+        "slider_flow": false,
+        "view_all": true,
+        "divider": false
+      }
+    },
+    "image_overlay_content_HUTpE4": {
+      "type": "image-overlay-content",
+      "name": "Image Overlay Content",
+      "settings": {
+        "desktop_image": "shopify://shop_images/craftsman_working_on_silver_Italian_jewelry_for_men_by_mens_designer_marco_dal_maso_1.jpg",
+        "overline": "",
+        "heading": "MADE IN ITALY, ALWAYS",
+        "h1_true": false,
+        "description": "",
+        "button_label": "Learn More",
+        "button_link": "shopify://pages/about-us",
+        "text_color": "#ffffff",
+        "button_bg": "#ffffff",
+        "button_text": "#000000",
+        "overlay_strength": 35,
+        "content_position": "center",
+        "desktop_height": 650,
+        "desktop_height_unit": "px",
+        "desktop_heading_size": 35,
+        "mobile_height": 250,
+        "mobile_height_unit": "px",
+        "mobile_heading_size": 20,
+        "mobile_content_position": "center",
+        "mobile_text_align": "center"
+      }
+    },
+    "slideshow_y87pLj": {
+      "type": "slideshow",
+      "blocks": {
+        "image_rHLyir": {
+          "type": "image",
+          "settings": {
+            "top_subheading": "",
+            "title": "MADE IN ITALY, ALWAYS",
+            "subheading": "",
+            "link": "shopify://pages/about-us",
+            "link_text": "Learn More",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "#ffffff",
+            "text_align": "vertical-center horizontal-center",
+            "text_align_mob": "mobvertical-bottom mobhorizontal-center",
+            "image": "shopify://shop_images/craftsman_working_on_silver_Italian_jewelry_for_men_by_mens_designer_marco_dal_maso.jpg",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_rHLyir"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "section_height": "650px",
+        "mobile_height": "250px",
+        "parallax": false,
+        "style": "dots",
+        "autoplay": true,
+        "autoplay_speed": 7,
+        "lazyload_images": false,
+        "custom_class": ""
+      }
+    },
+    "background_image_text_phc86c": {
+      "type": "background-image-text",
+      "custom_css": [
+        "@media screen and (min-width: 768px) {{display: none; }}"
+      ],
+      "settings": {
+        "classes": "custom-banner-img",
+        "subtitle": "",
+        "title": "",
+        "text": "",
+        "text_color": "#000000",
+        "button_label": "",
+        "button_link": "shopify://collections/ulysses-collection",
+        "bg_color": "#000000",
+        "btn_color": "#ffffff",
+        "image": "shopify://shop_images/AMBIENTATO_09_1.png",
+        "layout": "left",
+        "height": 450,
+        "framed": false,
+        "parallax": true,
+        "parallax_direction": "top",
+        "lazyload_images": true
+      }
+    },
+    "featured_collection_69DLjE": {
+      "type": "featured-collection",
+      "custom_css": [
+        "{/* display: none; */}",
+        "@media screen and (max-width: 768px) {{display: block; padding-bottom: 100px !important; } .grid__item--view-all {padding-top: 30px; } .grid-product {margin-bottom: 15px; }}",
+        "@media (min-width: 769px) {.grid-product .variant-wrapper {text-align: left; min-height: 45px; }}"
+      ],
+      "settings": {
+        "title": "ICOnic RInGS",
+        "enlarge_text": true,
+        "text": "",
+        "home_featured_products": "mens-rings",
         "per_row": 4,
         "rows": 1,
         "mobile_scrollable": false,
@@ -410,9 +604,9 @@
       "block_order": [
         "image_R93CCL"
       ],
+      "disabled": true,
       "custom_css": [
-        "@media screen and (max-width: 768px) {.slideshow-section {margin-bottom: 30px; display: inline-block; width: 100%; }}",
-        ".slideshow-section .slideshow-wrapper > div > div {width: 100%;}"
+        "@media screen and (max-width: 768px) {.slideshow-section {margin-bottom: 30px; }}"
       ],
       "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
       "settings": {
@@ -426,34 +620,14 @@
         "lazyload_images": true
       }
     },
-    "featured_collection_9mjUQd": {
-      "type": "featured-collection",
-      "custom_css": [
-        ".custom-feature-product {display: none;}",
-        "@media screen and (max-width: 768px) {.custom-feature-product {display: block; padding-bottom: 100px !important; } .grid__item--view-all {padding-top: 30px; } .grid-product {margin-bottom: 15px; }}",
-        "@media (min-width: 769px) {.grid-product .variant-wrapper {text-align: left; min-height: 45px; }}"
-      ],
-      "settings": {
-        "title": "EXPLORE JUST ARRIVED",
-        "enlarge_text": true,
-        "text": "<p>New Arrivals</p>",
-        "home_featured_products": "just-arrived",
-        "per_row": 4,
-        "rows": 1,
-        "mobile_scrollable": false,
-        "carousel": false,
-        "slider_flow": false,
-        "view_all": true,
-        "divider": false
-      }
-    },
     "blog_posts_bqGdG3": {
       "type": "blog-posts",
       "custom_css": [
         "@media (max-width: 768px) {.article__grid-meta {margin-bottom: 0; }}"
       ],
       "settings": {
-        "title": "Stories",
+        "title": "The Craft Edit",
+        "h1_true": false,
         "blog": "craft-edit",
         "post_limit": 3,
         "blog_show_tags": false,
@@ -580,15 +754,22 @@
     "hero_video_dKjDgN",
     "slideshow_withvideo_slide_LH4kX3",
     "slideshow_3RdW4n",
+    "image_overlay_content_TajyxJ",
     "featured_collection_hmrRFp",
     "tabbed_collections_XDcYhH",
+    "promo_grid_8riEYW",
     "promo_grid_6p8aYH",
     "background_image_text_9Yjtyj",
-    "featured_collection_p7AV6W",
+    "background_image_text_7EhP77",
+    "featured_collection_PP8qRi",
+    "image_overlay_content_HUTpE4",
+    "slideshow_y87pLj",
+    "background_image_text_phc86c",
+    "featured_collection_69DLjE",
     "slideshow_old_Q949kd",
-    "featured_collection_9mjUQd",
     "blog_posts_bqGdG3",
     "custom_instagram_CaUNpy",
     "1764241935d4c42f68"
-  ]
+  ],
+  "layout": "theme"
 }

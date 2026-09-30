@@ -1,1 +1,26 @@
-{"parent":"header-group.json","context":{"market":"japan"},"sections":{"announcement":{"settings":{},"blocks":{"announcement_WPyPAh":{"settings":{"text":"<p>Handmade In Vicenza, Italy<\/p>"}}}}}}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "header-group.json",
+  "context": {
+    "market": "japan"
+  },
+  "sections": {
+    "announcement": {
+      "blocks": {
+        "announcement_qmRpHf": {
+          "settings": {
+            "text": "<p>Complimentary Shipping over ¥50,000 · No duties or taxes on delivery</p>"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,1 +1,83 @@
-{"sections":{"main":{"type":"main-page","disabled":true,"settings":{}},"8286af56-23b5-4bc4-b6ac-085dd352b3be":{"type":"faq","blocks":{"template--16816233414913__8286af56-23b5-4bc4-b6ac-085dd352b3be-question-1":{"type":"question","settings":{"title":"My order arrived damaged","text":"<p>If, despite our best efforts to carefully prepare your order, it arrives damaged and you would like to return the item, please accept oursincere apologies. To assist you with this matter, please contact our Customer Service team and send a minimum of three photos of the product you received.<\/p>"}}},"block_order":["template--16816233414913__8286af56-23b5-4bc4-b6ac-085dd352b3be-question-1"],"settings":{"title":"ORDER RECEIVED"}},"4feb63af-6977-495d-bb24-5948d3bb2cf7":{"type":"contact-form","settings":{"title":"STILL NEED ASSISTANCE?","text":"<p>Leave your message below and we'll get back to you shortly.<\/p>","show_phone":true,"show_order":true,"narrow_column":true}}},"order":["main","8286af56-23b5-4bc4-b6ac-085dd352b3be","4feb63af-6977-495d-bb24-5948d3bb2cf7"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "8286af56-23b5-4bc4-b6ac-085dd352b3be": {
+      "type": "faq",
+      "blocks": {
+        "template--16816233414913__8286af56-23b5-4bc4-b6ac-085dd352b3be-question-1": {
+          "type": "question",
+          "settings": {
+            "title": "My order arrived damaged",
+            "text": "<p>If, despite our best efforts to carefully prepare your order, it arrives damaged and you would like to return the item, please accept oursincere apologies. To assist you with this matter, please contact our Customer Service team and send a minimum of three photos of the product you received.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--16816233414913__8286af56-23b5-4bc4-b6ac-085dd352b3be-question-1"
+      ],
+      "settings": {
+        "title": "ORDER RECEIVED"
+      }
+    },
+    "4feb63af-6977-495d-bb24-5948d3bb2cf7": {
+      "type": "contact-form",
+      "disabled": true,
+      "settings": {
+        "title": "STILL NEED ASSISTANCE?",
+        "text": "<p>Leave your message below and we'll get back to you shortly.</p>",
+        "show_phone": true,
+        "narrow_column": true
+      }
+    },
+    "apps_wGr4gk": {
+      "type": "apps",
+      "blocks": {
+        "forms_inline_rTktdw": {
+          "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
+          "settings": {
+            "form_id": "952529",
+            "text_color": "#202020",
+            "button_background_color": "#202020",
+            "button_label_color": "#ffffff",
+            "links_color": "#000000",
+            "errors_color": "#e02229",
+            "text_alignment": "left",
+            "form_alignment": "center",
+            "padding_top": 0,
+            "padding_bottom": 24,
+            "padding_right": 0,
+            "padding_left": 0
+          }
+        }
+      },
+      "block_order": [
+        "forms_inline_rTktdw"
+      ],
+      "settings": {
+        "full_width": false,
+        "space_around": true,
+        "image_width": "50",
+        "layout": "right"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "8286af56-23b5-4bc4-b6ac-085dd352b3be",
+    "4feb63af-6977-495d-bb24-5948d3bb2cf7",
+    "apps_wGr4gk"
+  ]
+}

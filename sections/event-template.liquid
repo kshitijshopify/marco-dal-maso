@@ -18,30 +18,41 @@
       {%- endif -%}
     </header>
 
-    <div class="grid grid--uniform soon_comingup_event">
+    {% assign featuredevent = '' %}
+    {% comment %} <div class="grid grid--uniform soon_comingup_event">
       {%- for article in blog.articles -%}
         {% assign today_date = "now" | date: "%s" | times: 1 %}
-        {% assign pre_date = article.metafields.custom.event_end_date | date: "%s" | times: 1 %}
+        {% if article.metafields.custom.event_end_date != blank %}
+          {% assign pre_date = article.metafields.custom.event_end_date | date: "%s" | times: 1 %}
+        {% else %}
+          {% assign pre_date = article.metafields.custom.event_start_date | date: "%s" | times: 1 %}
+        {% endif %}
         {% if today_date <= pre_date %}
           {%- render 'article-grid-single', article: article, grid_item_width: 'medium-up--one-whole', per_row: '1', image_size: 'landscape' -%}
           {% assign featuredevent = article.title %}
           {% break %}
         {% endif %}
       {%- endfor -%}
-    </div>
+    </div> {% endcomment %}
     <div class="grid grid--uniform comingup_incoming_months">
       {%- for article in blog.articles -%}
         {% assign today_date = "now" | date: "%s" | times: 1 %}
-        {% assign pre_date = article.metafields.custom.event_end_date | date: "%s" | times: 1 %}
+        {% if article.metafields.custom.event_end_date != blank %}
+          {% assign pre_date = article.metafields.custom.event_end_date | date: "%s" | times: 1 %}
+        {% else %}
+          {% assign pre_date = article.metafields.custom.event_start_date | date: "%s" | times: 1 %}
+        {% endif %}
         {% if today_date < pre_date and article.title != featuredevent%}
+         {% if article.title != featuredevent%}
           {%- render 'article-grid', article: article, grid_item_width: 'medium-up--one-half', per_row: '2', image_size: 'square' -%}
+         {% endif %}
         {% endif %}
       {%- endfor -%}
     </div>
 
-    {%- if paginate.pages > 1 -%}
+    {% comment %} {%- if paginate.pages > 1 -%}
       {%- render 'pagination', paginate: paginate -%}
-    {%- endif -%}
+    {%- endif -%} {% endcomment %}
 
   </div>
 </div>
@@ -56,7 +67,11 @@
           <div class="article_carousel past_events grid grid--uniform">
                 {%- for article in blog.articles -%}
                   {% assign today_date = "now" | date: "%s" | times: 1 %}
-                  {% assign pre_date = article.metafields.custom.event_end_date | date: "%s" | times: 1 %}
+                  {% if article.metafields.custom.event_end_date != blank %}
+                    {% assign pre_date = article.metafields.custom.event_end_date | date: "%s" | times: 1 %}
+                  {% else %}
+                    {% assign pre_date = article.metafields.custom.event_start_date | date: "%s" | times: 1 %}
+                  {% endif %}
                   {% if today_date > pre_date and article.title != featuredevent%}
                     {%- render 'article-grid', today_date: today_date, pre_date: pre_date, article: article, grid_item_width: 'medium-up--one-third', per_row: '3', image_size: 'square' -%}
                   {% endif %}
@@ -122,6 +137,35 @@ span.close {
   .section-header__title {
     margin-top: 50px;
 }
+
+   .article_carousel .flickity-button {
+          top: 50%;
+          transform: translateY(-50%);
+      }
+
+      .article_carousel .previous {
+          left: 20px;
+      }
+
+      
+    @media screen and (max-width: 768px) {
+        .article_carousel:not(.flickity-enabled) .grid__item {
+          display: none;
+        }
+
+        .article_carousel:not(.flickity-enabled) .grid__item:first-child,
+        .article_carousel:not(.flickity-enabled) .grid__item:nth-child(2) {
+          display: block;
+        }
+        .article_carousel.past_events .grid__item {
+            width: 50%;
+        }
+        
+        [data-section-id="template--21709789626625__main"] .page-content {
+          padding-left: 0;
+           padding-right: 0;
+        }
+    }
 .article_abs .article__grid-meta .btn{letter-spacing:0.3px;}
 /* @media screen and (min-width:769px){
   .article_carousel.past_events {

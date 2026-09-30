@@ -15,17 +15,17 @@
       "custom_css": [],
       "settings": {}
     },
-    "slideshow_gPP4Uf": {
-      "type": "slideshow",
+    "slideshow_old_3BtEaU": {
+      "type": "slideshow-old",
       "blocks": {
-        "image_DewT4L": {
+        "image_bQrPpb": {
           "type": "image",
           "settings": {
             "top_subheading": "",
             "title": "Endless\npossibilities.",
             "title_size": 80,
             "subheading": "Bring your brand to life",
-            "text_color": "rgba(0,0,0,0)",
+            "text_color": "#ffffff",
             "link": "",
             "link_text": "Optional button",
             "link_2": "",
@@ -43,17 +43,58 @@
         }
       },
       "block_order": [
-        "image_DewT4L"
+        "image_bQrPpb"
       ],
+      "custom_css": [
+        ".hero__image {object-fit: contain !important;}"
+      ],
+      "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
       "settings": {
         "section_height": "650px",
         "mobile_height": "auto",
-        "first_section": false,
+        "first_section": true,
         "parallax": true,
         "style": "bars",
         "autoplay": true,
         "autoplay_speed": 5,
         "lazyload_images": true
+      }
+    },
+    "slideshow_gPP4Uf": {
+      "type": "slideshow",
+      "blocks": {
+        "image_DewT4L": {
+          "type": "image",
+          "settings": {
+            "top_subheading": "",
+            "title": "Endless\npossibilities.",
+            "subheading": "<p>Bring your brand to life</p>",
+            "link": "",
+            "link_text": "Optional button",
+            "link_2": "",
+            "link_text_2": "",
+            "color_accent": "rgba(0,0,0,0)",
+            "text_align": "vertical-center horizontal-center",
+            "text_align_mob": "mobvertical-bottom mobhorizontal-center",
+            "image": "shopify://shop_images/banner3.jpg",
+            "parallax_direction": "top",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_DewT4L"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_height": "650px",
+        "mobile_height": "auto",
+        "parallax": true,
+        "style": "bars",
+        "autoplay": true,
+        "autoplay_speed": 5,
+        "lazyload_images": true,
+        "custom_class": ""
       }
     },
     "text_columns_QJCtzA": {
@@ -68,7 +109,7 @@
             "image_width": 650,
             "title": "Heading",
             "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
-            "style_link": true,
+            "style_link": false,
             "chat_btn": false,
             "button_label": "Learn More",
             "button_link": ""
@@ -83,7 +124,7 @@
             "image_width": 650,
             "title": "Heading",
             "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
-            "style_link": true,
+            "style_link": false,
             "chat_btn": false,
             "button_label": "Learn More",
             "button_link": ""
@@ -98,7 +139,7 @@
             "image_width": 650,
             "title": "Heading",
             "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
-            "style_link": true,
+            "style_link": false,
             "chat_btn": false,
             "button_label": "Learn More",
             "button_link": ""
@@ -159,7 +200,7 @@
             "image_width": 650,
             "title": "Heading",
             "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
-            "style_link": true,
+            "style_link": false,
             "chat_btn": false,
             "button_label": "Learn More",
             "button_link": ""
@@ -174,7 +215,7 @@
             "image_width": 650,
             "title": "Heading",
             "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
-            "style_link": true,
+            "style_link": false,
             "chat_btn": false,
             "button_label": "Learn More",
             "button_link": ""
@@ -189,7 +230,7 @@
             "image_width": 650,
             "title": "Heading",
             "text": "<p>Use this section to explain a set of product features, to link to a series of pages, or to answer common questions about your products. Add images for emphasis.</p>",
-            "style_link": true,
+            "style_link": false,
             "chat_btn": false,
             "button_label": "Learn More",
             "button_link": ""
@@ -214,6 +255,7 @@
   },
   "order": [
     "main",
+    "slideshow_old_3BtEaU",
     "slideshow_gPP4Uf",
     "text_columns_QJCtzA",
     "video_and_image_H6dimL",

@@ -1,0 +1,391 @@
+{%- comment -%}
+  Common questions — FAQ section
+  Upload to your theme's /sections folder as faq.liquid
+  Works with any Online Store 2.0 theme.
+
+  Collapsible behaviour:
+  - Mobile only (default): open list on desktop, accordion below the breakpoint.
+  - Always: accordion on every screen size.
+  - Never: everything open, no plus sign.
+{%- endcomment -%}
+
+{%- liquid
+  assign mode = section.settings.collapse_mode
+  assign bp = section.settings.mobile_breakpoint
+  assign use_details = true
+  if mode == 'never'
+    assign use_details = false
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  #shopify-section-{{ section.id }} .faq {
+    padding-top: {{ section.settings.padding_top | times: 0.65 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.65 | round: 0 }}px;
+    max-width: 1680px;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .faq__inner {
+    max-width: {{ section.settings.content_width }}px;
+    margin-inline: {% if section.settings.align_content == 'center' %}auto{% else %}0{% endif %};
+    padding-inline: 1.25rem;
+  }
+
+  #shopify-section-{{ section.id }} .faq__heading {
+    margin: 0 0 10px;
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size_mobile }}px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    text-transform: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .faq__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: {% if section.settings.rule_above_first %}1px solid {{ section.settings.divider_color }}{% else %}0{% endif %};
+  }
+
+  #shopify-section-{{ section.id }} .faq__item {
+    border-bottom: 1px solid {{ section.settings.divider_color }};
+    padding: 1.125rem 0;
+  }
+
+  #shopify-section-{{ section.id }} .faq__question {
+    margin: 0;
+    color: {{ section.settings.question_color }};
+    font-size: {{ section.settings.question_size_mobile }}px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  #shopify-section-{{ section.id }} .faq__answer,
+  #shopify-section-{{ section.id }} .faq__answer p {
+    color: {{ section.settings.answer_color }};
+    font-size: {{ section.settings.answer_size_mobile }}px;
+    line-height: 1.65;
+  }
+
+  #shopify-section-{{ section.id }} .faq__answer {
+    margin: 0.75rem 0 0.25rem;
+    max-width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .faq__answer p:first-child { margin-top: 0; }
+  #shopify-section-{{ section.id }} .faq__answer p:last-child { margin-bottom: 0; }
+  #shopify-section-{{ section.id }} .faq__answer a { color: inherit; }
+
+  /* Summary row */
+  #shopify-section-{{ section.id }} .faq__summary {
+    display: block;
+    cursor: pointer;
+    list-style: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #shopify-section-{{ section.id }} .faq__summary::-webkit-details-marker { display: none; }
+  #shopify-section-{{ section.id }} .faq__summary:focus-visible {
+    outline: 2px solid {{ section.settings.question_color }};
+    outline-offset: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .faq__icon {
+    display: inline-block;
+    margin-left: 0.7em;
+    color: {{ section.settings.icon_color }};
+    font-weight: 700;
+    line-height: 1;
+  }
+  #shopify-section-{{ section.id }} .faq__icon::before { content: '+'; }
+  #shopify-section-{{ section.id }} details[open] .faq__icon::before { content: '\2212'; }
+
+  {%- if section.settings.icon_position == 'right' -%}
+    #shopify-section-{{ section.id }} .faq__question {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+    #shopify-section-{{ section.id }} .faq__question-text { flex: 1 1 auto; }
+    #shopify-section-{{ section.id }} .faq__icon { margin-left: auto; }
+  {%- endif -%}
+  #shopify-section-{{ section.id }} .faq__question {
+    text-transform: inherit;
+  }
+  @media screen and (min-width: {{ bp }}px) {
+    #shopify-section-{{ section.id }} .faq {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    #shopify-section-{{ section.id }} .faq__inner { padding-inline: 72px; }
+    #shopify-section-{{ section.id }} .faq__heading {
+      margin-bottom: 2.25rem;
+      font-size: {{ section.settings.heading_size }}px;
+    }
+    #shopify-section-{{ section.id }} .faq__item { padding: 1.375rem 0; }
+    #shopify-section-{{ section.id }} .faq__question { font-size: {{ section.settings.question_size }}px; }
+    #shopify-section-{{ section.id }} .faq__answer,
+    #shopify-section-{{ section.id }} .faq__answer p {
+      font-size: {{ section.settings.answer_size }}px;
+      line-height: 1.7;
+    }
+    #shopify-section-{{ section.id }} .faq__answer { margin-top: 0.625rem; }
+
+    {%- if mode == 'mobile' -%}
+      /* Desktop: nothing to open or close */
+      #shopify-section-{{ section.id }} .faq__summary { cursor: default; pointer-events: none; }
+      #shopify-section-{{ section.id }} .faq__icon { display: none; }
+    {%- endif -%}
+  }
+  @media (max-width:767px){
+    span.faq__question-text {
+      text-transform: math-auto;
+    }
+    #shopify-section-{{ section.id }} .faq__heading {
+      font-size: 20px;
+    }
+    #shopify-section-{{ section.id }} .faq__answer p {
+      font-size: 16px;
+    }
+    
+  }
+{%- endstyle -%}
+
+<div class="faq">
+  <div class="faq__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="faq__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="faq__list" role="list">
+        {%- for block in section.blocks -%}
+          <li class="faq__item" {{ block.shopify_attributes }}>
+            {%- if use_details -%}
+              {%- liquid
+                assign is_open = false
+                if mode == 'mobile'
+                  assign is_open = true
+                elsif forloop.first and section.settings.open_first
+                  assign is_open = true
+                endif
+              -%}
+              <details class="faq__details" {% if is_open %}open{% endif %}>
+                <summary class="faq__summary">
+                  <h3 class="faq__question">
+                    <span class="faq__question-text">{{ block.settings.question | escape }}</span>
+                    <span class="faq__icon" aria-hidden="true"></span>
+                  </h3>
+                </summary>
+                <div class="faq__answer">{{ block.settings.answer }}</div>
+              </details>
+            {%- else -%}
+              <h3 class="faq__question">
+                <span class="faq__question-text">{{ block.settings.question | escape }}</span>
+              </h3>
+              <div class="faq__answer">{{ block.settings.answer }}</div>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- if mode == 'mobile' -%}
+  <script>
+    (function () {
+      var root = document.getElementById('shopify-section-{{ section.id }}');
+      if (!root) return;
+      var mq = window.matchMedia('(min-width: {{ bp }}px)');
+      var items = root.querySelectorAll('details.faq__details');
+      var openFirst = {{ section.settings.open_first | json }};
+      var touched = false;
+
+      function sync() {
+        for (var i = 0; i < items.length; i++) {
+          items[i].open = mq.matches ? true : (openFirst && i === 0);
+        }
+      }
+
+      sync();
+
+      function onChange() {
+        touched = false;
+        sync();
+      }
+
+      if (mq.addEventListener) {
+        mq.addEventListener('change', onChange);
+      } else if (mq.addListener) {
+        mq.addListener(onChange);
+      }
+
+      root.addEventListener('toggle', function () { touched = true; }, true);
+    })();
+  </script>
+{%- endif -%}
+
+{%- if section.settings.enable_schema_markup and section.blocks.size > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in section.blocks -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | strip_html | strip_newlines | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | strip_html | strip_newlines | json }}
+            }
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Common questions",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Common questions" },
+
+    { "type": "header", "content": "Collapsible answers" },
+    {
+      "type": "select",
+      "id": "collapse_mode",
+      "label": "Collapse answers",
+      "options": [
+        { "value": "mobile", "label": "On mobile only" },
+        { "value": "always", "label": "On all screens" },
+        { "value": "never", "label": "Never — keep everything open" }
+      ],
+      "default": "mobile",
+      "info": "On mobile only: desktop shows the full list, mobile shows a tap-to-open accordion."
+    },
+    {
+      "type": "range",
+      "id": "mobile_breakpoint",
+      "label": "Mobile breakpoint",
+      "min": 480, "max": 1100, "step": 10, "unit": "px", "default": 750,
+      "info": "Screens narrower than this are treated as mobile."
+    },
+    { "type": "checkbox", "id": "open_first", "label": "Open the first question on mobile", "default": true },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Plus sign position",
+      "options": [
+        { "value": "inline", "label": "Next to the question" },
+        { "value": "right", "label": "Far right" }
+      ],
+      "default": "inline"
+    },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "align_content",
+      "label": "Content position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centered" }
+      ],
+      "default": "left"
+    },
+    { "type": "range", "id": "content_width", "label": "Content width", "min": 480, "max": 1200, "step": 20, "unit": "px", "default": 780 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "checkbox", "id": "rule_above_first", "label": "Show a line above the first question", "default": false },
+    { "type": "checkbox", "id": "enable_schema_markup", "label": "Add FAQ structured data for search engines", "default": true },
+
+    { "type": "header", "content": "Type sizes — desktop" },
+    { "type": "range", "id": "heading_size", "label": "Heading", "min": 16, "max": 48, "step": 1, "unit": "px", "default": 22 },
+    { "type": "range", "id": "question_size", "label": "Question", "min": 12, "max": 26, "step": 1, "unit": "px", "default": 15 },
+    { "type": "range", "id": "answer_size", "label": "Answer", "min": 12, "max": 22, "step": 1, "unit": "px", "default": 14 },
+
+    { "type": "header", "content": "Type sizes — mobile" },
+    { "type": "range", "id": "heading_size_mobile", "label": "Heading", "min": 16, "max": 40, "step": 1, "unit": "px", "default": 26 },
+    { "type": "range", "id": "question_size_mobile", "label": "Question", "min": 12, "max": 26, "step": 1, "unit": "px", "default": 17 },
+    { "type": "range", "id": "answer_size_mobile", "label": "Answer", "min": 12, "max": 22, "step": 1, "unit": "px", "default": 16 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#111111" },
+    { "type": "color", "id": "question_color", "label": "Question", "default": "#111111" },
+    { "type": "color", "id": "answer_color", "label": "Answer", "default": "#5c5c5c" },
+    { "type": "color", "id": "icon_color", "label": "Plus sign", "default": "#111111" },
+    { "type": "color", "id": "divider_color", "label": "Divider line", "default": "#e3e3e3" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Is gold vermeil real gold?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Yes. Vermeil is a defined standard, not a marketing term.</p>" }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Common questions",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "Is gold vermeil real gold?",
+            "answer": "<p>Yes. Vermeil is a defined standard, not a marketing term: it requires a solid sterling silver base and a minimum thickness of genuine gold. We plate in 18kt gold to a minimum of five microns - twice the required thickness - over solid sterling silver.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What is the difference between gold vermeil and gold plating?",
+            "answer": "<p>Gold plating can sit over any base metal, often brass, at any thickness. Vermeil must be gold over solid sterling silver and must meet a minimum gold thickness. The base metal is the meaningful difference.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Does gold vermeil tarnish?",
+            "answer": "<p>The gold itself does not tarnish. Over time the layer can soften with wear, and where it thins, the sterling silver beneath may darken. How quickly depends on how often the piece is worn and what it comes into contact with.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Does sterling silver tarnish?",
+            "answer": "<p>Yes, naturally. On our oxidized finishes that darkening is intentional and part of the design, so it should not be polished away. On polished silver, a soft cloth restores the surface.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Which material is best for everyday wear?",
+            "answer": "<p>Sterling silver, if you want something structural you can wear without thinking about it. Solid gold, if you want a piece that will not change at all. Vermeil sits between the two and rewards a little more care.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Does solid gold tarnish?",
+            "answer": "<p>No. In solid gold the color runs through the entire piece rather than sitting on the surface, which is why it is chosen for pieces meant to last decades.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

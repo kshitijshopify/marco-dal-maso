@@ -1,79 +1,3 @@
-{%- if full_product -%}
-  {%- assign real_product = full_product -%}
-{%- else -%}
-  {%- assign real_product = product -%}
-{%- endif -%}
-
-{%- if full_product -%}
-  {%- assign variable_product_metafields = full_product.metafields -%}
-{%- else -%}
-  {%- assign variable_product_metafields = product.metafields -%}
-{%- endif -%}
-
-{%- if full_product -%}
-  {%- assign product_id = full_product.id -%}
-{%- else -%}
-  {%- assign product_id = product.id -%}
-{%- endif -%}
-
-{%- if full_product -%}
-  {%- assign variable_price_min = product.price -%}
-{%- else -%}
-  {%- assign variable_price_min = product.price_min -%}
-{%- endif -%}
-
-{%- if product.options_with_values -%}
-  {%- assign variable_options_with_values = product.options_with_values -%}
-{%- else -%}
-  {%- assign variable_options_with_values = full_product.options_with_values -%}
-{%- endif -%}
-{%- if product.handle -%}
-  {%- assign variable_handle = product.handle -%}
-{%- else -%}
-  {%- assign variable_handle = full_product.handle -%}
-{%- endif -%}
-{%- if product.media -%}
-  {%- assign variable_media = product.media -%}
-{%- else -%}
-  {%- assign variable_media = full_product.media -%}
-{%- endif -%}
-{%- if full_product -%}
-  {%- assign media_cursor = 0 -%}
-  {%- if product.featured_image == null -%}
-    {%- assign media_cursor = 1 -%}
-  {%- else -%}
-    {%- for media in variable_media -%}
-      {%- if media == product.featured_image.src -%}
-        {%- assign media_cursor = forloop.index -%}
-        {%- break -%}
-      {%- endif -%}
-    {%- endfor -%}
-  {%- endif -%}
-  {%- assign prev_cursor = media_cursor | minus: 2 -%}
-  {%- assign second_media = variable_media[media_cursor] | default: variable_media[prev_cursor] -%}
-{%- else -%}
-  {%- assign second_media = variable_media[1] -%}
-{%- endif -%}
-{%- if product.featured_media -%}
-  {%- assign variable_featured_media = product.featured_media -%}
-{%- else -%}
-  {%- assign variable_featured_media = full_product.featured_media -%}
-{%- endif -%}
-{%- if product.vendor -%}
-  {%- assign variable_vendor = product.vendor -%}
-{%- else -%}
-  {%- assign variable_vendor = full_product.vendor -%}
-{%- endif -%}
-{%- if full_product == null -%}
-  {%- assign variable_product_first_variant = product.selected_or_first_available_variant -%}
-{%- else -%}
-  {%- if full_product.id == product.id or product.title == 'Default Title' -%}
-    {%- assign variable_product_first_variant = full_product.selected_or_first_available_variant -%}
-  {%- else -%}
-    {%- assign variable_product_first_variant = product -%}
-  {%- endif -%}
-{%- endif -%}
-
 {% comment %}
   Arguments
   - product: product object
@@ -87,6 +11,54 @@
     assign per_row = 4
   endunless
 
+  assign poa_threshold_base = settings.poa_price_threshold | default: 5000
+  assign poa_threshold_minor = poa_threshold_base | times: 100
+
+  assign product_type_poa = product.type | strip | downcase
+  assign is_earring_product = false
+  if product_type_poa == 'earrings' or product_type_poa == 'earring'
+    assign is_earring_product = true
+  endif
+
+  assign earring_has_purchasable_single = false
+  if is_earring_product
+    for variant in product.variants
+      assign check_title = variant.title | downcase
+      assign check_o1 = variant.option1 | downcase
+      assign check_o2 = variant.option2 | downcase
+      assign check_o3 = variant.option3 | downcase
+      assign check_is_pair = false
+      if check_title == 'pair' or check_o1 == 'pair' or check_o2 == 'pair' or check_o3 == 'pair'
+        assign check_is_pair = true
+      endif
+      if check_is_pair == false and variant.price <= poa_threshold_minor
+        assign earring_has_purchasable_single = true
+      endif
+    endfor
+  endif
+
+  assign all_variants_poa = true
+  for variant in product.variants
+    assign is_earring_pair = false
+    if is_earring_product
+      assign v_title = variant.title | downcase
+      assign o1 = variant.option1 | downcase
+      assign o2 = variant.option2 | downcase
+      assign o3 = variant.option3 | downcase
+      if v_title == 'pair' or o1 == 'pair' or o2 == 'pair' or o3 == 'pair'
+        assign is_earring_pair = true
+      endif
+    endif
+    assign is_earring_pair_exempt = false
+    if is_earring_pair and earring_has_purchasable_single
+      assign is_earring_pair_exempt = true
+    endif
+
+    if is_earring_pair_exempt or variant.price <= poa_threshold_minor
+      assign all_variants_poa = false
+    endif
+  endfor
+
   capture gridView
     render 'products_per_row', products_per_row: per_row, style: 'fractions'
   endcapture
@@ -99,18 +71,37 @@
     assign fallback = 'variable'
   endif
 
+  if sizes == blank
+    case per_row
+      when 2
+        assign sizes = '(max-width: 768px) 42vw, 50vw'
+      when 3
+        assign sizes = '(max-width: 768px) 42vw, (max-width: 1200px) 33vw, 33vw'
+      when 4
+        assign sizes = '(max-width: 768px) 42vw, (max-width: 1200px) 25vw, 25vw'
+      else
+        assign sizes = '(max-width: 768px) 42vw, 25vw'
+    endcase
+  endif
+
   assign on_sale = false
   if product.compare_at_price > product.price
     assign on_sale = true
   endif
 
-  assign product_tags = real_product.tags | join: ','
+  if full_product
+    assign variable_price_min = product.price
+  else
+    assign variable_price_min = product.price_min
+  endif
+
+  assign product_tags = product.tags | join: ','
   assign has_custom_label = false
-  if variable_product_metafields.theme.label and variable_product_metafields.theme.label != blank
+  if product.metafields.theme.label and product.metafields.theme.label != blank
     assign has_custom_label = true
-    assign custom_label = variable_product_metafields.theme.label.value
+    assign custom_label = product.metafields.theme.label.value
   elsif product_tags contains '_label_'
-    for tag in real_product.tags
+    for tag in product.tags
       if tag contains '_label_'
         assign tag_starts_with = tag | slice: 0
         if tag_starts_with == '_'
@@ -121,66 +112,31 @@
     endfor
   endif
 -%}
-{% if index == 7 and lookimage != blank and collection.metafields.custom.collection_video == blank %}
-  </div>
-  <div
-    class="grid gridprodcustom"
-    {% unless enable_collection_count %}
-      data-scroll-to
-    {% endunless %}
-  >
-{% endif %}
-<div
-  class="productgridclass productno_{{ index }} grid__item grid-product {{ gridView }} {% if quick_shop_enable %} grid-product__has-quick-shop{% endif %} 
-   {% if variable_product_metafields.custom.product_variations.value != blank %} productgridclass__withswatches {% endif %}"
-  data-aos="row-of-{{ per_row }}"
-  data-product-handle="{{ variable_handle }}"
-  data-product-id="{{ product_id }}"
->
-  <div class="grid-product__content {% if settings.quick_shopwithatc_enable %} gridprod__quick_shopwithatc_enable{% endif %}">
-    {% assign variable_product_metafields = product.metafields %}
-    {% assign product_tags = product.tags | join: ',' %}
-    {% assign has_custom_label = false %}
-    {% if variable_product_metafields.theme.label and variable_product_metafields.theme.label != blank %}
-      {% assign has_custom_label = true %}
-      {% assign custom_label = variable_product_metafields.theme.label.value %}
-    {% elsif product_tags contains '_label_' %}
-      <div class="small-hide product__tagslist product__tags--custom">
-        {% for tag in product.tags %}
-          {% if tag contains '_label_' %}
-            {% assign tag_starts_with = tag | slice: 0 %}
-            {% if tag_starts_with == '_' %}
-              {% assign has_custom_label = true %}
-              {% assign custom_label = tag | replace: '_label_', '' %}
-            {% endif %}
-          {% endif %}
-        {% endfor %}
-        {% unless custom_label contains 'exclusive' or custom_label contains 'Exclusive' %}
-          {%- if has_custom_label -%}
-            <div class="grid-product__tag grid-product__tag--custom">
-              {{ custom_label }}
-            </div>
-          {%- endif -%}
-        {% endunless %}
-        {% if handle contains 'exclusive' and custom_label contains 'exclusive' or custom_label contains 'Exclusive' %}
-          {%- if has_custom_label -%}
-            <div class="grid-product__tag grid-product__tag--custom mdmexclusiveitem">
-              {{ custom_label }}
-            </div>
-          {%- endif -%}
-        {% endif %}
-      </div>
-    {% endif %}
 
-    {%- unless product.available -%}
-      <div class="grid-product__tag grid-product__tag--sold-out">
-        {{ 'products.product.sold_out' | t }}
+<div
+  class="grid__item grid-product {{ gridView }} {% if quick_shop_enable %} grid-product__has-quick-shop{% endif %}"
+  data-aos="row-of-{{ per_row }}"
+  data-product-handle="{{ product.handle }}"
+  data-product-id="{{ product.id }}"
+>
+  <div class="grid-product__content">
+    {%- if has_custom_label -%}
+      <div class="small-hide product__tagslist product__tags--custom">
+        <div class="grid-product__tag grid-product__tag--custom">
+          {{ custom_label }}
+        </div>
       </div>
-    {%- endunless -%}
-    {%- if on_sale and product.available -%} 
-      <div class="grid-product__tag grid-product__tag--sale">
-        {{ 'products.general.sale' | t }}
-      </div>
+    {%- else -%}
+      {%- unless product.available -%}
+        <div class="grid-product__tag grid-product__tag--sold-out">
+          {{ 'products.product.sold_out' | t }}
+        </div>
+      {%- endunless -%}
+      {%- if on_sale and product.available -%}
+        <div class="grid-product__tag grid-product__tag--sale">
+          {{ 'products.general.sale' | t }}
+        </div>
+      {%- endif -%}
     {%- endif -%}
 
     {%- liquid
@@ -198,36 +154,50 @@
       if template contains 'unisex' and product_tags contains 'Unisex-Earrings' and product.media.size >= 4
         assign preview_image = product.media[3]
       else
-        assign preview_image = variable_featured_media.preview_image
+        assign preview_image = product.featured_media.preview_image
       endif
-      
     -%}
 
     <div class="grid__item-image-wrapper {% if template contains 'unisex' and product_tags contains 'Unisex-Earrings' and product.media.size >= 4 %}reverse_ordered_Images{% endif %}">
-      <div class="grid-product__image-mask">
+      <div class="grid-product__image-mask" test>
         <!-- Swym Wishlist Plus EPI Button with default first variant -->
         {% render 'swym-product-view', product: product %}
-        <button id="swym-custom-collections_product_{{ product.id }}" class="button swym-custom-collections swym-add-to-wishlist-view-product product_{{ product.id }}" data-with-epi="true" data-swaction="addToWishlist" data-product-id="{{product.id | json}}" data-variant-id="{{product.variants[0].id}}" data-product-url="{{ shop.url }}{{ product.url }}">
+        <button
+          id="swym-custom-collections_product_{{ product.id }}"
+          class="button swym-custom-collections swym-add-to-wishlist-view-product product_{{ product.id }}"
+          data-with-epi="true"
+          data-swaction="addToWishlist"
+          data-product-id="{{product.id | json}}"
+          data-variant-id="{{product.variants[0].id}}"
+          data-product-url="{{ shop.url }}{{ product.url }}"
+        >
           <!-- Unfilled star -->
           <svg class="swym-icon-unfilled" viewBox="0 0 24 24" height="24px" width="auto">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="currentColor" stroke-width="2"/>
           </svg>
           <!-- Filled star -->
           <svg class="swym-icon-filled" viewBox="0 0 24 24" height="24px" width="auto">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/>
           </svg>
         </button>
-        <!-- Swym Wishlist Plus EPI Button-->
+        <!-- Swym Wishlist Plus EPI Button -->
+        <span class="grid-product__image-loader" aria-hidden="true"></span>
         {%- if fixed_aspect_ratio -%}
           <a href="{{ product.url }}"
-            class="qqqqqqqqqqwwwwwwwwwww grid__image-ratio grid__image-ratio--{% if image_style == 'circle' %}square{% else %}{{ settings.product_grid_image_size }}{% endif %}"
+            class="grid__image-ratio grid__image-ratio--{% if image_style == 'circle' %}square{% else %}{{ settings.product_grid_image_size }}{% endif %}"
           >
             {%- capture image_classes -%}
               {% unless settings.product_grid_image_fill %} grid__image-contain{% endunless %} image-style--{{ image_style }}
             {%- endcapture -%}
             {%- if preview_image != blank -%}
-              {%- render 'image-element', img: preview_image, classes: image_classes, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720, 900, 1080', alt: product.title -%}
-              <!-- alt attribute added here -->
+              {%- render 'image-element',
+                img: preview_image,
+                classes: image_classes,
+                sizes: sizes,
+                sizeVariable: sizeVariable,
+                fallback: fallback,
+                widths: '200, 240, 320, 360, 420, 480, 540, 720'
+              -%}
             {%- else -%}
               {%- capture placeholder -%}product-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
               <div class="product-image--placeholder">{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}</div>
@@ -242,10 +212,16 @@
           >
             {%- if preview_image != blank -%}
               {%- capture image_classes -%}
-            grid-product__image image-style--{{ image_style }}
-          {%- endcapture -%}
-              {%- render 'image-element', img: preview_image, classes: image_classes, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720, 900, 1080', alt: product.title -%}
-              <!-- alt attribute added here -->
+                grid-product__image image-style--{{ image_style }}
+              {%- endcapture -%}
+              {%- render 'image-element',
+                img: preview_image,
+                classes: image_classes,
+                sizes: sizes,
+                sizeVariable: sizeVariable,
+                fallback: fallback,
+                widths: '200, 240, 320, 360, 420, 480, 540, 720'
+              -%}
             {%- else -%}
               {%- capture placeholder -%}product-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
               <div class="product-image--placeholder">{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}</div>
@@ -253,28 +229,33 @@
           </a>
         {%- endif -%}
 
-        {%- if settings.product_hover_image and variable_media.size > 1 -%}
+        {%- if settings.product_hover_image and product.media.size > 1 -%}
           {% if template contains 'unisex' and product_tags contains 'Unisex-Earrings' and product.media.size >= 4 %}
             {%- assign second_image = product.media[2] -%}
           {% else %}
-            {%- for media in variable_media offset: 1 limit: 1 -%}
+            {%- for media in product.media offset: 1 limit: 1 -%}
               {%- assign second_image = media.preview_image -%}
-              {%- if full_product -%}{%- assign second_image = second_media -%}{%- endif -%}
             {%- endfor -%}
           {% endif %}
-
           <div class="grid-product__secondary-image small--hide">
             {%- capture image_classes -%}
-          image-style--{{ image_style }}
-        {%- endcapture -%}
-            {%- render 'image-element', img: second_image, classes: image_classes, sizes: sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720, 1000', alt: product.title -%}
-            <!-- alt attribute added here -->
+              image-style--{{ image_style }}
+            {%- endcapture -%}
+            {%- render 'image-element',
+              img: second_image,
+              classes: image_classes,
+              sizes: sizes,
+              sizeVariable: sizeVariable,
+              fallback: fallback,
+              widths: '200, 240, 320, 360, 420, 480, 540, 720',
+              loading: 'lazy'
+            -%}
           </div>
         {%- endif -%}
 
         {%- if settings.enable_swatches -%}
           {%- assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase -%}
-          {%- for option in variable_options_with_values -%}
+          {%- for option in product.options_with_values -%}
             {%- liquid
               assign option_name = option.name | downcase
               assign is_color = false
@@ -287,7 +268,7 @@
             {%- if is_color -%}
               {%- assign option_index = forloop.index0 -%}
               {%- assign values = '' -%}
-              {%- for variant in real_product.variants -%}
+              {%- for variant in product.variants -%}
                 {%- assign value = variant.options[option_index] %}
                 {%- unless values contains value -%}
                   {%- liquid
@@ -296,7 +277,7 @@
 
                   {%- if variant.image -%}
                     <div
-                      class="grid-product__color-image grid-product__color-image--{%- if full_product -%}{{ product.id | append: '' }}{%- endif -%}{{ variant.id }} small--hide"
+                      class="grid-product__color-image grid-product__color-image--{{ variant.id }} small--hide"
                     ></div>
                   {%- endif -%}
                 {%- endunless -%}
@@ -304,56 +285,129 @@
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}
-        
-        {% if quick_shop_onlybtn %}
-           <a class="quick-product__btn" href="{{ product.url }}">
-              Choose Options
-            </a>
-        {% endif %}
-        
-        {% if template contains 'index' -%}
-        {%- else %}
-          {% unless product_tags contains 'POA' %}  
-            {%- if quick_shop_enable and type == blank -%}
-              {% if product.variants.size == 1 %}
-                <div class="quick-product__btn">
-                  {%- capture form_id -%}AddToCartForm-{{ section.id }}-{{ product.id }}{%- endcapture -%}
-                  {% assign current_variant = product.selected_or_first_available_variant %}
-                  {%- render 'product-form',
-                    form_id: form_id,
-                    product: product,quick_shop_enable:quick_shop_enable,
-                    show_dynamic_checkout: false,
-                    current_variant: current_variant
-                  -%}
-                </div>
-              {% else %}
-                <button
-                  class="quick-product__btn  js-modal-open-quick-modal-{{ product_id }} mall--hide js-modal-openquickvw"
-                  aria-expanded="false"
-                >
-                  <span class="add-to-cart-text">
-                    <span class="svg-wrapper add-to-cart-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="var(--icon-stroke-width)" d="M16.608 9.421V6.906H3.392v8.016c0 .567.224 1.112.624 1.513.4.402.941.627 1.506.627H8.63M8.818 3h2.333c.618 0 1.212.247 1.649.686a2.35 2.35 0 0 1 .683 1.658v1.562H6.486V5.344c0-.622.246-1.218.683-1.658A2.33 2.33 0 0 1 8.82 3"></path><path stroke="currentColor" stroke-linecap="round" stroke-width="var(--icon-stroke-width)" d="M14.608 12.563v5m2.5-2.5h-5"></path></svg>
-                    </span>
-        
-                    <span class="add-to-cart-text__content is-visually-hidden-mobile">Add</span>
-                  </span>
-                  {% comment %} <img src="https://cdn.shopify.com/s/files/1/1476/0022/files/Marco_dal_maso_add_to_cart_button_v2.png?v=1763575441" alt="MDM_ATC.png"> {% endcomment %}
-                </button>
-              {% endif %}
-            {%- endif -%}
-          {% endunless %}
-        {% endif %}
 
-        {%- if quick_shop_enable and type == blank -%}
-          {%- render 'quick-shop-modal', product: real_product -%}
+        {%- if quick_shop_enable and type == blank and product.variants_count <= 250 -%}
+          <button class="quick-product__btn btn--not-ready js-modal-open-quick-modal-{{ product.id }} small--hide">
+            {{ settings.quick_shop_text }}
+          </button>
         {%- endif -%}
       </div>
 
-      <a href="{{ product.url  }}" class="grid-product__link">
+      {% comment %}
+        <a href="{{ product.url | within: collection }}" class="grid-product__link">
+          <div class="grid-product__meta">
+            <div class="grid-product__title grid-product__title--{{ settings.type_product_style }}">{{ product.title }}</div>
+            {%- if settings.vendor_enable -%}
+              <div class="grid-product__vendor">{{ product.vendor }}</div>
+            {%- endif -%}
+            <div class="grid-product__price">
+              {%- if on_sale -%}
+                <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                <span class="grid-product__price--original">{{ product.compare_at_price | money }}</span>
+                <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+              {%- endif -%}
+              {%- if product.price_varies -%}
+                {%- assign price = product.price_min | money -%}
+                {{ 'products.general.from_text_html' | t: price: price }}
+              {%- else -%}
+                {{ product.price | money }}
+              {%- endif -%}
+              {%- if on_sale -%}
+                {%- if settings.product_save_amount -%}
+                  {%- if settings.product_save_type == 'dollar' -%}
+                    {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money }}{%- endcapture -%}
+                  {%- else -%}
+                    {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
+                  {%- endif -%}
+                  <span class="grid-product__price--savings">
+                    {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                  </span>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- assign product_variant = product.selected_or_first_available_variant -%}
+              {%- if product_variant.unit_price_measurement -%}
+                <div class="product__unit-price">
+                  {%- capture unit_price_base_unit -%}
+                    {%- if product_variant.unit_price_measurement -%}
+                      {%- if product_variant.unit_price_measurement.reference_value != 1 -%}
+                        {{ product_variant.unit_price_measurement.reference_value }}
+                      {%- endif -%}
+                      {{ product_variant.unit_price_measurement.reference_unit }}
+                    {%- endif -%}
+                  {%- endcapture -%}
+
+                  {{ product_variant.unit_price | money }}/{{ unit_price_base_unit }}
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- if settings.enable_swatches and type == 'horizontal' -%}
+              {%- liquid
+                assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+                assign swatch_file_extension = 'png'
+                assign color_count = 0
+              -%}
+
+              {%- for option in product.options_with_values -%}
+                {%- liquid
+                  assign option_name = option.name | downcase
+                  assign is_color = false
+                  if option_name contains swatch_trigger
+                    assign is_color = true
+                  elsif swatch_trigger == 'color' and option_name contains 'colour'
+                    assign is_color = true
+                  endif
+                -%}
+                {%- if is_color -%}
+                  {%- assign option_index = forloop.index0 -%}
+                  {%- assign values = '' -%}
+                  <div class="grid-product__colors grid-product__colors--{{ product.id }}">
+                    {%- for variant in product.variants -%}
+                      {%- assign value = variant.options[option_index] %}
+                      {%- unless values contains value -%}
+                        {%- liquid
+                          assign values = values | join: ',' | append: ',' | append: value | split: ','
+
+                          assign color_file_name = value | handle | append: '.' | append: swatch_file_extension
+                          assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+                          assign color_swatch_fallback = value | split: ' ' | last | handle
+                          assign color_count = color_count | plus: 1
+                        -%}
+
+                        <span
+                          class="color-swatch color-swatch--small color-swatch--{{ value | handle }}{% if variant.image %} color-swatch--with-image{% endif %}"
+                          {% if variant.image %}
+                            data-variant-id="{{ variant.id }}"
+                            data-variant-image="{{ variant.image | image_url: width: 320 }}"
+                          {% endif %}
+                          aria-label="{{ product.title }} - {{ value }}"
+                          style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}">
+                          <span class="visually-hidden">{{ value }}</span>
+                        </span>
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  </div>
+                  {%- if color_count < 2 -%}
+                    {%- style -%}
+                      .grid-product__colors--{{ product.id }} {
+                        display: none;
+                      }
+                    {%- endstyle -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </a>
+      {% endcomment %}
+      <a href="{% if template.name == 'collection' %}{{ collection.url }}{%endif %}{{ product.url }}" class="grid-product__link">
         <div class="grid-product__meta">
           <div class="grid-product__title grid-product__title--{{ settings.type_product_style }}">
             <span>{% render 'variable-product-title', product: product, full_product: full_product %}</span>
-            {% if product.metafields.custom.subtitle != blank %}<small>{{ product.metafields.custom.subtitle }}</small>{% endif %}
+            {% if product.metafields.custom.subtitle != blank -%}
+              <small>{{ product.metafields.custom.subtitle }}</small>
+            {%- endif %}
             {% assign variable_product_metafields = product.metafields %}
             {% assign product_tags = product.tags | join: ',' %}
             {% assign has_custom_label = false %}
@@ -386,47 +440,59 @@
       </a>
       <div class="swatch_price_flex">
         <div class="grid-product__price mm {{ product.price }}">
-          {% unless product_tags contains 'POA' %}
+          {% unless all_variants_poa %}
             <span>
-            {%- if on_sale -%}
-              <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-              <span class="grid-product__price--original">{{ product.compare_at_price | money_without_trailing_zeros  }}</span>
-              <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
-            {%- endif -%}
-            {%- if product.price_varies -%}
-              {%- assign price = variable_price_min | money_without_trailing_zeros  -%}
-              {{ 'products.general.from_text_html' | t: price: price }}
-            {%- else -%}
-              <span class="{{ product.price | money_without_trailing_zeros  }} price-item price-item--regular" data-product-id="{{ product.id }}">
-                {{ product.price | money_without_trailing_zeros  }}
-              </span>
-            {%- endif -%}
-            {%- if on_sale -%}
-              {%- if settings.product_save_amount -%}
-                {%- if settings.product_save_type == 'dollar' -%}
-                  {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money_without_trailing_zeros  }}{%- endcapture -%}
-                {%- else -%}
-                  {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
-                {%- endif -%}
-                <span class="grid-product__price--savings">
-                  {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+              {%- if on_sale -%}
+                <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                <span class="grid-product__price--original">
+                  {{- product.compare_at_price | money_without_trailing_zeros -}}
+                </span>
+                <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
+              {%- endif -%}
+              {%- if product.price_varies -%}
+                {%- assign price = variable_price_min | money_without_trailing_zeros -%}
+                {{ 'products.general.from_text_html' | t: price: price }}
+              {%- else -%}
+                <span
+                  class="{{ product.price | money_without_trailing_zeros  }} price-item price-item--regular"
+                  data-product-id="{{ product.id }}"
+                >
+                  {{ product.price | money_without_trailing_zeros }}
                 </span>
               {%- endif -%}
-            {%- endif -%}
-      
-            {%- assign product_variant = variable_product_first_variant -%}
-            {%- if product_variant.unit_price_measurement -%}
+              {%- if on_sale -%}
+                {%- if settings.product_save_amount -%}
+                  {%- if settings.product_save_type == 'dollar' -%}
+                    {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money_without_trailing_zeros  }}{%- endcapture -%}
+                  {%- else -%}
+                    {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
+                  {%- endif -%}
+                  <span class="grid-product__price--savings">
+                    {{ 'products.general.save_html' | t: saved_amount: saved_amount }}
+                  </span>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- assign product_variant = variable_product_first_variant -%}
+              {%- if product_variant.unit_price_measurement -%}
                 <div class="price-unit-price-measurement">
-                  <span>{{ product_variant.unit_price | money_without_trailing_zeros  }}</span>/<span aria-hidden="true">{{ product_variant.unit_price_measurement.reference_value }}{{ product_variant.unit_price_measurement.reference_unit }}</span>
-                  <span class="visually-hidden">{{ product_variant.unit_price_measurement.reference_value }}{{ product_variant.unit_price_measurement.reference_unit }}</span>
+                  <span>{{ product_variant.unit_price | money_without_trailing_zeros }}</span>/<span aria-hidden="true">
+                    {{- product_variant.unit_price_measurement.reference_value -}}
+                    {{- product_variant.unit_price_measurement.reference_unit -}}
+                  </span>
+                  <span class="visually-hidden">
+                    {{- product_variant.unit_price_measurement.reference_value -}}
+                    {{- product_variant.unit_price_measurement.reference_unit -}}
+                  </span>
                 </div>
-            {%- endif -%}
+              {%- endif -%}
             </span>
           {% else %}
             <p class="poa_product">Price on Application</p>
           {% endunless %}
           {% comment %} <span class="bfsale__info">30% at checkout</span> {% endcomment %}
         </div>
+
         {%- if settings.enable_swatches and type == blank -%}
           {%- liquid
             assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
@@ -465,10 +531,11 @@
                       class="color-swatch color-swatch--small color-swatch--{{ value | handle }}{% if variant.image %} color-swatch--with-image{% endif %}"
                       {% if variant.image %}
                         data-variant-id="{{ variant.id }}"
-                        data-variant-image="{{ variant.image | img_url: '400x' }}"
+                        data-variant-image="{{ variant.image | image_url: width: 320 }}"
                       {% endif %}
                       aria-label="{{ product.title }} - {{ value }}"
-                      style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}">
+                      style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}"
+                    >
                       <span class="visually-hidden">{{ value }}</span>
                     </a>
                   {%- endunless -%}
@@ -484,7 +551,7 @@
             {%- endif -%}
           {%- endfor -%}
           {% if variable_product_metafields.custom.product_variations.value != blank %}
-            <div class="dd tr similar_p_v eeeeeee">
+            {% comment %} <div class="dd tr similar_p_v eeeeeee">
               <div class="variant-wrapper">
                 {% assign related_products = variable_product_metafields.custom.product_variations.value %}
                 {% assign prodsize = 0 %}
@@ -495,124 +562,112 @@
                   {% for related_product in related_products limit: 4 %}
                     {%- assign pp = all_products[related_product] -%}
                     {% unless product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}
-                      <li {% if product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}class="activeprod"{% endif %}>
-                        <a title="{{ related_product.metafields.custom.subtitle }}" data-img="{{related_product.featured_media.preview_image |img_url: '1000x' }}" 
+                      <li
+                        {% if product.metafields.custom.subtitle == related_product.metafields.custom.subtitle %}
+                          class="activeprod"
+                        {% endif %}
+                      >
+                        <a
+                          title="{{ related_product.metafields.custom.subtitle }}"
+                          data-img="{{ related_product.featured_media.preview_image | image_url: width: 480 }}"
+                          data-srcset="{{ related_product.featured_media.preview_image | image_url: width: 200 }} 200w, {{ related_product.featured_media.preview_image | image_url: width: 240 }} 240w, {{ related_product.featured_media.preview_image | image_url: width: 320 }} 320w, {{ related_product.featured_media.preview_image | image_url: width: 360 }} 360w, {{ related_product.featured_media.preview_image | image_url: width: 420 }} 420w, {{ related_product.featured_media.preview_image | image_url: width: 480 }} 480w, {{ related_product.featured_media.preview_image | image_url: width: 540 }} 540w"
                           data-title="{{ related_product.metafields.custom.subtitle }}"
                           data-href="{{related_product.url }}"
-                          data-price="{{ related_product.price | money_without_trailing_zeros | strip_html }}">
-                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="{{related_product.featured_media.preview_image |img_url: '100x' }}" alt="{{ related_product.featured_media.alt | default: related_product.metafields.custom.subtitle }}">
+                          data-price="{{ related_product.price | money_without_trailing_zeros | strip_html }}"
+                        >
+                          <img
+                            src="{{ related_product.featured_media.preview_image | image_url: width: 96 }}"
+                            srcset="{{ related_product.featured_media.preview_image | image_url: width: 96 }} 96w, {{ related_product.featured_media.preview_image | image_url: width: 160 }} 160w"
+                            sizes="96px"
+                            loading="lazy"
+                            decoding="async"
+                            fetchpriority="low"
+                            width="auto"
+                            height="auto"
+                            data-li="st"
+                            d-src="{{ related_product.featured_media.preview_image | image_url: width: 100 }}"
+                            alt="{{ related_product.featured_media.alt | default: related_product.metafields.custom.subtitle }}"
+                          >
                         </a>
                       </li>
                     {% endunless %}
                   {% endfor %}
                   {% if prodsize > 3 %}
-                  <a class="variants-more" href="{{ product.url }}">+{{ prodsize | minus: 3 }} more</a>
+                    <a class="variants-more" href="{{ product.url }}">+{{ prodsize | minus: 3 }} more</a>
                   {% endif %}
                 </ul>
               </div>
-            </div>
-          {%  endif %}      
+            </div> {% endcomment %}
+          {% endif %}
         {%- endif -%}
+
+        {% comment %} {%if recommendation_item == true and product.variants_count > 1 %} {% endcomment %}
+          <a class="more-variants-more" href="{{ product.url }}">More variants</a>
+        {% comment %} {% endif %} {% endcomment %}
+
       </div>
     </div>
   </div>
-  
+  {%- if settings.enable_swatches and type == blank -%}
+    {%- liquid
+      assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+      assign swatch_file_extension = 'png'
+      assign color_count = 0
+    -%}
 
-  {%- if settings.enable_product_reviews and type == blank -%}
-    <span class="shopify-product-reviews-badge" data-id="{{ product_id }}"></span>
+    {%- for option in product.options_with_values -%}
+      {%- liquid
+        assign option_name = option.name | downcase
+        assign is_color = false
+        if option_name contains swatch_trigger
+          assign is_color = true
+        elsif swatch_trigger == 'color' and option_name contains 'colour'
+          assign is_color = true
+        endif
+      -%}
+      {%- if is_color -%}
+        {%- assign option_index = forloop.index0 -%}
+        {%- assign values = '' -%}
+        <div class="grid-product__colors grid-product__colors--{{ product.id }}">
+          {%- for variant in product.variants -%}
+            {%- assign value = variant.options[option_index] %}
+            {%- unless values contains value -%}
+              {%- liquid
+                assign values = values | join: ',' | append: ',' | append: value | split: ','
+
+                assign color_file_name = value | handle | append: '.' | append: swatch_file_extension
+                assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+                assign color_swatch_fallback = value | split: ' ' | last | handle
+                assign color_count = color_count | plus: 1
+              -%}
+
+              <a
+                href="{{ variant.url | within: collection }}"
+                class="color-swatch color-swatch--small color-swatch--{{ value | handle }}{% if variant.image %} color-swatch--with-image{% endif %}"
+                {% if variant.image %}
+                  data-variant-id="{{ variant.id }}"
+                  data-variant-image="{{ variant.image | image_url: width: 320 }}"
+                {% endif %}
+                aria-label="{{ product.title }} - {{ value }}"
+                style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}"
+              >
+                <span class="visually-hidden">{{ value }}</span>
+              </a>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+        {%- if color_count < 2 -%}
+          {%- style -%}
+            .grid-product__colors--{{ product.id }} {
+              display: none;
+            }
+          {%- endstyle -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- if quick_shop_enable and type == blank -%}
+    {%- render 'quick-shop-modal', product: product -%}
   {%- endif -%}
 </div>
-
-{% if index == 6 and collection.metafields.custom.collection_video != blank and lookimage == blank %}
-  </div>
-  <div class="grid gridprodvid">
-    <div
-      class="collmetafieldvideo_{{ index }} collmetafieldvideo grid__item grid-product small--one-full medium-up--one-full image_grid big"
-      data-aos="row-of-{{ per_row }}"
-    >
-      {% render 'collection-metavideo', section: section %}
-    </div>
-  </div>
-
-  <div
-    class="grid grid--uniform{% if mobile_flush_grid %} small--grid--flush{% endif %}"
-    {% unless enable_collection_count %}
-      data-scroll-to
-    {% endunless %}
-  >
-{% endif %}
-
-{% if index == 7 and lookimage != blank and collection.metafields.custom.collection_video == blank %}
-  <div
-    class="collmetafieldbannerno_{{ index }} collmetafieldbanner grid__item grid-product {% if settings.metaprodbannersize == 'portrait' %}{{ gridView }} {% else %} small--one-full medium-up--two-thirds {% endif %} {% if collection.handle == 'mens-pendant-chains' %}border_image_grid{% endif %} image_grid big"
-    data-aos="row-of-{{ per_row }}"
-  >
-    {{ lookimage | img_url: 'master' | img_tag }}
-    <div class="content_grid">
-      {% if lookimage != blank %}
-        <div class="product-callout__button">Discover The Look</div>
-      {% endif %}
-    </div>
-  </div>
-{% endif %}
-{% if index == 8 and lookimage != blank and collection.metafields.custom.collection_video == blank %}
-  </div>
-  <div
-    class="grid grid--uniform{% if mobile_flush_grid %} small--grid--flush{% endif %}"
-    {% unless enable_collection_count %}
-      data-scroll-to
-    {% endunless %}
-  >
-{% endif %}
-{% comment %}
-
-This file has been rewritten to preserve the original behavior.
-
----
-Changes:
-- from: |-
-    {%-
-                    render 'image-element',
-                    img: preview_image,
-                    classes: image_classes,
-                    sizes: sizes,
-                    sizeVariable: sizeVariable,
-                    fallback: fallback,
-                    widths: '360, 540, 720, 900, 1080',
-                    alt: product.title | escape
-                  -%}
-  to: "{%- render 'image-element', img: preview_image, classes: image_classes, sizes:
-    sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720,
-    900, 1080', alt: product.title -%}"
-  position: 9031..9223
-- from: |-
-    {%-
-                    render 'image-element',
-                    img: preview_image,
-                    classes: image_classes,
-                    sizes: sizes,
-                    sizeVariable: sizeVariable,
-                    fallback: fallback,
-                    widths: '360, 540, 720, 900, 1080',
-                    alt: product.title | escape
-                  -%}
-  to: "{%- render 'image-element', img: preview_image, classes: image_classes, sizes:
-    sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720,
-    900, 1080', alt: product.title -%}"
-  position: 10021..10213
-- from: |-
-    {%-
-                  render 'image-element',
-                  img: second_image,
-                  classes: image_classes,
-                  sizes: sizes,
-                  sizeVariable: sizeVariable,
-                  fallback: fallback,
-                  widths: '360, 540, 720, 1000',
-                  alt: product.title | escape
-                -%}
-  to: "{%- render 'image-element', img: second_image, classes: image_classes, sizes:
-    sizes, sizeVariable: sizeVariable, fallback: fallback, widths: '360, 540, 720,
-    1000', alt: product.title -%}"
-  position: 11302..11488
-{% endcomment %}

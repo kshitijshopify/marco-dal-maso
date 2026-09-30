@@ -89,6 +89,7 @@
                           {% assign buttonLabel = block.settings.btn-label %}
                           {% assign subText = block.settings.sub-text %}
                           {% assign menuImage = block.settings.mega-image | img_url: "master" | img_tag %}
+                      
                           <div class="poi menupromo__image menu_img_block imageContainerBox appear-animation appear-delay-{{ animation_column }}">
                             <div class="menupromo__inner">
                               <div class="megapromo__griditem">
@@ -96,7 +97,7 @@
                                   {% if megaLink %}
                                   <a href="{{ megaLink }} ">
                                   {% endif %}
-                                    {{ menuImage | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                    {{ menuImage }}
                                     <div class="megapromo__textbox">
                                       <div class="rte">{{ subText }}</div>
                                       <span>{{ buttonLabel }}</span>
@@ -116,7 +117,7 @@
                                     {% if mobLink %}
                                     <a href="{{ mobLink }} ">
                                     {% endif %}
-                                      {{ mobImage | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                      {{ mobImage }}
                                       {% if block.settings.mtitle != blank %}
                                         <div class="megapromo__above_img">
                                           <div class="uppercase t">{{ mtitle }}</div>
@@ -137,7 +138,7 @@
                                     {% if mobLink2 %}
                                       <a href="{{ mobLink2 }} ">
                                     {% endif %}
-                                      {{ mobImage2 | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                      {{ mobImage2 }}
                                                                     
                                       {% if block.settings.mtitle2 != blank %}
                                         <div class="megapromo__above_img">
@@ -325,14 +326,14 @@
                           {% assign subText = block.settings.sub-text %}
                           {% assign menuImage = block.settings.mega-image | img_url: "master" | img_tag %}
         
-                          <div class="mnnb menupromo__image menu_img_block imageContainerBox appear-animation appear-delay-{{ animation_column }}">
+                          <div class="mnnb menupromo__image  menu_img_block imageContainerBox appear-animation appear-delay-{{ animation_column }}">
                             <div class="menupromo__inner">
                               <div class="megapromo__griditem">
                                 <div class="small--hide">
                                 {% if megaLink %}
                                 <a href="{{ megaLink }} ">
                                 {% endif %}
-                                  {{ menuImage | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                  {{ menuImage }}
                                   <div class="megapromo__textbox">
                                     <div class="rte">{{ subText }}</div>
                                     <span>{{ buttonLabel }}</span>
@@ -353,7 +354,7 @@
                                         {% if mobLink %}
                                                                 <a href="{{ mobLink }} ">
                                                                 {% endif %}
-                                                                  {{ mobImage | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                                                  {{ mobImage }}
                                                                   {% if block.settings.mtitle != blank %}
                                                                   <div class="megapromo__above_img">
                                                                     <div class="uppercase t">{{ mtitle }}</div>
@@ -374,7 +375,7 @@
                                         {% if mobLink2 %}
                                                                 <a href="{{ mobLink2 }} ">
                                                                 {% endif %}
-                                                                  {{ mobImage2 | replace: ' src="' , ' src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" data-li="st" d-src="' | replace: ' srcset="' , ' dt="' }}
+                                                                  {{ mobImage2 }}
                                                                   
                                                                   {% if block.settings.mtitle2 != blank %}
                                                                   <div class="megapromo__above_img">

@@ -33,7 +33,7 @@
   toolbar_menu: toolbar_menu,
   logo_alignment: logo_alignment
 -%}
-{%- render 'cart-drawer', section: section -%}
+{%- render 'cart-drawer' -%}
 
 <style>
 .drawer__fixed-header.hide{display:none;}
@@ -118,29 +118,30 @@
             {%- if logo_alignment == 'left' -%}
               <div class="menu_withsearch">
                  <button
-        type="button"
-        class="r5666 site-nav__link site-nav__link--icon js-drawer-open-nav{% if section.settings.main_menu_alignment == 'left' or section.settings.main_menu_alignment == 'left-center' %} medium-up--hide{% endif %}"
-        aria-controls="NavDrawer">
-        <svg class="icon icon-hamburger" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50">
-        <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
-        </svg>
-        <span class="icon__fallback-text">{{ 'general.drawers.navigation' | t }}</span>
-      </button>
-    {%- if settings.search_enable -%}
-      <a href="{{ routes.search_url }}" class="medium-up--hide site-nav__link site-nav__link--icon js-search-header{% if section.settings.main_menu_alignment == 'center' or section.settings.main_menu_alignment == 'center-split' %} medium-up--hide{% endif %}">
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-        <path d="M25 25L19.2094 19.2094M19.2094 19.2094C20.1999 18.2189 20.9856 17.043 21.5217 15.7488C22.0577 14.4547 22.3336 13.0676 22.3336 11.6668C22.3336 10.266 22.0577 8.87896 21.5217 7.5848C20.9856 6.29065 20.1999 5.11475 19.2094 4.12424C18.2189 3.13373 17.043 2.34802 15.7488 1.81196C14.4547 1.27591 13.0676 1 11.6668 1C10.266 1 8.87896 1.27591 7.5848 1.81196C6.29065 2.34802 5.11474 3.13373 4.12424 4.12424C2.12382 6.12466 1 8.8378 1 11.6668C1 14.4958 2.12382 17.209 4.12424 19.2094C6.12466 21.2098 8.8378 22.3336 11.6668 22.3336C14.4958 22.3336 17.209 21.2098 19.2094 19.2094Z" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="icon__fallback-text">{{ 'general.search.title' | t }}</span>
-      </a>
-    {%- endif -%}
-        </div>
-              <div class="header-item header-item--logo">
-                {%- render 'header-logo-block', section: section -%}
-              </div>
-            {%- endif -%}
+                  type="button"
+                  class="r5666 site-nav__link site-nav__link--icon js-drawer-open-nav{% if section.settings.main_menu_alignment == 'left' or section.settings.main_menu_alignment == 'left-center' %} medium-up--hide{% endif %}"
+                  aria-controls="NavDrawer">
+                  <svg class="icon icon-hamburger" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 50 50">
+                  <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
+                  </svg>
+                  <span class="icon__fallback-text">{{ 'general.drawers.navigation' | t }}</span>
+                </button>
+              {%- if settings.search_enable -%}
+                <a href="{{ routes.search_url }}" class="medium-up--hide site-nav__link site-nav__link--icon js-search-header{% if section.settings.main_menu_alignment == 'center' or section.settings.main_menu_alignment == 'center-split' %} medium-up--hide{% endif %}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                  <path d="M25 25L19.2094 19.2094M19.2094 19.2094C20.1999 18.2189 20.9856 17.043 21.5217 15.7488C22.0577 14.4547 22.3336 13.0676 22.3336 11.6668C22.3336 10.266 22.0577 8.87896 21.5217 7.5848C20.9856 6.29065 20.1999 5.11475 19.2094 4.12424C18.2189 3.13373 17.043 2.34802 15.7488 1.81196C14.4547 1.27591 13.0676 1 11.6668 1C10.266 1 8.87896 1.27591 7.5848 1.81196C6.29065 2.34802 5.11474 3.13373 4.12424 4.12424C2.12382 6.12466 1 8.8378 1 11.6668C1 14.4958 2.12382 17.209 4.12424 19.2094C6.12466 21.2098 8.8378 22.3336 11.6668 22.3336C14.4958 22.3336 17.209 21.2098 19.2094 19.2094Z" stroke="#2C2C2C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="icon__fallback-text">{{ 'general.search.title' | t }}</span>
+                </a>
+              {%- endif -%}
+                  </div>
+                        <div class="header-item header-item--logo">
+                          {%- render 'header-logo-block', section: section -%}
+                        </div>
+                      {%- endif -%}
+
             {%- if logo_alignment == 'left' and section.settings.main_menu_alignment != 'left-drawer' -%}
-              <div class="header-item header-item--navigation{% if section.settings.main_menu_alignment == 'left-center' %} text-center{% endif %}" {% unless disable_aria %}role="navigation" aria-label="Primary"{% endunless %}>
+              <div class="header-item header-item--navigation{% if section.settings.main_menu_alignment == 'left-center' %} text-center{% endif %}" role="navigation" aria-label="Primary">
                 {%- render 'header-desktop-nav', main_menu: main_menu, dropdown_alignment: dropdown_alignment, hover_menu: section.settings.hover_menu -%}
               </div>
             {%- endif -%}
@@ -191,13 +192,8 @@
             {%- endif -%}
 
             <div class="header-item header-item--icons">
-              <button id="myButton"><selector-root data-id=PH712938 id="PH712938"></selector-root></button>
-              <script>
-document.getElementById("myButton").addEventListener("click", function() {
-window.$selector.push(["do", "markets-recommendations:show"]);
-});
-</script>
-              {% comment %} <div id="glc-selector-manual-desktop"></div> {% endcomment %}
+              {%- render 'market-recommendations' %}
+              
               {%- render 'header-icons', section: section -%}
             </div>
           </div>
@@ -211,8 +207,8 @@ window.$selector.push(["do", "markets-recommendations:show"]);
         <div class="site-header__search-container">
           <div class="site-header__search">
             <div class="page-width">
-              {% assign showpredictive = true %}
-              {% render 'predictive-search', showpredictive: showpredictive, section: section, context: 'header' %}
+              {% assign show_predictive_search_elements = true %}
+              {% render 'predictive-search', show_predictive_search_elements: show_predictive_search_elements, context: 'header',  section: section %}
             </div>
           </div>
         </div>
@@ -224,7 +220,6 @@ window.$selector.push(["do", "markets-recommendations:show"]);
 {% schema %}
 {
   "name": "t:sections.header.name",
-  "class":"hdrpartcsssticky",
   "settings": [
     {
       "type": "link_list",
@@ -312,42 +307,6 @@ window.$selector.push(["do", "markets-recommendations:show"]);
     },
     {
       "type": "header",
-      "content": "Cart Drawer Settings"
-    },
-      {
-        "type": "text",
-        "id": "special_msg",
-        "label": "Special Note",
-        "default": "Our Gift to You: Spend $850+ and we’ll include the Diamonds’N’Roses Single Rose Pin with your shipment."
-      },
-      {
-        "type": "checkbox",
-        "id": "cart_show_free_shipping_threshold",
-        "label": "Show free shipping minimum amount",
-        "info": "Make sure that you have properly configured your [shipping rates](/admin/settings/shipping).",
-        "default": false
-      },
-      {
-        "type": "text",
-        "id": "cart_free_shipping_threshold",
-        "label": "Free shipping minimum amount",
-        "info": "Enter amount using number only. If using multiple currencies, separate each currency code with its amount (eg.: USD:50,EUR:60,JPY:9000)",
-        "default": "50"
-      },
-      {
-        "type": "text",
-        "id": "free_shipping",
-        "label": "Free shipping Success message",
-        "default": "You are eligible for free shipping!"
-      },
-      {
-        "type": "text",
-        "id": "free_shipping_remaining_html",
-        "label": "Free shipping Success message",
-        "default": "Spend [value] more and get free shipping!"
-      },
-    {
-      "type": "header",
       "content": "t:sections.header.settings.header_toolbar"
     },
     {
@@ -363,178 +322,211 @@ window.$selector.push(["do", "markets-recommendations:show"]);
     },
     {
       "type": "header",
-      "content": "t:sections.header.settings.header_language_selector",
-      "info": "t:sections.header.settings.header_language_selector"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_locale_selector",
-      "label": "t:sections.header.settings.show_locale_selector.label",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "t:sections.header.settings.header_currency_selector",
-      "info": "t:sections.header.settings.header_currency_selector"
+      "content": "t:sections.header.settings.header_localization"
+      
     },
     {
       "type": "checkbox",
       "id": "show_currency_selector",
       "label": "t:sections.header.settings.show_currency_selector.label",
-      "default": true
+      "default": true,
+      "info": "t:sections.header.settings.header_currency_selector"
     },
     {
       "type": "checkbox",
       "id": "show_currency_flags",
       "label": "t:sections.header.settings.show_currency_flags.label",
       "default": true
-    }, 
+    },
+    {
+      "type": "checkbox",
+      "id": "show_locale_selector",
+      "label": "t:sections.header.settings.show_locale_selector.label",
+      "default": true,
+      "info": "t:sections.header.settings.header_language_selector"
+    },
+    {
+      "type": "header",
+      "content": "Cart Drawer Settings"
+    },
+    {
+      "type": "text",
+      "id": "special_msg",
+      "label": "Special Note",
+      "default": "Our Gift to You: Spend $850+ and we’ll include the Diamonds’N’Roses Single Rose Pin with your shipment."
+    },
+    {
+      "type": "checkbox",
+      "id": "cart_show_free_shipping_threshold",
+      "label": "Show free shipping minimum amount",
+      "info": "Make sure that you have properly configured your [shipping rates](/admin/settings/shipping).",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cart_free_shipping_threshold",
+      "label": "Free shipping minimum amount",
+      "info": "Enter amount using number only. If using multiple currencies, separate each currency code with its amount (eg.: USD:50,EUR:60,JPY:9000)",
+      "default": "50"
+    },
+    {
+      "type": "text",
+      "id": "free_shipping",
+      "label": "Free shipping Success message",
+      "default": "You are eligible for free shipping!"
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_remaining_html",
+      "label": "Free shipping Success message",
+      "default": "Spend [value] more and get free shipping!"
+    },
     {
       "type": "header",
       "content": "Predictive Search"
     },
-        {
-          "type": "text",
-          "id": "categories_title",
-          "label": "Categories"
-        },
     {
-          "type": "link_list",
-          "id": "categoriess",
-          "label": "Select Categories menu",
-          "default": "main-menu"
-        },
-        {
-          "type": "text",
-          "id": "collections_title",
-          "label": "Collections"
-        },
-        {
-          "type": "link_list",
-          "id": "collections_list",
-          "label": "Select Collection menu",
-          "default": "main-menu"
-        },
-        {
-          "type": "text",
-          "id": "bestsellers",
-          "label": "Best Sellers"
-        },
-        {
-          "type": "collection",
-          "id": "home_featured_products",
-          "label": "t:sections.featured-collection.settings.home_featured_products.label"
-        },
-        {
-          "type": "product_list",
-          "id": "my_collection_selector",
-          "label": "Upsell Products"
-        },
-        {
-          "type": "text",
-          "id": "pop_cats",
-          "label": "Popular Categories"
-        },
-        {
-          "type": "header",
-          "content": "Popular Search block 1"
-        },
-        {
-          "type": "image_picker",
-          "id": "image1",
-          "label": "t:sections.logo-list.blocks.logo.settings.image.label"
-        },
-        {
-          "type": "text",
-          "id": "title1",
-          "label": "Navigation"
-        },
-        {
-          "type": "url",
-          "id": "link1",
-          "label": "t:sections.logo-list.blocks.logo.settings.link.label",
-          "info": "t:sections.logo-list.blocks.logo.settings.link.info"
-        },
-        {
-          "type": "header",
-          "content": "Popular Search block 2"
-        },
-        {
-          "type": "image_picker",
-          "id": "image2",
-          "label": "t:sections.logo-list.blocks.logo.settings.image.label"
-        },
-        {
-          "type": "text",
-          "id": "title2",
-          "label": "Navigation"
-        },
-        {
-          "type": "url",
-          "id": "link2",
-          "label": "t:sections.logo-list.blocks.logo.settings.link.label",
-          "info": "t:sections.logo-list.blocks.logo.settings.link.info"
-        },
-        {
-          "type": "header",
-          "content": "Popular Search block 3"
-        },
-        {
-          "type": "image_picker",
-          "id": "image3",
-          "label": "t:sections.logo-list.blocks.logo.settings.image.label"
-        },
-        {
-          "type": "text",
-          "id": "title3",
-          "label": "Navigation"
-        },
-        {
-          "type": "url",
-          "id": "link3",
-          "label": "t:sections.logo-list.blocks.logo.settings.link.label",
-          "info": "t:sections.logo-list.blocks.logo.settings.link.info"
-        },
-        {
-          "type": "header",
-          "content": "Popular Search block 4"
-        },
-        {
-          "type": "image_picker",
-          "id": "image4",
-          "label": "t:sections.logo-list.blocks.logo.settings.image.label"
-        },
-        {
-          "type": "text",
-          "id": "title4",
-          "label": "Navigation"
-        },
-        {
-          "type": "url",
-          "id": "link4",
-          "label": "t:sections.logo-list.blocks.logo.settings.link.label",
-          "info": "t:sections.logo-list.blocks.logo.settings.link.info"
-        },
-        {
-          "type": "header",
-          "content": "Popular Search block 5"
-        },
-        {
-          "type": "image_picker",
-          "id": "image5",
-          "label": "t:sections.logo-list.blocks.logo.settings.image.label"
-        },
-        {
-          "type": "text",
-          "id": "title5",
-          "label": "Navigation"
-        },
-        {
-          "type": "url",
-          "id": "link5",
-          "label": "t:sections.logo-list.blocks.logo.settings.link.label",
-          "info": "t:sections.logo-list.blocks.logo.settings.link.info"
-        }
+      "type": "text",
+      "id": "categories_title",
+      "label": "Categories"
+    },
+    {
+      "type": "link_list",
+      "id": "categoriess",
+      "label": "Select Categories menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "collections_title",
+      "label": "Collections"
+    },
+    {
+      "type": "link_list",
+      "id": "collections_list",
+      "label": "Select Collection menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "bestsellers",
+      "label": "Best Sellers"
+    },
+    {
+      "type": "collection",
+      "id": "home_featured_products",
+      "label": "t:sections.featured-collection.settings.home_featured_products.label"
+    },
+    {
+      "type": "product_list",
+      "id": "my_collection_selector",
+      "label": "Upsell Products"
+    },
+    {
+      "type": "text",
+      "id": "pop_cats",
+      "label": "Popular Categories"
+    },
+    {
+      "type": "header",
+      "content": "Popular Search block 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image1",
+      "label": "t:sections.logo-list.blocks.logo.settings.image.label"
+    },
+    {
+      "type": "text",
+      "id": "title1",
+      "label": "Navigation"
+    },
+    {
+      "type": "url",
+      "id": "link1",
+      "label": "t:sections.logo-list.blocks.logo.settings.link.label",
+      "info": "t:sections.logo-list.blocks.logo.settings.link.info"
+    },
+    {
+      "type": "header",
+      "content": "Popular Search block 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "t:sections.logo-list.blocks.logo.settings.image.label"
+    },
+    {
+      "type": "text",
+      "id": "title2",
+      "label": "Navigation"
+    },
+    {
+      "type": "url",
+      "id": "link2",
+      "label": "t:sections.logo-list.blocks.logo.settings.link.label",
+      "info": "t:sections.logo-list.blocks.logo.settings.link.info"
+    },
+    {
+      "type": "header",
+      "content": "Popular Search block 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "t:sections.logo-list.blocks.logo.settings.image.label"
+    },
+    {
+      "type": "text",
+      "id": "title3",
+      "label": "Navigation"
+    },
+    {
+      "type": "url",
+      "id": "link3",
+      "label": "t:sections.logo-list.blocks.logo.settings.link.label",
+      "info": "t:sections.logo-list.blocks.logo.settings.link.info"
+    },
+    {
+      "type": "header",
+      "content": "Popular Search block 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image4",
+      "label": "t:sections.logo-list.blocks.logo.settings.image.label"
+    },
+    {
+      "type": "text",
+      "id": "title4",
+      "label": "Navigation"
+    },
+    {
+      "type": "url",
+      "id": "link4",
+      "label": "t:sections.logo-list.blocks.logo.settings.link.label",
+      "info": "t:sections.logo-list.blocks.logo.settings.link.info"
+    },
+    {
+      "type": "header",
+      "content": "Popular Search block 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image5",
+      "label": "t:sections.logo-list.blocks.logo.settings.image.label"
+    },
+    {
+      "type": "text",
+      "id": "title5",
+      "label": "Navigation"
+    },
+    {
+      "type": "url",
+      "id": "link5",
+      "label": "t:sections.logo-list.blocks.logo.settings.link.label",
+      "info": "t:sections.logo-list.blocks.logo.settings.link.info"
+    }
   ],
   "blocks": [
     {
@@ -557,16 +549,6 @@ window.$selector.push(["do", "markets-recommendations:show"]);
           "type": "range",
           "id": "desktop_logo_width",
           "label": "t:sections.header.blocks.logo.settings.desktop_logo_width.label",
-          "default": 200,
-          "min": 100,
-          "max": 400,
-          "step": 10,
-          "unit": "px"
-        },
-        {
-          "type": "range",
-          "id": "inverted_logo_width",
-          "label": "Inverted Logo Width",
           "default": 200,
           "min": 100,
           "max": 400,
