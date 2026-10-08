@@ -20,12 +20,12 @@
       </span>
     {%- endif -%}
 
-    <a
+    {% comment %} <a
       href="/pages/swym-wishlist#swym-wishlist"
       class="site-nav__link_wishlist site-nav__link site-nav__link--icon swym-wishlist"
     >
       <i aria-hidden="true" focusable="false" role="presentation" class="fa fa-star-o"></i>
-    </a>
+    </a> {% endcomment %}
 
     {%- if section.settings.main_menu_alignment == 'left'
       or section.settings.main_menu_alignment == 'left-center'
