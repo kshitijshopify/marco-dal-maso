@@ -6921,45 +6921,9 @@ p.sc-intro {
 .product-section .shopify-app-block klarna-placement {
     display: none;
 }
+
 .product-block.klarna-placement-widget {
     margin: 0;
-}
-
-@media only screen and (min-width: 768px) {
-    .collection-promo--root {
-        padding-left: 22px;
-    }
-}
-.collection-promo--root__imgblock  .stacked-text--button {
-    margin: 0;
-    display: block;
-    width: fit-content;
-}
-.collection-promo--root__imgblock .h1.stacked-text--title {
-    margin: 0;
-}
-.collection-promo--root[data-textpos="absoluted_onimage"] .stacked-text--root:not(:only-child) .stacked-text--wrapper {
-    /* background-color: rgba(255, 255, 255, 0.86); */
-    /* -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px); */
-    padding: 48px;
-    max-width: 700px;
-}
-.collection-promo--root[data-homepage-button="true"] .stacked-text--button {
-    width: fit-content !important;
-    padding: 12px 16px !important;
-    background: white !important;
-    color: black !important;
-    text-decoration: none !important;
-    font-size: 17px !important;
-    margin-top: 0 !important;
-}
-@media only screen and (max-width: 767px) {
-    .collection-promo--root[data-homepage-button="true"] .stacked-text--wrapper {
-        padding: 0 !important;
-        padding-bottom: 25px !important;
-        align-items: center;
-    }
 }
 
 /* Wishlist app css  */
@@ -7015,6 +6979,34 @@ a.swym-storefront-layout-empty-state-cta-button.swym-storefront-layout-empty-sta
     font-size: 16px !important;
     color: black !important;
 }
+.swym-storefront-layout-empty-state-icon path {
+    fill: white !important;
+    stroke: black !important;
+}
+.swym-storefront-layout-empty-state-icon circle {
+    fill: black !important;
+}
+a.swym-storefront-layout-empty-state-signup-link:hover {
+    opacity: 1 !important;
+}
+div#swym-wishlist-title {
+    font-size: 24px;
+}
+.swym-storefront-layout-empty-state-icon::before {
+    content: "";
+    display: block;
+    width: 128px;
+    height: 128px;
+    background-image: url("https://cdn.shopify.com/s/files/1/1476/0022/files/star-7203_256.png?v=1788184639");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+}
+.swym-storefront-layout-empty-state-icon svg {
+    display: none !important;
+}
 @media (max-width:767px){
     .swym-storefront-layout-empty-wishlist-title, 
     .swym-storefront-layout-empty-state-notice, 
@@ -7034,11 +7026,11 @@ a.swym-storefront-layout-empty-state-cta-button.swym-storefront-layout-empty-sta
     .swym-storefront-layout-empty-state-signup-text {
         font-size: 14px !important;
     }
+    div#swym-wishlist-title {
+        font-size: 20px;
+    }
 }
-span.product__price.product__price--compare, 
-span.product__price.product__price--compare span,
-.grid-product__price--original,
-.grid-product__price--original span {
+span.product__price.product__price--compare {
     color: gray;
 }
 @media (min-width:768px){
@@ -7051,14 +7043,10 @@ span.product__price.product__price--compare span,
         align-items: center;
     }
 }
-
-span.product__price-savings, .grid-product__price--savings {
-    display: none;
-}
-
 .template-gift-guide .background-media-text .background-media-text__inner .animation-contents {
     opacity: 1 !important;
 }
+
 
 /* new article  */
 .template-material-guide .feature-row-wrapper .rte *:not(.btn) {
@@ -7172,4 +7160,3 @@ span.product__price-savings, .grid-product__price--savings {
     }
     /* few css added in inline section new blog article  */
 }
-

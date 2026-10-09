@@ -12,7 +12,7 @@
     {% endif %}
 {% endif %}
 
-<section class="rt-image-banner rt-image-banner--{{ section.id }}{% if section.settings.mobile_stack %} rt-image-banner--stacked{% endif %}">
+<section class="rt-image-banner rt-image-banner--{{ section.id }}">
   
   <div class="rt-image-banner__media">
 
@@ -142,22 +142,18 @@
     position:relative;
   }
 
-  .template-material-guide .rt-image-banner--{{ section.id }} .rt-image-banner__content{
-    margin-bottom: auto;
-  }
-
-  .rt-image-banner--{{ section.id }} .rt-image-banner__content::before{
-    background:radial-gradient(rgba(0, 0, 0, var(--colorImageOverlayTextShadow)) 0%, transparent 60%);
-    bottom:0;
-    content:"";
-    left:0;
-    margin:-100px -200px -100px -200px;
-    position:absolute;
-    right:0;
-    top:0;
-    z-index:auto;
-    z-index:-1;
-  }
+    .rt-image-banner--{{ section.id }} .rt-image-banner__content::before{
+        background:radial-gradient(rgba(0, 0, 0, var(--colorImageOverlayTextShadow)) 0%, transparent 60%);
+        bottom:0;
+        content:"";
+        left:0;
+        margin:-100px -200px -100px -200px;
+        position:absolute;
+        right:0;
+        top:0;
+        z-index:auto;
+        z-index:-1;
+    }
 
   .rt-image-banner--{{ section.id }} .rt-image-banner__content--center{
     margin:0 auto;
@@ -243,47 +239,6 @@
         margin-top:7.5px;
     }
   }
-  {% if section.settings.mobile_stack %}
-  @media screen and (max-width: 767px){
-    .rt-image-banner--{{ section.id }}{
-      min-height:0;
-      background:{{ section.settings.mobile_stack_bg }};
-    }
-
-    /* image ab absolute nahi, normal flow me */
-    .rt-image-banner--{{ section.id }} .rt-image-banner__media{
-      position:relative;
-      inset:auto;
-    }
-
-    .rt-image-banner--{{ section.id }} .rt-image-banner__media::after{
-      display:none; /* overlay gradient ki zarurat nahi */
-    }
-
-    .rt-image-banner--{{ section.id }} .rt-image-banner__image{
-      height:auto; /* natural aspect ratio */
-    }
-
-    .rt-image-banner--{{ section.id }} .rt-image-banner__inner{
-      min-height:0;
-      align-items:flex-start;
-      padding-top:24px;
-      padding-bottom:24px;
-    }
-
-    .rt-image-banner--{{ section.id }} .rt-image-banner__content{
-      color:{{ section.settings.mobile_stack_text_color }};
-    }
-
-    .rt-image-banner--{{ section.id }} .rt-image-banner__content::before{
-      display:none; /* radial text-shadow hata do */
-    }
-
-    .rt-image-banner--{{ section.id }} .rt-image-banner__heading{
-      text-shadow:none;
-    }
-  }
-{% endif %}
 </style>
 
 {% schema %}
@@ -496,24 +451,6 @@
         }
       ]
     },
-    {
-      "type": "checkbox",
-      "id": "mobile_stack",
-      "label": "Show content below image (mobile)",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "mobile_stack_text_color",
-      "label": "Mobile text color (below image)",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "mobile_stack_bg",
-      "label": "Mobile background (below image)",
-      "default": "#ffffff"
-    }
   ],
   "presets": [
     {

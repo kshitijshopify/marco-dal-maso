@@ -11,6 +11,7 @@
   "sections": {
     "collection-header": {
       "type": "collection-header",
+      "disabled": true,
       "custom_css": [
         "header.section-header.section-header--flush {padding-bottom: 40px; padding-top: 40px;}",
         "@media only screen and (max-width: 768px) {header.section-header.section-header--flush {padding-bottom: 0px; }}",
@@ -26,25 +27,95 @@
     "rich_text_QpbiEQ": {
       "type": "rich-text",
       "blocks": {
+        "heading_RAnF6H": {
+          "type": "heading",
+          "settings": {
+            "title": "Marco dal Maso {{ collection.title }}"
+          }
+        },
         "text_kGkUUT": {
           "type": "text",
           "settings": {
             "enlarge_text": true,
-            "text": "{{ collection.metafields.custom.collections_short_description_below_image | metafield_tag }}"
+            "text": "<p>crafted in Italy by our skilled artisans.</p>"
           }
         }
       },
       "block_order": [
+        "heading_RAnF6H",
         "text_kGkUUT"
       ],
       "name": "t:sections.rich-text.presets.rich_text.name",
       "settings": {
         "desktop_hide": false,
         "mobile_hide": false,
-        "align_text": "left",
+        "align_text": "center",
         "narrow_column": false,
         "divider": false,
         "padding_b": 0
+      }
+    },
+    "promo_grid_V7K86F": {
+      "type": "promo-grid",
+      "blocks": {
+        "advanced_LRrBWc": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "Mens Rings",
+            "textarea": "",
+            "cta_text1": "Shop All",
+            "cta_link1": "shopify://collections/mens-rings",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/mens_18kt_gold_ring_with_black_diamonds_by_marco_dal_maso.jpg",
+            "video_url": "",
+            "width": "50",
+            "height": 300,
+            "text_size": 100,
+            "text_align": "vertical-center horizontal-center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": true,
+            "framed": false
+          }
+        },
+        "advanced_mRTKLz": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "Womens Rings",
+            "textarea": "",
+            "cta_text1": "Shop All",
+            "cta_link1": "shopify://collections/womens-rings",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/GIAN0678-02WH_5702.jpg",
+            "mob_image": "shopify://shop_images/GIAN0679-04YE_3939_e101638c-9787-4c6f-b2e2-c5c1e29abd6d.jpg",
+            "video_url": "",
+            "width": "50",
+            "height": 300,
+            "text_size": 100,
+            "text_align": "vertical-center horizontal-center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": true,
+            "framed": false
+          }
+        }
+      },
+      "block_order": [
+        "advanced_LRrBWc",
+        "advanced_mRTKLz"
+      ],
+      "name": "t:sections.promo-grid.presets.promotional_grid.name",
+      "settings": {
+        "custom_class": "custom-promo-grid",
+        "full_width": true,
+        "customblock": false,
+        "gutter_size": 20,
+        "space_above": true,
+        "space_below": true,
+        "lazyload_images": true,
+        "ms": false
       }
     },
     "main-collection": {
@@ -548,6 +619,38 @@
         "number-of-rows": 20
       }
     },
+    "rich_text_VafFgq": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rxzkbU": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "title": "Marco dal Maso {{ collection.title }}"
+          }
+        },
+        "text_qHa6VB": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "{{ collection.metafields.custom.collections_short_description_below_image | metafield_tag }}"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rxzkbU",
+        "text_qHa6VB"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
+        "align_text": "center",
+        "narrow_column": false,
+        "divider": false,
+        "padding_b": 0
+      }
+    },
     "rich_text_8PeYTr": {
       "type": "rich-text",
       "blocks": {
@@ -562,7 +665,6 @@
       "block_order": [
         "text_LpzbYj"
       ],
-      "disabled": true,
       "custom_css": [
         "@media (max-width: 768px) {li, p {font-size: 14px; line-height: 24px; } .section--divider {padding-top: 0; }}"
       ],
@@ -575,56 +677,14 @@
         "divider": true,
         "padding_b": 0
       }
-    },
-    "slideshow_old_dqQMAg": {
-      "type": "slideshow-old",
-      "blocks": {
-        "image_nVxxRK": {
-          "type": "image",
-          "settings": {
-            "top_subheading": "",
-            "title": "",
-            "title_size": 80,
-            "subheading": "",
-            "text_color": "rgba(0,0,0,0)",
-            "link": "",
-            "link_text": "",
-            "link_2": "",
-            "link_text_2": "",
-            "color_accent": "rgba(0,0,0,0)",
-            "text_align": "vertical-center horizontal-center",
-            "text_align_mobiles": "mobvertical-center mobhorizontal-center",
-            "image": "{{ collection.metafields.custom.menu_vertical_image.value }}",
-            "video": "",
-            "video_mobile": "",
-            "object-position": "center",
-            "parallax_direction": "top",
-            "overlay_opacity": 0
-          }
-        }
-      },
-      "block_order": [
-        "image_nVxxRK"
-      ],
-      "disabled": true,
-      "name": "t:sections.slideshow.presets.hero_optional_slideshow.name",
-      "settings": {
-        "section_height": "natural",
-        "mobile_height": "auto",
-        "first_section": true,
-        "parallax": false,
-        "style": "bars",
-        "autoplay": true,
-        "autoplay_speed": 5,
-        "lazyload_images": true
-      }
     }
   },
   "order": [
     "collection-header",
     "rich_text_QpbiEQ",
+    "promo_grid_V7K86F",
     "main-collection",
-    "rich_text_8PeYTr",
-    "slideshow_old_dqQMAg"
+    "rich_text_VafFgq",
+    "rich_text_8PeYTr"
   ]
 }

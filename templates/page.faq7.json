@@ -28,7 +28,7 @@
           "type": "question",
           "settings": {
             "title": "Where is MARCO DAL MASO stocked?",
-            "text": "<p>Please <a href=\"https://marcodalmaso.com/pages/stockists\" title=\"STOCKISTS\">click here</a> to see a list of some of our vendors who would be delighted to welcome you in their stores.</p>"
+            "text": "<p>Please <a href=\"https://marcodalmaso.com/pages/store-locator\" title=\"STORE LOCATOR\">click here</a> to see a list of some of our vendors who would be delighted to welcome you in their stores.</p>"
           }
         }
       },

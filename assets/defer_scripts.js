@@ -140,7 +140,6 @@ document.addEventListener('variant:change', (event) => {
       item.classList.add('pdp_inventory_soldout');
     });
   }
-  
 });
 
 document.addEventListener('click', (e) => {
@@ -180,7 +179,6 @@ document.addEventListener('click', (e) => {
   }
 
 });
-
 
 // ============================================
 // Script 3: Klaviyo Popup (Automatically discount)
