@@ -7173,3 +7173,9 @@ span.product__price-savings, .grid-product__price--savings {
     /* few css added in inline section new blog article  */
 }
 
+.prod_cart_upsells .tvaw-wishlist-icon.only-icon svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1;
+    opacity: 0.5;
+}
