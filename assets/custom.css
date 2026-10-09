@@ -7189,4 +7189,15 @@ span.product__price-savings, .grid-product__price--savings {
     height: 28px;
 }
 
+@media (max-width:767px){
+    .grid__item .tvaw-wishlist-icon-wrapper .tvaw-wishlist-icon.only-icon{
+        width: fit-content !important;
+        height: fit-content !important;
+    }
+    .grid__item .tvaw-wishlist-icon-wrapper .tvaw-wishlist-icon svg{
+        height: 16px !important;
+        width: 16px !important;
+    }
+}
+
 /* ---------------- Tvalue wishlist ---------------- */
