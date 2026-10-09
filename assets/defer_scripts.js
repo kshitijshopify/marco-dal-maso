@@ -94,15 +94,8 @@
     function triggerAction() {
       if (fired) return;
       fired = true;
-      if (typeof Shopify !== "undefined" && Shopify.locale) {
-        if (Shopify.locale === "en") {
-          window._klOnsite = window._klOnsite || [];
-          window._klOnsite.push(['openForm', 'T56xG4']);
-        } else if (Shopify.locale === "it") {
-          window._klOnsite = window._klOnsite || [];
-          window._klOnsite.push(['openForm', 'VzrGey']);
-        }
-      }
+      window._klOnsite = window._klOnsite || [];
+      window._klOnsite.push(['openForm', 'QRAYwh']);
     }
 
     setTimeout(triggerAction, 20000);

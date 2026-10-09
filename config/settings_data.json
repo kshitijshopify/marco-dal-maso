@@ -84,6 +84,7 @@
     "show_breadcrumbs": false,
     "disable_animations": true,
     "auto_discount": false,
+    "klaviyo_form_id": "QRAYwh",
     "cart_message_one": "",
     "cart_message_two": "",
     "metaprodbannersize": "landscape",

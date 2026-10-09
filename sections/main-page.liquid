@@ -3,11 +3,7 @@
     {% comment %} <div class="klaviyo-form-V5CCEP"></div>
     <div class="klaviyo-form-Ti828M"></div> {% endcomment %}
 
-    {% if request.locale.iso_code == 'it' %}
-    <div class="klaviyo-form-XYLbdF"></div>
-    {% else %}
-    <div class="klaviyo-form-QPFqfU"></div><div class="klaviyo-form-WJhMjF"></div>
-    {% endif %}
+    <div class="klaviyo-form-QPFqfU"></div>
   </div>
 {% else %}
 <div class="{% unless template contains 'refer-friend' or template contains 'recommended' %}page-width {% unless template contains 'swym' or page.handle contains 'store-locator' %}page-width--narrow{% endunless %} page-content {% endunless %} cuspage__class {% if template contains 'swym' and customer %} notoppadding{% endif %}">
