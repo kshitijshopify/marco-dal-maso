@@ -7189,6 +7189,15 @@ span.product__price-savings, .grid-product__price--savings {
     height: 28px;
 }
 
+@media (min-width:1025px){
+    .grid__item .tvaw-wishlist-icon-wrapper{
+        visibility: hidden;
+    }
+    .grid__item:hover .tvaw-wishlist-icon-wrapper{
+        visibility: visible;
+    }
+}
+
 @media (max-width:767px){
     .grid__item .tvaw-wishlist-icon-wrapper .tvaw-wishlist-icon.only-icon{
         width: fit-content !important;
