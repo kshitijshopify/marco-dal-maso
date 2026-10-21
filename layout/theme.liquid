@@ -159,11 +159,11 @@
       .size_drawer {display: none;}
     </style>  
     {%- render 'font-face' -%}
-    <link data-critical rel="stylesheet" href="{{ 'theme.css' | asset_url }}" media="all">
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
     {%- render 'css-variables' -%}
     
-    <link data-critical rel="stylesheet" href="{{ 'custom.css' | asset_url }}" media="all">
-    <link data-critical rel="stylesheet" href="{{ 'responsive.css' | asset_url }}" media="all">
+    {{ 'custom.css' | asset_url | stylesheet_tag }}
+    {{ 'responsive.css' | asset_url | stylesheet_tag }}
     {% render 'blog-schema' %}
     {% render 'faq-schematemplate' %}
 
@@ -302,34 +302,50 @@
     {% endif %}
 
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "@id": "https://marcodalmaso.com/#organization",
-      "name": "MARCO DAL MASO",
-      "alternateName": "Marco Dal Maso Jewelry",
-      "url": "https://marcodalmaso.com",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://cdn.shopify.com/s/files/1/1476/0022/files/macro_logo.png?v=1731655894",
-        "width": 600,
-        "height": 100
-      },
-      "description": "Italian luxury jewelry brand combining artisanal craftsmanship with contemporary design",
-      "founder": { "@type": "Person", "name": "Marco Dal Maso" },
-      "foundingLocation": {
-        "@type": "Place",
-        "address": { "@type": "PostalAddress", "addressCountry": "IT" }
-      },
-      "sameAs": [
-        "https://www.instagram.com/marcodalmaso",
-        "https://www.instagram.com/marcodalmaso_official",
-        "https://www.facebook.com/marcodalmaso",
-        "https://www.facebook.com/MarcoDalMasoJewels/",
-        "https://twitter.com/MDM__Jewels"
-      ]
-    }
-    </script>
+      {
+        "@context": "https://schema.org",
+        "@type": "OnlineStore",
+        "@id": "https://marcodalmaso.com/#organization",
+        "name": "MARCO DAL MASO",
+        "alternateName": ["Marco Dal Maso Jewelry", "MDM"],
+        "url": "https://marcodalmaso.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://cdn.shopify.com/s/files/1/1476/0022/files/MARCO_DAL_MASO_Logo.png?v=1789680156",
+          "width": 600,
+          "height": 150,
+          "caption": "MARCO DAL MASO"
+        },
+        "description": "Second-generation Italian jewelry house rooted in a family atelier in Vicenza, where every piece is handcrafted by skilled Italian artisans.",
+        "foundingDate": "2017",
+        "founder": {
+          "@type": "Person",
+          "name": "Marco Dal Maso"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Via Palazzon, 41",
+          "addressLocality": "Creazzo",
+          "addressRegion": "VI",
+          "postalCode": "36051",
+          "addressCountry": "IT"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+39-0444-340888",
+          "email": "ciao@marcodalmaso.com",
+          "contactType": "customer service",
+          "availableLanguage": ["English", "Italian"]
+        },
+        "sameAs": [
+          "https://www.instagram.com/marcodalmaso_official/",
+          "https://www.facebook.com/MarcoDalMasoJewels/",
+          "https://www.pinterest.co.uk/MARCODALMASO/",
+          "https://www.tiktok.com/@marco.dal.maso"
+        ]
+      }
+      </script>
+
 
     <script type="application/ld+json">
     {
@@ -352,9 +368,12 @@
     {% endif %}
     {% include 'variable-products-head-template' %}
 
+    {% comment %}     
     <!-- Hotjar Tracking Code for https://www.marcodalmaso.com --> 
     <script type="load"> (function(h,o,t,j,a,r){ h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)}; h._hjSettings={hjid:3792820,hjsv:6}; a=o.getElementsByTagName('head')[0]; r=o.createElement('script');r.async=1; r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv; a.appendChild(r); })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv='); </script>
-    <!-- Hotjar Tracking Code for https://www.marcodalmaso.com -->
+    <!-- Hotjar Tracking Code for https://www.marcodalmaso.com --> 
+    {% endcomment %}
+
     {% comment %} <script type="load" d-src="//script.crazyegg.com/pages/scripts/0121/6081.js" ></script> {% endcomment %}
 
     <link rel="stylesheet" href="{{ 'slick.css' | asset_url }}" media="print" onload="this.media='all'; this.onload=null;">

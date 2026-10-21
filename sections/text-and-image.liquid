@@ -38,23 +38,6 @@
     {% if section.settings.bottom_padding == false %}
       .index-section { margin-bottom: 0 !important; }
     {% endif %}
-
-    /* Mobile image handling */
-    #shopify-section-{{ section.id }} .feature-row__image-mobile { display: none; }
-
-    @media screen and (max-width: 768px) {
-      {% if section.settings.image_mobile != blank %}
-        #shopify-section-{{ section.id }} .feature-row__first-image .feature-row__image-desktop { display: none; }
-        #shopify-section-{{ section.id }} .feature-row__first-image .feature-row__image-mobile { display: block; }
-      {% endif %}
-      {% if section.settings.image2_mobile != blank %}
-        #shopify-section-{{ section.id }} .feature-row__second-image .feature-row__image-desktop { display: none; }
-        #shopify-section-{{ section.id }} .feature-row__second-image .feature-row__image-mobile { display: block; }
-      {% endif %}
-      {% if section.settings.hide_image2_mobile %}
-        #shopify-section-{{ section.id }} .feature-row__second-image { display: none; }
-      {% endif %}
-    }
   {% endstyle %}
 
   <div {% if section.settings.custom_id != blank %}id="{{ section.settings.custom_id }}"{% endif %} class="index-section" {%- if section.settings.body_bg != 'rgba(0,0,0,0)' -%}style="background-color: {{ section.settings.body_bg }};"{% endif %}>
@@ -65,23 +48,23 @@
             {%- if section.settings.image != blank -%}
               <div class="feature-row__first-image">
                 {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}<a href="{{ section.settings.button_link }}">{%- endif -%}
-                  {%- liquid
-                    if section.settings.image2 == blank
-                      assign sizeVariable = section.settings.image_width | append: 'vw'
-                      assign fallback = '100vw'
-                    else
-                      assign sizeVariable = 'calc(0.4 * 50vw)'
-                      assign fallback = '40vw'
-                    endif
+                  <div class="image-wrap {% if section.settings.image_mask != 'none' %}svg-mask svg-mask--{{ section.settings.image_mask }}{% endif %}" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image.aspect_ratio }}%;">
+                    {%- liquid
+                      if section.settings.image2 == blank
+                        assign sizeVariable = section.settings.image_width | append: 'vw'
+                        assign fallback = '100vw'
+                      else
+                        assign sizeVariable = 'calc(0.4 * 50vw)'
+                        assign fallback = '40vw'
+                      endif
 
-                    assign imageWidth = section.settings.image_width | times: 1
-                    if imageWidth >= 50
-                      assign loading = section.settings.lazyload_images
-                    else
-                      assign loading = true
-                    endif
-                  -%}
-                  <div class="image-wrap feature-row__image-desktop {% if section.settings.image_mask != 'none' %}svg-mask svg-mask--{{ section.settings.image_mask }}{% endif %}" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image.aspect_ratio }}%;">
+                      assign imageWidth = section.settings.image_width | times: 1
+                      if imageWidth >= 50
+                        assign loading = section.settings.lazyload_images
+                      else
+                        assign loading = true
+                      endif
+                    -%}
                     {%- render 'image-element',
                       img: section.settings.image,
                       widths: '180, 360, 540, 750, 900, 1080',
@@ -91,34 +74,22 @@
                       classes: 'feature-row__image',
                     -%}
                   </div>
-                  {%- if section.settings.image_mobile != blank -%}
-                    <div class="image-wrap feature-row__image-mobile {% if section.settings.image_mask != 'none' %}svg-mask svg-mask--{{ section.settings.image_mask }}{% endif %}" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image_mobile.aspect_ratio }}%;">
-                      {%- render 'image-element',
-                        img: section.settings.image_mobile,
-                        widths: '360, 540, 750, 900',
-                        loading: loading,
-                        sizeVariable: '100vw',
-                        fallback: '100vw',
-                        classes: 'feature-row__image',
-                      -%}
-                    </div>
-                  {%- endif -%}
                 {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}</a>{%- endif -%}
               </div>
             {%- endif -%}
             {%- if section.settings.image2 != blank -%}
               <div class="feature-row__second-image">
                 {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}<a href="{{ section.settings.button_link }}">{%- endif -%}
-                  {%- liquid
-                    if section.settings.image == blank
-                      assign sizeVariable = section.settings.image_width | append: 'vw'
-                      assign fallback = '100vw'
-                    else
-                      assign sizeVariable = 'calc(0.6 * 50vw)'
-                      assign fallback = '60vw'
-                    endif
-                  -%}
-                  <div class="image-wrap feature-row__image-desktop {% if section.settings.image2_mask != 'none' %}svg-mask svg-mask--{{ section.settings.image2_mask }}{% endif %}" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image2.aspect_ratio }}%;">
+                  <div class="image-wrap {% if section.settings.image2_mask != 'none' %}svg-mask svg-mask--{{ section.settings.image2_mask }}{% endif %}" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image2.aspect_ratio }}%;">
+                    {%- liquid
+                      if section.settings.image == blank
+                        assign sizeVariable = section.settings.image_width | append: 'vw'
+                        assign fallback = '100vw'
+                      else
+                        assign sizeVariable = 'calc(0.6 * 50vw)'
+                        assign fallback = '60vw'
+                      endif
+                    -%}
                     {%- render 'image-element',
                       img: section.settings.image2,
                       widths: '180, 360, 540, 750, 900, 1080',
@@ -127,17 +98,6 @@
                       classes: 'feature-row__image',
                     -%}
                   </div>
-                  {%- if section.settings.image2_mobile != blank -%}
-                    <div class="image-wrap feature-row__image-mobile {% if section.settings.image2_mask != 'none' %}svg-mask svg-mask--{{ section.settings.image2_mask }}{% endif %}" style="height: 0; padding-bottom: {{ 100 | divided_by: section.settings.image2_mobile.aspect_ratio }}%;">
-                      {%- render 'image-element',
-                        img: section.settings.image2_mobile,
-                        widths: '360, 540, 750, 900',
-                        sizeVariable: '100vw',
-                        fallback: '100vw',
-                        classes: 'feature-row__image',
-                      -%}
-                    </div>
-                  {%- endif -%}
                 {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}</a>{%- endif -%}
               </div>
             {%- endif -%}
@@ -241,12 +201,6 @@
       "label": "t:sections.text-and-image.settings.image.label"
     },
     {
-      "type": "image_picker",
-      "id": "image_mobile",
-      "label": "Image (Mobile)",
-      "info": "Optional. If set, this image is shown on mobile instead of the image above."
-    },
-    {
       "type": "select",
       "id": "image_mask",
       "label": "t:common.image_mask.label",
@@ -310,18 +264,6 @@
       "type": "image_picker",
       "id": "image2",
       "label": "t:sections.text-and-image.settings.image2.label"
-    },
-    {
-      "type": "image_picker",
-      "id": "image2_mobile",
-      "label": "Second image (Mobile)",
-      "info": "Optional. If set, this image is shown on mobile instead of the second image above."
-    },
-    {
-      "type": "checkbox",
-      "id": "hide_image2_mobile",
-      "label": "Hide second image on mobile",
-      "default": false
     },
     {
       "type": "select",

@@ -37,9 +37,12 @@
         "@media (max-width: 767px) {.custom-rich-text .page-width > div .enlarge-text {display: block; } .custom-rich-text > div > div {padding: 0px 10px; margin: 0px 0 30px; } h2 {font-size: 25px; } .custom-rich-text div p {font-size: 18px; }}"
       ],
       "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
         "align_text": "center",
         "narrow_column": false,
-        "divider": false
+        "divider": false,
+        "padding_b": 0
       }
     },
     "rich_text_qARr8A": {
@@ -72,9 +75,12 @@
         "@media (max-width: 767px) {.custom-rich-text div p {font-size: 18px; } .custom-rich-text > div > div {padding: 0px 10px; margin: 0; } .custom-rich-text {margin-bottom: 0; }}"
       ],
       "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
         "align_text": "center",
         "narrow_column": false,
-        "divider": false
+        "divider": false,
+        "padding_b": 0
       }
     },
     "16510701485bc85b9d": {
@@ -89,6 +95,8 @@
             "image_width": 200,
             "title": "",
             "text": "",
+            "style_link": false,
+            "chat_btn": false,
             "button_label": "OPEN THE CHAT",
             "button_link": "#live-chat"
           }
@@ -102,6 +110,8 @@
             "image_width": 200,
             "title": "",
             "text": "",
+            "style_link": false,
+            "chat_btn": false,
             "button_label": "EMAIL US AT CIAO@MARCODALMASO.COM",
             "button_link": "mailto:ciao@marcodalmaso.com"
           }
@@ -115,6 +125,8 @@
             "image_width": 200,
             "title": "",
             "text": "",
+            "style_link": false,
+            "chat_btn": false,
             "button_label": "CALL US AT +39 0444 340888",
             "button_link": "tel:+390444340888"
           }
@@ -133,8 +145,12 @@
       ],
       "settings": {
         "title": "",
+        "btntext": "",
+        "btnurl": "",
+        "text": "",
         "align_text": "center",
-        "divider": false
+        "divider": false,
+        "mobile_link": ""
       }
     },
     "165269900644ff2f31": {
@@ -149,6 +165,8 @@
             "image_width": 200,
             "title": "Press Inquiries",
             "text": "",
+            "style_link": false,
+            "chat_btn": false,
             "button_label": "GO TO PRESS INQUIRY FORM",
             "button_link": "shopify://pages/press-inquiries"
           }
@@ -160,16 +178,34 @@
             "image": "shopify://shop_images/Icon_4.jpg",
             "image_mask": "none",
             "image_width": 200,
-            "title": "Returns & Refunds",
+            "title": "Retail Inquiries",
             "text": "",
+            "style_link": false,
+            "chat_btn": false,
             "button_label": "GO TO RETAIL INQUIRY FORM",
             "button_link": "shopify://pages/retail-inquiries"
+          }
+        },
+        "text_block_hgbLWh": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "image": "shopify://shop_images/Icon_4.jpg",
+            "image_mask": "none",
+            "image_width": 200,
+            "title": "Returns & Refunds",
+            "text": "",
+            "style_link": false,
+            "chat_btn": false,
+            "button_label": "GO TO RETURN AND EXCHANGES",
+            "button_link": "https://marcodalmaso.com/pages/support-center#returns"
           }
         }
       },
       "block_order": [
         "1652699006e9e7c9bd-0",
-        "1652699006e9e7c9bd-1"
+        "1652699006e9e7c9bd-1",
+        "text_block_hgbLWh"
       ],
       "custom_css": [
         ".btn {min-width: 100%; background: #000; color: #fff;}",
@@ -181,8 +217,12 @@
       ],
       "settings": {
         "title": "",
+        "btntext": "",
+        "btnurl": "",
+        "text": "",
         "align_text": "center",
-        "divider": false
+        "divider": false,
+        "mobile_link": ""
       }
     },
     "rich_text_4xMBnc": {
@@ -215,9 +255,12 @@
         "@media (max-width: 767px) {.custom-rich-text > div > div {padding: 0px 10px; margin-bottom: 0; } .custom-rich-text {margin-bottom: 0; } .custom-rich-text div p {font-size: 18px; }}"
       ],
       "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
         "align_text": "center",
         "narrow_column": false,
-        "divider": false
+        "divider": false,
+        "padding_b": 0
       }
     }
   },

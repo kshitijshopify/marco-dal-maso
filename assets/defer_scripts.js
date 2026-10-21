@@ -140,7 +140,6 @@ document.addEventListener('variant:change', (event) => {
       item.classList.add('pdp_inventory_soldout');
     });
   }
-  
 });
 
 document.addEventListener('click', (e) => {
@@ -181,40 +180,51 @@ document.addEventListener('click', (e) => {
 
 });
 
-
 // ============================================
-// Script 3: Klaviyo Popup (Automatically discount)
+// Script 3: Klaviyo Forms (Automatically discount)
 // ============================================
 
 window.addEventListener('klaviyoForms', function (event) {
-    if (
-      !window.klaviyo_discount.auto_discount ||
-      event.detail.type !== 'submit' ||
-      event.detail.formId !== window.klaviyo_discount.form_id
-    ) {
-      return;
-    }
+  const config = window.klaviyo_discount;
 
-    fetch(window.Shopify.routes.root + 'cart/update.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        discount: window.klaviyo_discount.discount_code
-      })
+  if (!config || !config.auto_discount || !event.detail) {
+    return;
+  }
+
+  const formIds = String(config.form_id || '')
+    .split(',')
+    .map(function (id) {
+      return id.trim();
     })
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error('Failed to apply discount');
-        }
+    .filter(Boolean);
 
-        return response.json();
-      })
-      .then(function (cart) {
-        console.log('Discount applied:', cart);
-      })
-      .catch(function (error) {
-        console.error('Discount application failed:', error);
-      });
+  if (
+    event.detail.type !== 'submit' ||
+    !formIds.includes(event.detail.formId)
+  ) {
+    return;
+  }
+
+  fetch(window.Shopify.routes.root + 'cart/update.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      discount: config.discount_code
+    })
+  })
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error('Failed to apply discount');
+      }
+
+      return response.json();
+    })
+    .then(function (cart) {
+      console.log('Discount applied:', cart);
+    })
+    .catch(function (error) {
+      console.error('Discount application failed:', error);
+    });
 });

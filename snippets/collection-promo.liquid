@@ -40,13 +40,10 @@
   assign collection = collections[block.settings.collection].title
 -%}
 {% if collection == colltitle %}
-{%- if block.settings.editorial_text_layout and text_color == blank -%}
-  {%- assign text_color = '#ffffff' -%}
-{%- endif -%}
 <div
-  class="{% if showverticalpromo %}span-2-rows {% endif %}{% if showvidpromo %}collection-promo--root__videoblock {% elsif image %} collection-promo--root__imgblock {% endif %} {{ collection }}--{{ colltitle }} collection-promo--root {% if code != blank %}collection-promo--root___codeblock{% endif %}{% if block.settings.section_height == 'auto' %} collection-promo--desktop-height-auto{% endif %}{% if block.settings.editorial_text_layout %} collection-promo--editorial{% endif %}"
-  data-promo-width="{{ promo_width }}" data-textpos="{{ text_position }}" data-overlay="{{ overlay_style }}" data-y-alignment="{{ text_y_alignment }}" data-x-alignment="{{ text_x_alignment }}" data-desktop-height="{{ block.settings.section_height }}" data-mobile-height="{{ block.settings.mobile_height | default: 'auto' }}" data-image-fit-desktop="{{ block.settings.image_fit_desktop | default: 'cover' }}" data-image-fit-mobile="{{ block.settings.image_fit_mobile | default: 'contain' }}"{% if block.settings.editorial_text_layout %} data-text-layout="editorial"{% endif %}{% if block.settings.homepage_button_style %} data-homepage-button="true"{% endif %}
-  style="background-color:{{ text_bg_color }}; --promo-heading-size: {{ block.settings.heading_size_desktop | default: 32 }}px; --promo-heading-size-mobile: {{ block.settings.heading_size_mobile | default: 24 }}px; --promo-desc-size: {{ block.settings.description_size_desktop | default: 16 }}px; --promo-desc-size-mobile: {{ block.settings.description_size_mobile | default: 14 }}px; --promo-btn-size: {{ block.settings.button_size_desktop | default: 14 }}px; --promo-btn-size-mobile: {{ block.settings.button_size_mobile | default: 12 }}px; --promo-image-fit-desktop: {{ block.settings.image_fit_desktop | default: 'cover' }}; --promo-image-fit-mobile: {{ block.settings.image_fit_mobile | default: 'contain' }};{% if block.settings.mobile_height != blank and block.settings.mobile_height != 'auto' and block.settings.mobile_height != 'js' %} --promo-mobile-height: {{ block.settings.mobile_height }};{% endif %}"
+  class="{% if showverticalpromo %}span-2-rows {% endif %}{% if showvidpromo %}collection-promo--root__videoblock {% elsif image %} collection-promo--root__imgblock {% endif %} {{ collection }}--{{ colltitle }} collection-promo--root {% if code != blank %}collection-promo--root___codeblock{% endif %}"
+  data-promo-width="{{ promo_width }}" data-textpos="{{ text_position }}" data-overlay="{{ overlay_style }}" data-y-alignment="{{ text_y_alignment }}" data-x-alignment="{{ text_x_alignment }}"
+  style="background-color:{{ text_bg_color }};"
   {{ block.shopify_attributes }}
 >
   {%- if cover_link -%}

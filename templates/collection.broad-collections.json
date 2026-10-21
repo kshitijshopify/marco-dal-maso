@@ -1,0 +1,690 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection-header": {
+      "type": "collection-header",
+      "disabled": true,
+      "custom_css": [
+        "header.section-header.section-header--flush {padding-bottom: 40px; padding-top: 40px;}",
+        "@media only screen and (max-width: 768px) {header.section-header.section-header--flush {padding-bottom: 0px; }}",
+        "[data-type_headers_align_text=\"center\"] .collection-hero__content .section-header {text-align: right;}"
+      ],
+      "settings": {
+        "enable": true,
+        "collection_image_enable": true,
+        "parallax": false,
+        "parallax_direction": "top"
+      }
+    },
+    "rich_text_QpbiEQ": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_RAnF6H": {
+          "type": "heading",
+          "settings": {
+            "title": "Marco dal Maso {{ collection.title }}"
+          }
+        },
+        "text_kGkUUT": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>crafted in Italy by our skilled artisans.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_RAnF6H",
+        "text_kGkUUT"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
+        "align_text": "center",
+        "narrow_column": false,
+        "divider": false,
+        "padding_b": 0
+      }
+    },
+    "promo_grid_V7K86F": {
+      "type": "promo-grid",
+      "blocks": {
+        "advanced_LRrBWc": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "Mens Rings",
+            "textarea": "",
+            "cta_text1": "Shop All",
+            "cta_link1": "shopify://collections/mens-rings",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/mens_18kt_gold_ring_with_black_diamonds_by_marco_dal_maso.jpg",
+            "video_url": "",
+            "width": "50",
+            "height": 300,
+            "text_size": 100,
+            "text_align": "vertical-center horizontal-center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": true,
+            "framed": false
+          }
+        },
+        "advanced_mRTKLz": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "Womens Rings",
+            "textarea": "",
+            "cta_text1": "Shop All",
+            "cta_link1": "shopify://collections/womens-rings",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/GIAN0678-02WH_5702.jpg",
+            "mob_image": "shopify://shop_images/GIAN0679-04YE_3939_e101638c-9787-4c6f-b2e2-c5c1e29abd6d.jpg",
+            "video_url": "",
+            "width": "50",
+            "height": 300,
+            "text_size": 100,
+            "text_align": "vertical-center horizontal-center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": true,
+            "framed": false
+          }
+        }
+      },
+      "block_order": [
+        "advanced_LRrBWc",
+        "advanced_mRTKLz"
+      ],
+      "name": "t:sections.promo-grid.presets.promotional_grid.name",
+      "settings": {
+        "custom_class": "custom-promo-grid",
+        "full_width": true,
+        "customblock": false,
+        "gutter_size": 20,
+        "space_above": true,
+        "space_below": true,
+        "lazyload_images": true,
+        "ms": false
+      }
+    },
+    "main-collection": {
+      "type": "main-collection-promos",
+      "blocks": {
+        "promotion_nHQnrW": {
+          "type": "promotion",
+          "settings": {
+            "collection": "mens-bracelets",
+            "vertical_promo": false,
+            "row-number": 3,
+            "column-number": 1,
+            "promo-width": 1,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "#ffffff",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-hide-description": true,
+            "mobile-text-alignment": "center",
+            "video_promo": true,
+            "color_bg": "#ffffff",
+            "colltitle": "",
+            "title_size": 80,
+            "subheading": "<p>Give with intent, for every collector.</p><p><a href=\"/pages/gift-guide\" title=\"Holiday Gift Guide\">Shop Gifts</a></p>",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/740644c119df4201895f4c53180dcb93.mp4",
+            "overlay_opacity": 0,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_bdgApt": {
+          "type": "promotion",
+          "settings": {
+            "collection": "mens-bracelets",
+            "vertical_promo": false,
+            "row-number": 8,
+            "column-number": 2,
+            "promo-width": 1,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "#ffffff",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "image": "shopify://shop_images/Frame_250.png",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "<p>Most-Loved. Our signature silhouettes.</p>",
+            "showcolldesc": false,
+            "link-url": "shopify://collections/mens-best-sellers",
+            "link-text": "Shop Best Sellers",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center",
+            "video_promo": false,
+            "color_bg": "#ffffff",
+            "colltitle": "Bring yourbrand to life.",
+            "title_size": 80,
+            "subheading": "<p>Seamless hero videos</p>",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "overlay_opacity": 0,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_YeAX8V": {
+          "type": "promotion",
+          "settings": {
+            "collection": "mens-rings",
+            "vertical_promo": false,
+            "row-number": 3,
+            "column-number": 1,
+            "promo-width": 1,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "#ffffff",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-hide-description": true,
+            "mobile-text-alignment": "center",
+            "video_promo": true,
+            "color_bg": "#ffffff",
+            "colltitle": "",
+            "title_size": 80,
+            "subheading": "<p>Give with intent, for every collector.</p><p><a href=\"/pages/gift-guide\" title=\"Holiday Gift Guide\">Shop Gifts</a></p>",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/9032e82a3a1649df9e889b55bc4edcbc.mp4",
+            "overlay_opacity": 0,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_6KKQ8q": {
+          "type": "promotion",
+          "settings": {
+            "collection": "mens-rings",
+            "vertical_promo": false,
+            "row-number": 7,
+            "column-number": 2,
+            "promo-width": 1,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "#ffffff",
+            "txt_color": "#000000",
+            "overlay-style": "darken-bottom",
+            "image": "shopify://shop_images/Frame_167.jpg",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "<p>Most-Loved. Our signature silhouettes.</p>",
+            "showcolldesc": false,
+            "link-url": "shopify://collections/mens-best-sellers",
+            "link-text": "Shop Best Sellers",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center",
+            "video_promo": false,
+            "color_bg": "#ffffff",
+            "colltitle": "Bring yourbrand to life.",
+            "title_size": 80,
+            "subheading": "<p>Seamless hero videos</p>",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "overlay_opacity": 64,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_94Kxd3": {
+          "type": "promotion",
+          "settings": {
+            "collection": "mens-necklaces",
+            "vertical_promo": false,
+            "row-number": 3,
+            "column-number": 1,
+            "promo-width": 1,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "#ffffff",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-image": "shopify://shop_images/XOK_WAVE_MINI_BEADED_NECKLACE_campaign_GICL0998-04YE.png",
+            "mobile-hide-description": true,
+            "mobile-text-alignment": "center",
+            "video_promo": true,
+            "color_bg": "#ffffff",
+            "colltitle": "",
+            "title_size": 80,
+            "subheading": "<p>Give with intent, for every collector.</p><p><a href=\"/pages/gift-guide\" title=\"Holiday Gift Guide\">Shop Gifts</a></p>",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/1743060577134a28ad499b4ad06ed184.mp4",
+            "overlay_opacity": 0,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_QpUm4h": {
+          "type": "promotion",
+          "settings": {
+            "collection": "mens-necklaces",
+            "vertical_promo": false,
+            "row-number": 7,
+            "column-number": 2,
+            "promo-width": 1,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "rgba(0,0,0,0)",
+            "txt_color": "#000000",
+            "overlay-style": "darken-bottom",
+            "image": "shopify://shop_images/Frame_182.jpg",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "<p>Most-Loved. Our signature silhouettes.</p>",
+            "showcolldesc": false,
+            "link-url": "shopify://collections/mens-best-sellers",
+            "link-text": "Shop Best Sellers",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center",
+            "video_promo": false,
+            "color_bg": "#ffffff",
+            "colltitle": "Bring yourbrand to life.",
+            "title_size": 80,
+            "subheading": "<p>Seamless hero videos</p>",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "overlay_opacity": 64,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_pG8PeM": {
+          "type": "promotion",
+          "settings": {
+            "collection": "mens-earrings",
+            "vertical_promo": false,
+            "row-number": 3,
+            "column-number": 1,
+            "promo-width": 2,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "#ffffff",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-hide-description": true,
+            "mobile-text-alignment": "center",
+            "video_promo": true,
+            "color_bg": "#ffffff",
+            "colltitle": "",
+            "title_size": 80,
+            "subheading": "<p>Give with intent, for every collector.</p><p><a href=\"/pages/gift-guide\" title=\"Holiday Gift Guide\">Shop Gifts</a></p>",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/4a9ec3167435455f89d115f6a4e55b1e.mp4",
+            "overlay_opacity": 0,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_QX7P74": {
+          "type": "promotion",
+          "settings": {
+            "collection": "mens-earrings",
+            "vertical_promo": true,
+            "row-number": 7,
+            "column-number": 3,
+            "promo-width": 1,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "rgba(0,0,0,0)",
+            "txt_color": "#000000",
+            "overlay-style": "darken-bottom",
+            "image": "shopify://shop_images/Frame_188_1.jpg",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "<p>Most-Loved. Our signature silhouettes.</p>",
+            "showcolldesc": false,
+            "link-url": "shopify://collections/mens-best-sellers",
+            "link-text": "Shop Best Sellers",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center",
+            "video_promo": false,
+            "color_bg": "#ffffff",
+            "colltitle": "Bring yourbrand to life.",
+            "title_size": 80,
+            "subheading": "<p>Seamless hero videos</p>",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "overlay_opacity": 64,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_388e3z": {
+          "type": "promotion",
+          "settings": {
+            "collection": "just-arrived",
+            "vertical_promo": false,
+            "row-number": 3,
+            "column-number": 1,
+            "promo-width": 2,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "rgba(0,0,0,0)",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "image": "shopify://shop_images/Frame_195.jpg",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "<p>Give with intent, for every collector.</p>",
+            "showcolldesc": false,
+            "link-url": "shopify://pages/gift-guide",
+            "link-text": "Shop Gifts",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center",
+            "video_promo": false,
+            "color_bg": "#ffffff",
+            "colltitle": "Bring yourbrand to life.",
+            "title_size": 80,
+            "subheading": "<p>Seamless hero videos</p>",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "overlay_opacity": 0,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_RKJzcb": {
+          "type": "promotion",
+          "settings": {
+            "collection": "just-arrived",
+            "vertical_promo": false,
+            "row-number": 7,
+            "column-number": 2,
+            "promo-width": 1,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "bottom",
+            "text-background-color": "rgba(0,0,0,0)",
+            "txt_color": "#000000",
+            "overlay-style": "darken-bottom",
+            "image": "shopify://shop_images/Frame_192.jpg",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "<p>Most-Loved. Our signature silhouettes.</p>",
+            "showcolldesc": false,
+            "link-url": "shopify://collections/best-sellers",
+            "link-text": "Shop Best Sellers",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center",
+            "video_promo": false,
+            "color_bg": "#ffffff",
+            "colltitle": "Bring yourbrand to life.",
+            "title_size": 80,
+            "subheading": "<p>Seamless hero videos</p>",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "overlay_opacity": 64,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_AyWt9J": {
+          "type": "promotion",
+          "settings": {
+            "collection": "link",
+            "vertical_promo": false,
+            "row-number": 3,
+            "column-number": 1,
+            "promo-width": 3,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "center",
+            "text-background-color": "#ffffff",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center",
+            "video_promo": true,
+            "color_bg": "#ffffff",
+            "colltitle": "",
+            "title_size": 40,
+            "subheading": "<p><em>Connect your creativity with jewelry that lets you craft your own style, piece by piece</em></p>",
+            "video_url": "{{ block.settings.collection.metafields.custom.collection_video.value.video_url.value }}",
+            "overlay_opacity": 0,
+            "section_height": "650px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_yThipY": {
+          "type": "promotion",
+          "settings": {
+            "collection": "forged-transcendence",
+            "vertical_promo": false,
+            "row-number": 2,
+            "column-number": 1,
+            "promo-width": 3,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "center",
+            "text-background-color": "#ffffff",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center",
+            "video_promo": true,
+            "color_bg": "#ffffff",
+            "colltitle": "",
+            "title_size": 40,
+            "subheading": "<p><em>Explore the process, watch the making, and discover a collection forged to speak without shouting.</em></p>",
+            "video_url": "{{ block.settings.collection.metafields.custom.collection_video.value.video_url.value }}",
+            "overlay_opacity": 0,
+            "section_height": "750px",
+            "mobile_height": "auto"
+          }
+        },
+        "promotion_Jetyw3": {
+          "type": "promotion",
+          "settings": {
+            "collection": "frammenti",
+            "vertical_promo": false,
+            "row-number": 2,
+            "column-number": 1,
+            "promo-width": 3,
+            "textposition": "below_image",
+            "text-horizontal-alignment": "center",
+            "text-vertical-alignment": "center",
+            "text-background-color": "#ffffff",
+            "txt_color": "#000000",
+            "overlay-style": "none",
+            "code": "",
+            "overline": "",
+            "title": "",
+            "description": "",
+            "showcolldesc": false,
+            "link-url": "",
+            "link-text": "",
+            "openaspopup": false,
+            "mobile-hide-description": false,
+            "mobile-text-alignment": "center",
+            "video_promo": true,
+            "color_bg": "#ffffff",
+            "colltitle": "",
+            "title_size": 40,
+            "subheading": "",
+            "video_url": "{{ block.settings.collection.metafields.custom.collection_video.value.video_url.value }}",
+            "overlay_opacity": 0,
+            "section_height": "750px",
+            "mobile_height": "auto"
+          }
+        }
+      },
+      "block_order": [
+        "promotion_nHQnrW",
+        "promotion_bdgApt",
+        "promotion_YeAX8V",
+        "promotion_6KKQ8q",
+        "promotion_94Kxd3",
+        "promotion_QpUm4h",
+        "promotion_pG8PeM",
+        "promotion_QX7P74",
+        "promotion_388e3z",
+        "promotion_RKJzcb",
+        "promotion_AyWt9J",
+        "promotion_yThipY",
+        "promotion_Jetyw3"
+      ],
+      "custom_css": [
+        ".stacked-text--root p {margin: 0;}",
+        ".stacked-text--button,.hero__subtitle p a {text-decoration: underline; font-size: var(--typeBaseSize); padding: 0; border: none;}",
+        "@media only screen and (min-width: 769px) {.hero__text-content {padding: 15px 0; }}",
+        ".collection-promo--root[data-textpos=\"absoluted_onimage\"] .stacked-text--root:not(:only-child) .stacked-text--wrapper,.stacked-text--root {padding: 15px;}",
+        ".collection-promo--root {align-self: unset;}"
+      ],
+      "settings": {
+        "showsubcolls__belowheader": true,
+        "enable_sidebar": true,
+        "collapsed": true,
+        "filter_style": "drawer",
+        "enable_color_swatches": false,
+        "enable_sort": true,
+        "enable_collection_count": true,
+        "products-per-row--desktop": 3,
+        "products-per-row--mobile": "1",
+        "number-of-rows": 20
+      }
+    },
+    "rich_text_VafFgq": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_rxzkbU": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "title": "Marco dal Maso {{ collection.title }}"
+          }
+        },
+        "text_qHa6VB": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "{{ collection.metafields.custom.collections_short_description_below_image | metafield_tag }}"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rxzkbU",
+        "text_qHa6VB"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
+        "align_text": "center",
+        "narrow_column": false,
+        "divider": false,
+        "padding_b": 0
+      }
+    },
+    "rich_text_8PeYTr": {
+      "type": "rich-text",
+      "blocks": {
+        "text_LpzbYj": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": false,
+            "text": "{{ collection.description }}"
+          }
+        }
+      },
+      "block_order": [
+        "text_LpzbYj"
+      ],
+      "custom_css": [
+        "@media (max-width: 768px) {li, p {font-size: 14px; line-height: 24px; } .section--divider {padding-top: 0; }}"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
+        "align_text": "left",
+        "narrow_column": true,
+        "divider": true,
+        "padding_b": 0
+      }
+    }
+  },
+  "order": [
+    "collection-header",
+    "rich_text_QpbiEQ",
+    "promo_grid_V7K86F",
+    "main-collection",
+    "rich_text_VafFgq",
+    "rich_text_8PeYTr"
+  ]
+}
