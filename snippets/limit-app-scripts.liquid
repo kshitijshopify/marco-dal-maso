@@ -1,0 +1,88 @@
+{% comment %}
+  Drops app scripts Shopify injects on every page when that page does not render the app.
+  Leaves Rebuy, Trustpilot, Awin, Littledata, GTM, and the current Glood app embed in place.
+{% endcomment %}
+{%- liquid
+  assign output_html = header_html
+
+  assign keep_instafeed = false
+  if template.name == 'index'
+    assign keep_instafeed = true
+  endif
+
+  assign keep_map = false
+  if page.metafields['maps-by-develic'].data != blank
+    assign keep_map = true
+  endif
+
+  assign keep_forms = false
+  case template.suffix
+    when 'bespoke', 'events', 'faq3', 'faq4', 'faq5', 'faq6', 'faq7', 'faq8'
+      assign keep_forms = true
+  endcase
+
+  unless keep_instafeed
+    assign output_html = output_html | replace_first: 'https:\/\/cdn.nfcube.com', '##NFCUBE##'
+  endunless
+
+  unless keep_map
+    assign output_html = output_html | replace_first: 'https:\/\/maps.develic.com', '##DEVELIC##'
+  endunless
+-%}
+{%- unless keep_instafeed -%}
+  {%- if output_html contains '##NFCUBE##' -%}
+    {%- assign bits = output_html | split: '##NFCUBE##' -%}
+    {%- assign head = bits[0] -%}
+    {%- assign head_last = head | slice: -1, 1 -%}
+    {%- if head_last == '"' -%}
+      {%- assign head = head | remove_last: '"' -%}
+    {%- endif -%}
+    {%- assign head_last = head | slice: -1, 1 -%}
+    {%- if head_last == ',' -%}
+      {%- assign head = head | remove_last: ',' -%}
+    {%- endif -%}
+    {%- assign url_tail = bits[1] | split: '"' | first -%}
+    {%- assign rest = bits[1] | remove_first: url_tail | remove_first: '"' -%}
+    {%- assign head_last = head | slice: -1, 1 -%}
+    {%- assign rest_first = rest | slice: 0, 1 -%}
+    {%- if head_last == '[' and rest_first == ',' -%}
+      {%- assign rest = rest | remove_first: ',' -%}
+    {%- endif -%}
+    {%- assign output_html = head | append: rest -%}
+  {%- endif -%}
+{%- endunless -%}
+{%- unless keep_map -%}
+  {%- if output_html contains '##DEVELIC##' -%}
+    {%- assign bits = output_html | split: '##DEVELIC##' -%}
+    {%- assign head = bits[0] -%}
+    {%- assign head_last = head | slice: -1, 1 -%}
+    {%- if head_last == '"' -%}
+      {%- assign head = head | remove_last: '"' -%}
+    {%- endif -%}
+    {%- assign head_last = head | slice: -1, 1 -%}
+    {%- if head_last == ',' -%}
+      {%- assign head = head | remove_last: ',' -%}
+    {%- endif -%}
+    {%- assign url_tail = bits[1] | split: '"' | first -%}
+    {%- assign rest = bits[1] | remove_first: url_tail | remove_first: '"' -%}
+    {%- assign head_last = head | slice: -1, 1 -%}
+    {%- assign rest_first = rest | slice: 0, 1 -%}
+    {%- if head_last == '[' and rest_first == ',' -%}
+      {%- assign rest = rest | remove_first: ',' -%}
+    {%- endif -%}
+    {%- assign output_html = head | append: rest -%}
+  {%- endif -%}
+{%- endunless -%}
+{%- unless keep_forms -%}
+  {%- if output_html contains 'shopify-forms-loader.js' -%}
+    {%- assign form_bits = output_html | split: 'shopify-forms-loader.js' -%}
+    {%- assign form_head_parts = form_bits[0] | split: '<script' -%}
+    {%- assign last_open = form_head_parts | last -%}
+    {%- assign form_head = form_bits[0] | remove_last: last_open | remove_last: '<script' -%}
+    {%- assign form_tail_parts = form_bits[1] | split: '</script>' -%}
+    {%- assign first_tail = form_tail_parts | first -%}
+    {%- assign form_rest = form_bits[1] | remove_first: first_tail | remove_first: '</script>' -%}
+    {%- assign output_html = form_head | append: form_rest -%}
+  {%- endif -%}
+{%- endunless -%}
+{{- output_html -}}

@@ -235,16 +235,16 @@
       <link rel="alternate" hreflang="en-gr" href="https://marcodalmaso.com/en-gr" /> {% endcomment %}
       <link rel="alternate" hreflang="x-default" href="https://marcodalmaso.com/" />
     {% endif %}
- {%- if request.design_mode or template contains 'cart' or template contains 'checkout' -%}
-      {{ content_for_header }}
+ {% capture content_for_header2 %}{{ content_for_header }}{% endcapture %}
+    {% capture content_for_header2 %}{% render 'limit-app-scripts', header_html: content_for_header2 %}{% endcapture %}
+    {%- if request.design_mode or template contains 'cart' or template contains 'checkout' -%}
+      {{ content_for_header2 }}
     {%- else -%}
-      {% capture content_for_header2 %}{{ content_for_header }}{% endcapture %}
       {{ content_for_header2 | replace: ' async="async" ', ' type="load" ' | replace: ' defer="defer" ', ' type="load" ' | replace: " src=", " d-src=" | replace: "DOMContentLoaded", "xDOMContentLoaded" | replace: "window.addEventListener('load', asyncLoad, false);", "window.addEventListener('xDOMContentLoaded', asyncLoad, false);" | replace: "addEventListener('load', prefetchAssets);", "addEventListener('xDOMContentLoaded', prefetchAssets);" | replace: "type='text/javascript' async=''", "type='load' " | replace: 'type="module" d-', 'dxt="module" type="load" d-' | replace: 'async dxt="module" type="load"', 'dxt="module"' | replace: '<script type="module">', '<script dxt="module" type="load">' | replace: "type='text/javascript' defer='defer' d-src", "type='load' d-src" | replace: '<script type="load">var Shopify', '<script>var Shopify' | replace: '<script>', '<script type="load">' | replace: 'type="load" d-src="https://shop.app/checkouts/internal/preloads.js', 'type="lload" d-src="https://shop.app/checkouts/internal/preloads.js' | replace: '<script type="load">var', '<script>var' }}
       <script>
         var trekkie=[];trekkie.integrations=!0;window.BOOMR={},window.BOOMR.version=true;
       </script>
     {%- endif -%}
-     {%- render 'bold-pr' -%}
     <script type="load" d-src="{{ 'vendor-scripts-v11.js' | asset_url | split: '?' | first }}"></script>
 
     {%- if shop.enabled_currencies.size > 1 -%}
@@ -380,12 +380,7 @@
     <noscript>{{ 'slick.css' | asset_url | stylesheet_tag }}</noscript>
     <script type="load" d-src="{{ 'slick.min.js' | asset_url }}"></script>
 
-    {% if template contains 'product' or template contains 'collection' %}
-      <script type="load" d-src="https://cdn-widgetsrepository.yotpo.com/v1/loader/OWLvPq7zZ2itIfbV6sKOWA"></script>
-    {% endif %}
-
     {% comment %} <meta name="google-site-verification" content="tun9EYYbHS4CAFK59junDy2vU6Ue8rjZLSJIUlctk-Y" /> {% endcomment %}
-    {% render 'app-block' %}
     {% render 'custom-css' %}
 
     {% if template.name == 'index' or template.name == 'product' %}
