@@ -10,12 +10,13 @@
   {%- endif -%}
 
   {%- if section.blocks.size > 0 -%}
+    {%- assign faq_items = section.blocks | where: "type", "question" -%}
+    {%- if faq_items.size > 0 -%}
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-          {%- assign faq_items = section.blocks | where: "type", "question" -%}
           {%- for block in faq_items -%}
             {
               "@type": "Question",
@@ -29,6 +30,7 @@
         ]
       }
     </script>
+    {%- endif -%}
     {%- for block in section.blocks -%}
       <div {{ block.shopify_attributes }}>
         {% case block.type %}

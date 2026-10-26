@@ -26,6 +26,24 @@
             "title": "Returns"
           }
         },
+        "accordian_hol_exchange": {
+          "type": "accordian",
+          "disabled": true,
+          "settings": {
+            "title": "Can I exchange full-price items purchased during November and December?",
+            "Answer": "Yes, full-price orders placed in November or December can be exchanged for store credit until January 9th. This gives you extra time for holiday gifting (and returns).",
+            "Answerr": ""
+          }
+        },
+        "accordian_annual_event": {
+          "type": "accordian",
+          "disabled": true,
+          "settings": {
+            "title": "Can I return or exchange items purchased during the Annual Event?",
+            "Answer": "We accept exchanges or returns for store credit only. Extended returns apply to orders placed in November and December and are available until January 9th.",
+            "Answerr": ""
+          }
+        },
         "accordian_becejq": {
           "type": "accordian",
           "settings": {
@@ -239,7 +257,7 @@
           "settings": {
             "title": "How will you ship my order?",
             "Answer": "",
-            "Answerr": "<p>All orders are shipped from our Italian atelier via trusted express couriers. For international orders, we use DHL Express to ensure swift and secure delivery.</p><p>A signature will be required upon delivery. Please note, we are unable to ship to PO Boxes, APO/BFPO, or hotel addresses.</p><p>For international destinations, duties and taxes are covered, allowing your order to arrive without delays or additional fees.<br/><br/></p>"
+            "Answerr": "<p>All orders are shipped from our Italian atelier via trusted express couriers. For international orders, we use DHL Express to ensure swift and secure delivery.</p><p>A signature will be required upon delivery. Please note, we are unable to ship to PO Boxes, APO/BFPO, or hotel addresses.</p><p>For orders to the US, UK, EU and Canada, duties and taxes are included in the price and your order arrives fully customs-cleared. For all other destinations, duties and taxes are not included and are payable on delivery. Please see “Do I have to pay duties and taxes on my order?” for details.<br/><br/></p>"
           }
         },
         "accordian_m8a46n": {
@@ -428,6 +446,8 @@
       },
       "block_order": [
         "heading_jJn38k",
+        "accordian_hol_exchange",
+        "accordian_annual_event",
         "accordian_becejq",
         "accordian_BD6CXr",
         "accordian_63LXFp",
@@ -482,7 +502,8 @@
       ],
       "custom_css": [],
       "settings": {
-        "text": ""
+        "text": "",
+        "enable_faq_schema": true
       }
     }
   },

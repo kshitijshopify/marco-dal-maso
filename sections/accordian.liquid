@@ -56,20 +56,6 @@
                   {% if forloop.first %}{% else %} </div>{% endif %}
                   <div id="{{ block.settings.title | handle }}" class="block_start_acc  {% if forloop.first %}active{% endif %}">
                     <h2  class="heading_for_q {{ block.type }}">{{ block.settings.title | escape }}</h2>
-                    {% if block.settings.title == 'Returns' %}                      
-                      <div class="accordian_title">
-                        <div class="atc">Can I exchange full-price items purchased during November and December? <span class="right"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 8" aria-hidden="true" class="w-4 transition-transform group-aria-expanded/item:rotate-180"><path fill="currentColor" fill-rule="evenodd" d="M.833.793 0 1.71l4.167 4.582.833.916.833-.916L10 1.709 9.167.793 5 5.374z" clip-rule="evenodd"></path></svg></span></div>
-                        <div class="accordian_content">
-                          Yes, full-price orders placed in November or December can be exchanged for store credit until January 9th. This gives you extra time for holiday gifting (and returns).
-                        </div>
-                      </div>
-                      <div class="accordian_title">
-                        <div class="atc">Can I return or exchange items purchased during the Annual Event? <span class="right"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 8" aria-hidden="true" class="w-4 transition-transform group-aria-expanded/item:rotate-180"><path fill="currentColor" fill-rule="evenodd" d="M.833.793 0 1.71l4.167 4.582.833.916.833-.916L10 1.709 9.167.793 5 5.374z" clip-rule="evenodd"></path></svg></span></div>
-                        <div class="accordian_content">
-                          We accept exchanges or returns for store credit only. Extended returns apply to orders placed in November and December and are available until January 9th.
-                        </div>
-                      </div>
-                      {% endif %}
                 {% endif %}
               {% endfor %}
             {% endif %}
@@ -78,6 +64,47 @@
     </div>
   </div>
 </div>
+{%- liquid
+  assign faq_questions = section.blocks | where: 'type', 'accordian'
+  assign faq_schema_count = 0
+  for block in faq_questions
+    if block.settings.title != blank
+      if block.settings.Answer != blank or block.settings.Answerr != blank
+        assign faq_schema_count = faq_schema_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
+{%- if section.settings.enable_faq_schema and faq_schema_count > 0 -%}
+  {%- assign faq_schema_first = true -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in faq_questions -%}
+          {%- if block.settings.title == blank -%}{%- continue -%}{%- endif -%}
+          {%- if block.settings.Answer != blank -%}
+            {%- assign faq_answer = block.settings.Answer -%}
+          {%- else -%}
+            {%- assign faq_answer = block.settings.Answerr -%}
+          {%- endif -%}
+          {%- if faq_answer == blank -%}{%- continue -%}{%- endif -%}
+          {%- unless faq_schema_first -%},{%- endunless -%}
+          {%- assign faq_schema_first = false -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.title | strip_html | strip | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ faq_answer | strip | json }}
+            }
+          }
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const accordianTitles = document.querySelectorAll('.accordian_title');
@@ -241,7 +268,14 @@ document.addEventListener('DOMContentLoaded', function() {
           "type": "textarea",
           "id": "text",
           "label": "Text at top",
-        }
+        },
+      {
+        "type": "checkbox",
+        "id": "enable_faq_schema",
+        "label": "Output FAQ structured data",
+        "info": "Generated from the enabled question blocks in this section only.",
+        "default": false
+      }
     ],
     "presets": [
     {
