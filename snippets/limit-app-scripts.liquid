@@ -74,15 +74,19 @@
   {%- endif -%}
 {%- endunless -%}
 {%- unless keep_forms -%}
-  {%- if output_html contains 'shopify-forms-loader.js' -%}
-    {%- assign form_bits = output_html | split: 'shopify-forms-loader.js' -%}
-    {%- assign form_head_parts = form_bits[0] | split: '<script' -%}
-    {%- assign last_open = form_head_parts | last -%}
-    {%- assign form_head = form_bits[0] | remove_last: last_open | remove_last: '<script' -%}
-    {%- assign form_tail_parts = form_bits[1] | split: '</script>' -%}
-    {%- assign first_tail = form_tail_parts | first -%}
-    {%- assign form_rest = form_bits[1] | remove_first: first_tail | remove_first: '</script>' -%}
-    {%- assign output_html = form_head | append: form_rest -%}
-  {%- endif -%}
+  {%- assign script_open = '<' | append: 'script' -%}
+  {%- assign script_close = '<' | append: '/script>' -%}
+  {%- for i in (1..3) -%}
+    {%- if output_html contains 'shopify-forms-loader.js' -%}
+      {%- assign form_bits = output_html | split: 'shopify-forms-loader.js' -%}
+      {%- assign form_head_parts = form_bits[0] | split: script_open -%}
+      {%- assign last_open = form_head_parts | last -%}
+      {%- assign form_head = form_bits[0] | remove_last: last_open | remove_last: script_open -%}
+      {%- assign form_tail_parts = form_bits[1] | split: script_close -%}
+      {%- assign first_tail = form_tail_parts | first -%}
+      {%- assign form_rest = form_bits[1] | remove_first: first_tail | remove_first: script_close -%}
+      {%- assign output_html = form_head | append: form_rest -%}
+    {%- endif -%}
+  {%- endfor -%}
 {%- endunless -%}
 {{- output_html -}}
