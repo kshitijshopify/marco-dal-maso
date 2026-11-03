@@ -1,0 +1,29 @@
+{%- comment -%} Shared design variables. Params: cfg (section.settings), section_id {%- endcomment -%}
+{%- style -%}
+  {%- unless cfg.use_theme_fonts -%}
+    {{ cfg.heading_font | font_face: font_display: 'swap' }}
+    {{ cfg.body_font | font_face: font_display: 'swap' }}
+  {%- endunless -%}
+  #shopify-section-{{ section_id }} .asn {
+    --asn-bg: {{ cfg.bg_color }};
+    --asn-ink: {{ cfg.text_color }};
+    --asn-muted: {{ cfg.text_color | color_modify: 'alpha', 0.6 }};
+    --asn-line: {{ cfg.text_color | color_modify: 'alpha', 0.18 }};
+    --asn-panel: {{ cfg.panel_color }};
+    --asn-panel-ink: {{ cfg.panel_text_color }};
+    --asn-panel-muted: {{ cfg.panel_text_color | color_modify: 'alpha', 0.65 }};
+    --asn-gap: {{ cfg.grid_gap }}px;
+    --asn-pad: {{ cfg.page_padding }}px;
+    --asn-pad-m: {{ cfg.page_padding_mobile }}px;
+    --asn-max: {{ cfg.max_width }}px;
+    {%- if cfg.use_theme_fonts %}
+    --asn-font-heading: var(--font-heading-family, inherit);
+    --asn-font-body: inherit;
+    --asn-heading-weight: 400;
+    {%- else %}
+    --asn-font-heading: {{ cfg.heading_font.family }}, {{ cfg.heading_font.fallback_families }};
+    --asn-font-body: {{ cfg.body_font.family }}, {{ cfg.body_font.fallback_families }};
+    --asn-heading-weight: {{ cfg.heading_font.weight }};
+    {%- endif %}
+  }
+{%- endstyle -%}

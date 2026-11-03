@@ -1,0 +1,29 @@
+{%- comment -%} Params: article, guard, is_hidden, wearing_label {%- endcomment -%}
+{%- liquid
+  assign m = article.metafields.custom
+  assign show_img = true
+  if guard
+    if m.credit.value == blank or m.source.value == blank or m.usage_rights.value == blank
+      assign show_img = false
+    endif
+  endif
+  assign first_piece = m.pieces.value.first.title
+  assign alt = article.title
+  if first_piece != blank
+    assign alt = article.title | append: ' wearing ' | append: first_piece
+  endif
+-%}
+<li class="asn-card" data-id="{{ article.id }}" data-category="{{ m.category.value | strip | downcase | escape }}"{% if is_hidden %} hidden{% endif %}>
+  <a class="asn-card__link" href="{{ article.url }}">
+    <span class="asn-card__media">
+      {%- if show_img and article.image -%}
+        {{ article.image | image_url: width: 640 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 25vw, 50vw', widths: '320, 480, 640', alt: alt }}
+      {%- else -%}
+        <span class="asn-ph" aria-hidden="true"></span>
+      {%- endif -%}
+    </span>
+    <span class="asn-card__name">{{ article.title }}</span>
+    {%- if m.role.value != blank -%}<span class="asn-card__role">{{ m.role.value }}</span>{%- endif -%}
+    {%- if first_piece != blank -%}<span class="asn-card__wearing">{{ wearing_label | default: 'Wearing' }} {{ first_piece }}</span>{%- endif -%}
+  </a>
+</li>

@@ -32,6 +32,7 @@
         "btn_color": "#ffffff",
         "image": "shopify://shop_images/BRACCIALI_JAPAN_1.jpg",
         "mobile_image": "shopify://shop_images/21_d45c8be8-69ca-4435-a566-368d77ba7b50.png",
+        "mobile_image_fit": "cover",
         "layout": "center",
         "height": 550,
         "framed": false,
@@ -42,44 +43,31 @@
     },
     "1740042694aaec99e0": {
       "type": "apps",
-      "blocks": {
-        "glood_product_recommendations_app_block_pR4Gpi": {
-          "type": "shopify://apps/glood-product-recommendations/blocks/app-block/6e79d991-1504-45bb-88e3-1fb55a4f26cd",
-          "settings": {
-            "widget-id": "220698",
-            "padding-top": "",
-            "padding-bottom": "",
-            "class-names": "",
-            "custom-css": "",
-            "add-loader": false,
-            "min-height": "300px",
-            "custom-loader": "",
-            "skeletonEnabled": true,
-            "skeletonLayout": "carousel",
-            "skeletonImageAspectRatio": "1:1",
-            "skeletonAtcEnabled": true,
-            "skeletonColumnCountMobile": 3,
-            "skeletonRowCountMobile": 1,
-            "skeletonColumnCountTablet": 4,
-            "skeletonRowCountTablet": 1,
-            "skeletonColumnCountDesktop": 6,
-            "skeletonRowCountDesktop": 1,
-            "skeletonProducts": 3,
-            "skeletonCardHtml": "",
-            "skeletonCardStyle": "",
-            "skeletonCustomJsCallback": ""
-          }
-        }
-      },
-      "block_order": [
-        "glood_product_recommendations_app_block_pR4Gpi"
-      ],
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "full_width": false,
         "space_around": true,
         "image_width": "50",
         "layout": "right"
+      }
+    },
+    "featured_collection_VGfcLD": {
+      "type": "featured-collection",
+      "custom_css": [],
+      "name": "t:sections.featured-collection.presets.featured_collection.name",
+      "settings": {
+        "title": "Trending Products",
+        "enlarge_text": true,
+        "text": "",
+        "home_featured_products": "homepage",
+        "per_row": 4,
+        "rows": 1,
+        "mobile_scrollable": true,
+        "carousel": true,
+        "slider_flow": false,
+        "view_all": true,
+        "divider": false
       }
     },
     "background_image_text_GUaiJw": {
@@ -96,6 +84,7 @@
         "btn_color": "#ffffff",
         "image": "shopify://shop_images/ULYSSES_COVER.webp",
         "mobile_image": "shopify://shop_images/12_b0110a11-990a-46bd-8207-db7de5c88818.png",
+        "mobile_image_fit": "cover",
         "layout": "center",
         "height": 550,
         "framed": false,
@@ -106,38 +95,7 @@
     },
     "17267474912e2309f8": {
       "type": "apps",
-      "blocks": {
-        "glood_product_recommendations_app_block_yWFKCA": {
-          "type": "shopify://apps/glood-product-recommendations/blocks/app-block/6e79d991-1504-45bb-88e3-1fb55a4f26cd",
-          "settings": {
-            "widget-id": "220699",
-            "padding-top": "20px",
-            "padding-bottom": "",
-            "class-names": "",
-            "custom-css": "._gai-container{\n   padding: 0 50px;\n}",
-            "add-loader": false,
-            "min-height": "300px",
-            "custom-loader": "",
-            "skeletonEnabled": true,
-            "skeletonLayout": "grid",
-            "skeletonImageAspectRatio": "1:1",
-            "skeletonAtcEnabled": true,
-            "skeletonColumnCountMobile": 2,
-            "skeletonRowCountMobile": 4,
-            "skeletonColumnCountTablet": 2,
-            "skeletonRowCountTablet": 4,
-            "skeletonColumnCountDesktop": 2,
-            "skeletonRowCountDesktop": 4,
-            "skeletonProducts": 3,
-            "skeletonCardHtml": "",
-            "skeletonCardStyle": "",
-            "skeletonCustomJsCallback": ""
-          }
-        }
-      },
-      "block_order": [
-        "glood_product_recommendations_app_block_yWFKCA"
-      ],
+      "disabled": true,
       "custom_css": [
         "@media (min-width: 769px) {.rk-widget-container {padding: 24px 24px 0 24px; }}",
         "@media (max-width: 768px) {.feature-row__images {display: none; } .rk-widget [data-layout=\"carousel\"] h3.section-header__title {display: block; }}"
@@ -167,6 +125,7 @@
         "btn_color": "#ffffff",
         "image": "shopify://shop_images/ULYSSES_COVER.webp",
         "mobile_image": "shopify://shop_images/23.png",
+        "mobile_image_fit": "cover",
         "layout": "center",
         "height": 550,
         "framed": false,
@@ -177,38 +136,7 @@
     },
     "apps_37ziLX": {
       "type": "apps",
-      "blocks": {
-        "glood_product_recommendations_app_block_8bEUEa": {
-          "type": "shopify://apps/glood-product-recommendations/blocks/app-block/6e79d991-1504-45bb-88e3-1fb55a4f26cd",
-          "settings": {
-            "widget-id": "220625",
-            "padding-top": "",
-            "padding-bottom": "",
-            "class-names": "",
-            "custom-css": "",
-            "add-loader": false,
-            "min-height": "300px",
-            "custom-loader": "",
-            "skeletonEnabled": true,
-            "skeletonLayout": "grid",
-            "skeletonImageAspectRatio": "1:1",
-            "skeletonAtcEnabled": true,
-            "skeletonColumnCountMobile": 2,
-            "skeletonRowCountMobile": 4,
-            "skeletonColumnCountTablet": 2,
-            "skeletonRowCountTablet": 4,
-            "skeletonColumnCountDesktop": 2,
-            "skeletonRowCountDesktop": 4,
-            "skeletonProducts": 4,
-            "skeletonCardHtml": "",
-            "skeletonCardStyle": "",
-            "skeletonCustomJsCallback": ""
-          }
-        }
-      },
-      "block_order": [
-        "glood_product_recommendations_app_block_8bEUEa"
-      ],
+      "disabled": true,
       "custom_css": [
         "@media (min-width: 769px) {.rk-widget-container {padding: 24px 24px 0 24px; }}",
         "@media (max-width: 768px) {.feature-row__images {display: none; } .rk-widget [data-layout=\"carousel\"] h3.section-header__title {display: block; }}"
@@ -226,6 +154,7 @@
     "main",
     "background_image_text_NyFJQe",
     "1740042694aaec99e0",
+    "featured_collection_VGfcLD",
     "background_image_text_GUaiJw",
     "17267474912e2309f8",
     "background_image_text_Y6zN9t",

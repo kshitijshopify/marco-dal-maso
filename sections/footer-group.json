@@ -51,6 +51,50 @@
         "bottom_padding": true
       }
     },
+    "pdp_newsletter_X4HEpU": {
+      "type": "pdp-newsletter",
+      "blocks": {
+        "caption_ggbWg6": {
+          "type": "caption",
+          "settings": {
+            "text": "Letters from Vicenza"
+          }
+        },
+        "title_eeDf6i": {
+          "type": "title",
+          "settings": {
+            "title": "Collector's Circle"
+          }
+        },
+        "text_nFYeaM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Private access to new releases, craftsmanship stories and early previews — shared exclusively from<br/>our Italian atelier.</p>"
+          }
+        },
+        "form_TXcdmb": {
+          "type": "form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "caption_ggbWg6",
+        "title_eeDf6i",
+        "text_nFYeaM",
+        "form_TXcdmb"
+      ],
+      "name": "Newsletter - PDP",
+      "settings": {
+        "align_text": "center",
+        "color_background": "#f9f7f2",
+        "top_padding": false,
+        "bottom_padding": false,
+        "top": 140,
+        "bottom": 140,
+        "top_m": 63,
+        "bottom_m": 64
+      }
+    },
     "footer-promotions": {
       "type": "footer-promotions",
       "blocks": {
@@ -165,6 +209,7 @@
   },
   "order": [
     "newsletter_3ebqNt",
+    "pdp_newsletter_X4HEpU",
     "footer-promotions",
     "footer"
   ]

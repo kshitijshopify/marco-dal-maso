@@ -1,0 +1,325 @@
+{%- comment -%}
+  sections/product-complete-the-set.liquid
+  Product page section "Complete the Set": the current product + up to N related pieces, each with a checkbox,
+  a live total and one "Add N to cart" button.
+
+  Where the other pieces come from (section setting "Pieces come from"):
+    - Shopify related products (automatic, default): loaded after the page with Shopify's Product Recommendations (intent=related)
+    - Product metafield: a "list of products" metafield on the product (namespace + key set in the section settings)
+  Needs: snippets/product-cts-row.liquid
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign others = blank
+  if s.source == 'metafield'
+    assign others = product.metafields[s.metafield_namespace][s.metafield_key].value
+  endif
+  assign recs_limit = s.max_others | plus: 4
+-%}
+
+{%- if recommendations.performed -%}
+  {%- comment -%} Response of the recommendations request: only the rows, no section wrapper. {%- endcomment -%}
+  <div data-cts-rows>
+    {%- assign shown = 0 -%}
+    {%- for p in recommendations.products -%}
+      {%- if p.available and shown < s.max_others -%}
+        {%- assign shown = shown | plus: 1 -%}
+        {%- render 'product-cts-row', p: p, is_current: false, ready_label: s.ready_label, view_label: s.view_label -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- elsif product != blank -%}
+
+  {% style %}
+    #shopify-section-{{ section.id }} .cts {
+      --cts-bg: {{ s.color_background }};
+      --cts-ink: {{ s.color_text }};
+      --cts-muted: {{ s.color_muted }};
+      --cts-line: {{ s.color_line }};
+      --cts-dark: {{ s.color_dark }};
+      --cts-green: {{ s.color_ready }};
+      --cts-pt: {{ s.padding_top }}px;
+      --cts-pb: {{ s.padding_bottom }}px;
+    }
+  {% endstyle %}
+
+  {%- liquid
+    assign img = s.image
+    assign fallback_img = product.media[1].preview_image | default: product.featured_image
+  -%}
+
+  <section
+    class="cts"
+    data-cts
+    data-add-url="{{ routes.cart_add_url }}.js"
+    data-cart-url="{{ routes.cart_url }}"
+    data-btn-tpl="{{ s.button_text | escape }}"
+    data-note-tpl="{{ s.note | escape }}"
+    {% if s.source == 'related' %}data-recs-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ recs_limit | at_most: 10 }}&intent=related"{% endif %}
+    {% if s.source == 'related' or others.size == 0 or others == blank %}hidden{% endif %}
+  >
+    <div class="cts__media">
+      {%- if img != blank -%}
+        {{ img | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(min-width: 901px) 43vw, 100vw', loading: 'lazy', alt: img.alt | default: s.image_caption }}
+      {%- elsif fallback_img != blank -%}
+        {{ fallback_img | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(min-width: 901px) 43vw, 100vw', loading: 'lazy', alt: product.title }}
+      {%- endif -%}
+      {%- if s.image_label != blank or s.image_caption != blank -%}
+        <div class="cts__cap">
+          {%- if s.image_label != blank -%}<p class="cts-small cts__cap-k">{{ s.image_label }}</p>{%- endif -%}
+          {%- if s.image_caption != blank -%}<p class="cts__cap-t">{{ s.image_caption }}</p>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="cts__main">
+      <div class="cts__body">
+        {%- if s.eyebrow != blank -%}<p class="cts-small">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="cts__h">{{ s.heading }}</h2>{%- endif -%}
+        {%- assign product_token = '{product}' -%}
+        {%- assign intro_text = s.intro | replace: product_token, product.title -%}
+        {%- if intro_text != blank -%}<p class="cts__intro">{{ intro_text }}</p>{%- endif -%}
+
+        <div class="cts-rows" data-cts-rows>
+          {%- render 'product-cts-row', p: product, is_current: true, ready_label: s.ready_label, view_label: s.view_label -%}
+          {%- if s.source == 'metafield' and others != blank -%}
+            {%- assign shown = 0 -%}
+            {%- for p in others -%}
+              {%- if p.available and p.id != product.id and shown < s.max_others -%}
+                {%- assign shown = shown | plus: 1 -%}
+                {%- render 'product-cts-row', p: p, is_current: false, ready_label: s.ready_label, view_label: s.view_label -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="cts__bar">
+        <div>
+          {%- if s.bar_label != blank -%}<p class="cts-small cts__bar-k">{{ s.bar_label }}</p>{%- endif -%}
+          <p class="cts__total" data-cts-total></p>
+          <p class="cts__note" data-cts-note></p>
+          <p class="cts__msg" data-cts-msg role="status" aria-live="polite"></p>
+        </div>
+        <button type="button" class="cts__btn" data-cts-add></button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      function init(root) {
+        if (root.__cts) return;
+        root.__cts = true;
+        var list = root.querySelector('[data-cts-rows]');
+        var totalEl = root.querySelector('[data-cts-total]');
+        var noteEl = root.querySelector('[data-cts-note]');
+        var msgEl = root.querySelector('[data-cts-msg]');
+        var btn = root.querySelector('[data-cts-add]');
+        var btnTpl = root.dataset.btnTpl || 'Add {n} to cart';
+        var noteTpl = root.dataset.noteTpl || '';
+
+        function money(cents) {
+          var cur = (window.Shopify && Shopify.currency && Shopify.currency.active) || 'USD';
+          try {
+            return new Intl.NumberFormat(document.documentElement.lang || undefined, { style: 'currency', currency: cur, minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(cents / 100);
+          } catch (e) { return (cents / 100).toFixed(2); }
+        }
+        function variantOf(row) {
+          var el = row.querySelector('[data-cts-variant]');
+          if (!el) return null;
+          var price = el.tagName === 'SELECT' ? (el.options[el.selectedIndex] || {}).dataset : el.dataset;
+          return { id: el.value, price: parseInt((price && price.price) || 0, 10) };
+        }
+        function rows() { return [].slice.call(list.querySelectorAll('[data-cts-row]')); }
+        function sync() {
+          var n = 0, total = 0;
+          rows().forEach(function (row) {
+            var v = variantOf(row);
+            var priceEl = row.querySelector('[data-cts-price]');
+            if (v && priceEl) priceEl.textContent = money(v.price);
+            var chk = row.querySelector('[data-cts-check]');
+            if (chk && chk.checked && !chk.disabled && v) { n++; total += v.price; }
+          });
+          totalEl.textContent = money(total);
+          noteEl.textContent = noteTpl.replace('{n}', n).replace('{pieces}', n === 1 ? 'piece' : 'pieces');
+          btn.textContent = btnTpl.replace('{n}', n);
+          btn.disabled = n === 0;
+        }
+
+        root.addEventListener('change', function (e) {
+          if (e.target.closest('[data-cts-row]')) { msgEl.textContent = ''; sync(); }
+        });
+
+        btn.addEventListener('click', function () {
+          var items = [];
+          rows().forEach(function (row) {
+            var chk = row.querySelector('[data-cts-check]');
+            var v = variantOf(row);
+            if (chk && chk.checked && !chk.disabled && v) items.push({ id: parseInt(v.id, 10), quantity: 1 });
+          });
+          if (!items.length) return;
+          btn.disabled = true;
+          msgEl.textContent = '';
+          fetch(root.dataset.addUrl, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ items: items }) })
+            .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw d; return d; }); })
+            .then(function (data) {
+              // open the theme's cart drawer (same event the theme's own add-to-cart uses); go to the cart page only if the theme is set to a cart page
+              var cartType = window.theme && theme.settings && theme.settings.cartType;
+              if (cartType === 'page') { window.location.href = root.dataset.cartUrl; return; }
+              document.dispatchEvent(new CustomEvent('ajaxProduct:added', {
+                detail: { product: (data && data.items && data.items[0]) || data, addToCartBtn: btn }
+              }));
+              sync();
+            })
+            .catch(function (d) {
+              msgEl.textContent = (d && d.description) || 'Sorry, we could not add these pieces. Please try again.';
+              sync();
+            });
+        });
+
+        // related products: load after the page, then show the section
+        var recs = root.dataset.recsUrl;
+        if (recs) {
+          fetch(recs)
+            .then(function (r) { return r.text(); })
+            .then(function (html) {
+              var doc = new DOMParser().parseFromString(html, 'text/html');
+              var found = doc.querySelectorAll('[data-cts-rows] > [data-cts-row]');
+              if (!found.length) return;
+              found.forEach(function (n) { list.appendChild(document.importNode(n, true)); });
+              root.hidden = false;
+              sync();
+            })
+            .catch(function () {});
+        }
+        sync();
+      }
+      document.querySelectorAll('[data-cts]').forEach(init);
+      document.addEventListener('shopify:section:load', function (e) {
+        e.target.querySelectorAll('[data-cts]').forEach(init);
+      });
+    })();
+  </script>
+
+{%- endif -%}
+
+{% stylesheet %}
+  .cts { display: grid; grid-template-columns: 43% 1fr; background: var(--cts-bg, #fff); color: var(--cts-ink, #111); padding: var(--cts-pt, 0px) 0 var(--cts-pb, 0px); font-size: 14px; line-height: 1.5; }
+  .cts[hidden] { display: none; }
+  .cts *, .cts *::before, .cts *::after { box-sizing: border-box; }
+  .cts a { color: inherit; text-decoration: none; }
+  .cts p { margin: 0; }
+  .cts-small { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--cts-muted, #6B6762); }
+
+  .cts__media { position: relative; min-height: 100%; overflow: hidden; background: #E9E6E1; }
+  .cts__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .cts__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0) 40%); pointer-events: none; }
+  .cts__cap { position: absolute; left: 40px; bottom: 40px; z-index: 1; color: #fff; }
+  .cts__cap-k { color: rgba(255,255,255,.85); }
+  .cts__cap-t { margin-top: 10px; font-family: var(--typeHeaderPrimary, Georgia, serif); font-size: 22px; line-height: 1.2; }
+
+  .cts__main { display: flex; flex-direction: column; min-width: 0; }
+  .cts__body { flex: 1; padding: 56px 64px 40px; }
+  .cts__h { margin: 22px 0 0; font-family: var(--typeHeaderPrimary, Georgia, serif); font-weight: 400; font-size: 36px; line-height: 1.15; color: inherit; }
+  .cts__intro { margin-top: 20px; max-width: 540px; font-size: 14px; line-height: 1.6; color: var(--cts-muted, #6B6762); text-wrap: pretty; }
+
+  .cts-rows { margin-top: 34px; border-top: 1px solid var(--cts-line, #E4E1DC); }
+  .cts-row { display: grid; grid-template-columns: 22px 96px minmax(0, 1fr) auto; column-gap: 21px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--cts-line, #E4E1DC); }
+  .cts-rows > .cts-row:last-child { border-bottom: 0; }
+
+  .cts-check { position: relative; display: block; width: 22px; height: 22px; cursor: pointer; }
+  .cts-check input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .cts-check__box { position: absolute; inset: 0; border: 1px solid var(--cts-ink, #111); background: transparent; }
+  .cts-check input:checked + .cts-check__box { background: var(--cts-ink, #111); }
+  .cts-check input:checked + .cts-check__box::after { content: ''; position: absolute; left: 7px; top: 3px; width: 6px; height: 11px; border: solid var(--cts-bg, #fff); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
+  .cts-check input:disabled + .cts-check__box { opacity: .35; }
+  .cts-check input:focus-visible + .cts-check__box { outline: 2px solid var(--cts-ink, #111); outline-offset: 2px; }
+
+  .cts-thumb { display: block; width: 96px; height: 96px; background: #F4F3F1; overflow: hidden; }
+  .cts-thumb img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .cts-title { display: block; font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; line-height: 1.5; }
+  .cts-sub { margin-top: 6px; font-size: 12px; color: var(--cts-muted, #6B6762); }
+  .cts-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+  .cts-ready { display: inline-flex; align-items: center; gap: 6px; color: var(--cts-green, #2E6B4F); }
+  .cts-ready::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .cts-soldout { color: var(--cts-muted, #6B6762); }
+  .cts-view { color: var(--cts-muted, #6B6762); text-decoration: underline !important; text-underline-offset: 2px; }
+  .cts-view:hover { color: var(--cts-ink, #111); }
+
+  .cts-side { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  .cts-price { font-size: 15px; }
+  .cts-size { min-width: 72px; height: 32px; margin: 0; padding: 0 26px 0 12px; border: 1px solid var(--cts-line, #D8D5D0); border-radius: 0; background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23111' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat right 9px center; -webkit-appearance: none; appearance: none; color: inherit; font: inherit; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+
+  .cts__bar { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 36px 64px; background: var(--cts-dark, #141414); color: #fff; }
+  .cts__bar-k { color: rgba(255,255,255,.6); }
+  .cts__total { margin-top: 12px; font-family: var(--typeHeaderPrimary, Georgia, serif); font-size: 34px; line-height: 1.1; }
+  .cts__note { margin-top: 12px; font-size: 11px; color: rgba(255,255,255,.65); }
+  .cts__msg { margin-top: 6px; font-size: 11px; color: #F2B8B5; }
+  .cts__msg:empty { display: none; }
+  .cts__btn { flex: none; min-width: 218px; height: 58px; padding: 0 32px; border: 0; background: #fff; color: #111; font: inherit; font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
+  .cts__btn:hover:not(:disabled) { background: #EDEAE4; }
+  .cts__btn:disabled { opacity: .5; cursor: not-allowed; }
+  .cts__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+  @media (max-width: 900px) {
+    .cts { grid-template-columns: 1fr; }
+    .cts__media { min-height: 0; aspect-ratio: 4 / 5; }
+    .cts__cap { left: 20px; bottom: 20px; }
+    .cts__body { padding: 32px 20px 24px; }
+    .cts__h { font-size: 30px; }
+    .cts-row { grid-template-columns: 22px 72px minmax(0, 1fr); column-gap: 14px; row-gap: 12px; align-items: start; }
+    .cts-check { margin-top: 2px; }
+    .cts-thumb { width: 72px; height: 72px; }
+    .cts-side { grid-column: 3; flex-direction: row; align-items: center; justify-content: space-between; width: 100%; }
+    .cts__bar { flex-direction: column; align-items: stretch; gap: 20px; padding: 28px 20px; }
+    .cts__total { font-size: 30px; }
+    .cts__btn { width: 100%; min-width: 0; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Complete the Set",
+  "settings": [
+    { "type": "header", "content": "Pieces" },
+    { "type": "select", "id": "source", "label": "Pieces come from", "options": [
+      { "value": "metafield", "label": "Product metafield (list of products)" },
+      { "value": "related", "label": "Shopify related products (automatic)" }
+    ], "default": "metafield", "info": "Metafield mode shows nothing on products where the list is empty." },
+    { "type": "text", "id": "metafield_namespace", "label": "Metafield namespace", "default": "custom", "info": "Only used with 'Product metafield'." },
+    { "type": "text", "id": "metafield_key", "label": "Metafield key", "default": "complete_the_set", "info": "A metafield of type 'List of products'." },
+    { "type": "range", "id": "max_others", "label": "Other pieces to show", "min": 1, "max": 5, "step": 1, "default": 2, "info": "The current product is always the first row. Sold out pieces are skipped." },
+
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Most popular combo" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Complete the Set" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Pieces most often worn together with the {product}. Choose the ones you want and add them in a single step.", "info": "{product} is replaced by the product name." },
+    { "type": "text", "id": "ready_label", "label": "Available label", "default": "Ready to ship" },
+    { "type": "text", "id": "view_label", "label": "Product link text", "default": "View product" },
+
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Leave empty to use the product's second photo." },
+    { "type": "text", "id": "image_label", "label": "Image label", "default": "Styled by the atelier" },
+    { "type": "text", "id": "image_caption", "label": "Image caption", "default": "The edit" },
+
+    { "type": "header", "content": "Bottom bar" },
+    { "type": "text", "id": "bar_label", "label": "Label", "default": "Shop the full edit" },
+    { "type": "text", "id": "note", "label": "Note", "default": "{n} {pieces} · complimentary express shipping and engraving included", "info": "{n} is the number of selected pieces, {pieces} is piece/pieces." },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Add {n} to cart", "info": "{n} is the number of selected pieces." },
+
+    { "type": "header", "content": "Colors and spacing" },
+    { "type": "color", "id": "color_background", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "color_muted", "label": "Small text", "default": "#6B6762" },
+    { "type": "color", "id": "color_line", "label": "Lines", "default": "#E4E1DC" },
+    { "type": "color", "id": "color_dark", "label": "Bottom bar", "default": "#141414" },
+    { "type": "color", "id": "color_ready", "label": "Ready to ship dot and text", "default": "#2E6B4F" },
+    { "type": "range", "id": "padding_top", "label": "Top spacing", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom spacing", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "presets": [{ "name": "Complete the Set" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

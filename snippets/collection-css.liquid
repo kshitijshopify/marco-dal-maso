@@ -181,11 +181,14 @@
     align-items: center;
   }
   .site-header .site-header__logo img {
-    max-width: 31px;
+    {% comment %} max-width: 31px; {% endcomment %}
+  }
+  #CollectionAjaxContent{
+    min-height: 50vh;
   }
   @media screen and (max-width: 768px) {
     .site-header .site-header__logo img {
-      max-width: 31px;
+      {% comment %} max-width: 31px; {% endcomment %}
     }
     .template-collection-withbanner .page-width {
       padding: 0 15px;

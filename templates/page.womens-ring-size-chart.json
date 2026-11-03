@@ -529,7 +529,7 @@
       "name": "Size charts",
       "settings": {
         "heading": "MEASURE AT HOME",
-        "top_bar_details": "",
+        "top_bar_details": "For the most accurate fit, we’ll send a physical MARCO DAL MASO ring sizer to your door, free of charge. Or use one of the methods below.",
         "top_bar_link_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"19\" height=\"19\" viewbox=\"0 0 19 19\" fill=\"none\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n          <rect width=\"19\" height=\"19\" fill=\"url(#pattern0_1810_347-1)\"></rect>\n          <defs>\n          <pattern id=\"pattern0_1810_347-1\" patterncontentunits=\"objectBoundingBox\" width=\"1\" height=\"1\">\n          <use xlink:href=\"#image0_1810_347-1\" transform=\"scale(0.03125)\"></use>\n          </pattern>\n          <image id=\"image0_1810_347-1\" width=\"32\" height=\"32\" preserveaspectratio=\"none\" xlink:href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAARklEQVR4nO3QMQoAIAwEwfv/p89GhIiFICGKO50m4KIE4HsupmsCtPiVrHO4MwEvBMxO52HHBGwsZxjvmoCOgCoqDwDwvQa/l8RmWSTJKAAAAABJRU5ErkJggg==\"></image>\n          </defs>\n        </svg>",
         "top_bar_link_label": "REQUEST A RING SIZER",
         "top_bar_link": "",
@@ -561,7 +561,7 @@
         "tab_2_col_4": "Italian Size",
         "tab_2_col_5": "UK Size",
         "tab_2_note": "",
-        "bottom_bar_details": "Still unsure? <a href=\"mailto:ciao@marcodalmaso.com\" title=\"mailto:ciao@marcodalmaso.com\"><span style=\"text-decoration:underline\"><strong>Email our team</strong></span></a> or <a href=\"#ring-sizer\" title=\"#ring-sizer\"><span style=\"text-decoration:underline\"><strong>order a ring sizer</strong></span></a>.",
+        "bottom_bar_details": "Still unsure? <a href=\"mailto:ciao@marcodalmaso.com\" title=\"mailto:ciao@marcodalmaso.com\"><span style=\"text-decoration:underline\"><strong>Email our team</strong></span></a>&nbsp;or&nbsp;<a href=\"#ring-sizer\" title=\"#ring-sizer\"><span style=\"text-decoration:underline\"><strong>order a ring sizer</strong></span></a>.",
         "ring_sizer_heading": "Request A Ring Sizer",
         "ring_sizer_body": "Order your complimentary ring sizer to ensure the perfect fit for your next MARCO DAL MASO piece. Your request will be processed and dispatched within [X] business days.",
         "ring_sizer_cta": "Order your complimentary ring sizer",

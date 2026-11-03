@@ -1,0 +1,54 @@
+{%- comment -%}
+  snippets/product-cts-row.liquid
+  One row of "Complete the Set": checkbox, thumbnail, title, subtitle, availability, price and (if needed) a size select.
+  Arguments:
+    p            - product
+    is_current   - true for the product page's own product (first row)
+    ready_label  - text for available items (e.g. Ready to ship)
+    view_label   - text of the product link (e.g. View product)
+  Subtitle comes from the product metafield custom.subtitle (same as the theme's product card).
+{%- endcomment -%}
+{%- liquid
+  assign v = p.selected_or_first_available_variant
+  assign subtitle = p.metafields.custom.subtitle.value
+  assign can_buy = p.available
+-%}
+<div class="cts-row" data-cts-row{% if is_current %} data-current{% endif %}>
+  <label class="cts-check">
+    <input type="checkbox" data-cts-check{% if can_buy %} checked{% else %} disabled{% endif %}>
+    <span class="cts-check__box" aria-hidden="true"></span>
+    <span class="visually-hidden">{{ p.title | escape }}</span>
+  </label>
+
+  <a class="cts-thumb" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+    {%- if p.featured_image -%}
+      {{ p.featured_image | image_url: width: 288 | image_tag: width: 96, height: 96, widths: '96, 192, 288', sizes: '96px', loading: 'lazy', alt: p.featured_image.alt | default: p.title }}
+    {%- endif -%}
+  </a>
+
+  <div class="cts-info">
+    <a class="cts-title" href="{{ p.url }}">{{ p.title }}</a>
+    {%- if subtitle != blank -%}<p class="cts-sub">{{ subtitle }}</p>{%- endif -%}
+    <p class="cts-meta">
+      {%- if can_buy -%}
+        <span class="cts-ready">{{ ready_label }}</span>
+      {%- else -%}
+        <span class="cts-soldout">Sold out</span>
+      {%- endif -%}
+      <a class="cts-view" href="{{ p.url }}">{{ view_label }}</a>
+    </p>
+  </div>
+
+  <div class="cts-side">
+    <span class="cts-price" data-cts-price>{{ v.price | money_without_trailing_zeros }}</span>
+    {%- if p.has_only_default_variant -%}
+      <input type="hidden" data-cts-variant value="{{ v.id }}" data-price="{{ v.price }}">
+    {%- else -%}
+      <select class="cts-size" data-cts-variant aria-label="{{ p.options.first | default: 'Size' }} for {{ p.title | escape }}">
+        {%- for variant in p.variants -%}
+          <option value="{{ variant.id }}" data-price="{{ variant.price }}"{% if variant.id == v.id %} selected{% endif %}{% unless variant.available %} disabled{% endunless %}>{{ variant.title }}</option>
+        {%- endfor -%}
+      </select>
+    {%- endif -%}
+  </div>
+</div>

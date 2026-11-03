@@ -1,1 +1,680 @@
-{"sections":{"main":{"type":"article-template","custom_css":[".article .section-header__title {text-transform: none;}",".pbo {padding-top: 0 !important;}",".section-header__title {font-family: \"Montserrat\" !important;}"],"settings":{"subheading":"<p>Product Focus<\/p>","image_hero":false,"blog_show_tags":false,"blog_show_date":false,"blog_show_comments":false,"blog_show_author":false,"social_sharing_blog":false}},"rich_text_tTwEme":{"type":"rich-text","blocks":{"text_bc3eeJ":{"type":"text","settings":{"enlarge_text":true,"text":"<p><em>Understand the difference between sterling silver, gold vermeil, and solid gold through weight, finish, longevity, and how each material wears over time.<\/em><\/p>"}}},"block_order":["text_bc3eeJ"],"custom_css":["@media (max-width: 767px) {.custom-rich-text {display: none; }}"],"name":"t:sections.rich-text.presets.rich_text.name","settings":{"desktop_hide":false,"mobile_hide":false,"align_text":"center","narrow_column":true,"divider":false,"padding_b":0}},"section_spacing_cE4x3n":{"type":"section-spacing","custom_css":["@media (max-width: 749px) {.section-spacing-wrapper {padding-top: 40px !important; }}"],"name":"Section Spacing","settings":{"padding_top":2,"padding_bottom":0,"padding_top_mobile":70,"padding_bottom_mobile":0,"bg_color":"rgba(0,0,0,0)","show_divider":false,"divider_color":"#e5e5e5","divider_thickness":1,"divider_width":100}},"text_and_image_48BgVM":{"type":"text-and-image","custom_css":[],"name":"t:sections.text-and-image.presets.image_with_text.name","settings":{"custom_id":"","full_width":false,"image":"shopify:\/\/shop_images\/neck-shot-moneta-gemstone-pendant-oxidized-silver-black-diamonds-agcl122-02bvw.png","image_mobile":"shopify:\/\/shop_images\/neck-shot-moneta-gemstone-pendant-oxidized-silver-black-diamonds-agcl122-02bvw.png","image_mask":"none","hide_image2_mobile":false,"image2_mask":"none","subtitle":"","caption":"","title":"","text":"<p>Choosing jewelry is rarely just about color. It is also about feel, presence, maintenance, and the kind of statement a piece makes over time.<br\/><br\/>For us, material is never separate from design but part of the design language itself: the material you choose changes more than appearance. It changes how a piece sits against the skin, reflects light, and becomes part of everyday wear.<br\/><br\/>That is why the right choice is not always the most expensive one, but the one that feels most like you.<\/p>","html":"","button_label":"","button_link":"","button_labels":"","button_links":"","button_style":"primary","align_text":"left","image_width":"50","layout":"right","body_bg":"#ffffff","divider":false,"top_padding":true,"bottom_padding":true,"lazyload_images":true}},"image_overlay_content_wB8mcF":{"type":"image-overlay-content","disabled":true,"name":"Image Overlay Content","settings":{"desktop_image":"shopify:\/\/shop_images\/image_1.png","mobile_image":"shopify:\/\/shop_images\/Image_63394904-4d0d-4d3c-a692-6dd0dd049dac.png","overline":"","heading":"","h1_true":false,"description":"<p>Choosing jewelry is rarely just about color. It is also about feel, presence, maintenance, and the kind of statement a piece makes over time.<br\/><br\/>For us, material is never separate from design but part of the design language itself: the material you choose changes more than appearance. It changes how a piece sits against the skin, reflects light, and becomes part of everyday wear.<br\/><br\/>That is why the right choice is not always the most expensive one, but the one that feels most like you.<\/p>","button_label":"","button_link":"","text_color":"#1d1c1c","button_bg":"#ffffff","button_text":"#000000","overlay_strength":0,"content_position":"left","desktop_height":81,"desktop_height_unit":"vh","desktop_heading_size":35,"mobile_height":78,"mobile_height_unit":"vh","mobile_heading_size":28,"mobile_content_position":"center","mobile_text_align":"left","mobile_stack":true,"mobile_stack_text_color":"#000000","mobile_stack_bg":"#ffffff"}},"text_and_image_7eqY8J":{"type":"text-and-image","disabled":true,"custom_css":[],"name":"t:sections.text-and-image.presets.image_with_text.name","settings":{"custom_id":"","full_width":false,"image":"shopify:\/\/shop_images\/Generated_with_Kive.ai_-_ULYSSES_SEA_URCHIN_CHAIN_luxury_product_shoot_3.png","image_mobile":"shopify:\/\/shop_images\/Generated_with_Kive.ai_-_ULYSSES_SEA_URCHIN_CHAIN_luxury_product_shoot_3_2.png","image_mask":"none","hide_image2_mobile":false,"image2_mask":"none","subtitle":"","caption":"","title":"","text":"<p><strong>Sterling Silver<br\/><\/strong>Sterling silver has a directness we ave always loved. It feels sharp and sculptural without becoming overstated.<br\/><br\/>For MARCO DAL MASO, silver is not a secondary option. It sits at the center of how we design, from everyday essentials to more expressive pieces like the<a href=\"https:\/\/marcodalmaso.com\/products\/lash-leather-braid-ring-silver-blue-leather-agan33-01bvpb\" target=\"_blank\"> LASH Ring with Braided Blue Leather in Oxidized Silver<\/a>, as well as styles across our wider <a href=\"https:\/\/marcodalmaso.com\/collections\" target=\"_blank\">collections<\/a>.<br\/><br\/>For a clean, structured look, sterling silver often feels immediate. It works especially well when the focus is on form, contrast, and surface.<\/p>","html":"","button_label":"MORE ULYSSES NECKLACES","button_link":"https:\/\/marcodalmaso.com\/collections\/ulysses-collection?filter.p.product_type=Necklaces","button_labels":"","button_links":"","button_style":"primary","align_text":"left","image_width":"50","layout":"right","body_bg":"#ffffff","divider":false,"top_padding":true,"bottom_padding":true,"lazyload_images":true}},"text_and_image_3QCK4C":{"type":"text-and-image","custom_css":[".btn {letter-spacing: 0.1em;}",".appear-delay a {text-decoration: underline !important; border: none !important; text-decoration-color: rgba(0, 0, 0, 0.2) !important;}",".rte *:not(.btn):not(h2) {display: inline !important;}"],"name":"t:sections.text-and-image.presets.image_with_text.name","settings":{"custom_id":"","full_width":false,"image":"shopify:\/\/shop_images\/Sterling_Silver_Acies_Cocoon_pendant.webp","image_mobile":"shopify:\/\/shop_images\/Sterling_Silver_Acies_Cocoon_pendant.webp","image_mask":"none","hide_image2_mobile":false,"image2_mask":"none","subtitle":"","caption":"","title":"","text":"<h2><strong>Sterling Silver<br\/><\/strong><\/h2><p>Sterling silver has a directness we ave always loved. It feels sharp and sculptural without becoming overstated.<br\/><br\/>For MARCO DAL MASO, silver is not a secondary option. It sits at the center of how we design, from everyday essentials to more expressive pieces like the<a href=\"https:\/\/marcodalmaso.com\/products\/lash-leather-braid-ring-silver-blue-leather-agan33-01bvpb\" target=\"_blank\"> LASH Ring with Braided Blue Leather in Oxidized Silver<\/a>, as well as styles across our wider <a href=\"https:\/\/marcodalmaso.com\/collections\" target=\"_blank\">collections<\/a>.<br\/><br\/>For a clean, structured look, sterling silver often feels immediate. It works especially well when the focus is on form, contrast, and surface.<\/p>","html":"","button_label":"shop For Him","button_link":"https:\/\/marcodalmaso.com\/collections\/mens?filter.p.tag=Metal_Sterling+Silver","button_labels":"shop for her","button_links":"https:\/\/marcodalmaso.com\/collections\/womens?filter.p.tag=Metal_Sterling+Silver","button_style":"primary","align_text":"left","image_width":"50","layout":"left","body_bg":"#ffffff","divider":false,"top_padding":true,"bottom_padding":true,"lazyload_images":true}},"section_spacing_xGbxKw":{"type":"section-spacing","name":"Section Spacing","settings":{"padding_top":6,"padding_bottom":0,"padding_top_mobile":0,"padding_bottom_mobile":0,"bg_color":"rgba(0,0,0,0)","show_divider":false,"divider_color":"#e5e5e5","divider_thickness":1,"divider_width":100}},"text_and_image_K7x8Vp":{"type":"text-and-image","disabled":true,"name":"t:sections.text-and-image.presets.image_with_text.name","settings":{"custom_id":"","full_width":false,"image":"shopify:\/\/shop_images\/Generated_with_Kive.ai_-_ULYSSES_SEA_URCHIN_CHAIN_luxury_product_shoot_2_1.png","image_mobile":"shopify:\/\/shop_images\/Generated_with_Kive.ai_-_product_shot_of_ULYSSES_CLASSY_CHAIN_BRACELET_ULYSSES_CLASSY_RING_keep_the_details_of_the_original_product_1.png","image_mask":"none","hide_image2_mobile":false,"image2_mask":"none","subtitle":"","caption":"","title":"","text":"<p><strong>Gold Vermeil<br\/><br\/><\/strong>Gold vermeil offers a different kind of presence. Where silver runs cooler in tone and more architectural, vermeil is warmer and more luminous, and it changes the mood of a piece without changing its structure.<br\/><br\/>For us, vermeil is not plating in the usual sense. We plate in 18kt gold to a minimum of five microns over solid sterling silver — twice the thickness required to call a piece vermeil at all, and the point at which a finish stops being a surface treatment and becomes part of the material.<br\/><br\/>That matters twice over. It is the same 18kt we use in our solid gold, so a vermeil piece and a solid gold piece sit together without a break in tone. And the sterling silver beneath is not a substitute for weight — it is the reason a vermeil piece carries the same substance in the hand as the silver it is built from.<\/p>","html":"","button_label":"EXPLORE GOLD VERMEIL","button_link":"https:\/\/marcodalmaso.com\/search?q=gold+vermeil&options%5Bprefix%5D=last&type=product%2Carticle","button_labels":"","button_links":"","button_style":"primary","align_text":"left","image_width":"50","layout":"right","body_bg":"#ffffff","divider":false,"top_padding":true,"bottom_padding":true,"lazyload_images":true}},"text_and_image_ejzzrU":{"type":"text-and-image","custom_css":[".btn {letter-spacing: 0.1em;}"],"name":"t:sections.text-and-image.presets.image_with_text.name","settings":{"custom_id":"","full_width":false,"image":"shopify:\/\/shop_images\/model-closeup-ulysses-tubular-bracelet-yellow-gold-vermeil-agbr0082-01yels.png","image_mobile":"shopify:\/\/shop_images\/model-closeup-ulysses-tubular-bracelet-yellow-gold-vermeil-agbr0082-01yels.png","image_mask":"none","hide_image2_mobile":false,"image2_mask":"none","subtitle":"","caption":"","title":"","text":"<h2><strong>Gold Vermeil<\/strong><\/h2><p>Gold vermeil offers a different kind of presence. Where silver runs cooler in tone and more architectural, vermeil is warmer and more luminous, and it changes the mood of a piece without changing its structure.<br\/><br\/>For us, vermeil is not plating in the usual sense. We plate in 18kt gold to a minimum of five microns over solid sterling silver — twice the thickness required to call a piece vermeil at all, and the point at which a finish stops being a surface treatment and becomes part of the material.<br\/><br\/>That matters twice over. It is the same 18kt we use in our solid gold, so a vermeil piece and a solid gold piece sit together without a break in tone. And the sterling silver beneath is not a substitute for weight — it is the reason a vermeil piece carries the same substance in the hand as the silver it is built from.<\/p>","html":"","button_label":"Shop 18K gold vermeil","button_link":"https:\/\/marcodalmaso.com\/collections\/mens?filter.p.tag=Metal_18K+Gold+Vermeil","button_labels":"","button_links":"","button_style":"primary","align_text":"left","image_width":"50","layout":"right","body_bg":"#ffffff","divider":false,"top_padding":true,"bottom_padding":true,"lazyload_images":true}},"section_spacing_xbpmbY":{"type":"section-spacing","name":"Section Spacing","settings":{"padding_top":6,"padding_bottom":0,"padding_top_mobile":0,"padding_bottom_mobile":0,"bg_color":"rgba(0,0,0,0)","show_divider":false,"divider_color":"#e5e5e5","divider_thickness":1,"divider_width":100}},"text_and_image_aR3UAK":{"type":"text-and-image","disabled":true,"name":"t:sections.text-and-image.presets.image_with_text.name","settings":{"custom_id":"","full_width":false,"image":"shopify:\/\/shop_images\/Generated_with_Kive.ai_-_ULYSSES_SEA_URCHIN_CHAIN_luxury_product_shoot_1.png","image_mobile":"shopify:\/\/shop_images\/Generated_with_Kive.ai_-_ULYSSES_SEA_URCHIN_CHAIN_luxury_product_shoot_1_1.png","image_mask":"none","hide_image2_mobile":false,"image2_mask":"none","subtitle":"","caption":"","title":"","text":"<p><strong>Solid Gold<br\/><br\/><\/strong>Solid gold carries a different kind of value. It is often chosen not only for how it looks, but for what it represents over time: permanence, long-term ownership.<br\/><br\/>Crafted in 18kt gold throughout, rather than layered over another metal, it is the material many people gravitate toward when the piece marks something lasting. <br\/><br\/>You can see that permanence in pieces such as:<br\/><\/p><ul><li><a href=\"https:\/\/marcodalmaso.com\/products\/continuum-18k-brushed-yellow-gold-black-diamonds-black-enamel-sleek-band\" title=\"https:\/\/marcodalmaso.com\/products\/continuum-18k-brushed-yellow-gold-black-diamonds-black-enamel-sleek-band\"><span style=\"text-decoration:underline\">Continuum 18k Brushed Yellow Gold Black Diamond and Black Enamel Band<\/span><\/a><\/li><li><a href=\"https:\/\/marcodalmaso.com\/products\/warrior-ornate-hoop-earring-yellow-gold-white-diamonds-gior1039-01ye\" title=\"https:\/\/marcodalmaso.com\/products\/warrior-ornate-hoop-earring-yellow-gold-white-diamonds-gior1039-01ye\"><span style=\"text-decoration:underline\">Warrior Ornate Hoop Earring with Yellow Gold and White Diamonds<\/span><\/a><\/li><li><a href=\"https:\/\/marcodalmaso.com\/products\/icon-pendant-with-single-black-diamond-gicl0980-01ye\" title=\"https:\/\/marcodalmaso.com\/products\/icon-pendant-with-single-black-diamond-gicl0980-01ye\"><span style=\"text-decoration:underline\">Icon Pendant with Single Black Diamond <\/span><\/a><\/li><li>As well as our wider <a href=\"https:\/\/marcodalmaso.com\/collections\/mens-18kt-gold\" title=\"https:\/\/marcodalmaso.com\/collections\/mens-18kt-gold\"><span style=\"text-decoration:underline\">18kt gold collection<\/span>.<\/a><\/li><li><a href=\"https:\/\/marcodalmaso.com\/pages\/support-center\" title=\"https:\/\/marcodalmaso.com\/pages\/support-center\"><span style=\"text-decoration:underline\">Product care guide:<\/span><\/a><\/li><li><a href=\"https:\/\/marcodalmaso.com\/collections\" title=\"https:\/\/marcodalmaso.com\/collections\"><span style=\"text-decoration:underline\">Explore our collections:<\/span><\/a><\/li><\/ul><p>If you are considering one, our Concierge can guide you through composition, timing, and personalization, from an engraved detail to a finish chosen just for you.<br\/><\/p>","html":"","button_label":"EXPLORE SOLID GOLD","button_link":"https:\/\/marcodalmaso.com\/collections\/mens-18kt-gold","button_labels":"","button_links":"shopify:\/\/collections\/signet","button_style":"secondary","align_text":"left","image_width":"50","layout":"right","body_bg":"#ffffff","divider":false,"top_padding":true,"bottom_padding":true,"lazyload_images":true}},"text_and_image_aqd9VT":{"type":"text-and-image","custom_css":[".btn {letter-spacing: 0.1em;}"],"name":"t:sections.text-and-image.presets.image_with_text.name","settings":{"custom_id":"","full_width":false,"image":"shopify:\/\/shop_images\/18k_gold_Manawa_earring_with_black_diamond_detail.webp","image_mobile":"shopify:\/\/shop_images\/18k_gold_Manawa_earring_with_black_diamond_detail.webp","image_mask":"none","hide_image2_mobile":false,"image2_mask":"none","subtitle":"","caption":"","title":"","text":"<h2><strong>Solid 18K Gold<\/strong><\/h2><p>Solid gold carries a different kind of value. It is often chosen not only for how it looks, but for what it represents over time: permanence, long-term ownership.<br\/><br\/>Crafted in 18kt gold throughout, rather than layered over another metal, it is the material many people gravitate toward when the piece marks something lasting.&nbsp;<br\/><br\/>You can see that permanence in pieces such as:<br\/><\/p><ul><li><a href=\"https:\/\/marcodalmaso.com\/products\/continuum-18k-brushed-yellow-gold-black-diamonds-black-enamel-sleek-band\" title=\"https:\/\/marcodalmaso.com\/products\/continuum-18k-brushed-yellow-gold-black-diamonds-black-enamel-sleek-band\"><span style=\"text-decoration:underline\">Continuum 18k Brushed Yellow Gold Black Diamond and Black Enamel Band<\/span><\/a><\/li><li><a href=\"https:\/\/marcodalmaso.com\/products\/warrior-ornate-hoop-earring-yellow-gold-white-diamonds-gior1039-01ye\" title=\"https:\/\/marcodalmaso.com\/products\/warrior-ornate-hoop-earring-yellow-gold-white-diamonds-gior1039-01ye\"><span style=\"text-decoration:underline\">Warrior Ornate Hoop Earring with Yellow Gold and White Diamonds<\/span><\/a><\/li><li><a href=\"https:\/\/marcodalmaso.com\/products\/icon-pendant-with-single-black-diamond-gicl0980-01ye\" title=\"https:\/\/marcodalmaso.com\/products\/icon-pendant-with-single-black-diamond-gicl0980-01ye\"><span style=\"text-decoration:underline\">Icon Pendant with Single Black Diamond&nbsp;<\/span><\/a><\/li><li>As well as our wider <a href=\"https:\/\/marcodalmaso.com\/collections\/mens-18kt-gold\" title=\"https:\/\/marcodalmaso.com\/collections\/mens-18kt-gold\"><span style=\"text-decoration:underline\">18kt gold collection<\/span>.<\/a><\/li><li><a href=\"https:\/\/marcodalmaso.com\/pages\/support-center\" title=\"https:\/\/marcodalmaso.com\/pages\/support-center\"><span style=\"text-decoration:underline\">Product care guide:<\/span><\/a><\/li><li><a href=\"https:\/\/marcodalmaso.com\/collections\" title=\"https:\/\/marcodalmaso.com\/collections\"><span style=\"text-decoration:underline\">Explore our collections:<\/span><\/a><\/li><\/ul><p>If you are considering one, our Concierge can guide you through composition, timing, and personalization, from an engraved detail to a finish chosen just for you.<br\/><\/p>","html":"","button_label":"18K GOLD men's","button_link":"https:\/\/marcodalmaso.com\/collections\/mens-18kt-gold","button_labels":"18K GOLD women's","button_links":"https:\/\/marcodalmaso.com\/collections\/18kt-gold-womens","button_style":"primary","align_text":"left","image_width":"50","layout":"left","body_bg":"#ffffff","divider":false,"top_padding":true,"bottom_padding":true,"lazyload_images":true}},"comparison_table_JmPq98":{"type":"comparison-table","blocks":{"row_fnNrfM":{"type":"row","settings":{"label":"Composition","cell_1":"<p>925 sterling silver throughout<\/p>","cell_2":"<p>18kt gold over solid sterling silver<\/p>","cell_3":"<p>18kt gold throughout<\/p>","cell_4":""}},"row_dFJkCT":{"type":"row","settings":{"label":"Color","cell_1":"<p>Cool and bright; oxidized finishes read darker by design<\/p>","cell_2":"<p>Warm gold on the surface<\/p>","cell_3":"<p>Warm, and consistent through the whole piece<\/p>","cell_4":""}},"row_ndUzgb":{"type":"row","settings":{"label":"Tarnish","cell_1":"<p>Tarnishes naturally over time<\/p>","cell_2":"<p>The silver beneath can darken where the layer wears<\/p>","cell_3":"<p>Does not tarnish<\/p>","cell_4":""}},"row_Tdk8Uz":{"type":"row","settings":{"label":"Over time","cell_1":"<p>Develops a patina; oxidized finishes deepen<\/p>","cell_2":"<p>Finish softens gradually with wear<\/p>","cell_3":"<p>Unchanged — the color runs throughout<\/p>","cell_4":""}},"row_CXzWwh":{"type":"row","settings":{"label":"Care","cell_1":"<p>Polish, or leave oxidized finishes to darken<\/p>","cell_2":"<p>Avoid abrasives; store dry and separately<\/p>","cell_3":"<p>Minimal<\/p>","cell_4":""}},"row_Ap6dFR":{"type":"row","settings":{"label":"Best for","cell_1":"<p>Everyday wear and structural design<\/p>","cell_2":"<p>Warmth in signets, bracelets and necklaces<\/p>","cell_3":"<p>Milestones and long-term ownership<\/p>","cell_4":""}}},"block_order":["row_fnNrfM","row_dFJkCT","row_ndUzgb","row_Tdk8Uz","row_CXzWwh","row_Ap6dFR"],"custom_css":["@media only screen and (max-width: 672px) {p {font-size: 13px; } th.ct__label {font-size: 13px; font-weight: 700; }}"],"name":"Comparison table","settings":{"heading":"Sterling silver, gold vermeil and solid gold compared","col_1_title":"Sterling Silver","col_2_title":"Gold Vermeil","col_3_title":"Solid Gold","col_4_title":"","label_column_title":"Feature","empty_text":"—","mobile_layout":"scroll","max_width":1680,"label_width":18,"heading_size":20,"heading_size_mobile":22,"body_size":18,"close_table":true,"bg_color":"#ffffff","heading_color":"#000000","text_color":"#000000","line_color":"#e3e3e3","card_color":"#f4f4f4","card_line_color":"#dcdcdc","card_text_size":13,"card_radius":4,"padding_top":60,"padding_bottom":40}},"content_with_shop_sidebar_Lgdb37":{"type":"content-with-shop-sidebar","blocks":{"heading_fDR7Uk":{"type":"heading","settings":{"text":"Which material should you choose?","tag":"h2"}},"text_RnHypk":{"type":"text","settings":{"text":"<p>The answer depends less on rules and more on how the piece will be worn.<br\/><\/p><ul><li>Choose sterling silver if you want a sharper, more architectural presence, made for daily wear.<\/li><li>Choose gold vermeil if you want warmth and a more elevated finish, especially in signets, bracelets, or necklaces where tone changes the mood of the piece.<\/li><li>Choose solid gold if you are buying for legacy or a milestone moment.<\/li><\/ul><p>If you are choosing your first MARCO DAL MASO pieces, the question is less where to begin than what you want them to say together. Our work is made to be combined - silver against vermeil, a signet worn with a chain, a cuff that answers a ring. Because we plate in the same 18 karat we use in solid gold, tone carries across materials, so a set can be built over time without ever looking assembled.<br\/><br\/><\/p>"}},"spacer_EWdBkt":{"type":"spacer","settings":{}},"heading_AVfK9N":{"type":"heading","settings":{"text":"A note on wear and longevity","tag":"h2"}},"text_TEtx3h":{"type":"text","settings":{"text":"<p>Every material ages differently. Sterling silver can tarnish naturally over time, though on our oxidized finishes, that darker tone is intentional rather than something to polish away.\u2028<\/p><p>Gold vermeil is 18kt gold over solid sterling silver, plated to a minimum of five microns. At that thickness the finish is durable rather than delicate, though like any gold surface it will soften gradually with years of daily wear.\u2028\u2028<br\/><br\/>A little care goes a long way. See our <span style=\"text-decoration:underline\">Product Care guide<\/span> for cleaning and storage tips, or <span style=\"text-decoration:underline\">explore our collections<\/span> to find the material that fits you.<\/p>"}},"card_ffFfAj":{"type":"card","settings":{"product":"acies-slim-band-oxidized-silver-blue-enamel-agan38-01bveb","title":"Sterling Silver","subtitle":"Structural, everyday","link_label":"Shop","link_url":""}},"card_TpRTPi":{"type":"card","settings":{"product":"ulysses-classy-chain-bracelet-matte-yellow-gold-vermeil-oxidized-silver-agbr0111-01bvysb","title":"18K Gold Vermeil","subtitle":"18kt gold, 5 microns","link_label":"Shop","link_url":""}},"card_daGKDV":{"type":"card","settings":{"product":"icon-white-diamond-stud-mono-earring-gior1098-01yeen","title":"Solid 18K Gold","subtitle":"18kt throughout","link_label":"Shop","link_url":""}}},"block_order":["heading_fDR7Uk","text_RnHypk","spacer_EWdBkt","heading_AVfK9N","text_TEtx3h","card_ffFfAj","card_TpRTPi","card_daGKDV"],"name":"Content + shop sidebar","settings":{"width":"page","max_width":1600,"aside_position":"right","aside_width":430,"column_gap":56,"breakpoint":990,"sticky":true,"sticky_offset":60,"sticky_scope":"section","sticky_stop_selector":". section-faq","sticky_stop_gap":48,"mobile_display":"collapsible","mobile_open":false,"mobile_show_label":"Bestsellers by material","mobile_hide_label":"Hide","panel_title":"Bestsellers by material","panel_note":"","card_image_size":64,"card_image_ratio":"1 \/ 1","heading_size":25,"body_size":18,"block_spacer":40,"bg_color":"#ffffff","text_color":"#000000","muted_color":"#8a8a8a","panel_color":"#f5f5f5","card_color":"#ffffff","border_color":"#dcdcdc","padding_top":48,"padding_bottom":52}},"faq_new_yagzAb":{"type":"faq-new","blocks":{"question_4ehawf":{"type":"question","settings":{"question":"Is gold vermeil real gold?","answer":"<p>Yes. Vermeil is a defined standard, not a marketing term: it requires a solid sterling silver base and a minimum thickness of genuine gold. We plate in 18kt gold to a minimum of five microns — twice the required thickness — over solid sterling silver.<\/p>"}},"question_Tb3UXE":{"type":"question","settings":{"question":"What is the difference between gold vermeil and gold plating?","answer":"<p>Gold plating can sit over any base metal, often brass, at any thickness. Vermeil must be gold over solid sterling silver and must meet a minimum gold thickness. The base metal is the meaningful difference.<\/p>"}},"question_Aaf6ir":{"type":"question","settings":{"question":"Does gold vermeil tarnish?","answer":"<p>The gold itself does not tarnish. Over time the layer can soften with wear, and where it thins, the sterling silver beneath may darken. How quickly depends on how often the piece is worn and what it comes into contact with.<\/p>"}},"question_EJkFaM":{"type":"question","settings":{"question":"Does sterling silver tarnish?","answer":"<p>Yes, naturally. On our oxidized finishes that darkening is intentional and part of the design, so it should not be polished away. On polished silver, a soft cloth restores the surface.<\/p>"}},"question_UQ4BtQ":{"type":"question","settings":{"question":"Which material is best for everyday wear?","answer":"<p>Sterling silver, if you want something structural you can wear without thinking about it. Solid gold, if you want a piece that will not change at all. Vermeil sits between the two and rewards a little more care.<\/p>"}},"question_Rc4AD9":{"type":"question","settings":{"question":"Does solid gold tarnish?","answer":"<p>No. In solid gold the color runs through the entire piece rather than sitting on the surface, which is why it is chosen for pieces meant to last decades.<\/p>"}}},"block_order":["question_4ehawf","question_Tb3UXE","question_Aaf6ir","question_EJkFaM","question_UQ4BtQ","question_Rc4AD9"],"name":"Common questions","settings":{"heading":"Common questions","collapse_mode":"mobile","mobile_breakpoint":750,"open_first":true,"icon_position":"inline","align_content":"left","content_width":1000,"padding_top":60,"padding_bottom":48,"rule_above_first":false,"enable_schema_markup":true,"heading_size":25,"question_size":17,"answer_size":15,"heading_size_mobile":20,"question_size_mobile":16,"answer_size_mobile":15,"bg_color":"#ffffff","heading_color":"#111111","question_color":"#111111","answer_color":"#5c5c5c","icon_color":"#111111","divider_color":"#e3e3e3"}},"blog_posts_CUhqAx":{"type":"blog-posts","name":"t:sections.blog-posts.presets.blog_posts.name","settings":{"title":"READ NEXT","h1_true":false,"blog":"craft-edit","post_limit":3,"blog_show_tags":false,"blog_show_date":true,"blog_show_comments":true,"blog_show_author":false,"view_all":false,"blog_image_size":"square","divider":false}}},"order":["main","rich_text_tTwEme","section_spacing_cE4x3n","text_and_image_48BgVM","image_overlay_content_wB8mcF","text_and_image_7eqY8J","text_and_image_3QCK4C","section_spacing_xGbxKw","text_and_image_K7x8Vp","text_and_image_ejzzrU","section_spacing_xbpmbY","text_and_image_aR3UAK","text_and_image_aqd9VT","comparison_table_JmPq98","content_with_shop_sidebar_Lgdb37","faq_new_yagzAb","blog_posts_CUhqAx"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "article-template",
+      "custom_css": [
+        ".article .section-header__title {text-transform: none;}",
+        ".pbo {padding-top: 0 !important;}",
+        ".section-header__title {font-family: \"Montserrat\" !important;}"
+      ],
+      "settings": {
+        "subheading": "<p>Product Focus</p>",
+        "image_hero": false,
+        "blog_show_tags": false,
+        "blog_show_date": false,
+        "blog_show_comments": false,
+        "blog_show_author": false,
+        "social_sharing_blog": false
+      }
+    },
+    "rich_text_tTwEme": {
+      "type": "rich-text",
+      "blocks": {
+        "text_bc3eeJ": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p><em>Understand the difference between sterling silver, gold vermeil, and solid gold through weight, finish, longevity, and how each material wears over time.</em></p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_bc3eeJ"
+      ],
+      "custom_css": [
+        "@media (max-width: 767px) {.custom-rich-text {display: none; }}"
+      ],
+      "name": "t:sections.rich-text.presets.rich_text.name",
+      "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false,
+        "padding_b": 0
+      }
+    },
+    "section_spacing_cE4x3n": {
+      "type": "section-spacing",
+      "custom_css": [
+        "@media (max-width: 749px) {.section-spacing-wrapper {padding-top: 40px !important; }}"
+      ],
+      "name": "Section Spacing",
+      "settings": {
+        "padding_top": 2,
+        "padding_bottom": 0,
+        "padding_top_mobile": 70,
+        "padding_bottom_mobile": 0,
+        "bg_color": "rgba(0,0,0,0)",
+        "show_divider": false,
+        "divider_color": "#e5e5e5",
+        "divider_thickness": 1,
+        "divider_width": 100
+      }
+    },
+    "text_and_image_48BgVM": {
+      "type": "text-and-image",
+      "custom_css": [],
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "custom_id": "",
+        "full_width": false,
+        "image": "shopify://shop_images/neck-shot-moneta-gemstone-pendant-oxidized-silver-black-diamonds-agcl122-02bvw.png",
+        "image_mask": "none",
+        "image2_mask": "none",
+        "subtitle": "",
+        "caption": "",
+        "title": "",
+        "text": "<p>Choosing jewelry is rarely just about color. It is also about feel, presence, maintenance, and the kind of statement a piece makes over time.<br/><br/>For us, material is never separate from design but part of the design language itself: the material you choose changes more than appearance. It changes how a piece sits against the skin, reflects light, and becomes part of everyday wear.<br/><br/>That is why the right choice is not always the most expensive one, but the one that feels most like you.</p>",
+        "html": "",
+        "button_label": "",
+        "button_link": "",
+        "button_labels": "",
+        "button_links": "",
+        "button_style": "primary",
+        "align_text": "left",
+        "image_width": "50",
+        "layout": "right",
+        "body_bg": "#ffffff",
+        "divider": false,
+        "top_padding": true,
+        "bottom_padding": true,
+        "lazyload_images": true
+      }
+    },
+    "image_overlay_content_wB8mcF": {
+      "type": "image-overlay-content",
+      "disabled": true,
+      "name": "Image Overlay Content",
+      "settings": {
+        "desktop_image": "shopify://shop_images/image_1.png",
+        "mobile_image": "shopify://shop_images/Image_63394904-4d0d-4d3c-a692-6dd0dd049dac.png",
+        "overline": "",
+        "heading": "",
+        "h1_true": false,
+        "description": "<p>Choosing jewelry is rarely just about color. It is also about feel, presence, maintenance, and the kind of statement a piece makes over time.<br/><br/>For us, material is never separate from design but part of the design language itself: the material you choose changes more than appearance. It changes how a piece sits against the skin, reflects light, and becomes part of everyday wear.<br/><br/>That is why the right choice is not always the most expensive one, but the one that feels most like you.</p>",
+        "button_label": "",
+        "button_link": "",
+        "text_color": "#1d1c1c",
+        "button_bg": "#ffffff",
+        "button_text": "#000000",
+        "overlay_strength": 0,
+        "content_position": "left",
+        "desktop_height": 81,
+        "desktop_height_unit": "vh",
+        "desktop_heading_size": 35,
+        "mobile_height": 78,
+        "mobile_height_unit": "vh",
+        "mobile_heading_size": 28,
+        "mobile_content_position": "center",
+        "mobile_text_align": "left"
+      }
+    },
+    "text_and_image_7eqY8J": {
+      "type": "text-and-image",
+      "disabled": true,
+      "custom_css": [],
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "custom_id": "",
+        "full_width": false,
+        "image": "shopify://shop_images/Generated_with_Kive.ai_-_ULYSSES_SEA_URCHIN_CHAIN_luxury_product_shoot_3.png",
+        "image_mask": "none",
+        "image2_mask": "none",
+        "subtitle": "",
+        "caption": "",
+        "title": "",
+        "text": "<p><strong>Sterling Silver<br/></strong>Sterling silver has a directness we ave always loved. It feels sharp and sculptural without becoming overstated.<br/><br/>For MARCO DAL MASO, silver is not a secondary option. It sits at the center of how we design, from everyday essentials to more expressive pieces like the<a href=\"https://marcodalmaso.com/products/lash-leather-braid-ring-silver-blue-leather-agan33-01bvpb\" target=\"_blank\"> LASH Ring with Braided Blue Leather in Oxidized Silver</a>, as well as styles across our wider <a href=\"https://marcodalmaso.com/collections\" target=\"_blank\">collections</a>.<br/><br/>For a clean, structured look, sterling silver often feels immediate. It works especially well when the focus is on form, contrast, and surface.</p>",
+        "html": "",
+        "button_label": "MORE ULYSSES NECKLACES",
+        "button_link": "https://marcodalmaso.com/collections/ulysses-collection?filter.p.product_type=Necklaces",
+        "button_labels": "",
+        "button_links": "",
+        "button_style": "primary",
+        "align_text": "left",
+        "image_width": "50",
+        "layout": "right",
+        "body_bg": "#ffffff",
+        "divider": false,
+        "top_padding": true,
+        "bottom_padding": true,
+        "lazyload_images": true
+      }
+    },
+    "text_and_image_3QCK4C": {
+      "type": "text-and-image",
+      "custom_css": [
+        ".btn {letter-spacing: 0.1em;}",
+        ".appear-delay a {text-decoration: underline !important; border: none !important; text-decoration-color: rgba(0, 0, 0, 0.2) !important;}",
+        ".rte *:not(.btn):not(h2) {display: inline !important;}"
+      ],
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "custom_id": "",
+        "full_width": false,
+        "image": "shopify://shop_images/Sterling_Silver_Acies_Cocoon_pendant.webp",
+        "image_mask": "none",
+        "image2_mask": "none",
+        "subtitle": "",
+        "caption": "",
+        "title": "",
+        "text": "<h2><strong>Sterling Silver<br/></strong></h2><p>Sterling silver has a directness we ave always loved. It feels sharp and sculptural without becoming overstated.<br/><br/>For MARCO DAL MASO, silver is not a secondary option. It sits at the center of how we design, from everyday essentials to more expressive pieces like the<a href=\"https://marcodalmaso.com/products/lash-leather-braid-ring-silver-blue-leather-agan33-01bvpb\" target=\"_blank\"> LASH Ring with Braided Blue Leather in Oxidized Silver</a>, as well as styles across our wider <a href=\"https://marcodalmaso.com/collections\" target=\"_blank\">collections</a>.<br/><br/>For a clean, structured look, sterling silver often feels immediate. It works especially well when the focus is on form, contrast, and surface.</p>",
+        "html": "",
+        "button_label": "shop For Him",
+        "button_link": "https://marcodalmaso.com/collections/mens?filter.p.tag=Metal_Sterling+Silver",
+        "button_labels": "shop for her",
+        "button_links": "https://marcodalmaso.com/collections/womens?filter.p.tag=Metal_Sterling+Silver",
+        "button_style": "primary",
+        "align_text": "left",
+        "image_width": "50",
+        "layout": "left",
+        "body_bg": "#ffffff",
+        "divider": false,
+        "top_padding": true,
+        "bottom_padding": true,
+        "lazyload_images": true
+      }
+    },
+    "section_spacing_xGbxKw": {
+      "type": "section-spacing",
+      "name": "Section Spacing",
+      "settings": {
+        "padding_top": 6,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "bg_color": "rgba(0,0,0,0)",
+        "show_divider": false,
+        "divider_color": "#e5e5e5",
+        "divider_thickness": 1,
+        "divider_width": 100
+      }
+    },
+    "text_and_image_K7x8Vp": {
+      "type": "text-and-image",
+      "disabled": true,
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "custom_id": "",
+        "full_width": false,
+        "image": "shopify://shop_images/Generated_with_Kive.ai_-_ULYSSES_SEA_URCHIN_CHAIN_luxury_product_shoot_2_1.png",
+        "image_mask": "none",
+        "image2_mask": "none",
+        "subtitle": "",
+        "caption": "",
+        "title": "",
+        "text": "<p><strong>Gold Vermeil<br/><br/></strong>Gold vermeil offers a different kind of presence. Where silver runs cooler in tone and more architectural, vermeil is warmer and more luminous, and it changes the mood of a piece without changing its structure.<br/><br/>For us, vermeil is not plating in the usual sense. We plate in 18kt gold to a minimum of five microns over solid sterling silver — twice the thickness required to call a piece vermeil at all, and the point at which a finish stops being a surface treatment and becomes part of the material.<br/><br/>That matters twice over. It is the same 18kt we use in our solid gold, so a vermeil piece and a solid gold piece sit together without a break in tone. And the sterling silver beneath is not a substitute for weight — it is the reason a vermeil piece carries the same substance in the hand as the silver it is built from.</p>",
+        "html": "",
+        "button_label": "EXPLORE GOLD VERMEIL",
+        "button_link": "https://marcodalmaso.com/search?q=gold+vermeil&options%5Bprefix%5D=last&type=product%2Carticle",
+        "button_labels": "",
+        "button_links": "",
+        "button_style": "primary",
+        "align_text": "left",
+        "image_width": "50",
+        "layout": "right",
+        "body_bg": "#ffffff",
+        "divider": false,
+        "top_padding": true,
+        "bottom_padding": true,
+        "lazyload_images": true
+      }
+    },
+    "text_and_image_ejzzrU": {
+      "type": "text-and-image",
+      "custom_css": [
+        ".btn {letter-spacing: 0.1em;}"
+      ],
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "custom_id": "",
+        "full_width": false,
+        "image": "shopify://shop_images/model-closeup-ulysses-tubular-bracelet-yellow-gold-vermeil-agbr0082-01yels.png",
+        "image_mask": "none",
+        "image2_mask": "none",
+        "subtitle": "",
+        "caption": "",
+        "title": "",
+        "text": "<h2><strong>Gold Vermeil</strong></h2><p>Gold vermeil offers a different kind of presence. Where silver runs cooler in tone and more architectural, vermeil is warmer and more luminous, and it changes the mood of a piece without changing its structure.<br/><br/>For us, vermeil is not plating in the usual sense. We plate in 18kt gold to a minimum of five microns over solid sterling silver — twice the thickness required to call a piece vermeil at all, and the point at which a finish stops being a surface treatment and becomes part of the material.<br/><br/>That matters twice over. It is the same 18kt we use in our solid gold, so a vermeil piece and a solid gold piece sit together without a break in tone. And the sterling silver beneath is not a substitute for weight — it is the reason a vermeil piece carries the same substance in the hand as the silver it is built from.</p>",
+        "html": "",
+        "button_label": "Shop 18K gold vermeil",
+        "button_link": "https://marcodalmaso.com/collections/mens?filter.p.tag=Metal_18K+Gold+Vermeil",
+        "button_labels": "",
+        "button_links": "",
+        "button_style": "primary",
+        "align_text": "left",
+        "image_width": "50",
+        "layout": "right",
+        "body_bg": "#ffffff",
+        "divider": false,
+        "top_padding": true,
+        "bottom_padding": true,
+        "lazyload_images": true
+      }
+    },
+    "section_spacing_xbpmbY": {
+      "type": "section-spacing",
+      "name": "Section Spacing",
+      "settings": {
+        "padding_top": 6,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "bg_color": "rgba(0,0,0,0)",
+        "show_divider": false,
+        "divider_color": "#e5e5e5",
+        "divider_thickness": 1,
+        "divider_width": 100
+      }
+    },
+    "text_and_image_aR3UAK": {
+      "type": "text-and-image",
+      "disabled": true,
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "custom_id": "",
+        "full_width": false,
+        "image": "shopify://shop_images/Generated_with_Kive.ai_-_ULYSSES_SEA_URCHIN_CHAIN_luxury_product_shoot_1.png",
+        "image_mask": "none",
+        "image2_mask": "none",
+        "subtitle": "",
+        "caption": "",
+        "title": "",
+        "text": "<p><strong>Solid Gold<br/><br/></strong>Solid gold carries a different kind of value. It is often chosen not only for how it looks, but for what it represents over time: permanence, long-term ownership.<br/><br/>Crafted in 18kt gold throughout, rather than layered over another metal, it is the material many people gravitate toward when the piece marks something lasting. <br/><br/>You can see that permanence in pieces such as:<br/></p><ul><li><a href=\"https://marcodalmaso.com/products/continuum-18k-brushed-yellow-gold-black-diamonds-black-enamel-sleek-band\" title=\"https://marcodalmaso.com/products/continuum-18k-brushed-yellow-gold-black-diamonds-black-enamel-sleek-band\"><span style=\"text-decoration:underline\">Continuum 18k Brushed Yellow Gold Black Diamond and Black Enamel Band</span></a></li><li><a href=\"https://marcodalmaso.com/products/warrior-ornate-hoop-earring-yellow-gold-white-diamonds-gior1039-01ye\" title=\"https://marcodalmaso.com/products/warrior-ornate-hoop-earring-yellow-gold-white-diamonds-gior1039-01ye\"><span style=\"text-decoration:underline\">Warrior Ornate Hoop Earring with Yellow Gold and White Diamonds</span></a></li><li><a href=\"https://marcodalmaso.com/products/icon-pendant-with-single-black-diamond-gicl0980-01ye\" title=\"https://marcodalmaso.com/products/icon-pendant-with-single-black-diamond-gicl0980-01ye\"><span style=\"text-decoration:underline\">Icon Pendant with Single Black Diamond </span></a></li><li>As well as our wider <a href=\"https://marcodalmaso.com/collections/mens-18kt-gold\" title=\"https://marcodalmaso.com/collections/mens-18kt-gold\"><span style=\"text-decoration:underline\">18kt gold collection</span>.</a></li><li><a href=\"https://marcodalmaso.com/pages/support-center\" title=\"https://marcodalmaso.com/pages/support-center\"><span style=\"text-decoration:underline\">Product care guide:</span></a></li><li><a href=\"https://marcodalmaso.com/collections\" title=\"https://marcodalmaso.com/collections\"><span style=\"text-decoration:underline\">Explore our collections:</span></a></li></ul><p>If you are considering one, our Concierge can guide you through composition, timing, and personalization, from an engraved detail to a finish chosen just for you.<br/></p>",
+        "html": "",
+        "button_label": "EXPLORE SOLID GOLD",
+        "button_link": "https://marcodalmaso.com/collections/mens-18kt-gold",
+        "button_labels": "",
+        "button_links": "shopify://collections/signet",
+        "button_style": "secondary",
+        "align_text": "left",
+        "image_width": "50",
+        "layout": "right",
+        "body_bg": "#ffffff",
+        "divider": false,
+        "top_padding": true,
+        "bottom_padding": true,
+        "lazyload_images": true
+      }
+    },
+    "text_and_image_aqd9VT": {
+      "type": "text-and-image",
+      "custom_css": [
+        ".btn {letter-spacing: 0.1em;}"
+      ],
+      "name": "t:sections.text-and-image.presets.image_with_text.name",
+      "settings": {
+        "custom_id": "",
+        "full_width": false,
+        "image": "shopify://shop_images/18k_gold_Manawa_earring_with_black_diamond_detail.webp",
+        "image_mask": "none",
+        "image2_mask": "none",
+        "subtitle": "",
+        "caption": "",
+        "title": "",
+        "text": "<h2><strong>Solid 18K Gold</strong></h2><p>Solid gold carries a different kind of value. It is often chosen not only for how it looks, but for what it represents over time: permanence, long-term ownership.<br/><br/>Crafted in 18kt gold throughout, rather than layered over another metal, it is the material many people gravitate toward when the piece marks something lasting.&nbsp;<br/><br/>You can see that permanence in pieces such as:<br/></p><ul><li><a href=\"https://marcodalmaso.com/products/continuum-18k-brushed-yellow-gold-black-diamonds-black-enamel-sleek-band\" title=\"https://marcodalmaso.com/products/continuum-18k-brushed-yellow-gold-black-diamonds-black-enamel-sleek-band\"><span style=\"text-decoration:underline\">Continuum 18k Brushed Yellow Gold Black Diamond and Black Enamel Band</span></a></li><li><a href=\"https://marcodalmaso.com/products/warrior-ornate-hoop-earring-yellow-gold-white-diamonds-gior1039-01ye\" title=\"https://marcodalmaso.com/products/warrior-ornate-hoop-earring-yellow-gold-white-diamonds-gior1039-01ye\"><span style=\"text-decoration:underline\">Warrior Ornate Hoop Earring with Yellow Gold and White Diamonds</span></a></li><li><a href=\"https://marcodalmaso.com/products/icon-pendant-with-single-black-diamond-gicl0980-01ye\" title=\"https://marcodalmaso.com/products/icon-pendant-with-single-black-diamond-gicl0980-01ye\"><span style=\"text-decoration:underline\">Icon Pendant with Single Black Diamond&nbsp;</span></a></li><li>As well as our wider <a href=\"https://marcodalmaso.com/collections/mens-18kt-gold\" title=\"https://marcodalmaso.com/collections/mens-18kt-gold\"><span style=\"text-decoration:underline\">18kt gold collection</span>.</a></li><li><a href=\"https://marcodalmaso.com/pages/support-center#product-care\" title=\"https://marcodalmaso.com/pages/support-center#product-care\"><span style=\"text-decoration:underline\">Product care guide</span></a></li><li><a href=\"https://marcodalmaso.com/collections\" title=\"https://marcodalmaso.com/collections\"><span style=\"text-decoration:underline\">Explore our collections</span></a></li></ul><p>If you are considering one, our Concierge can guide you through composition, timing, and personalization, from an engraved detail to a finish chosen just for you.</p>",
+        "html": "",
+        "button_label": "18K GOLD men's",
+        "button_link": "https://marcodalmaso.com/collections/mens-18kt-gold",
+        "button_labels": "18K GOLD women's",
+        "button_links": "https://marcodalmaso.com/collections/18kt-gold-womens",
+        "button_style": "primary",
+        "align_text": "left",
+        "image_width": "50",
+        "layout": "left",
+        "body_bg": "#ffffff",
+        "divider": false,
+        "top_padding": true,
+        "bottom_padding": true,
+        "lazyload_images": true
+      }
+    },
+    "comparison_table_JmPq98": {
+      "type": "comparison-table",
+      "blocks": {
+        "row_fnNrfM": {
+          "type": "row",
+          "settings": {
+            "label": "Composition",
+            "cell_1": "<p>925 sterling silver throughout</p>",
+            "cell_2": "<p>18kt gold over solid sterling silver</p>",
+            "cell_3": "<p>18kt gold throughout</p>",
+            "cell_4": ""
+          }
+        },
+        "row_dFJkCT": {
+          "type": "row",
+          "settings": {
+            "label": "Color",
+            "cell_1": "<p>Cool and bright; oxidized finishes read darker by design</p>",
+            "cell_2": "<p>Warm gold on the surface</p>",
+            "cell_3": "<p>Warm, and consistent through the whole piece</p>",
+            "cell_4": ""
+          }
+        },
+        "row_ndUzgb": {
+          "type": "row",
+          "settings": {
+            "label": "Tarnish",
+            "cell_1": "<p>Tarnishes naturally over time</p>",
+            "cell_2": "<p>The silver beneath can darken where the layer wears</p>",
+            "cell_3": "<p>Does not tarnish</p>",
+            "cell_4": ""
+          }
+        },
+        "row_Tdk8Uz": {
+          "type": "row",
+          "settings": {
+            "label": "Over time",
+            "cell_1": "<p>Develops a patina; oxidized finishes deepen</p>",
+            "cell_2": "<p>Finish softens gradually with wear</p>",
+            "cell_3": "<p>Unchanged — the color runs throughout</p>",
+            "cell_4": ""
+          }
+        },
+        "row_CXzWwh": {
+          "type": "row",
+          "settings": {
+            "label": "Care",
+            "cell_1": "<p>Polish, or leave oxidized finishes to darken</p>",
+            "cell_2": "<p>Avoid abrasives; store dry and separately</p>",
+            "cell_3": "<p>Minimal</p>",
+            "cell_4": ""
+          }
+        },
+        "row_Ap6dFR": {
+          "type": "row",
+          "settings": {
+            "label": "Best for",
+            "cell_1": "<p>Everyday wear and structural design</p>",
+            "cell_2": "<p>Warmth in signets, bracelets and necklaces</p>",
+            "cell_3": "<p>Milestones and long-term ownership</p>",
+            "cell_4": ""
+          }
+        }
+      },
+      "block_order": [
+        "row_fnNrfM",
+        "row_dFJkCT",
+        "row_ndUzgb",
+        "row_Tdk8Uz",
+        "row_CXzWwh",
+        "row_Ap6dFR"
+      ],
+      "custom_css": [
+        "@media only screen and (max-width: 672px) {p {font-size: 13px; } th.ct__label {font-size: 13px; font-weight: 700; }}"
+      ],
+      "name": "Comparison table",
+      "settings": {
+        "heading": "Sterling silver, gold vermeil and solid gold compared",
+        "col_1_title": "Sterling Silver",
+        "col_2_title": "Gold Vermeil",
+        "col_3_title": "Solid Gold",
+        "col_4_title": "",
+        "label_column_title": "Feature",
+        "empty_text": "—",
+        "mobile_layout": "scroll",
+        "max_width": 1680,
+        "label_width": 18,
+        "heading_size": 20,
+        "heading_size_mobile": 22,
+        "body_size": 18,
+        "close_table": true,
+        "bg_color": "#ffffff",
+        "heading_color": "#000000",
+        "text_color": "#000000",
+        "line_color": "#e3e3e3",
+        "card_color": "#f4f4f4",
+        "card_line_color": "#dcdcdc",
+        "card_text_size": 13,
+        "card_radius": 4,
+        "padding_top": 60,
+        "padding_bottom": 40
+      }
+    },
+    "content_with_shop_sidebar_Lgdb37": {
+      "type": "content-with-shop-sidebar",
+      "blocks": {
+        "heading_fDR7Uk": {
+          "type": "heading",
+          "settings": {
+            "text": "Which material should you choose?",
+            "tag": "h2"
+          }
+        },
+        "text_RnHypk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The answer depends less on rules and more on how the piece will be worn.<br/></p><ul><li>Choose sterling silver if you want a sharper, more architectural presence, made for daily wear.</li><li>Choose gold vermeil if you want warmth and a more elevated finish, especially in signets, bracelets, or necklaces where tone changes the mood of the piece.</li><li>Choose solid gold if you are buying for legacy or a milestone moment.</li></ul><p>If you are choosing your first MARCO DAL MASO pieces, the question is less where to begin than what you want them to say together. Our work is made to be combined - silver against vermeil, a signet worn with a chain, a cuff that answers a ring. Because we plate in the same 18 karat we use in solid gold, tone carries across materials, so a set can be built over time without ever looking assembled.<br/><br/></p>"
+          }
+        },
+        "spacer_EWdBkt": {
+          "type": "spacer",
+          "settings": {}
+        },
+        "heading_AVfK9N": {
+          "type": "heading",
+          "settings": {
+            "text": "A note on wear and longevity",
+            "tag": "h2"
+          }
+        },
+        "text_TEtx3h": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Every material ages differently. Sterling silver can tarnish naturally over time, though on our oxidized finishes, that darker tone is intentional rather than something to polish away. </p><p>Gold vermeil is 18kt gold over solid sterling silver, plated to a minimum of five microns. At that thickness the finish is durable rather than delicate, though like any gold surface it will soften gradually with years of daily wear.  <br/><br/>A little care goes a long way. See our <a href=\"https://marcodalmaso.com/pages/support-center#product-care\" target=\"_blank\" title=\"https://marcodalmaso.com/pages/support-center#product-care\"><span style=\"text-decoration:underline\">Product Care guide</span></a> for cleaning and storage tips, or <a href=\"https://marcodalmaso.com/collections\" title=\"https://marcodalmaso.com/collections\"><span style=\"text-decoration:underline\">explore our collections</span> </a>to find the material that fits you.</p>"
+          }
+        },
+        "card_ffFfAj": {
+          "type": "card",
+          "settings": {
+            "product": "acies-slim-band-oxidized-silver-blue-enamel-agan38-01bveb",
+            "title": "Sterling Silver",
+            "subtitle": "Structural, everyday",
+            "link_label": "Shop",
+            "link_url": ""
+          }
+        },
+        "card_TpRTPi": {
+          "type": "card",
+          "settings": {
+            "product": "ulysses-classy-chain-bracelet-matte-yellow-gold-vermeil-oxidized-silver-agbr0111-01bvysb",
+            "title": "18K Gold Vermeil",
+            "subtitle": "18kt gold, 5 microns",
+            "link_label": "Shop",
+            "link_url": ""
+          }
+        },
+        "card_daGKDV": {
+          "type": "card",
+          "settings": {
+            "product": "icon-white-diamond-stud-mono-earring-gior1098-01yeen",
+            "title": "Solid 18K Gold",
+            "subtitle": "18kt throughout",
+            "link_label": "Shop",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading_fDR7Uk",
+        "text_RnHypk",
+        "spacer_EWdBkt",
+        "heading_AVfK9N",
+        "text_TEtx3h",
+        "card_ffFfAj",
+        "card_TpRTPi",
+        "card_daGKDV"
+      ],
+      "name": "Content + shop sidebar",
+      "settings": {
+        "width": "page",
+        "max_width": 1600,
+        "aside_position": "right",
+        "aside_width": 430,
+        "column_gap": 56,
+        "breakpoint": 990,
+        "sticky": true,
+        "sticky_offset": 60,
+        "sticky_scope": "section",
+        "sticky_stop_selector": ". section-faq",
+        "sticky_stop_gap": 48,
+        "mobile_display": "collapsible",
+        "mobile_open": false,
+        "mobile_show_label": "Bestsellers by material",
+        "mobile_hide_label": "Hide",
+        "panel_title": "Bestsellers by material",
+        "panel_note": "",
+        "card_image_size": 64,
+        "card_image_ratio": "1 / 1",
+        "heading_size": 25,
+        "body_size": 18,
+        "block_spacer": 40,
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "muted_color": "#8a8a8a",
+        "panel_color": "#f5f5f5",
+        "card_color": "#ffffff",
+        "border_color": "#dcdcdc",
+        "padding_top": 48,
+        "padding_bottom": 52
+      }
+    },
+    "faq_new_yagzAb": {
+      "type": "faq-new",
+      "blocks": {
+        "question_4ehawf": {
+          "type": "question",
+          "settings": {
+            "question": "Is gold vermeil real gold?",
+            "answer": "<p>Yes. Vermeil is a defined standard, not a marketing term: it requires a solid sterling silver base and a minimum thickness of genuine gold. We plate in 18kt gold to a minimum of five microns — twice the required thickness — over solid sterling silver.</p>"
+          }
+        },
+        "question_Tb3UXE": {
+          "type": "question",
+          "settings": {
+            "question": "What is the difference between gold vermeil and gold plating?",
+            "answer": "<p>Gold plating can sit over any base metal, often brass, at any thickness. Vermeil must be gold over solid sterling silver and must meet a minimum gold thickness. The base metal is the meaningful difference.</p>"
+          }
+        },
+        "question_Aaf6ir": {
+          "type": "question",
+          "settings": {
+            "question": "Does gold vermeil tarnish?",
+            "answer": "<p>The gold itself does not tarnish. Over time the layer can soften with wear, and where it thins, the sterling silver beneath may darken. How quickly depends on how often the piece is worn and what it comes into contact with.</p>"
+          }
+        },
+        "question_EJkFaM": {
+          "type": "question",
+          "settings": {
+            "question": "Does sterling silver tarnish?",
+            "answer": "<p>Yes, naturally. On our oxidized finishes that darkening is intentional and part of the design, so it should not be polished away. On polished silver, a soft cloth restores the surface.</p>"
+          }
+        },
+        "question_UQ4BtQ": {
+          "type": "question",
+          "settings": {
+            "question": "Which material is best for everyday wear?",
+            "answer": "<p>Sterling silver, if you want something structural you can wear without thinking about it. Solid gold, if you want a piece that will not change at all. Vermeil sits between the two and rewards a little more care.</p>"
+          }
+        },
+        "question_Rc4AD9": {
+          "type": "question",
+          "settings": {
+            "question": "Does solid gold tarnish?",
+            "answer": "<p>No. In solid gold the color runs through the entire piece rather than sitting on the surface, which is why it is chosen for pieces meant to last decades.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_4ehawf",
+        "question_Tb3UXE",
+        "question_Aaf6ir",
+        "question_EJkFaM",
+        "question_UQ4BtQ",
+        "question_Rc4AD9"
+      ],
+      "name": "Common questions",
+      "settings": {
+        "heading": "Common questions",
+        "collapse_mode": "mobile",
+        "mobile_breakpoint": 750,
+        "open_first": true,
+        "icon_position": "inline",
+        "align_content": "left",
+        "content_width": 1000,
+        "padding_top": 60,
+        "padding_bottom": 48,
+        "rule_above_first": false,
+        "enable_schema_markup": true,
+        "heading_size": 25,
+        "question_size": 17,
+        "answer_size": 15,
+        "heading_size_mobile": 20,
+        "question_size_mobile": 16,
+        "answer_size_mobile": 15,
+        "bg_color": "#ffffff",
+        "heading_color": "#111111",
+        "question_color": "#111111",
+        "answer_color": "#5c5c5c",
+        "icon_color": "#111111",
+        "divider_color": "#e3e3e3"
+      }
+    },
+    "blog_posts_CUhqAx": {
+      "type": "blog-posts",
+      "name": "t:sections.blog-posts.presets.blog_posts.name",
+      "settings": {
+        "title": "READ NEXT",
+        "h1_true": false,
+        "blog": "craft-edit",
+        "post_limit": 3,
+        "blog_show_tags": false,
+        "blog_show_date": true,
+        "blog_show_comments": true,
+        "blog_show_author": false,
+        "view_all": false,
+        "blog_image_size": "square",
+        "divider": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_tTwEme",
+    "section_spacing_cE4x3n",
+    "text_and_image_48BgVM",
+    "image_overlay_content_wB8mcF",
+    "text_and_image_7eqY8J",
+    "text_and_image_3QCK4C",
+    "section_spacing_xGbxKw",
+    "text_and_image_K7x8Vp",
+    "text_and_image_ejzzrU",
+    "section_spacing_xbpmbY",
+    "text_and_image_aR3UAK",
+    "text_and_image_aqd9VT",
+    "comparison_table_JmPq98",
+    "content_with_shop_sidebar_Lgdb37",
+    "faq_new_yagzAb",
+    "blog_posts_CUhqAx"
+  ]
+}
