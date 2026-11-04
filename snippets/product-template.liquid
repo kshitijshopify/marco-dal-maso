@@ -415,6 +415,8 @@
                     </div>
                   {% endif %}
                 </div>
+
+                {% comment %}
                 <div class="pdp-product-wishlist">
                     <style>
                       #custom-wishlist-button.swym-added .swym-icon-unfilled {
@@ -495,6 +497,7 @@
                       </button>
                     {% endunless %}
                 </div>
+                {% endcomment %}
               </div>
 
               {%- if isModal -%}
@@ -1549,24 +1552,20 @@
 
                   {%- when 'inventory_label' -%}
                     {% unless all_variants_poa %}
+                      {%- comment -%}
+                        Ready to Ship only when the selected variant has stock.
+                        Quantity 0 stays hidden, including when Continue Selling is on.
+                      {%- endcomment -%}
                       {%- assign inventory_stock = false -%}
-                      {%- if current_variant.inventory_management == 'shopify' -%}
-                        {%- if current_variant.inventory_quantity > 0 -%}
-                          {%- assign inventory_stock = true -%}
-                        {%- endif -%}
-                      {%- endif -%}
-                      {% if current_variant.inventory_policy == 'continue' %}
+                      {%- if current_variant.inventory_quantity > 0 -%}
                         {%- assign inventory_stock = true -%}
-                      {% endif %}
-                      {% if current_variant.inventory_quantity <= 0 %}
-                        {%- assign inventory_stock = false -%}
-                      {% endif %}
+                      {%- endif -%}
                     <div class="pdp_inventory_label {% if inventory_stock == false %}pdp_inventory_soldout{% endif %}"{% if current_variant_poa %} style="display:none"{% endif %}>
                       <div class="pdp_inventory_stock">
                         <span class="icon-pdp-inventory"></span>
-                        <span>{{ block.settings.instock_text }} · <span class="pdp_shipping_text">{{ block.settings.shipping_text }}</span></span>
+                        <span>Ready to Ship</span>
                       </div>
-                      <div class="pdp_inventory_sold">
+                      <div class="pdp_inventory_sold" hidden>
                         <span class="icon-pdp-inventory"></span>
                         {{ block.settings.soldout_text }}
                       </div>

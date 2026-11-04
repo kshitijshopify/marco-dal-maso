@@ -553,7 +553,7 @@
           </div>
         </div>
         <div class="cart-rec__atc-main">
-          <button
+          {% comment %} <button
             id="swym-custom-collections_product_{{ product.id }}"
             class="button swym-custom-collections swym-add-to-wishlist-view-product product_{{ product.id }}"
             data-with-epi="true"
@@ -570,7 +570,7 @@
             <svg class="swym-icon-filled" width="11" height="11" viewBox="0 0 11 11" fill="#000" xmlns="http://www.w3.org/2000/svg">
               <path d="M5.27865 0.726685L6.69948 3.61418L9.86198 4.07252L7.57031 6.27252L8.12031 9.43502L5.27865 7.96835L2.43698 9.43502L2.98698 6.27252L0.695312 4.07252L3.85781 3.61418L5.27865 0.726685Z" stroke="black" stroke-opacity="0.5" stroke-width="0.641667"/>
             </svg>
-          </button>
+          </button> {% endcomment %}
           <!-- Swym Wishlist Plus EPI Button -->
           {% if new_quick_add %}
             <button

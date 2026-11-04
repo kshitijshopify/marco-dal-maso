@@ -10284,31 +10284,14 @@ document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('shopify:section:reorder', renderRecentLists);
       })();
   */
-function shouldSkipJsPromoHeight(el) {
-  var root = el && el.closest ? el.closest('.collection-promo--root') : null;
-  if (!root) return false;
-  if (window.matchMedia('(min-width: 769px)').matches) {
-    return root.getAttribute('data-desktop-height') === 'auto';
-  }
-  var mobileHeight = root.getAttribute('data-mobile-height') || 'auto';
-  return mobileHeight !== 'js';
-}
-
 function applyPromoHeight($els, h) {
-  if (!$els.length) return false;
-  var applied = false;
+  if (!(h > 0) || !$els.length) return false;
   $els.each(function () {
-    if (shouldSkipJsPromoHeight(this)) {
-      this.style.height = '';
-      return;
-    }
-    if (!(h > 0)) return;
     if (Math.round(this.getBoundingClientRect().height) !== Math.round(h)) {
       this.style.height = h + 'px';
     }
-    applied = true;
   });
-  return applied;
+  return true;
 }
 
 function setPromoHeight(tries) {
@@ -10374,11 +10357,6 @@ $(window).on('load', function () {
 });
 
 $(window).on('resize', function () {
-  setPromoHeight();
-  setPromo2Height();
-});
-
-document.addEventListener('shopify:section:load', function () {
   setPromoHeight();
   setPromo2Height();
 });

@@ -1,4 +1,7 @@
 {%- if section.settings.image != blank -%}
+  {%- liquid
+    assign mobile_image_fit = section.settings.mobile_image_fit | default: 'cover'
+  -%}
   <style>
  [data-section-id="{{ section.id }}"] .background-media-text__text p.h5, [data-section-id="{{ section.id }}"] .background-media-text__text p.h3,
   [data-section-id="{{ section.id }}"] .background-media-text__text .rte.background-media-text__subtext p, [data-section-id="{{ section.id }}"] .background-media-text__text *{
@@ -6,7 +9,33 @@
   } 
   [data-section-id="{{ section.id }}"] .background-media-text__text .btn{
     color: {{section.settings.btn_color}};background-color: {{section.settings.bg_color}};
-  } 
+  }
+  @media screen and (max-width: 768px) {
+    {%- if section.settings.mobile_height != blank -%}
+    [data-section-id="{{ section.id }}"].background-media-text .background-media-text__container,
+    [data-section-id="{{ section.id }}"].background-media-text .background-media-text__container .only-mobile,
+    [data-section-id="{{ section.id }}"].background-media-text .parallax-container,
+    [data-section-id="{{ section.id }}"].background-media-text .parallax-image {
+      height: {{ section.settings.mobile_height }}px;
+      min-height: {{ section.settings.mobile_height }}px;
+    }
+    [data-section-id="{{ section.id }}"].background-media-text .parallax-container,
+    [data-section-id="{{ section.id }}"].background-media-text .parallax-image {
+      top: 0;
+    }
+    {%- endif -%}
+    [data-section-id="{{ section.id }}"].background-media-text .image-fit,
+    [data-section-id="{{ section.id }}"].background-media-text .custom-for-mobile,
+    [data-section-id="{{ section.id }}"].background-media-text .parallax-image img,
+    [data-section-id="{{ section.id }}"].background-media-text .background-media-text__image {
+      -o-object-fit: {{ mobile_image_fit }};
+         object-fit: {{ mobile_image_fit }};
+      {%- if section.settings.mobile_height != blank -%}
+      width: 100%;
+      height: 100%;
+      {%- endif -%}
+    }
+  }
 </style>
 <div class="{{ section.settings.classes }}">
 <div
@@ -148,6 +177,29 @@
       "type": "image_picker",
       "id": "mobile_image",
       "label": "Mobile Image"
+    },
+    {
+      "type": "number",
+      "id": "mobile_height",
+      "label": "Mobile height",
+      "info": "Optional. Height in pixels. Leave blank to keep the default."
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_fit",
+      "label": "Mobile image fit",
+      "info": "Optional. How the image fills the mobile height.",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ]
     },
     {
       "type": "select",

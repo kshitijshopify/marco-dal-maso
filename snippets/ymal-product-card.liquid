@@ -1,0 +1,138 @@
+
+{%- liquid
+  assign size_option_index = nil
+  assign size_option = nil
+
+  for option in card_product.options_with_values
+    assign option_name = option.name | downcase
+
+    if option_name contains 'size'
+      assign size_option_index = forloop.index0
+      assign size_option = option
+      break
+    endif
+  endfor
+
+  assign selected_variant = card_product.selected_or_first_available_variant
+  assign subtitle = card_product.metafields.custom.material.value
+
+  if subtitle == blank
+    assign subtitle = card_product.description | strip_html | strip | truncate: 65
+  endif
+
+  assign use_size_chips = false
+
+  if size_option and size_option.values.size <= 5
+    assign use_size_chips = true
+  endif
+-%}
+
+<article
+  class="ymal-card"
+  data-selected-variant="{% unless size_option %}{{ selected_variant.id }}{% endunless %}"
+>
+  <a class="ymal-image-link" href="{{ card_product.url }}">
+    {%- if card_product.featured_image -%}
+      {{
+        card_product.featured_image
+        | image_url: width: 800
+        | image_tag:
+          class: 'ymal-image',
+          loading: 'lazy',
+          widths: '240, 360, 540, 800',
+          alt: card_product.featured_image.alt
+      }}
+    {%- endif -%}
+  </a>
+
+  <div class="ymal-info">
+    <h3 class="ymal-title">
+      <a href="{{ card_product.url }}">{{ card_product.title | escape }}</a>
+    </h3>
+
+    {%- if subtitle != blank -%}
+      <p class="ymal-subtitle">{{ subtitle | escape }}</p>
+    {%- endif -%}
+
+    <p class="ymal-price">
+      {%- if card_product.price_varies -%}
+        From {{ card_product.price_min | money }}
+      {%- else -%}
+        {{ card_product.price | money }}
+      {%- endif -%}
+    </p>
+
+    {%- if size_option -%}
+      {% comment %} <label class="ymal-size-label">
+        {{ size_option.name | escape }}
+      </label> {% endcomment %}
+
+      {%- if use_size_chips -%}
+        <div class="ymal-size-chips">
+          {%- for size_value in size_option.values -%}
+            {%- liquid
+              assign size_variant = nil
+
+              for variant in card_product.variants
+                if variant.options[size_option_index] == size_value and variant.available
+                  assign size_variant = variant
+                  break
+                endif
+              endfor
+            -%}
+
+            <button
+              type="button"
+              class="ymal-size-chip"
+              data-variant-id="{{ size_variant.id }}"
+              aria-pressed="false"
+              {% unless size_variant %}disabled{% endunless %}
+            >
+              {{ size_value | escape }}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <select class="ymal-size-select" aria-label="Select {{ size_option.name | escape }}">
+          <option value="">Select {{ size_option.name | escape }}</option>
+
+          {%- for size_value in size_option.values -%}
+            {%- liquid
+              assign size_variant = nil
+
+              for variant in card_product.variants
+                if variant.options[size_option_index] == size_value and variant.available
+                  assign size_variant = variant
+                  break
+                endif
+              endfor
+            -%}
+
+            <option
+              value="{{ size_variant.id }}"
+              {% unless size_variant %}disabled{% endunless %}
+            >
+              {{ size_value | escape }}
+            </option>
+          {%- endfor -%}
+        </select>
+      {%- endif -%}
+    {%- endif -%}
+
+    <button
+      type="button"
+      class="ymal-add"
+      {% if size_option or selected_variant == blank or selected_variant.available == false %}disabled{% endif %}
+    >
+      {%- if size_option -%}
+        SELECT A SIZE
+      {%- elsif selected_variant.available -%}
+        ADD TO CART
+      {%- else -%}
+        SOLD OUT
+      {%- endif -%}
+    </button>
+
+    <p class="ymal-error" role="alert"></p>
+  </div>
+</article>

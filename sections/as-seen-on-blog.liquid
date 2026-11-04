@@ -1,0 +1,522 @@
+{{ 'as-seen-on.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign cfg = section.settings
+  assign cats = cfg.categories | newline_to_br | strip_newlines | split: '<br />'
+-%}
+{% render 'asn-style', cfg: cfg, section_id: section.id %}
+
+{%- paginate blog.articles by 50 -%}
+  {%- liquid
+    assign total = blog.articles_count
+    assign f_main = cfg.feature_main
+    assign f_a = cfg.feature_a
+    assign f_b = cfg.feature_b
+    if f_main == blank
+      assign f_main = blog.articles[0]
+    endif
+    if f_a == blank
+      assign f_a = blog.articles[1]
+    endif
+    if f_b == blank
+      assign f_b = blog.articles[2]
+    endif
+    assign shown_now = cfg.initial_count
+    if total < shown_now
+      assign shown_now = total
+    endif
+    assign note_now = cfg.note_text | replace: '{shown}', shown_now | replace: '{total}', total
+    assign count_now = cfg.count_label | replace: '{total}', total
+    assign load_now = cfg.load_more_label | replace: '{n}', cfg.load_more_count
+  -%}
+
+  <div class="asn asn-hub" data-asn-hub
+       data-initial="{{ cfg.initial_count }}" data-step="{{ cfg.load_more_count }}"
+       data-pages="{{ paginate.pages }}" data-base="{{ blog.url }}"
+       data-load-label="{{ cfg.load_more_label | escape }}" data-note="{{ cfg.note_text | escape }}"
+       data-count-label="{{ cfg.count_label | escape }}">
+
+    <header class="asn-head">
+      <div class="asn-head__text">
+        <h1 class="asn-title">{{ cfg.heading }}</h1>
+        {%- if cfg.intro != blank -%}<p class="asn-intro">{{ cfg.intro }}</p>{%- endif -%}
+      </div>
+      {%- if cfg.show_total -%}<p class="asn-head__count" data-asn-total>{{ count_now }}</p>{%- endif -%}
+    </header>
+
+    {%- if cats.size > 0 and cfg.categories != blank -%}
+      <div class="asn-filters" role="group" aria-label="{{ cfg.filter_aria }}">
+        <button type="button" class="asn-chip is-active" data-filter="all" aria-pressed="true">{{ cfg.all_label }} (<span data-count-for="all">{{ total }}</span>)</button>
+        {%- for cat_line in cats -%}
+  {%- assign cat_name = cat_line | strip -%}
+  {%- if cat_name != blank -%}
+    {%- assign cat_key = cat_name | downcase -%}
+    {%- assign n = 0 -%}
+    {%- for a in blog.articles -%}
+      {%- assign a_cat = a.metafields.custom.category.value | strip | downcase -%}
+      {%- if a_cat == cat_key -%}{%- assign n = n | plus: 1 -%}{%- endif -%}
+    {%- endfor -%}
+    <button type="button" class="asn-chip" data-filter="{{ cat_key | escape }}" aria-pressed="false">{{ cat_name }} (<span data-count-for="{{ cat_key | escape }}">{{ n }}</span>)</button>
+  {%- endif -%}
+{%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if f_main != blank -%}
+      <section class="asn-hero" aria-label="{{ cfg.heading }}">
+        {% render 'asn-tile', article: f_main, size: 'main', label: cfg.latest_label, link_label: cfg.main_link_label, guard: cfg.guard_rights, loading: 'eager' %}
+        {%- if f_a != blank -%}{% render 'asn-tile', article: f_a, size: 'small', guard: cfg.guard_rights %}{%- endif -%}
+        {%- if f_b != blank -%}{% render 'asn-tile', article: f_b, size: 'small', guard: cfg.guard_rights %}{%- endif -%}
+        {%- if cfg.show_archive_tile -%}
+          <div class="asn-archive">
+            {%- if cfg.archive_kicker != blank -%}<p class="asn-kicker">{{ cfg.archive_kicker }}</p>{%- endif -%}
+            <h2 class="asn-archive__title">{{ cfg.archive_heading }}</h2>
+            <p class="asn-archive__text">{{ cfg.archive_text }}</p>
+            <a class="asn-archive__cta" href="{{ cfg.archive_link | default: '#asn-all' }}">{{ cfg.archive_link_label }}</a>
+          </div>
+        {%- endif -%}
+      </section>
+    {%- endif -%}
+
+    <section class="asn-all" id="asn-all" aria-labelledby="asn-all-title">
+      <div class="asn-sect-head">
+        <h2 class="asn-sect-title" id="asn-all-title">{{ cfg.all_heading }}</h2>
+        <span class="asn-sect-note">{{ cfg.sort_note }}</span>
+      </div>
+      <ul class="asn-grid" data-asn-grid>
+        {%- for a in blog.articles -%}
+          {%- assign hide_it = false -%}
+          {%- if forloop.index > cfg.initial_count -%}{%- assign hide_it = true -%}{%- endif -%}
+          {% render 'asn-card', article: a, guard: cfg.guard_rights, is_hidden: hide_it, wearing_label: cfg.wearing_label %}
+        {%- endfor -%}
+      </ul>
+      <p class="asn-empty" data-asn-empty hidden>{{ cfg.empty_text }}</p>
+      <div class="asn-more">
+        <button type="button" class="asn-btn asn-btn--outline" data-asn-more{% if total <= cfg.initial_count %} hidden{% endif %}>{{ load_now }}</button>
+        <p class="asn-more__note" data-asn-note>{{ note_now }}</p>
+      </div>
+    </section>
+
+    {%- assign mw = cfg.most_worn -%}
+    {%- if mw != blank and mw.products_count > 0 -%}
+      <section class="asn-worn" aria-labelledby="asn-worn-title">
+        <div class="asn-sect-head">
+          <h2 class="asn-sect-title" id="asn-worn-title">{{ cfg.worn_heading }}</h2>
+          {%- if cfg.worn_link_label != blank -%}<a class="asn-textlink asn-textlink--muted" href="{{ mw.url }}">{{ cfg.worn_link_label }}</a>{%- endif -%}
+        </div>
+        <ul class="asn-products asn-products--hub">
+          {%- for p in mw.products limit: cfg.worn_count -%}
+            {% render 'asn-product', product: p, badge_tag: cfg.badge_tag, badge_label: cfg.badge_label, variants_label: cfg.variants_label %}
+          {%- endfor -%}
+        </ul>
+      </section>
+    {%- endif -%}
+  </div>
+
+  {%- if cfg.show_press -%}
+    <div class="asn asn-press-wrap">
+      <section class="asn-press">
+        <div>
+          {%- if cfg.press_kicker != blank -%}<p class="asn-kicker">{{ cfg.press_kicker }}</p>{%- endif -%}
+          <h2 class="asn-press__title">{{ cfg.press_heading }}</h2>
+        </div>
+        {%- if cfg.press_url != blank -%}<a class="asn-btn asn-btn--light" href="{{ cfg.press_url }}">{{ cfg.press_label }}</a>{%- endif -%}
+      </section>
+    </div>
+  {%- endif -%}
+{%- endpaginate -%}
+
+<script src="{{ 'as-seen-on.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "As Seen On: hub",
+  "tag": "section",
+  "class": "asn-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "As Seen On"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Artists, actors and athletes photographed in MARCO DAL MASO. Each sighting names the pieces worn."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_total",
+      "label": "Show total count (top right)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "count_label",
+      "label": "Total text",
+      "default": "{total} sightings",
+      "info": "{total} = number of sightings."
+    },
+    {
+      "type": "header",
+      "content": "Filters"
+    },
+    {
+      "type": "textarea",
+      "id": "categories",
+      "label": "Filter categories (one per line)",
+      "default": "Music\nFilm & Television\nSport\nFashion & Culture",
+      "info": "Must match the Category values exactly. Order here = order on the page."
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "'All' label",
+      "default": "All"
+    },
+    {
+      "type": "text",
+      "id": "filter_aria",
+      "label": "Filter group accessibility label",
+      "default": "Filter sightings by category"
+    },
+    {
+      "type": "header",
+      "content": "Top grid: choose the articles"
+    },
+    {
+      "type": "article",
+      "id": "feature_main",
+      "label": "Large tile (latest sighting)",
+      "info": "Leave empty to use the newest article."
+    },
+    {
+      "type": "article",
+      "id": "feature_a",
+      "label": "Small tile 1",
+      "info": "Leave empty to use the 2nd newest."
+    },
+    {
+      "type": "article",
+      "id": "feature_b",
+      "label": "Small tile 2",
+      "info": "Leave empty to use the 3rd newest."
+    },
+    {
+      "type": "text",
+      "id": "latest_label",
+      "label": "Large tile badge",
+      "default": "Latest sighting"
+    },
+    {
+      "type": "text",
+      "id": "main_link_label",
+      "label": "Large tile link text",
+      "default": "View the sighting"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_archive_tile",
+      "label": "Show archive tile",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "archive_kicker",
+      "label": "Archive small label",
+      "default": "The archive"
+    },
+    {
+      "type": "text",
+      "id": "archive_heading",
+      "label": "Archive heading",
+      "default": "A record of where the work has been seen."
+    },
+    {
+      "type": "textarea",
+      "id": "archive_text",
+      "label": "Archive text",
+      "default": "Each entry names the pieces in the frame, with their materials and variants."
+    },
+    {
+      "type": "text",
+      "id": "archive_link_label",
+      "label": "Archive link text",
+      "default": "See all sightings"
+    },
+    {
+      "type": "url",
+      "id": "archive_link",
+      "label": "Archive link",
+      "info": "Empty = scrolls to the list below."
+    },
+    {
+      "type": "header",
+      "content": "All sightings list"
+    },
+    {
+      "type": "text",
+      "id": "all_heading",
+      "label": "Heading",
+      "default": "All sightings"
+    },
+    {
+      "type": "text",
+      "id": "sort_note",
+      "label": "Note (right)",
+      "default": "Most recent first"
+    },
+    {
+      "type": "range",
+      "id": "initial_count",
+      "label": "Shown first",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "load_more_count",
+      "label": "Added per 'Load more'",
+      "min": 10,
+      "max": 60,
+      "step": 10,
+      "default": 30
+    },
+    {
+      "type": "text",
+      "id": "load_more_label",
+      "label": "Button text",
+      "default": "Load {n} more",
+      "info": "{n} = number that will load."
+    },
+    {
+      "type": "text",
+      "id": "note_text",
+      "label": "Counter text",
+      "default": "{shown} of {total} shown. Names and photos from the sightings library.",
+      "info": "{shown} and {total} are filled in automatically."
+    },
+    {
+      "type": "text",
+      "id": "wearing_label",
+      "label": "'Wearing' text on cards",
+      "default": "Wearing"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Text when a category is empty",
+      "default": "No sightings in this category yet."
+    },
+    {
+      "type": "header",
+      "content": "Most-worn pieces"
+    },
+    {
+      "type": "collection",
+      "id": "most_worn",
+      "label": "Collection (curated by you)"
+    },
+    {
+      "type": "text",
+      "id": "worn_heading",
+      "label": "Heading",
+      "default": "Most-worn pieces"
+    },
+    {
+      "type": "text",
+      "id": "worn_link_label",
+      "label": "'View all' text",
+      "default": "View all"
+    },
+    {
+      "type": "range",
+      "id": "worn_count",
+      "label": "Pieces shown",
+      "min": 3,
+      "max": 9,
+      "step": 3,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Press band"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_press",
+      "label": "Show press band",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "press_kicker",
+      "label": "Small label",
+      "default": "Press and stylists"
+    },
+    {
+      "type": "text",
+      "id": "press_heading",
+      "label": "Heading",
+      "default": "Requesting pieces for a shoot?"
+    },
+    {
+      "type": "text",
+      "id": "press_label",
+      "label": "Button text",
+      "default": "Press & styling enquiries"
+    },
+    {
+      "type": "url",
+      "id": "press_url",
+      "label": "Button link",
+      "info": "Open decision: where this enquiry goes (page, email link or form)."
+    },
+    {
+      "type": "header",
+      "content": "Design: typography"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_theme_fonts",
+      "label": "Use the theme's fonts",
+      "default": true,
+      "info": "Untick to pick the fonts below (e.g. a serif for headings)."
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "header",
+      "content": "Design: colours"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#F3F0EA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#141110"
+    },
+    {
+      "type": "color",
+      "id": "panel_color",
+      "label": "Dark panel background",
+      "default": "#141110"
+    },
+    {
+      "type": "color",
+      "id": "panel_text_color",
+      "label": "Dark panel text",
+      "default": "#F3F0EA"
+    },
+    {
+      "type": "header",
+      "content": "Design: spacing"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Gap between cards",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "page_padding",
+      "label": "Side padding (desktop)",
+      "min": 16,
+      "max": 96,
+      "step": 4,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "page_padding_mobile",
+      "label": "Side padding (mobile)",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max content width",
+      "min": 1000,
+      "max": 2000,
+      "step": 40,
+      "default": 1600,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Rights"
+    },
+    {
+      "type": "checkbox",
+      "id": "guard_rights",
+      "label": "Hide photos when credit, source or usage rights are missing",
+      "default": true,
+      "info": "Safety net: Shopify cannot make article fields required. The photo stays hidden on the live store until all three are filled."
+    },
+    {
+      "type": "header",
+      "content": "Product cards"
+    },
+    {
+      "type": "text",
+      "id": "badge_tag",
+      "label": "Product tag that shows the badge",
+      "default": "Best seller"
+    },
+    {
+      "type": "text",
+      "id": "badge_label",
+      "label": "Badge text",
+      "default": "Best seller"
+    },
+    {
+      "type": "text",
+      "id": "variants_label",
+      "label": "'More variants' link text",
+      "default": "More variants"
+    }
+  ],
+  "presets": [
+    {
+      "name": "As Seen On: hub"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "blog"
+    ]
+  }
+}
+{% endschema %}

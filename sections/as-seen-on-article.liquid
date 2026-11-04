@@ -1,0 +1,542 @@
+{{ 'as-seen-on.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign cfg = section.settings
+  assign m = article.metafields.custom
+  assign parent = article.blog
+  assign pieces = m.pieces.value
+  assign more = m.more_shots.value
+  assign sdate = m.sighting_date.value
+  if sdate == blank
+    assign sdate = article.published_at
+  endif
+
+  assign first_piece = pieces.first.title
+  assign piece_names = ''
+  for p in pieces
+    assign piece_names = piece_names | append: p.title
+    unless forloop.last
+      assign piece_names = piece_names | append: ', '
+    endunless
+  endfor
+  assign alt = article.title
+  if first_piece != blank
+    assign alt = article.title | append: ' wearing ' | append: piece_names
+  endif
+
+  assign missing = ''
+  if m.credit.value == blank
+    assign missing = missing | append: 'photo credit, '
+  endif
+  if m.source.value == blank
+    assign missing = missing | append: 'source, '
+  endif
+  if m.usage_rights.value == blank
+    assign missing = missing | append: 'usage rights, '
+  endif
+  assign show_photo = true
+  if cfg.guard_rights and missing != blank
+    assign show_photo = false
+  endif
+
+  assign list = parent.articles
+  assign idx = -1
+  for a in list
+    if a.id == article.id
+      assign idx = forloop.index0
+    endif
+  endfor
+  assign prv = nil
+  assign nxt = nil
+  if idx >= 0 and list.size > 1
+    assign nxt_i = idx | plus: 1
+    assign prv_i = idx | minus: 1
+    assign nxt = list[nxt_i]
+    if nxt == blank
+      assign nxt = list.first
+    endif
+    if prv_i < 0
+      assign prv = list.last
+    else
+      assign prv = list[prv_i]
+    endif
+  endif
+
+  assign mcount = more.size | at_most: 4
+  assign pieces_title = cfg.pieces_heading | replace: '{name}', article.title
+  assign pcount_attr = pieces.size
+  if pieces.size > 3
+    assign pcount_attr = 'many'
+  endif
+-%}
+{% render 'asn-style', cfg: cfg, section_id: section.id %}
+
+<div class="asn asn-single">
+  {%- if request.design_mode and missing != blank -%}
+    <p class="asn-warning" role="note">Not ready to publish: missing {{ missing | strip | remove_last: ',' }}. {% if cfg.guard_rights %}The photo is hidden on the live store until this is filled.{% endif %}</p>
+  {%- endif -%}
+
+  {%- if cfg.show_breadcrumb -%}
+    <div class="asn-bar">
+      <nav class="asn-crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">{{ cfg.home_label }}</a><span aria-hidden="true">/</span><a href="/blog/as-seen-on">as-seen-on</a><span aria-hidden="true">/</span><span>{{ article.title }}</span>
+      </nav>
+      {%- if cfg.show_prev_next and prv != blank and nxt != blank -%}
+        <nav class="asn-prevnext" aria-label="{{ cfg.prevnext_aria }}">
+          <a href="{{ prv.url }}"><span aria-hidden="true">&larr;</span> {{ prv.title }}</a>
+          <a href="{{ nxt.url }}">{{ nxt.title }} <span aria-hidden="true">&rarr;</span></a>
+        </nav>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <section class="asn-single__top">
+    <div class="asn-single__photo">
+      {%- if show_photo and article.image -%}
+        {{ article.image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 900px) 50vw, 100vw', widths: '600, 900, 1200, 1400', alt: alt }}
+      {%- else -%}
+        <span class="asn-ph" aria-hidden="true"></span>
+      {%- endif -%}
+    </div>
+
+    <div class="asn-single__info">
+      {%- if cfg.kicker != blank -%}<p class="asn-kicker">{{ cfg.kicker }}</p>{%- endif -%}
+      <h1 class="asn-title asn-title--xl">{{ article.title }}</h1>
+      {%- if m.role.value != blank or m.country.value != blank -%}
+        <p class="asn-role">{{ m.role.value }}{% if m.role.value != blank and m.country.value != blank %} &middot; {% endif %}{{ m.country.value }}</p>
+      {%- endif -%}
+
+    
+      {%- if article.content != blank -%}<div class="asn-story rte">{{ article.content }}</div>{%- endif -%}
+  {%- if m.intro.value != blank -%}
+        <p class="asn-lead">{{ m.intro.value }}</p>
+      {%- elsif piece_names != blank -%}
+        <p class="asn-lead">{{ article.title }} wearing {{ piece_names }}{% if m.occasion.value != blank %} at {{ m.occasion.value }}{% endif %}, {{ sdate | date: '%-d %B %Y' }}.</p>
+      {%- endif -%}
+
+      <dl class="asn-details">
+        {%- if m.occasion.value != blank or request.design_mode -%}
+          <div><dt>{{ cfg.occasion_label }}</dt><dd{% if m.occasion.value == blank %} class="is-empty"{% endif %}>{{ m.occasion.value | default: 'add occasion' }}</dd></div>
+        {%- endif -%}
+        {%- if m.location.value != blank or request.design_mode -%}
+          <div><dt>{{ cfg.location_label }}</dt><dd{% if m.location.value == blank %} class="is-empty"{% endif %}>{{ m.location.value | default: 'add location' }}</dd></div>
+        {%- endif -%}
+        <div><dt>{{ cfg.date_label }}</dt><dd><time datetime="{{ sdate | date: '%Y-%m-%d' }}">{{ sdate | date: '%-d %B %Y' }}</time></dd></div>
+        {%- if m.credit.value != blank or request.design_mode -%}
+          <div><dt>{{ cfg.credit_label }}</dt><dd{% if m.credit.value == blank %} class="is-empty"{% endif %}>{{ m.credit.value | default: 'photographer / source' }}</dd></div>
+        {%- endif -%}
+      </dl>
+      
+      {%- if pieces.size > 0 and cfg.button_label != blank -%}
+        <a class="asn-btn" href="#asn-pieces">{{ cfg.button_label }}</a>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- if pieces.size > 0 -%}
+    <section class="asn-pieces" id="asn-pieces" aria-labelledby="asn-pieces-title">
+      <div class="asn-sect-head">
+        <h2 class="asn-sect-title" id="asn-pieces-title">{{ pieces_title }}</h2>
+        <span class="asn-sect-note">{{ pieces.size }} {{ pieces.size | pluralize: cfg.piece_singular, cfg.piece_plural }}</span>
+      </div>
+      <ul class="asn-products asn-products--worn" data-count="{{ pcount_attr }}">
+        {%- for p in pieces -%}
+          {%- assign view_lbl = '' -%}
+          {%- if pieces.size == 1 -%}{%- assign view_lbl = cfg.view_piece_label -%}{%- endif -%}
+          {% render 'asn-product', product: p, badge_tag: cfg.badge_tag, badge_label: cfg.badge_label, variants_label: cfg.variants_label, view_label: view_lbl %}
+        {%- endfor -%}
+      </ul>
+    </section>
+  {%- endif -%}
+
+  {%- if cfg.show_more_shots and mcount > 0 and show_photo -%}
+    <section class="asn-shots-wrap" aria-labelledby="asn-shots-title">
+      <div class="asn-sect-head">
+        <h2 class="asn-sect-title" id="asn-shots-title">{{ cfg.shots_heading }}</h2>
+      </div>
+      <ul class="asn-shots" data-count="{{ mcount }}">
+        {%- for ph in more limit: 4 -%}
+          <li>{{ ph | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 33vw, 50vw', widths: '400, 600, 900', alt: alt }}</li>
+        {%- endfor -%}
+      </ul>
+    </section>
+  {%- endif -%}
+
+  {%- assign ed_blog = cfg.editorial_blog -%}
+  {%- assign ed_tag = m.editorial_tag.value -%}
+  {%- if cfg.show_editorial and ed_blog != blank and ed_tag != blank -%}
+    {%- assign ed_shown = 0 -%}
+    {%- capture ed_html -%}
+      {%- for ea in ed_blog.articles -%}
+        {%- if ea.tags contains ed_tag and ed_shown < 3 -%}
+          {%- assign ed_shown = ed_shown | plus: 1 -%}
+          <li class="asn-ed">
+            <a class="asn-ed__media" href="{{ ea.url }}" tabindex="-1" aria-hidden="true">
+              {%- if ea.image -%}{{ ea.image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 33vw, 100vw', widths: '350, 500, 700', alt: ea.image.alt | default: ea.title }}{%- else -%}<span class="asn-ph" aria-hidden="true"></span>{%- endif -%}
+            </a>
+            <a class="asn-ed__title" href="{{ ea.url }}">{{ ea.title }}</a>
+            {%- assign ex = ea.excerpt | strip_html | default: ea.content | strip_html -%}
+            <p class="asn-ed__text">{{ ex | truncate: 90 }}</p>
+            <a class="asn-textlink" href="{{ ea.url }}">{{ cfg.read_more_label }}</a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if ed_shown > 0 -%}
+      <section class="asn-editorial" aria-labelledby="asn-ed-title">
+        <div class="asn-sect-head">
+          <h2 class="asn-sect-title" id="asn-ed-title">{{ cfg.editorial_heading }}</h2>
+          <span class="asn-sect-note">{{ cfg.editorial_note }}</span>
+        </div>
+        <ul class="asn-editorial__list">{{ ed_html }}</ul>
+      </section>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{%- if cfg.show_next and nxt != blank -%}
+  {%- assign nm = nxt.metafields.custom -%}
+  <div class="asn asn-next-wrap">
+    <a class="asn-next" href="{{ nxt.url }}">
+      <span class="asn-next__text">
+        <span class="asn-kicker">{{ cfg.next_label }}</span>
+        <span class="asn-next__name">{{ nxt.title }}</span>
+        {%- if nm.role.value != blank -%}<span class="asn-next__role">{{ nm.role.value }}</span>{%- endif -%}
+      </span>
+      <span class="asn-next__media">
+        {%- liquid
+          assign next_ok = true
+          if cfg.guard_rights
+            if nm.credit.value == blank or nm.source.value == blank or nm.usage_rights.value == blank
+              assign next_ok = false
+            endif
+          endif
+        -%}
+        {%- if next_ok and nxt.image -%}{{ nxt.image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 40vw, 100vw', widths: '450, 700, 900', alt: nxt.image.alt | default: nxt.title }}{%- endif -%}
+      </span>
+    </a>
+  </div>
+{%- endif -%}
+
+{%- if show_photo and article.image -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageObject",
+  "name": {{ alt | json }},
+  "datePublished": {{ sdate | date: '%Y-%m-%d' | json }},
+  "creditText": {{ m.credit.value | json }},
+  "contentUrl": {{ article.image | image_url: width: 1400 | prepend: 'https:' | json }}
+}
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "As Seen On: sighting",
+  "tag": "section",
+  "class": "asn-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Top bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "home_label",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_prev_next",
+      "label": "Show previous / next names (top right)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "prevnext_aria",
+      "label": "Prev/next accessibility label",
+      "default": "Previous and next sighting"
+    },
+    {
+      "type": "header",
+      "content": "Details"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Small label above name",
+      "default": "Worn by"
+    },
+    {
+      "type": "text",
+      "id": "occasion_label",
+      "label": "Occasion label",
+      "default": "Occasion"
+    },
+    {
+      "type": "text",
+      "id": "location_label",
+      "label": "Location label",
+      "default": "Location"
+    },
+    {
+      "type": "text",
+      "id": "date_label",
+      "label": "Date label",
+      "default": "Date"
+    },
+    {
+      "type": "text",
+      "id": "credit_label",
+      "label": "Credit label",
+      "default": "Credit"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button text (empty = hide)",
+      "default": "See the pieces"
+    },
+    {
+      "type": "header",
+      "content": "Pieces worn"
+    },
+    {
+      "type": "text",
+      "id": "pieces_heading",
+      "label": "Heading",
+      "default": "Worn by {name}",
+      "info": "{name} = person's name."
+    },
+    {
+      "type": "text",
+      "id": "piece_singular",
+      "label": "Count word (1)",
+      "default": "piece"
+    },
+    {
+      "type": "text",
+      "id": "piece_plural",
+      "label": "Count word (many)",
+      "default": "pieces"
+    },
+    {
+      "type": "text",
+      "id": "view_piece_label",
+      "label": "Link text when only one piece",
+      "default": "View the piece"
+    },
+    {
+      "type": "header",
+      "content": "More shots"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_more_shots",
+      "label": "Show more shots",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shots_heading",
+      "label": "Heading",
+      "default": "More shots"
+    },
+    {
+      "type": "header",
+      "content": "Related editorial"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_editorial",
+      "label": "Show related editorial",
+      "default": true
+    },
+    {
+      "type": "blog",
+      "id": "editorial_blog",
+      "label": "Editorial blog",
+      "info": "Shown only when the sighting's 'Editorial tag' matches a tag on an article in this blog."
+    },
+    {
+      "type": "text",
+      "id": "editorial_heading",
+      "label": "Heading",
+      "default": "Related editorial"
+    },
+    {
+      "type": "text",
+      "id": "editorial_note",
+      "label": "Note (right)",
+      "default": "Shown only when an article is tied to the piece, material or collection worn"
+    },
+    {
+      "type": "text",
+      "id": "read_more_label",
+      "label": "Link text",
+      "default": "Read more"
+    },
+    {
+      "type": "header",
+      "content": "Next sighting"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_next",
+      "label": "Show next sighting band",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Label",
+      "default": "Next sighting"
+    },
+    {
+      "type": "header",
+      "content": "Design: typography"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_theme_fonts",
+      "label": "Use the theme's fonts",
+      "default": true,
+      "info": "Untick to pick the fonts below (e.g. a serif for headings)."
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "header",
+      "content": "Design: colours"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#F3F0EA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#141110"
+    },
+    {
+      "type": "color",
+      "id": "panel_color",
+      "label": "Dark panel background",
+      "default": "#141110"
+    },
+    {
+      "type": "color",
+      "id": "panel_text_color",
+      "label": "Dark panel text",
+      "default": "#F3F0EA"
+    },
+    {
+      "type": "header",
+      "content": "Design: spacing"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Gap between cards",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "page_padding",
+      "label": "Side padding (desktop)",
+      "min": 16,
+      "max": 96,
+      "step": 4,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "page_padding_mobile",
+      "label": "Side padding (mobile)",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max content width",
+      "min": 1000,
+      "max": 2000,
+      "step": 40,
+      "default": 1600,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Rights"
+    },
+    {
+      "type": "checkbox",
+      "id": "guard_rights",
+      "label": "Hide photos when credit, source or usage rights are missing",
+      "default": true,
+      "info": "Safety net: Shopify cannot make article fields required. The photo stays hidden on the live store until all three are filled."
+    },
+    {
+      "type": "header",
+      "content": "Product cards"
+    },
+    {
+      "type": "text",
+      "id": "badge_tag",
+      "label": "Product tag that shows the badge",
+      "default": "Best seller"
+    },
+    {
+      "type": "text",
+      "id": "badge_label",
+      "label": "Badge text",
+      "default": "Best seller"
+    },
+    {
+      "type": "text",
+      "id": "variants_label",
+      "label": "'More variants' link text",
+      "default": "More variants"
+    }
+  ],
+  "presets": [
+    {
+      "name": "As Seen On: sighting"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "article"
+    ]
+  }
+}
+{% endschema %}

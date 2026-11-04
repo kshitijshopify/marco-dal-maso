@@ -1,0 +1,38 @@
+{%- comment -%} Params: article, size ('main'|'small'), label, link_label, guard, loading {%- endcomment -%}
+{%- liquid
+  assign m = article.metafields.custom
+  assign show_img = true
+  if guard
+    if m.credit.value == blank or m.source.value == blank or m.usage_rights.value == blank
+      assign show_img = false
+    endif
+  endif
+  assign first_piece = m.pieces.value.first.title
+  assign alt = article.title
+  if first_piece != blank
+    assign alt = article.title | append: ' wearing ' | append: first_piece
+  endif
+  if size == 'main'
+    assign w = 1200
+    assign tile_sizes = '(min-width: 900px) 50vw, 100vw'
+    assign tile_widths = '600, 900, 1200'
+  else
+    assign w = 600
+    assign tile_sizes = '(min-width: 900px) 25vw, 50vw'
+    assign tile_widths = '320, 480, 600'
+  endif
+  assign ld = loading | default: 'lazy'
+-%}
+<a class="asn-tile asn-tile--{{ size }}" href="{{ article.url }}">
+  {%- if show_img and article.image -%}
+    {{ article.image | image_url: width: w | image_tag: loading: ld, sizes: tile_sizes, widths: tile_widths, alt: alt }}
+  {%- else -%}
+    <span class="asn-ph" aria-hidden="true"></span>
+  {%- endif -%}
+  <span class="asn-tile__text">
+    {%- if label != blank -%}<span class="asn-badge">{{ label }}</span>{%- endif -%}
+    <span class="asn-tile__name">{{ article.title }}</span>
+    {%- if m.role.value != blank -%}<span class="asn-tile__role">{{ m.role.value }}</span>{%- endif -%}
+    {%- if link_label != blank -%}<span class="asn-tile__cta">{{ link_label }}</span>{%- endif -%}
+  </span>
+</a>
