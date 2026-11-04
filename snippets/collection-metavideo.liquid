@@ -32,6 +32,10 @@
       height: 100%;
       min-height: 0;
     }
+    .collection-promo--root__videoblock[data-desktop-height="auto"] .sectionbgandpadd .video-parent-section.hero--auto {
+      height: auto;
+      min-height: 0;
+    }
 
     .hero--{{ block.id }} .hero__media-container,
     .hero--{{ block.id }} .hero__media {
@@ -41,6 +45,36 @@
       top: 0;
       width: 100%;
     }
+    {% if block.settings.section_height == 'auto' %}
+    @media only screen and (min-width: 769px) {
+      .hero--{{ block.id }}.hero--auto .hero__media-container,
+      .hero--{{ block.id }}.hero--auto .hero__media {
+        height: auto;
+        left: auto;
+        position: relative;
+        top: auto;
+      }
+      .hero--{{ block.id }}.hero--auto .hero__media video {
+        height: auto;
+        object-fit: contain;
+        position: relative;
+        width: 100%;
+      }
+      .hero--{{ block.id }}.hero--auto .hero__media iframe {
+        height: auto;
+        left: auto;
+        max-width: 100%;
+        position: relative;
+        top: auto;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+      }
+      .hero--{{ block.id }}.hero--auto .hero__text-wrap,
+      .hero--{{ block.id }}.hero--auto .hero__text-wrap .page-width {
+        height: auto;
+      }
+    }
+    {% endif %}
     .hero--{{ block.id }} .hero__media {
       background-position: top;
       background-repeat: no-repeat;
@@ -138,8 +172,7 @@
     {% endif %}
     .collection-promo--root .hero__text-wrap .aanimation-contents p:first-child, .stacked-text--description p {
         font-size: 20px;
-        font-weight: bold;
-        text-transform: uppercase;
+        text-transform: capitalize;
     }
   {%- endstyle -%}
   

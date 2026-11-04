@@ -1,47 +1,18 @@
 {% liquid
   assign desktop_image = section.settings.desktop_image
   assign mobile_image = section.settings.mobile_image
-  assign is_lcp = false
-  if template.name == 'index' and section.location == 'template' and section.index == 1
-    assign is_lcp = true
-  endif
-  assign img_loading = 'eager'
-  assign img_priority = 'auto'
-  if is_lcp
-    assign img_priority = 'high'
-  elsif section.index > 2
-    assign img_loading = 'lazy'
-    assign img_priority = 'low'
-  endif
 %}
 
-{%- comment -%}
-  Preload widths must match the img srcset. A mismatch makes the browser ignore the preload, so desktop LCP starts late.
-{%- endcomment -%}
-{% if is_lcp and mobile_image != blank %}
-  <link
-    rel="preload"
-    as="image"
-    media="(max-width: 767px)"
-    href="{{ mobile_image | image_url: width: 900 }}"
-    imagesrcset="{{ mobile_image | image_url: width: 400 }} 400w, {{ mobile_image | image_url: width: 600 }} 600w, {{ mobile_image | image_url: width: 900 }} 900w"
-    imagesizes="100vw"
-    fetchpriority="high"
-  >
-{% endif %}
-{% if is_lcp and desktop_image != blank %}
-  <link
-    rel="preload"
-    as="image"
-    {% if mobile_image != blank %}media="(min-width: 768px)"{% endif %}
-    href="{{ desktop_image | image_url: width: 1920 }}"
-    imagesrcset="{{ desktop_image | image_url: width: 800 }} 800w, {{ desktop_image | image_url: width: 1200 }} 1200w, {{ desktop_image | image_url: width: 1920 }} 1920w, {{ desktop_image | image_url: width: 2560 }} 2560w"
-    imagesizes="100vw"
-    fetchpriority="high"
-  >
+{% if template.name == 'index' %}
+    {% if mobile_image != blank %}
+        <link rel="preload" as="image" media="(max-width: 767px)" href="{{ mobile_image | image_url: width: 900 }}" fetchpriority="high" >
+    {% endif %}
+    {% if desktop_image != blank %}
+        <link rel="preload" as="image" href="{{ desktop_image | image_url: width: 1800 }}" imagesrcset=" {{ desktop_image | image_url: width: 420 }} 420w, {{ desktop_image | image_url: width: 768 }} 768w, {{ desktop_image | image_url: width: 1200 }} 1200w, {{ desktop_image | image_url: width: 1500 }} 1500w " imagesizes="100vw" fetchpriority="high" >
+    {% endif %}
 {% endif %}
 
-<section class="rt-image-banner rt-image-banner--{{ section.id }}">
+<section class="rt-image-banner rt-image-banner--{{ section.id }}{% if section.settings.mobile_stack %} rt-image-banner--stacked{% endif %}">
   
   <div class="rt-image-banner__media">
 
@@ -69,8 +40,8 @@
             class: 'rt-image-banner__image',
             widths: '800,1200,1920,2560',
             sizes: '100vw',
-            loading: img_loading,
-            fetchpriority: img_priority,
+            loading: 'eager',
+            fetchpriority: 'high',
             preload: false,
             alt: desktop_image.alt | escape
         }}
@@ -171,18 +142,22 @@
     position:relative;
   }
 
-    .rt-image-banner--{{ section.id }} .rt-image-banner__content::before{
-        background:radial-gradient(rgba(0, 0, 0, var(--colorImageOverlayTextShadow)) 0%, transparent 60%);
-        bottom:0;
-        content:"";
-        left:0;
-        margin:-100px -200px -100px -200px;
-        position:absolute;
-        right:0;
-        top:0;
-        z-index:auto;
-        z-index:-1;
-    }
+  .template-material-guide .rt-image-banner--{{ section.id }} .rt-image-banner__content{
+    margin-bottom: auto;
+  }
+
+  .rt-image-banner--{{ section.id }} .rt-image-banner__content::before{
+    background:radial-gradient(rgba(0, 0, 0, var(--colorImageOverlayTextShadow)) 0%, transparent 60%);
+    bottom:0;
+    content:"";
+    left:0;
+    margin:-100px -200px -100px -200px;
+    position:absolute;
+    right:0;
+    top:0;
+    z-index:auto;
+    z-index:-1;
+  }
 
   .rt-image-banner--{{ section.id }} .rt-image-banner__content--center{
     margin:0 auto;
@@ -268,6 +243,47 @@
         margin-top:7.5px;
     }
   }
+  {% if section.settings.mobile_stack %}
+  @media screen and (max-width: 767px){
+    .rt-image-banner--{{ section.id }}{
+      min-height:0;
+      background:{{ section.settings.mobile_stack_bg }};
+    }
+
+    /* image ab absolute nahi, normal flow me */
+    .rt-image-banner--{{ section.id }} .rt-image-banner__media{
+      position:relative;
+      inset:auto;
+    }
+
+    .rt-image-banner--{{ section.id }} .rt-image-banner__media::after{
+      display:none; /* overlay gradient ki zarurat nahi */
+    }
+
+    .rt-image-banner--{{ section.id }} .rt-image-banner__image{
+      height:auto; /* natural aspect ratio */
+    }
+
+    .rt-image-banner--{{ section.id }} .rt-image-banner__inner{
+      min-height:0;
+      align-items:flex-start;
+      padding-top:24px;
+      padding-bottom:24px;
+    }
+
+    .rt-image-banner--{{ section.id }} .rt-image-banner__content{
+      color:{{ section.settings.mobile_stack_text_color }};
+    }
+
+    .rt-image-banner--{{ section.id }} .rt-image-banner__content::before{
+      display:none; /* radial text-shadow hata do */
+    }
+
+    .rt-image-banner--{{ section.id }} .rt-image-banner__heading{
+      text-shadow:none;
+    }
+  }
+{% endif %}
 </style>
 
 {% schema %}
@@ -480,6 +496,24 @@
         }
       ]
     },
+    {
+      "type": "checkbox",
+      "id": "mobile_stack",
+      "label": "Show content below image (mobile)",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "mobile_stack_text_color",
+      "label": "Mobile text color (below image)",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "mobile_stack_bg",
+      "label": "Mobile background (below image)",
+      "default": "#ffffff"
+    }
   ],
   "presets": [
     {

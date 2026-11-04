@@ -123,23 +123,24 @@
 document.addEventListener('variant:change', (event) => {
   const { variant } = event.detail;
   if (!variant) {
+    console.log('Invalid combination — no matching variant');
     return;
   }
-
-  var qty = variant.inventory_quantity;
-  if (typeof qty !== 'number' && window.inventories) {
-    Object.keys(window.inventories).some(function (productId) {
-      var entry = window.inventories[productId][variant.id];
-      if (!entry) return false;
-      qty = Number(entry.quantity);
-      return true;
+  const inventory_status = document.querySelector('.product-single__meta .pdp_inventory_label');
+  const sticky_inventory_status = document.querySelectorAll('#md-sticky-atc .pdp_inventory_label');
+  if(variant.inventory_quantity > 0 && inventory_status){
+    inventory_status.classList.remove('pdp_inventory_soldout');
+    sticky_inventory_status.forEach((item) => {
+      item.classList.remove('pdp_inventory_soldout');
     });
   }
-
-  var inStock = Number(qty) > 0;
-  document.querySelectorAll('.product-single__meta .pdp_inventory_label, #md-sticky-atc .pdp_inventory_label').forEach(function (item) {
-    item.classList.toggle('pdp_inventory_soldout', !inStock);
-  });
+  else if(inventory_status){
+    inventory_status.classList.add('pdp_inventory_soldout');
+    sticky_inventory_status.forEach((item) => {
+      item.classList.add('pdp_inventory_soldout');
+    });
+  }
+  
 });
 
 document.addEventListener('click', (e) => {
@@ -180,51 +181,40 @@ document.addEventListener('click', (e) => {
 
 });
 
+
 // ============================================
-// Script 3: Klaviyo Forms (Automatically discount)
+// Script 3: Klaviyo Popup (Automatically discount)
 // ============================================
 
 window.addEventListener('klaviyoForms', function (event) {
-  const config = window.klaviyo_discount;
+    if (
+      !window.klaviyo_discount.auto_discount ||
+      event.detail.type !== 'submit' ||
+      event.detail.formId !== window.klaviyo_discount.form_id
+    ) {
+      return;
+    }
 
-  if (!config || !config.auto_discount || !event.detail) {
-    return;
-  }
-
-  const formIds = String(config.form_id || '')
-    .split(',')
-    .map(function (id) {
-      return id.trim();
+    fetch(window.Shopify.routes.root + 'cart/update.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        discount: window.klaviyo_discount.discount_code
+      })
     })
-    .filter(Boolean);
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('Failed to apply discount');
+        }
 
-  if (
-    event.detail.type !== 'submit' ||
-    !formIds.includes(event.detail.formId)
-  ) {
-    return;
-  }
-
-  fetch(window.Shopify.routes.root + 'cart/update.js', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      discount: config.discount_code
-    })
-  })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error('Failed to apply discount');
-      }
-
-      return response.json();
-    })
-    .then(function (cart) {
-      console.log('Discount applied:', cart);
-    })
-    .catch(function (error) {
-      console.error('Discount application failed:', error);
-    });
+        return response.json();
+      })
+      .then(function (cart) {
+        console.log('Discount applied:', cart);
+      })
+      .catch(function (error) {
+        console.error('Discount application failed:', error);
+      });
 });

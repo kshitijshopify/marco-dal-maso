@@ -2060,7 +2060,7 @@ body .collapsible-content__inner button {
     line-height: 6.5px;
 }
 .site-header .site-header__logo img {
-    /* max-width: 31px; */
+    max-width: 31px;
     position: static;
         top: 100%;
 }

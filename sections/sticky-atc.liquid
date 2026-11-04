@@ -567,15 +567,20 @@ div#price-sticky-atc span {
                             <div class="sticky_pdp_inventory_desktop">
                               <div class="sticky_pdp_inventory">
                                 {%- assign inventory_stock = false -%}
-                                {%- if current_variant.inventory_quantity > 0 -%}
-                                  {%- assign inventory_stock = true -%}
-                                {%- endif -%}
+                                  {%- if current_variant.inventory_management == 'shopify' -%}
+                                    {%- if current_variant.inventory_quantity > 0 -%}
+                                      {%- assign inventory_stock = true -%}
+                                    {%- endif -%}
+                                  {%- endif -%}
+                                  {% if current_variant.inventory_policy == 'continue' %}
+                                    {%- assign inventory_stock = true -%}
+                                  {% endif %}
                                 <div class="pdp_inventory_label {% if inventory_stock == false %}pdp_inventory_soldout{% endif %}">
                                   <div class="pdp_inventory_stock">
                                     <span class="icon-pdp-inventory"></span>
-                                    <span>Ready to Ship</span>
+                                    <span>In Stock</span>
                                   </div>
-                                  <div class="pdp_inventory_sold" hidden>
+                                  <div class="pdp_inventory_sold">
                                     <span class="icon-pdp-inventory"></span>
                                     Sold Out
                                   </div>
@@ -588,15 +593,20 @@ div#price-sticky-atc span {
                           <div class="sticky_pdp_inventory_mb">
                             <div class="sticky_pdp_inventory">
                               {%- assign inventory_stock = false -%}
-                              {%- if current_variant.inventory_quantity > 0 -%}
-                                {%- assign inventory_stock = true -%}
-                              {%- endif -%}
+                                {%- if current_variant.inventory_management == 'shopify' -%}
+                                  {%- if current_variant.inventory_quantity > 0 -%}
+                                    {%- assign inventory_stock = true -%}
+                                  {%- endif -%}
+                                {%- endif -%}
+                                {% if current_variant.inventory_policy == 'continue' %}
+                                  {%- assign inventory_stock = true -%}
+                                {% endif %}
                               <div class="pdp_inventory_label {% if inventory_stock == false %}pdp_inventory_soldout{% endif %}">
                                 <div class="pdp_inventory_stock">
                                   <span class="icon-pdp-inventory"></span>
-                                  <span>Ready to Ship</span>
+                                  <span>In Stock</span>
                                 </div>
-                                <div class="pdp_inventory_sold" hidden>
+                                <div class="pdp_inventory_sold">
                                   <span class="icon-pdp-inventory"></span>
                                   Sold Out
                                 </div>
