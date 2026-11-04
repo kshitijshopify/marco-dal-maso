@@ -3366,9 +3366,6 @@ button.collapse_label_2 {
     justify-content: center;
 } */
 }
-.rk-widget [data-layout="carousel"] h3.section-header__title {
-    display: none;
-}
 .yotpo-title-text {
     margin: 20px 0;
 }
@@ -7159,13 +7156,6 @@ span.product__price.product__price--compare {
         background-size: 0 !important;
     }
     /* few css added in inline section new blog article  */
-}
-
-._gai-sec-head._gai-amz-skl-b-mobile {
-    padding-left: 15px;
-}
-body.template-recommended ._gai-container {
-    padding: 0 !important;
 }
 
 /* ---------------- Tvalue wishlist ---------------- */
