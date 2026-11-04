@@ -129,6 +129,45 @@
       "custom_css": [],
       "settings": {}
     },
+    "1759313518dc8d1671": {
+      "type": "apps",
+      "blocks": {
+        "glood_product_recommendations_app_block_XCKTBw": {
+          "type": "shopify://apps/glood-product-recommendations/blocks/app-block/6e79d991-1504-45bb-88e3-1fb55a4f26cd",
+          "settings": {
+            "widget-id": "221875",
+            "padding-top": "",
+            "padding-bottom": "",
+            "class-names": "",
+            "custom-css": "",
+            "add-loader": false,
+            "min-height": "300px",
+            "custom-loader": "",
+            "skeletonEnabled": false,
+            "skeletonLayout": "carousel",
+            "skeletonImageAspectRatio": "1:1",
+            "skeletonAtcEnabled": true,
+            "skeletonColumnCountMobile": 2,
+            "skeletonRowCountMobile": 1,
+            "skeletonColumnCountTablet": 4,
+            "skeletonRowCountTablet": 1,
+            "skeletonColumnCountDesktop": 5,
+            "skeletonRowCountDesktop": 1,
+            "skeletonProducts": 3,
+            "skeletonCardHtml": "",
+            "skeletonCardStyle": "",
+            "skeletonCustomJsCallback": ""
+          }
+        }
+      },
+      "block_order": [
+        "glood_product_recommendations_app_block_XCKTBw"
+      ],
+      "settings": {
+        "full_width": false,
+        "space_around": true
+      }
+    },
     "featured_collection_CPFmL7": {
       "type": "featured-collection",
       "disabled": true,
@@ -150,6 +189,7 @@
     "slideshow_xiRVMJ",
     "rich_text_LaAA6h",
     "main",
+    "1759313518dc8d1671",
     "featured_collection_CPFmL7"
   ]
 }

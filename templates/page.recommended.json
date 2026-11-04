@@ -41,6 +41,17 @@
         "lazyload_images": false
       }
     },
+    "1740042694aaec99e0": {
+      "type": "apps",
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "full_width": false,
+        "space_around": true,
+        "image_width": "50",
+        "layout": "right"
+      }
+    },
     "featured_collection_VGfcLD": {
       "type": "featured-collection",
       "custom_css": [],
@@ -82,6 +93,21 @@
         "lazyload_images": true
       }
     },
+    "17267474912e2309f8": {
+      "type": "apps",
+      "disabled": true,
+      "custom_css": [
+        "@media (min-width: 769px) {.rk-widget-container {padding: 24px 24px 0 24px; }}",
+        "@media (max-width: 768px) {.feature-row__images {display: none; } .rk-widget [data-layout=\"carousel\"] h3.section-header__title {display: block; }}"
+      ],
+      "settings": {
+        "full_width": true,
+        "space_around": false,
+        "image": "shopify://shop_images/AGAN0063-04BVW_10_690156d5-d949-4882-9da4-e7f1891d537f.jpg",
+        "image_width": "50",
+        "layout": "left"
+      }
+    },
     "background_image_text_Y6zN9t": {
       "type": "background-image-text",
       "custom_css": [
@@ -107,13 +133,31 @@
         "parallax_direction": "top",
         "lazyload_images": true
       }
+    },
+    "apps_37ziLX": {
+      "type": "apps",
+      "disabled": true,
+      "custom_css": [
+        "@media (min-width: 769px) {.rk-widget-container {padding: 24px 24px 0 24px; }}",
+        "@media (max-width: 768px) {.feature-row__images {display: none; } .rk-widget [data-layout=\"carousel\"] h3.section-header__title {display: block; }}"
+      ],
+      "settings": {
+        "full_width": true,
+        "space_around": false,
+        "image": "shopify://shop_images/AGBR0173-___10_e8990bb6-eca1-4858-96b3-6b77586d05c7.jpg",
+        "image_width": "50",
+        "layout": "right"
+      }
     }
   },
   "order": [
     "main",
     "background_image_text_NyFJQe",
+    "1740042694aaec99e0",
     "featured_collection_VGfcLD",
     "background_image_text_GUaiJw",
-    "background_image_text_Y6zN9t"
+    "17267474912e2309f8",
+    "background_image_text_Y6zN9t",
+    "apps_37ziLX"
   ]
 }
