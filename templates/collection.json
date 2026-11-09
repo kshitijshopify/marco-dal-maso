@@ -543,7 +543,7 @@
         "enable_color_swatches": false,
         "enable_sort": true,
         "enable_collection_count": true,
-        "products-per-row--desktop": 3,
+        "products-per-row--desktop": 4,
         "products-per-row--mobile": "1",
         "number-of-rows": 20
       }
