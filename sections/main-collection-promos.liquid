@@ -709,6 +709,11 @@
 
 
                   <div class="collection-filter">
+                    <div class="collection-filter__item--count small--hide">
+                        {%- if section.settings.enable_collection_count -%}
+                          {{ count_label | t: count: count }}
+                        {%- endif -%}
+                      </div>
                     <div class="collection-filter__item collection-filter__item--drawer">
                       <button
                         type="button"
@@ -735,22 +740,18 @@
                       {% endfor %}
                       <a
                         href="{{ collection.url }}"
-                        class="clear-all-filters small--hide {% if active_filters_count == 0 %} hidden{% endif %}"
+                        class="clear-all-filters small--hide hide {% if active_filters_count == 0 %} hidden{% endif %}"
                       >
                         Clear All
                       </a>
                     </div>
 
                     <div class="collection-filter__item collection-filter__item--sort collection-filter__item--flexmultipleitems">
-                      <div class="collection-filter__item--count small--hide">
-                        {%- if section.settings.enable_collection_count -%}
-                          {{ count_label | t: count: count }}
-                        {%- endif -%}
-                      </div>
+                      
                       <div class="collection-filter__sort-container">
                         {%- assign sort_by = sort_by | default: default_sort_by -%}
                         <div class="CombinedSelect11__customizedSelect">
-                          <label for="SortBy" class="hidden-label">{{ 'collections.sorting.title' | t }}</label>
+                          <label for="SortBy" class="">{{ 'collections.sorting.title' | t }}</label>
                           <select name="SortBy" id="SortBy" data-default-sortby="{{ default_sort_by }}">
                             <!--
                               <option value="title-ascending"{% if sort_by == default_sort_by %} selected="selected"{% endif %}>{{ 'collections.sorting.title' | t }}</option>
@@ -812,7 +813,7 @@
                       -->
                     </div>
                   </div>
- </div>
+                </div>
               </div>
                   {% if template contains 'collection' %}
                     <div
