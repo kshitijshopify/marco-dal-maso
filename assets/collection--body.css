@@ -355,3 +355,6 @@ div#CollectionSidebar[data-style="horizontal"] {
 }
 }
 
+.shopify-section-group-header-group{
+  z-index:10;
+}
