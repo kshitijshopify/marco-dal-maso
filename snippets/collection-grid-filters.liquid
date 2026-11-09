@@ -71,12 +71,7 @@
                 {% assign active_filters_count = active_filters_count | plus: filter.active_values.size %}
               {% endfor %}
 
-              <a
-                href="{{ collection.url }}"
-                class="clear-all-filters{% if active_filters_count == 0 %} hidden{% endif %}"
-              >
-                Clear All
-              </a>
+             
             </div>
             <div class="drawer__close">
               <button type="button" class="drawer__close-button js-drawer-close custom_DrawerClose">
