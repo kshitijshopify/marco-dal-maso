@@ -670,7 +670,8 @@
                 %}
 {% render 'collection-sort-bar' %}
                 <div class="collection-grid__wrapper">
-
+<div class="cf">
+<div class="cf__in">
 {%- liquid
   assign subs = collection.metafields.custom.subcategory_collections_list.value
   assign sub_labels = collection.metafields.custom.subcategory_collections_list_label.value
@@ -811,7 +812,8 @@
                       -->
                     </div>
                   </div>
-
+ </div>
+              </div>
                   {% if template contains 'collection' %}
                     <div
                       class="collection--body--grid"
