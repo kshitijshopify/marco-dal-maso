@@ -158,12 +158,115 @@ position: absolute;
    Otherwise closing removes .drawer--is-open but transform never changes, so no
    transitionend fires and .is-transitioning stays (display:block !important). */
 div#FilterDrawer {
-  left: -350px;
-  width: 350px;
+  left: -420px;
+  width: 420px;
 }
+div#FilterDrawer.drawer--left.drawer--is-open {
+    display: block;
+    transform: translate(420px);
+    transition-duration: .45s;
+}
+div#FilterDrawer .drawer__fixed-header, div#FilterDrawer .drawer__footer, div#FilterDrawer .drawer__header, div#FilterDrawer .drawer__scrollable {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0; 
+}
+div#FilterDrawer .drawer__header{   padding:16px 20px;}
 .collection-sidebar__group {
     position: relative;
 }
+div#FilterDrawer .collection-sidebar__group {
+    margin: 0;
+    padding: 0;
+}
+div#FilterDrawer .drawer__close-button .icon {
+    height: 22px;
+    width: 22px;
+}
+  .bcg-ico { position: relative; width: 10px; height: 10px; margin-left: auto; }
+  .bcg-ico::before, .bcg-ico::after { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: currentColor; }
+  .bcg-ico::after { transform: rotate(90deg); transition: transform .2s; }
+   div#FilterDrawer .collection-sidebar__group button.collapsible-trigger.is-open .bcg-ico::after { transform: rotate(0deg); }
+div#FilterDrawer .collection-sidebar__group button.collapsible-trigger {
+  display: flex;
+  padding: 11px 20px !important;
+  position: relative;
+  justify-content: space-between;
+}
+.js-drawer-open-collection-filters, .collection-filter__sort-container select#SortBy{
+  border-color: #e8e8e1 !important;
+}
+div#CollectionSidebar ul.tag-list {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 20px 20px;
+}
+div#CollectionSidebar ul.tag-list li   {
+    margin: 0;
+}
+div#CollectionSidebar ul.tag-list li label {
+    margin: 0;
+    position: relative;
+    border: 1px solid var(--bcg-line, #DAD6CF);
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+div#FilterDrawer .collection-sidebar__group button.collapsible-trigger.is-open {
+    border: none;
+}
+
+div#FilterDrawer  .tag__checkbox {
+    display: none;
+} 
+
+div#CollectionSidebar ul.tag-list li.tag--active label {
+    background: #000;
+    color: white;
+    font-weight: 500;
+}
+div#FilterDrawer.drawer--left.drawer--is-open{
+  overflow:scroll;
+}
+.filter_footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    position: sticky;
+    bottom: 0;
+    padding: 20px 20px calc(14px + env(safe-area-inset-bottom, 0px));
+    background: var(--bcg-bg, #FBFAF8);
+    border-top: 1px solid var(--bcg-line, #DAD6CF);
+}
+
+#FilterDrawer .drawer__scrollable .collection-item--countinsidefilterdrawer {
+font-size: 12px !important;
+    background: none !important;
+    border: 1px solid #000;
+    color: #000 !important;
+    padding: 14px 16px !important;
+    text-transform: uppercase; 
+    font-weight: 500;
+    letter-spacing: .14em;
+}
+
+.filter_footer a.clear-all-filters {
+    flex: 200px;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+div#CollectionSidebar ul.tag-list li label span {
+    text-transform: uppercase;
+}
+ 
 .collection-content .full-width #CollectionSidebar h4 {
     display: none;
 }
@@ -173,8 +276,7 @@ div#FilterDrawer {
 }
 #FilterDrawer .drawer__scrollable {
     max-height: none;
-    display: block;
-    height: calc(100% - 76px);
+    display: block; 
 }
 .accordion__body.filter__group-opened {
     height: auto;
@@ -188,14 +290,14 @@ div#FilterDrawer {
     height: 100%;
 }
 #FilterDrawer .drawer__scrollable .collection-item--countinsidefilterdrawer {
-    position: absolute;
+    /* position: absolute;
     bottom: 0;
-    z-index: 9999;
+    z-index: 9999; */
     background: #000;
     width: 100%;
     left: 0;
     color: #fff;
-    padding: 20px;
+    padding: 15px;
     font-size: 18px;cursor: pointer;
 }
 @media only screen and (max-width: 767px) {
@@ -221,6 +323,21 @@ div#FilterDrawer {
     div#FilterDrawer.drawer--is-open {
     transform: translate(100%);
 }
+
+div#FilterDrawer.drawer--left.drawer--is-open { 
+display: block;
+    transform: translate(calc(100% + 8vw));
+    transition-duration: .45s;
+    width: 92vw !important;}
+    div#FilterDrawer .drawer__header {
+    padding: 16px 20px !important;
+}
+    div#CollectionSidebar form ul.tag-list {
+        flex-wrap: wrap!important;
+        flex-direction: row!important;
+    }
+
+
 }
 @media only screen and (min-width: 769px) and (max-width: 1023px) {
 div#CollectionSidebar[data-style="horizontal"] {
