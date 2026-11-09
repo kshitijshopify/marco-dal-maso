@@ -1,0 +1,9 @@
+{%- assign n = content | split: 'is-on' | size | minus: 1 -%}
+<details class="bcg-group" data-group="{{ title | escape }}"{% if n > 0 %} open{% endif %}>
+  <summary>
+    <span class="bcg-small">{{ title }}</span>
+    {%- if n > 0 -%}<span class="bcg-n">{{ n }}</span>{%- endif -%}
+    <span class="bcg-ico" aria-hidden="true"></span>
+  </summary>
+  <div class="bcg-chips">{{ content }}</div>
+</details>
