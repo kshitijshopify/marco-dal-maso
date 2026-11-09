@@ -668,8 +668,45 @@
                     assign current_filter_size = current_filter_size | plus: filter.active_values.size
                   endfor
                 %}
-
+{% render 'collection-sort-bar' %}
                 <div class="collection-grid__wrapper">
+
+{%- liquid
+  assign subs = collection.metafields.custom.subcategory_collections_list.value
+  assign sub_labels = collection.metafields.custom.subcategory_collections_list_label.value
+  assign in_list = false
+
+  for sub in subs
+    if sub.handle == collection.handle
+      assign in_list = true
+    endif
+  endfor
+-%}
+
+{%- if subs != blank -%}
+  <nav class="cf-tabs" aria-label="Subcategories">
+    {%- unless in_list -%}
+      <a class="cf-tab" href="{{ collection.url }}" aria-current="page">All</a>
+    {%- endunless -%}
+
+    {%- for sub in subs -%}
+      {%- assign tab_label = sub.title -%}
+      {%- assign custom_label = sub_labels[forloop.index0] -%}
+
+      {%- if custom_label != blank -%}
+        {%- assign tab_label = custom_label -%}
+      {%- endif -%}
+
+      <a
+        class="cf-tab"
+        href="{{ sub.url }}"
+        {% if sub.handle == collection.handle %}aria-current="page"{% endif %}
+      >{{ tab_label | escape }}</a>
+    {%- endfor -%}
+  </nav>
+{%- endif -%}
+
+
                   <div class="collection-filter">
                     <div class="collection-filter__item collection-filter__item--drawer">
                       <button
