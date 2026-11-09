@@ -30,6 +30,7 @@
           "disabled": true,
           "settings": {
             "collection": "mens-bracelets",
+            "vertical_promo": false,
             "row-number": 3,
             "column-number": 1,
             "promo-width": 2,
@@ -65,6 +66,7 @@
           "type": "promotion",
           "settings": {
             "collection": "mens-bracelets",
+            "vertical_promo": false,
             "row-number": 3,
             "column-number": 1,
             "promo-width": 1,
@@ -100,6 +102,7 @@
           "type": "promotion",
           "settings": {
             "collection": "mens-bracelets",
+            "vertical_promo": false,
             "row-number": 8,
             "column-number": 2,
             "promo-width": 1,
@@ -134,6 +137,7 @@
           "type": "promotion",
           "settings": {
             "collection": "mens-bracelets",
+            "vertical_promo": false,
             "row-number": 12,
             "column-number": 3,
             "promo-width": 1,
@@ -170,6 +174,7 @@
           "disabled": true,
           "settings": {
             "collection": "mens-rings",
+            "vertical_promo": false,
             "row-number": 2,
             "column-number": 1,
             "promo-width": 2,
@@ -205,6 +210,7 @@
           "type": "promotion",
           "settings": {
             "collection": "mens-rings",
+            "vertical_promo": false,
             "row-number": 3,
             "column-number": 1,
             "promo-width": 1,
@@ -240,6 +246,7 @@
           "type": "promotion",
           "settings": {
             "collection": "mens-rings",
+            "vertical_promo": false,
             "row-number": 7,
             "column-number": 2,
             "promo-width": 1,
@@ -274,6 +281,7 @@
           "type": "promotion",
           "settings": {
             "collection": "mens-rings",
+            "vertical_promo": false,
             "row-number": 12,
             "column-number": 3,
             "promo-width": 1,
@@ -310,6 +318,7 @@
           "disabled": true,
           "settings": {
             "collection": "mens-necklaces",
+            "vertical_promo": false,
             "row-number": 2,
             "column-number": 1,
             "promo-width": 2,
@@ -345,6 +354,7 @@
           "type": "promotion",
           "settings": {
             "collection": "mens-necklaces",
+            "vertical_promo": false,
             "row-number": 3,
             "column-number": 1,
             "promo-width": 1,
@@ -380,6 +390,7 @@
           "type": "promotion",
           "settings": {
             "collection": "mens-necklaces",
+            "vertical_promo": false,
             "row-number": 7,
             "column-number": 2,
             "promo-width": 1,
@@ -414,6 +425,7 @@
           "type": "promotion",
           "settings": {
             "collection": "mens-necklaces",
+            "vertical_promo": false,
             "row-number": 11,
             "column-number": 3,
             "promo-width": 1,
@@ -450,6 +462,7 @@
           "disabled": true,
           "settings": {
             "collection": "mens-earrings",
+            "vertical_promo": false,
             "row-number": 2,
             "column-number": 1,
             "promo-width": 2,
@@ -486,6 +499,7 @@
           "disabled": true,
           "settings": {
             "collection": "mens-earrings",
+            "vertical_promo": false,
             "row-number": 13,
             "column-number": 2,
             "promo-width": 1,
@@ -522,6 +536,7 @@
           "disabled": true,
           "settings": {
             "collection": "mens-earrings",
+            "vertical_promo": false,
             "row-number": 3,
             "column-number": 1,
             "promo-width": 1,
@@ -557,6 +572,7 @@
           "disabled": true,
           "settings": {
             "collection": "mens-earrings",
+            "vertical_promo": false,
             "row-number": 13,
             "column-number": 2,
             "promo-width": 1,
@@ -593,6 +609,7 @@
           "disabled": true,
           "settings": {
             "collection": "just-arrived",
+            "vertical_promo": false,
             "row-number": 3,
             "column-number": 1,
             "promo-width": 2,
@@ -629,6 +646,7 @@
           "disabled": true,
           "settings": {
             "collection": "just-arrived",
+            "vertical_promo": false,
             "row-number": 10,
             "column-number": 2,
             "promo-width": 1,
@@ -664,6 +682,7 @@
           "type": "promotion",
           "settings": {
             "collection": "link",
+            "vertical_promo": false,
             "row-number": 3,
             "column-number": 1,
             "promo-width": 3,
@@ -698,6 +717,7 @@
           "type": "promotion",
           "settings": {
             "collection": "forged-transcendence",
+            "vertical_promo": false,
             "row-number": 2,
             "column-number": 1,
             "promo-width": 3,
@@ -732,6 +752,7 @@
           "type": "promotion",
           "settings": {
             "collection": "frammenti",
+            "vertical_promo": false,
             "row-number": 2,
             "column-number": 1,
             "promo-width": 3,
@@ -794,7 +815,7 @@
         ".collection-promo--root {align-self: unset;}"
       ],
       "settings": {
-        "showsubcolls__belowheader": true,
+        "showsubcolls__belowheader": false,
         "enable_sidebar": true,
         "collapsed": true,
         "filter_style": "drawer",
@@ -826,9 +847,12 @@
       ],
       "name": "t:sections.rich-text.presets.rich_text.name",
       "settings": {
+        "desktop_hide": false,
+        "mobile_hide": false,
         "align_text": "left",
         "narrow_column": true,
-        "divider": true
+        "divider": true,
+        "padding_b": 0
       }
     }
   },
