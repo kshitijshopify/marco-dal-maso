@@ -676,11 +676,24 @@
     {% endunless %}
   {%- endfor -%}
 </form>
+   {% assign active_filters_count = 0 %}
+              {% for filter in collection.filters %}
+                {% assign active_filters_count = active_filters_count | plus: filter.active_values.size %}
+              {% endfor %}
+
+              <a
+                href="{{ collection.url }}"
+                class="clear-all-filters{% if active_filters_count == 0 %} hidden{% endif %}"
+              >
+                Clear All
+              </a>
+<div class="filter_footer">
 <div class="collection-filter__item collection-filter__item--count collection-item--countinsidefilterdrawer">
-  {% comment %}
-    {%- if section.settings.enable_collection_count -%}
-      {{ count_label | t: count: count }}
-    {%- endif -%}
-  {% endcomment %}
-  Show Results
+{% comment %}
+{%- if section.settings.enable_collection_count -%}
+{{ count_label | t: count: count }}
+{%- endif -%}
+{% endcomment %}
+Show Results
+</div>
 </div>
