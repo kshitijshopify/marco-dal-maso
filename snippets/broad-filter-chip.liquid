@@ -1,0 +1,5 @@
+
+<label class="bcg-chip{% if v.active %} is-on{% endif %}">
+  <input type="checkbox" name="{{ v.param_name }}" value="{{ v.value | escape }}"{% if v.active %} checked{% endif %}>
+  <span>{{ text | escape }}</span>
+</label>
