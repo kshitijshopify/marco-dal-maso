@@ -33,7 +33,7 @@
   assign low_threshold = 1
   assign ship_business_days = 1
 -%}
-dd
+ 
 <script type="application/json" id="StockData-{{ section_id }}">
 [
 {%- for v in product.variants -%}
@@ -49,6 +49,30 @@ dd
   .stk--note { margin: 12px 0 0; }
   .stk--note.stk--mto .stk__dot { background: var(--stk-grey, #B0B0B0); }
   .stk--soldout .stk__dot { background: var(--stk-red, #B64A4A); }
+.stk-option__selwrap {
+  position: relative;
+}
+
+.stk-option__status {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  font-style: italic;
+  color: #3AA655;
+}
+
+.stk-option__status--mto {
+  color: #888;
+}
+
+.stk-option__status--low {
+  color: #C58A24;
+}
+
+.stk-option__status--soldout {
+  color: #B64A4A;
+}
+
 {% endstyle %}
 
 <script>
@@ -155,6 +179,69 @@ dd
         });
       });
     }
+
+
+
+    function updateSelectedStatus() {
+  var sels = selects();
+
+  sels.forEach(function (sel) {
+    if (!isTarget(sel)) return;
+
+    var wrap = sel.closest('.variant-input-wrap');
+    if (!wrap) return;
+
+    var container = sel.parentNode;
+    var status = container.querySelector('.stk-option__status');
+
+    if (!status) {
+      status = document.createElement('span');
+      status.className = 'stk-option__status';
+      status.setAttribute('aria-hidden', 'true');
+      container.appendChild(status);
+    }
+
+    var idx = idxOf(sel);
+    var selectedValue = sel.value;
+
+    var current = [];
+    sels.forEach(function (s) {
+      current[idxOf(s)] = s.value;
+    });
+
+    var matches = data.filter(function (v) {
+      if (v.options[idx] !== selectedValue) return false;
+
+      for (var i = 0; i < current.length; i++) {
+        if (i !== idx && current[i] !== undefined && v.options[i] !== current[i]) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    var variant = matches.filter(function (v) {
+      return v.avail;
+    })[0] || matches[0];
+
+    if (!variant) {
+      status.textContent = '';
+      return;
+    }
+
+    var state = stateOf(variant);
+    var text = '';
+
+    if (state === 'in') text = CFG.t.optIn;
+    else if (state === 'low') text = CFG.t.optLow.replace('{n}', variant.qty);
+    else if (state === 'mto') text = CFG.t.optMto;
+    else text = CFG.t.soldOut;
+
+    status.className = 'stk-option__status stk-option__status--' + state;
+    status.textContent = text;
+  });
+}   
 
     function variantById(id) {
       for (var i = 0; i < data.length; i++) { if (String(data[i].id) === String(id)) return data[i]; }
