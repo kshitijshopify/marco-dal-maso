@@ -430,6 +430,72 @@
           "settings": {
             "title": "Annual Event"
           }
+        },
+        "accordian_T3tXtj": {
+          "type": "accordian",
+          "settings": {
+            "title": "How can I receive Early Access?",
+            "Answer": "Join the MDM Collector's Circle for 30% Early Access to The Annual Event, from November 11–16.",
+            "Answerr": ""
+          }
+        },
+        "accordian_4EGrT8": {
+          "type": "accordian",
+          "settings": {
+            "title": "Which pieces are included?",
+            "Answer": "The 30% offer applies to eligible pieces across the House. Gift cards and pieces marked “price on application” are excluded.",
+            "Answerr": ""
+          }
+        },
+        "accordian_bmgxP6": {
+          "type": "accordian",
+          "settings": {
+            "title": "How is the discount applied?",
+            "Answer": "If you're already subscribed, use the Early Access code sent to you by email at checkout. New subscribers will have the discount applied automatically when they join the Collector's Circle.\n\nFrom November 17th, Event prices will be displayed directly on the website, with no code required.",
+            "Answerr": ""
+          }
+        },
+        "accordian_myiGcU": {
+          "type": "accordian",
+          "settings": {
+            "title": "Will the discount increase before the Event ends?",
+            "Answer": "No. The discount remains 30% throughout The Annual Event, ending November 30th.",
+            "Answerr": ""
+          }
+        },
+        "accordian_htKdPp": {
+          "type": "accordian",
+          "settings": {
+            "title": "Can I use another discount code?",
+            "Answer": "Other promotional codes are paused November 11–30 and are unable to be combined with The Annual Event code.",
+            "Answerr": ""
+          }
+        },
+        "accordian_nFfEGn": {
+          "type": "accordian",
+          "disabled": true,
+          "settings": {
+            "title": "How do I receive the complimentary pin?",
+            "Answer": "From November 26–30, orders over $850 after discount receive a Diamonds ’N’ Roses pin, automatically added at checkout.",
+            "Answerr": ""
+          }
+        },
+        "accordian_gmT4N7": {
+          "type": "accordian",
+          "settings": {
+            "title": "Can I return a piece purchased during the Event?",
+            "Answer": "Purchases made during The Annual Event are final sale and are not eligible for refunds.",
+            "Answerr": ""
+          }
+        },
+        "accordian_HaWrWL": {
+          "type": "accordian",
+          "disabled": true,
+          "settings": {
+            "title": "Will the atelier close over the holidays?",
+            "Answer": "Our Italian atelier will be taking a holiday break from December 19th  to January 10th. Orders placed during this time may take longer to dispatch. See Shipping Information for details.",
+            "Answerr": ""
+          }
         }
       },
       "block_order": [
@@ -485,7 +551,15 @@
         "accordian_WYPX9P",
         "heading_JHDgeG",
         "accordian_ELdMeb",
-        "heading_4hgxXi"
+        "heading_4hgxXi",
+        "accordian_T3tXtj",
+        "accordian_4EGrT8",
+        "accordian_bmgxP6",
+        "accordian_myiGcU",
+        "accordian_htKdPp",
+        "accordian_nFfEGn",
+        "accordian_gmT4N7",
+        "accordian_HaWrWL"
       ],
       "custom_css": [],
       "settings": {
