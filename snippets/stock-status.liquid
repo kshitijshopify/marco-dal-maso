@@ -174,7 +174,7 @@
           });
           if (!matches.length) { opt.textContent = opt.dataset.stkBase; return; }
           var v = matches.filter(function (m) { return m.avail; })[0] || matches[0];
-          opt.textContent = opt.dataset.stkBase + ' ' + optionLabel(v);
+          //opt.textContent = opt.dataset.stkBase + ' ' + optionLabel(v);
         });
       });
     }
