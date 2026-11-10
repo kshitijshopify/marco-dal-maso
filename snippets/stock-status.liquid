@@ -270,6 +270,7 @@
     document.addEventListener('variant:change', function (e) {
       var v = e.detail && e.detail.variant;
       update(v ? v.id : null);
+      updateSelectedStatus();
     });
 
     update();
