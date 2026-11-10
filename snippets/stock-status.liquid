@@ -50,7 +50,19 @@
 .stk-option__status--soldout {
   color: #B64A4A;
 }
-
+.product-block .variant-input-wrap:has(select.Ring)  
+.stk-option__status, .product-block:has(.variant-input-wrap select.Ring)  p.stk.stk--note {
+    display: block !important;
+}
+ 
+body:has(.product-block .variant-input-wrap select.Ring ) 
+ .stk.stk--top  {
+    display: block !important;
+}
+ 
+.stk-option__status, .stk.stk--top, .stk.stk--note {
+    display: none !important;
+}
 {% endstyle %}
 
 <script>
