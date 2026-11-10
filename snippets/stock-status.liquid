@@ -1,26 +1,5 @@
-{%- comment -%}
-  snippets/stock-status.liquid
-  Stock messages for the main product page (Kilcollin style), driven by each variant's inventory:
-
-    stock 0 or less (still sellable)  -> "Made to Order"
-    stock 1                           -> "Only 1 remaining"   (anything up to low_threshold)
-    stock more than 1                 -> "In Stock"
-    not sellable at all               -> "Sold Out"
-
-  Three places are updated, and all of them change when the variant changes:
-    1. The size dropdown options:   "7.5 | In Stock", "3 - Only 1 remaining", "3.5 - Made to Order"
-    2. A line under the dropdown:   "In Stock · order today, ships by Thu, Nov 12"  /  "Availability varies by size"
-    3. A line above the product title: "In Stock"  /  "In Stock in Select Sizes"  /  "In Stock · Only 1 Remaining"
-
-  Use: in sections/main-product.liquid, right after {% render 'product-template' ... %} add
-    {%- unless isModal -%}{%- render 'stock-status', product: product, section_id: section.id -%}{%- endunless -%}
-
-  The two lines are inserted by the script (before .product-single__title and after the last .variant-wrapper),
-  so the product-template snippet does not need to change.
-{%- endcomment -%}
-
 {%- liquid
-  # ---- edit these texts if needed ({n} = quantity, {date} = ship date) ----
+  
   assign t_top_in = 'In Stock'
   assign t_top_mto = 'In Stock in Select Sizes'
   assign t_top_low = 'In Stock · Only {n} Remaining'
@@ -105,8 +84,7 @@
       if (v.qty <= CFG.low) return 'low';
       return 'in';
     }
-
-    // "Thu, Nov 12": today + N business days
+ 
     function shipDate() {
       var d = new Date(), n = 0;
       while (n < CFG.shipDays) {
