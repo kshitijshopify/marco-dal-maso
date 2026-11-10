@@ -294,7 +294,7 @@
           "settings": {
             "title": "Do you offer gift cards?",
             "Answer": "",
-            "Answerr": "<p>Yes, digital gift cards are available and offer a refined way to share the MARCO DAL MASO experience.</p><p>Select your <a href=\"https://marcodalmaso.com/products/gift-card\" target=\"_blank\" title=\"https://marcodalmaso.com/products/gift-card\">card here</a>, choose a denomination, or contact us to arrange a custom amount.</p>"
+            "Answerr": "<p>Yes, digital gift cards are available and offer a refined way to share the MARCO DAL MASO experience.</p><p>Select your <a href=\"https://marcodalmaso.com/products/gift-card\" target=\"_blank\" title=\"https://marcodalmaso.com/products/gift-card\"><span style=\"text-decoration:underline\">card here</span></a>, choose a denomination, or contact us to arrange a custom amount.</p>"
           }
         },
         "heading_D7RTqV": {
