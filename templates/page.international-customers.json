@@ -47,7 +47,7 @@
           "settings": {
             "title": "Where should I ship my return?",
             "Answer": "",
-            "Answerr": "<p>Return destinations will vary depending on your location. You will be given the correct return address after your return request is approved. <br/>If returning internationally, please ensure that \"Returned Merchandise\" is clearly stated on customs forms.</p>"
+            "Answerr": "<p>Return destinations will vary depending on your location. You will be given the correct return address after your return request is approved.&nbsp;<br/>If returning internationally, please ensure that \"Returned Merchandise\" is clearly stated on customs forms.</p>"
           }
         },
         "accordian_BxM7EW": {
@@ -95,15 +95,7 @@
           "settings": {
             "title": "What's the deadline to request a return?",
             "Answer": "",
-            "Answerr": "<p>Returns must be requested within 7 days of delivery. Unfortunately, we are unable to accept returns beyond this period, except in cases where the item is found to be faulty. </p><p>Please note: Duties, taxes, and shipping fees are non-refundable, as these are processed directly with customs and shipping partners at the time of dispatch.</p>"
-          }
-        },
-        "accordian_MnMtHh": {
-          "type": "accordian",
-          "settings": {
-            "title": "Can I return a product bought on sale?",
-            "Answer": "",
-            "Answerr": "<p>All sale purchases — including those made with promotional discounts — are considered final sale and are not eligible for refunds.</p><p>However, we are pleased to offer a one-time exchange for size or store credit within 30 days of delivery, provided the item is unworn, in pristine condition, and returned with all original packaging and tags intact.</p><p>Please note that we are only able to accommodate one size exchange per item per order.<br/><br/></p>"
+            "Answerr": "<p>Returns must be requested within 7 days of delivery. Unfortunately, we are unable to accept returns beyond this period, except in cases where the item is found to be faulty.&nbsp;</p><p>Please note: Duties, taxes, and shipping fees are non-refundable, as these are processed directly with customs and shipping partners at the time of dispatch.</p>"
           }
         },
         "heading_3zDFxY": {
@@ -509,7 +501,6 @@
         "accordian_PQiziX",
         "accordian_QTDhAz",
         "accordian_gkKL6L",
-        "accordian_MnMtHh",
         "heading_3zDFxY",
         "accordian_RhHn4A",
         "accordian_BqtULC",
