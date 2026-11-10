@@ -1,0 +1,190 @@
+{%- comment -%}
+  snippets/stock-status.liquid
+  Stock messages for the main product page (Kilcollin style), driven by each variant's inventory:
+
+    stock 0 or less (still sellable)  -> "Made to Order"
+    stock 1                           -> "Only 1 remaining"   (anything up to low_threshold)
+    stock more than 1                 -> "In Stock"
+    not sellable at all               -> "Sold Out"
+
+  Three places are updated, and all of them change when the variant changes:
+    1. The size dropdown options:   "7.5 | In Stock", "3 - Only 1 remaining", "3.5 - Made to Order"
+    2. A line under the dropdown:   "In Stock · order today, ships by Thu, Nov 12"  /  "Availability varies by size"
+    3. A line above the product title: "In Stock"  /  "In Stock in Select Sizes"  /  "In Stock · Only 1 Remaining"
+
+  Use: in sections/main-product.liquid, right after {% render 'product-template' ... %} add
+    {%- unless isModal -%}{%- render 'stock-status', product: product, section_id: section.id -%}{%- endunless -%}
+
+  The two lines are inserted by the script (before .product-single__title and after the last .variant-wrapper),
+  so the product-template snippet does not need to change.
+{%- endcomment -%}
+
+{%- liquid
+  # ---- edit these texts if needed ({n} = quantity, {date} = ship date) ----
+  assign t_top_in = 'In Stock'
+  assign t_top_mto = 'In Stock in Select Sizes'
+  assign t_top_low = 'In Stock · Only {n} Remaining'
+  assign t_note_in = 'In Stock · order today, ships by {date}'
+  assign t_note_mto = 'Availability varies by size'
+  assign t_opt_in = 'In Stock'
+  assign t_opt_low = 'Only {n} remaining'
+  assign t_opt_mto = 'Made to Order'
+  assign t_soldout = 'Sold Out'
+  assign low_threshold = 1
+  assign ship_business_days = 1
+-%}
+
+<script type="application/json" id="StockData-{{ section_id }}">
+[
+{%- for v in product.variants -%}
+  { "id": {{ v.id }}, "options": {{ v.options | json }}, "qty": {% if v.inventory_management %}{{ v.inventory_quantity | default: 0 }}{% else %}9999{% endif %}, "avail": {{ v.available | json }} }{% unless forloop.last %},{% endunless %}
+{%- endfor -%}
+]
+</script>
+
+{% style %}
+  .stk { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 14px; font-style: italic; line-height: 1.4; color: #555; }
+  .stk[hidden] { display: none; }
+  .stk__dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--stk-green, #3AA655); }
+  .stk--note { margin: 12px 0 0; }
+  .stk--note.stk--mto .stk__dot { background: var(--stk-grey, #B0B0B0); }
+  .stk--soldout .stk__dot { background: var(--stk-red, #B64A4A); }
+{% endstyle %}
+
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section_id }}');
+    var dataEl = document.getElementById('StockData-{{ section_id }}');
+    if (!root || !dataEl) return;
+
+    var data;
+    try { data = JSON.parse(dataEl.textContent); } catch (e) { return; }
+
+    var CFG = {
+      low: {{ low_threshold }},
+      shipDays: {{ ship_business_days }},
+      t: {
+        topIn: {{ t_top_in | json }},
+        topMto: {{ t_top_mto | json }},
+        topLow: {{ t_top_low | json }},
+        noteIn: {{ t_note_in | json }},
+        noteMto: {{ t_note_mto | json }},
+        optIn: {{ t_opt_in | json }},
+        optLow: {{ t_opt_low | json }},
+        optMto: {{ t_opt_mto | json }},
+        soldOut: {{ t_soldout | json }}
+      }
+    };
+
+    function stateOf(v) {
+      if (!v.avail) return 'soldout';
+      if (v.qty <= 0) return 'mto';
+      if (v.qty <= CFG.low) return 'low';
+      return 'in';
+    }
+
+    // "Thu, Nov 12": today + N business days
+    function shipDate() {
+      var d = new Date(), n = 0;
+      while (n < CFG.shipDays) {
+        d.setDate(d.getDate() + 1);
+        var w = d.getDay();
+        if (w !== 0 && w !== 6) n++;
+      }
+      return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+
+    function optionLabel(v) {
+      var s = stateOf(v);
+      if (s === 'in') return '| ' + CFG.t.optIn;
+      if (s === 'low') return '- ' + CFG.t.optLow.replace('{n}', v.qty);
+      if (s === 'mto') return '- ' + CFG.t.optMto;
+      return '- ' + CFG.t.soldOut;
+    }
+
+    // ---- the two lines ----
+    function makeLine(kind) {
+      var p = document.createElement('p');
+      p.className = 'stk stk--' + kind;
+      p.hidden = true;
+      p.innerHTML = '<span class="stk__dot"></span><span class="stk__txt"></span>';
+      return p;
+    }
+    var topEl = makeLine('top');
+    var noteEl = makeLine('note');
+    var title = root.querySelector('.product-single__title');
+    if (title && title.parentNode) title.parentNode.insertBefore(topEl, title);
+    var wraps = root.querySelectorAll('.variant-wrapper');
+    var lastWrap = wraps[wraps.length - 1];
+    if (lastWrap && lastWrap.parentNode) lastWrap.parentNode.insertBefore(noteEl, lastWrap.nextSibling);
+
+    function setLine(el, state, text) {
+      if (!text) { el.hidden = true; return; }
+      el.className = 'stk stk--' + (el === noteEl ? 'note' : 'top') + ' stk--' + state;
+      el.querySelector('.stk__txt').textContent = text;
+      el.hidden = false;
+    }
+
+    // ---- dropdown options (only the size-like dropdown, or the only dropdown) ----
+    function selects() { return [].slice.call(root.querySelectorAll('select[data-variant-input]')); }
+    function idxOf(sel) { return parseInt(String(sel.dataset.index || 'option1').replace('option', ''), 10) - 1; }
+    function isTarget(sel) {
+      var wrap = sel.closest('.variant-input-wrap');
+      var handle = (wrap && wrap.dataset.handle) || '';
+      return /size|length|ring/i.test(handle) || selects().length === 1;
+    }
+    function relabel() {
+      var sels = selects(), cur = [];
+      sels.forEach(function (s) { cur[idxOf(s)] = s.value; });
+      sels.forEach(function (sel) {
+        if (!isTarget(sel)) return;
+        var idx = idxOf(sel);
+        [].forEach.call(sel.options, function (opt) {
+          if (opt.dataset.stkBase === undefined) opt.dataset.stkBase = opt.textContent.trim();
+          if (!opt.value) return;
+          var matches = data.filter(function (v) {
+            if (v.options[idx] !== opt.value) return false;
+            for (var i = 0; i < cur.length; i++) {
+              if (i !== idx && cur[i] !== undefined && v.options[i] !== cur[i]) return false;
+            }
+            return true;
+          });
+          if (!matches.length) { opt.textContent = opt.dataset.stkBase; return; }
+          var v = matches.filter(function (m) { return m.avail; })[0] || matches[0];
+          opt.textContent = opt.dataset.stkBase + ' ' + optionLabel(v);
+        });
+      });
+    }
+
+    function variantById(id) {
+      for (var i = 0; i < data.length; i++) { if (String(data[i].id) === String(id)) return data[i]; }
+      return null;
+    }
+    function formVariantId() {
+      var el = root.querySelector('[name="id"]');
+      return el ? el.value : null;
+    }
+
+    function update(id) {
+      relabel();
+      var v = variantById(id || formVariantId());
+      if (!v) { topEl.hidden = true; noteEl.hidden = true; return; }
+      var s = stateOf(v), top, note;
+      if (s === 'in') { top = CFG.t.topIn; note = CFG.t.noteIn.replace('{date}', shipDate()); }
+      else if (s === 'low') { top = CFG.t.topLow.replace('{n}', v.qty); note = CFG.t.noteIn.replace('{date}', shipDate()); }
+      else if (s === 'mto') { top = CFG.t.topMto; note = CFG.t.noteMto; }
+      else { top = CFG.t.soldOut; note = ''; }
+      setLine(topEl, s, top);
+      setLine(noteEl, s, note);
+    }
+
+    // the theme fires this after every option change (before it updates the hidden variant id, so use the event's variant)
+    document.addEventListener('variant:change', function (e) {
+      var v = e.detail && e.detail.variant;
+      update(v ? v.id : null);
+    });
+
+    update();
+    document.addEventListener('DOMContentLoaded', function () { update(); });
+  })();
+</script>
