@@ -60,14 +60,6 @@
             "size_chart": "{{ product.metafields.custom.size_guide.value.size_chart_page.value }}"
           }
         },
-        "inventory_label_3mf77V": {
-          "type": "inventory_label",
-          "settings": {
-            "instock_text": "Ready to Ship",
-            "shipping_text": "Ships in 2–3 days",
-            "soldout_text": "Sold Out"
-          }
-        },
         "text_hppbXj": {
           "type": "text",
           "disabled": true,
@@ -222,7 +214,6 @@
         "price",
         "variant_picker",
         "cfec1866-2cec-4093-8aed-e53cdc29f8d2",
-        "inventory_label_3mf77V",
         "text_hppbXj",
         "buy_buttons",
         "custom_RwUKGa",
