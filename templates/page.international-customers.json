@@ -98,6 +98,14 @@
             "Answerr": "<p>Returns must be requested within 7 days of delivery. Unfortunately, we are unable to accept returns beyond this period, except in cases where the item is found to be faulty.&nbsp;</p><p>Please note: Duties, taxes, and shipping fees are non-refundable, as these are processed directly with customs and shipping partners at the time of dispatch.</p>"
           }
         },
+        "accordian_HcKLhL": {
+          "type": "accordian",
+          "settings": {
+            "title": "Can I return a piece purchased during the Event?",
+            "Answer": "Purchases made during The Annual Event are final sale and are not eligible for refunds.",
+            "Answerr": ""
+          }
+        },
         "heading_3zDFxY": {
           "type": "heading",
           "settings": {
@@ -501,6 +509,7 @@
         "accordian_PQiziX",
         "accordian_QTDhAz",
         "accordian_gkKL6L",
+        "accordian_HcKLhL",
         "heading_3zDFxY",
         "accordian_RhHn4A",
         "accordian_BqtULC",
