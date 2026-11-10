@@ -254,6 +254,7 @@
 
     function update(id) {
       relabel();
+      updateSelectedStatus();
       var v = variantById(id || formVariantId());
       if (!v) { topEl.hidden = true; noteEl.hidden = true; return; }
       var s = stateOf(v), top, note;
