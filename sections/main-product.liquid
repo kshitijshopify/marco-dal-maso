@@ -975,6 +975,11 @@
   video_style: section.settings.product_video_style,
   context: 'main-product',
 -%}
+{%- unless isModal -%}{%- render 'stock-status', product: product, section_id: section.id -%}{%- endunless -%}
+
+
+
+
 {% comment %}
 <div class="product_collection_detail">
     {% for testimonial in shop.metaobjects.product_collection_details.values limit:1 %}
