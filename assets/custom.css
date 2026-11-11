@@ -6760,6 +6760,35 @@ free-shipping-bar.shipping-bar{
     border-bottom: 1px solid #E5E7EB;
     border-top: 1px solid #E5E7EB;
 }
+.drawer__title span > span {
+    font-size: 10px;
+    color: #6E6A65;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    padding-left: 10px;
+}
+.cart-dr-bottom-text {
+        font-size:  10px !important;
+    letter-spacing: 1px;
+    line-height: 16px;
+    color: #111;
+    display: block;
+    text-transform: uppercase;
+    padding-top: 10px;
+}
+.drawer_trustpilot ul {
+    margin: auto;
+    font-size: 10px;
+    list-style: none;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.drawer_trustpilot li {
+    margin: 0;
+}
 .drawer_shipping_text_msg {
     font-size: 12px;
     font-style: italic;
