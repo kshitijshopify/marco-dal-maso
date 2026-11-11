@@ -60,18 +60,17 @@
             "size_chart": "{{ product.metafields.custom.size_guide.value.size_chart_page.value }}"
           }
         },
-        "text_hppbXj": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "text": "<p><strong>The Annual Event - 30% applied at checkout</strong></p>"
-          }
-        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": false,
             "surface_pickup_enable": false
+          }
+        },
+        "text_hppbXj": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Event purchases are final sale.</p>"
           }
         },
         "custom_RwUKGa": {
@@ -221,8 +220,8 @@
         "price",
         "variant_picker",
         "cfec1866-2cec-4093-8aed-e53cdc29f8d2",
-        "text_hppbXj",
         "buy_buttons",
+        "text_hppbXj",
         "custom_RwUKGa",
         "klarna_on_site_messaging_app_block_fm8ydg",
         "text_hPT7WR",
