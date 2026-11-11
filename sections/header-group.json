@@ -24,6 +24,7 @@
         },
         "announcement_WPyPAh": {
           "type": "announcement",
+          "disabled": true,
           "settings": {
             "text": "<p>Handcrafted in Italy. <span style=\"text-decoration:underline\">Subscribe</span> for first access.</p>",
             "link_text": "",
@@ -32,7 +33,6 @@
         },
         "announcement_hK3qWg": {
           "type": "announcement",
-          "disabled": true,
           "settings": {
             "text": "<p>JOIN THE COLLECTOR'S CIRCLE FOR 30% EARLY ACCESS</p>",
             "link_text": "",
