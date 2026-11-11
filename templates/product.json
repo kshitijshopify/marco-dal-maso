@@ -250,12 +250,7 @@
         "customer_care_VLhN8d",
         "mtab_qEHdiG"
       ],
-      "custom_css": [
-        ".product-block p a {text-decoration: underline;}",
-        ".stk.stk--top.stk--mto {display: none !important;}",
-        ".product__tag--pdp {display: none !important;}",
-        ".product-single__meta .prodblock__atcbuttons + .product-block p {font-size: 14px; font-style: italic; line-height: 1.4; color: #555;}"
-      ],
+      "custom_css": [],
       "settings": {
         "sku_enable": false,
         "image_position": "left",
