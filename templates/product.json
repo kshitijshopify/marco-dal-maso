@@ -234,7 +234,8 @@
         "mtab_qEHdiG"
       ],
       "custom_css": [
-        ".product-block p a {text-decoration: underline;}"
+        ".product-block p a {text-decoration: underline;}",
+        ".product-single__meta .prodblock__atcbuttons + .product-block p {font-size: 14px; font-style: italic; line-height: 1.4; color: #555;}"
       ],
       "settings": {
         "sku_enable": false,
