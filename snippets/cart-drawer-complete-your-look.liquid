@@ -1,0 +1,155 @@
+{%- liquid
+  assign cl_max = 6
+  assign cl_heading = settings.product_complementary_heading | default: 'Complete your look'
+  assign cl_seen = ','
+  for item in cart.items
+    assign cl_seen = cl_seen | append: item.product_id | append: ','
+  endfor
+  assign cl_n = 0
+-%}
+
+{%- capture cl_cards -%}
+  {%- for item in cart.items -%}
+    {%- assign cl_paired = item.product.metafields.custom.paired_products.value -%}
+    {%- if cl_paired != blank -%}
+      {%- for p in cl_paired limit: 3 -%}
+        {%- assign cl_key = ',' | append: p.id | append: ',' -%}
+        {%- unless cl_seen contains cl_key -%}
+          {%- if p.available and cl_n < cl_max -%}
+            {%- assign cl_seen = cl_seen | append: p.id | append: ',' -%}
+            {%- assign cl_n = cl_n | plus: 1 -%}
+            {%- render 'cart-look-card', p: p -%}
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if settings.cart_drawer_collection != blank -%}
+    {%- for p in settings.cart_drawer_collection.products limit: 12 -%}
+      {%- assign cl_key = ',' | append: p.id | append: ',' -%}
+      {%- unless cl_seen contains cl_key -%}
+        {%- if p.available and cl_n < cl_max -%}
+          {%- assign cl_seen = cl_seen | append: p.id | append: ',' -%}
+          {%- assign cl_n = cl_n | plus: 1 -%}
+          {%- render 'cart-look-card', p: p -%}
+        {%- endif -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- if cl_n > 0 -%}
+  {% capture cart_drawer_upsell %}
+    {% style %}
+      #CompleteYourLook { margin: 0; padding: 24px 0; border-top: 1px solid #E6E6E6; color: #111; }
+      #CompleteYourLook *, #CompleteYourLook *::before, #CompleteYourLook *::after { box-sizing: border-box; }
+      #CompleteYourLook .clook__head { display: flex; align-items: center; justify-content: space-between; margin: 0 0 14px; }
+      #CompleteYourLook .clook__title { margin: 0; font-size: 13px; font-weight: 500; color:#000;line-height: 1.3; letter-spacing: .18em; text-transform: uppercase; color: inherit; }
+      #CompleteYourLook .clook__arrows { display: flex; gap: 6px; }
+      #CompleteYourLook .clook__arrow { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; margin: 0; padding: 0; border: 1px solid #D9D9D9; border-radius: 0; background: #fff; color: #111; cursor: pointer; }
+      #CompleteYourLook .clook__arrow:hover { border-color: #111; }
+      #CompleteYourLook .clook__track { --clook-gap: 14px; --clook-show: 2.5; display: flex; gap: var(--clook-gap); margin: 0; padding: 0; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      #CompleteYourLook .clook__track::-webkit-scrollbar { display: none; }
+      #CompleteYourLook .clook__card { flex: 0 0 calc((100% - 2 * var(--clook-gap)) / var(--clook-show)); min-width: 0; display: flex; flex-direction: column; scroll-snap-align: start; margin: 0; padding: 0; }
+      #CompleteYourLook .clook__img { display: block; width: 100%; aspect-ratio: 1 / 1; background: #F6F6F6; overflow: hidden; }
+      #CompleteYourLook .clook__img img { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+      #CompleteYourLook .clook__name { display: block; margin: 12px 0 0; min-height: 3.1em; font-weight: 500; font-size: 12px; line-height: 1.55; letter-spacing: .08em; text-transform: uppercase; color: inherit; text-decoration: none; }
+      #CompleteYourLook .clook__price { margin: 8px 0 12px; font-size: 13px !important; line-height: 1.4; color: inherit; }
+      #CompleteYourLook .clook__add { display: flex; align-items: center; justify-content: center; width: 100%; height: 36px; margin: auto 0 0; padding: 0; border: 1px solid #111; border-radius: 0; background: #fff; color: #111; font-size: 11px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; cursor: pointer; }
+      #CompleteYourLook .clook__add:hover { background: #111; color: #fff; }
+      #CompleteYourLook .clook__add:disabled { opacity: .5; cursor: default; }
+      #CompleteYourLook .clook__select-wrap { position: relative; margin: auto 0 0; }
+      #CompleteYourLook .clook__select-wrap .clook__add { margin: 0; }
+      #CompleteYourLook .clook__select-wrap:hover .clook__add { background: #111; color: #fff; }
+      #CompleteYourLook .clook__select-wrap:focus-within .clook__add { outline: 2px solid #111; outline-offset: 2px; }
+      #CompleteYourLook .clook__select { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; font-size: 16px; cursor: pointer; }
+      #CompleteYourLook .clook__select:disabled { cursor: default; }
+      #CompleteYourLook .clook__add:focus-visible, #CompleteYourLook .clook__arrow:focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+      @media (max-width: 768px) {
+        #CompleteYourLook .clook__arrows { display: none; }
+        #CompleteYourLook .clook__track { --clook-gap: 12px; --clook-show: 2.4; }
+        #CompleteYourLook .clook__name { font-size: 11px; }
+        #CompleteYourLook .clook__price { font-size: 13px !important; }
+        #CompleteYourLook .clook__add { height: 44px; }
+      }
+    {% endstyle %}
+
+    <div id="CompleteYourLook" class="prod_cart_upsells clook" data-add-url="{{ routes.cart_add_url }}.js">
+      <div class="clook__head">
+        <h4 class="clook__title">{{ cl_heading }}</h4>
+        <div class="clook__arrows">
+          <button type="button" class="clook__arrow" data-dir="-1" aria-label="Previous">
+            <svg width="8" height="12" viewBox="0 0 8 12" aria-hidden="true"><path d="M6.5 1L1.5 6l5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          </button>
+          <button type="button" class="clook__arrow" data-dir="1" aria-label="Next">
+            <svg width="8" height="12" viewBox="0 0 8 12" aria-hidden="true"><path d="M1.5 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="clook__track">{{ cl_cards }}</div>
+    </div>
+
+    <script>
+      (function () {
+        if (window.__clookReady) return;
+        window.__clookReady = true;
+
+        // adds one variant, then asks the theme to refresh/open the cart drawer (same event the theme's own add to cart uses)
+        function addVariant(box, id, label, lock) {
+          var original = label.getAttribute('data-label') || label.textContent;
+          label.setAttribute('data-label', original);
+          label.textContent = 'Adding…';
+          lock(true);
+          function reset(ms) { setTimeout(function () { label.textContent = original; lock(false); }, ms); }
+          fetch(box.dataset.addUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ items: [{ id: id, quantity: 1 }] })
+          })
+            .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw d; return d; }); })
+            .then(function (d) {
+              document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { product: d, addToCartBtn: label } }));
+              label.textContent = 'Added'; 
+              setTimeout(function () {
+                var card = label.closest('.clook__card');
+                var block = label.closest('#CompleteYourLook');
+                if (card) card.remove();
+                if (block && !block.querySelector('.clook__card')) block.style.display = 'none';
+              }, 1200);
+            })
+            .catch(function () {
+              label.textContent = 'Try again';
+              reset(2000);
+            });
+        }
+
+        document.addEventListener('click', function (e) {
+          var arrow = e.target.closest('#CompleteYourLook .clook__arrow');
+          if (arrow) {
+            var track = arrow.closest('#CompleteYourLook').querySelector('.clook__track');
+            var card = track.querySelector('.clook__card');
+            var gap = parseFloat(getComputedStyle(track).columnGap) || 14;
+            var step = (card ? card.offsetWidth : 160) + gap;
+            track.scrollBy({ left: step * parseInt(arrow.dataset.dir, 10), behavior: 'smooth' });
+            return;
+          }
+          var add = e.target.closest('#CompleteYourLook button.clook__add');
+          if (!add || add.disabled) return;
+          addVariant(add.closest('#CompleteYourLook'), parseInt(add.dataset.variantId, 10), add, function (on) { add.disabled = on; });
+        });
+ 
+        document.addEventListener('change', function (e) {
+          var select = e.target.closest('#CompleteYourLook select.clook__select');
+          if (!select || !select.value) return;
+          var wrap = select.closest('.clook__select-wrap');
+          addVariant(select.closest('#CompleteYourLook'), parseInt(select.value, 10), wrap.querySelector('.clook__add'), function (on) {
+            select.disabled = on;
+            if (!on) select.selectedIndex = 0;
+          });
+        });
+      })();
+    </script>
+  {% endcapture %}
+{%- endif -%}
+{{- cart_drawer_upsell -}}

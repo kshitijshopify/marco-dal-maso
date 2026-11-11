@@ -1,0 +1,44 @@
+{%- liquid
+  assign av = 0
+  assign add_variant = nil
+  assign select_label = 'Select option'
+  if p.options.size == 1
+    assign select_label = 'Select ' | append: p.options.first | downcase
+  endif
+  for variant in p.variants
+    if variant.available
+      assign av = av | plus: 1
+      if add_variant == nil
+        assign add_variant = variant
+      endif
+    endif
+  endfor
+-%}
+<article class="clook__card">
+  <a class="clook__img" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+    {%- if p.featured_image -%}
+      {{ p.featured_image | image_url: width: 320 | image_tag: width: 160, height: 160, widths: '160, 240, 320', sizes: '160px', loading: 'lazy', alt: p.featured_image.alt | default: p.title }}
+    {%- endif -%}
+  </a>
+  <a class="clook__name" href="{{ p.url }}">{{ p.title }}</a>
+  <p class="clook__price">
+    {%- if p.price_varies -%}from {{ p.price_min | money_without_trailing_zeros }}{%- else -%}{{ p.price | money_without_trailing_zeros }}{%- endif -%}
+  </p>
+  {%- if av > 1 -%}
+    <div class="clook__select-wrap">
+      <span class="clook__add" data-label="{{ select_label | escape }}">{{ select_label | replace: 'bracelet', '' }}</span>
+      <select class="clook__select" aria-label="{{ select_label | escape }}: {{ p.title | escape }}">
+        <option value="" selected disabled>{{ select_label }}</option>
+        {%- for variant in p.variants -%}
+          <option value="{{ variant.id }}"{% unless variant.available %} disabled{% endunless %}>
+            {{- variant.title | escape -}}
+            {%- if p.price_varies %} · {{ variant.price | money_without_trailing_zeros | strip_html }}{% endif -%}
+            {%- unless variant.available %} (sold out){% endunless -%}
+          </option>
+        {%- endfor -%}
+      </select>
+    </div>
+  {%- else -%}
+    <button type="button" class="clook__add" data-variant-id="{{ add_variant.id }}">Add</button>
+  {%- endif -%}
+</article>
