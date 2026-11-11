@@ -147,28 +147,59 @@ body:has(.product-block .variant-input-wrap select.Ring )
       var handle = (wrap && wrap.dataset.handle) || '';
       return /size|length|ring/i.test(handle) || selects().length === 1;
     }
-    function relabel() {
-      var sels = selects(), cur = [];
-      sels.forEach(function (s) { cur[idxOf(s)] = s.value; });
-      sels.forEach(function (sel) {
-        if (!isTarget(sel)) return;
-        var idx = idxOf(sel);
-        [].forEach.call(sel.options, function (opt) {
-          if (opt.dataset.stkBase === undefined) opt.dataset.stkBase = opt.textContent.trim();
-          if (!opt.value) return;
-          var matches = data.filter(function (v) {
-            if (v.options[idx] !== opt.value) return false;
-            for (var i = 0; i < cur.length; i++) {
-              if (i !== idx && cur[i] !== undefined && v.options[i] !== cur[i]) return false;
-            }
-            return true;
-          });
-          if (!matches.length) { opt.textContent = opt.dataset.stkBase; return; }
-          var v = matches.filter(function (m) { return m.avail; })[0] || matches[0];
-         // opt.textContent = opt.dataset.stkBase + ' ' + optionLabel(v);
-        });
+
+function relabel() {
+  var sels = selects(), cur = [];
+
+  sels.forEach(function (s) {
+    cur[idxOf(s)] = s.value;
+  });
+
+  sels.forEach(function (sel) {
+    if (!isTarget(sel)) return;
+
+    var idx = idxOf(sel);
+    var selectedOption = sel.options[sel.selectedIndex];
+
+    [].forEach.call(sel.options, function (opt) {
+      if (opt.dataset.stkBase === undefined) {
+        opt.dataset.stkBase = opt.textContent.trim();
+      }
+
+      if (!opt.value) return;
+
+      var matches = data.filter(function (v) {
+        if (v.options[idx] !== opt.value) return false;
+
+        for (var i = 0; i < cur.length; i++) {
+          if (i !== idx && cur[i] !== undefined && v.options[i] !== cur[i]) {
+            return false;
+          }
+        }
+
+        return true;
       });
-    }
+
+      if (!matches.length) {
+        opt.textContent = opt.dataset.stkBase;
+        return;
+      }
+
+      var v = matches.filter(function (m) {
+        return m.avail;
+      })[0] || matches[0];
+
+      // Selected option: show original label only
+      if (opt === selectedOption) {
+        opt.textContent = opt.dataset.stkBase;
+      } else {
+        // Unselected options: show stock status
+        opt.textContent = opt.dataset.stkBase + ' ' + optionLabel(v);
+      }
+    });
+  });
+}
+
 
 
 
