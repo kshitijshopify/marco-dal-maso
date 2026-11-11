@@ -82,12 +82,6 @@
             "surface_pickup_enable": false
           }
         },
-        "text_hppbXj": {
-          "type": "text",
-          "settings": {
-            "text": "<p><a href=\"https://marcodalmaso.com/pages/support-center#the-annual-event\" title=\"https://marcodalmaso.com/pages/support-center#the-annual-event\">Event purchases are final sale.</a></p>"
-          }
-        },
         "custom_RwUKGa": {
           "type": "custom",
           "settings": {
@@ -238,7 +232,6 @@
         "variant_picker",
         "cfec1866-2cec-4093-8aed-e53cdc29f8d2",
         "buy_buttons",
-        "text_hppbXj",
         "custom_RwUKGa",
         "klarna_on_site_messaging_app_block_fm8ydg",
         "text_hPT7WR",
