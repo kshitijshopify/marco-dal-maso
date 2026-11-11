@@ -91,6 +91,13 @@
             "messagePrefix": "Or"
           }
         },
+        "text_hPT7WR": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Event purchases are final sale.</p>"
+          }
+        },
         "sales_point_XdPXKe": {
           "type": "sales_point",
           "settings": {
@@ -218,6 +225,7 @@
         "buy_buttons",
         "custom_RwUKGa",
         "klarna_on_site_messaging_app_block_fm8ydg",
+        "text_hPT7WR",
         "sales_point_XdPXKe",
         "text_z4PqAn",
         "sales_point",
