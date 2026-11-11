@@ -6897,7 +6897,7 @@ free-shipping-bar.shipping-bar{
         margin-bottom: 4px;
     }
     #CartDrawer .drawer__scrollable {
-        max-height: calc(100dvh - 300px);
+        max-height: none;
     }
 }
 /* ------------ End - Cart Drawer ------------ */
