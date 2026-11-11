@@ -443,7 +443,7 @@
           "type": "accordian",
           "settings": {
             "title": "Which pieces are included?",
-            "Answer": "The 30% offer applies to eligible pieces across the House. Gift cards and pieces marked “price on application” are excluded.",
+            "Answer": "The 30% offer applies to eligible pieces across the House. Gift cards are excluded.",
             "Answerr": ""
           }
         },
