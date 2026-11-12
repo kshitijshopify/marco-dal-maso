@@ -204,11 +204,6 @@
           "mount_json_code": ""
         }
       },
-      "1232542678405107163": {
-        "type": "shopify://apps/instafeed/blocks/head-block/c447db20-095d-4a10-9725-b5977662c9d5",
-        "disabled": true,
-        "settings": {}
-      },
       "7527060306931716863": {
         "type": "shopify://apps/aftership-returns/blocks/app-embed/5662b508-7909-4cab-9bd2-9fd183f178fe",
         "disabled": false,
@@ -327,6 +322,11 @@
       },
       "2405593621904337992": {
         "type": "shopify://apps/tvalue-wishlist/blocks/app_embed/019bbcb2-1def-75f8-9916-f97665cecc11",
+        "disabled": false,
+        "settings": {}
+      },
+      "1232542678405107163": {
+        "type": "shopify://apps/instafeed/blocks/head-block/c447db20-095d-4a10-9725-b5977662c9d5",
         "disabled": false,
         "settings": {}
       }

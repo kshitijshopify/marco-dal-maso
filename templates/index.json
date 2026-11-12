@@ -748,6 +748,7 @@
       "block_order": [
         "instafeed_app_block_zFWQrd"
       ],
+      "disabled": true,
       "custom_css": [
         ".custom__appsection {position: relative; z-index: 2; background: #fff;}",
         "#insta-feed {padding-top: 40px;}"
