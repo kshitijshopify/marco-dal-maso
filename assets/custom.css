@@ -7216,7 +7216,7 @@ span.product__price.product__price--compare {
         padding: 0px 20px 20px;
         border-bottom: 1px solid #E5E7EB;
         }
-        span.shipping-bar__text,  #CompleteYourLook .clook__select{
+        span.shipping-bar__text,  #CompleteYourLook .clook__select, #CompleteYourLook .clook__add{
         font-size: 9.5px !important;
         }
 }
