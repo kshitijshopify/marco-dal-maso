@@ -6280,7 +6280,7 @@ free-shipping-bar.shipping-bar {
   .size_drawer .size__inner {
     max-width: 100%;
     padding: 15px;
-  }
+  } 
 }
 ul.tool_bottom {list-style: none;margin: 0px;padding: 0px;line-height: 1;display: block;}
 ul.tool_bottom li {display: flex;align-items: center;line-height: 1.8;margin-bottom: 20px;}
@@ -7203,6 +7203,22 @@ span.product__price.product__price--compare {
         background-size: 0 !important;
     }
     /* few css added in inline section new blog article  */
+}
+
+
+
+
+@media screen and (max-width: 767px) { 
+        .cart__item-row {
+        margin-bottom: 20px;
+        }
+        free-shipping-bar.shipping-bar {
+        padding: 0px 20px 20px;
+        border-bottom: 1px solid #E5E7EB;
+        }
+        span.shipping-bar__text,  #CompleteYourLook .clook__select{
+        font-size: 9.5px !important;
+        }
 }
 
 /* ---------------- Tvalue wishlist ---------------- */
