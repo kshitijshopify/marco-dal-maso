@@ -958,10 +958,10 @@
         "content": "Trustpilot"
       },
       {
-        "type": "text",
+        "type": "richtext",
         "id": "trustpilot_text",
         "label": "Text",
-        "default": "4.8 · Rated Excellent on Trustpilot"
+        "default":"<p>4.8 · Rated Excellent on Trustpilot</p>"
       },
       {
         "type": "url",
