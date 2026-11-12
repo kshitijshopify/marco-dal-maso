@@ -8747,54 +8747,45 @@ theme.recentlyViewed = {
 /* CUSTOM JS */
 
 theme.ShippingBar = (function () {
-
-  var bar = document.querySelector('.free-shipping-bar');
-  var progressbar = document.querySelector('.shipping-bar');
-
-  if (!bar || !progressbar) {
-    return {
-      update: function () {
-        // do nothing safely
-      }
-    };
+ 
+  function money(cents) {
+    return theme.Currency.formatMoney(Math.max(cents, 0), theme.settings.moneyFormat);
   }
-
-  var promote_txt  = bar.dataset.promote || '';
-  var unlocked_txt = bar.dataset.unlocked || '';
-  var threshold    = parseInt(bar.dataset.threshold, 10) || 0;
-
+ 
   function update() {
-    return $.getJSON('/cart.js').then(function (cart) {
-
+    var wrap = document.querySelector('free-shipping-bar.shipping-bar') || document.querySelector('.shipping-bar');
+    var bar = document.querySelector('.free-shipping-bar');
+ 
+    // free shipping bar is switched off in the theme settings (or no threshold for this country)
+    if (!wrap || !bar) return Promise.resolve();
+ 
+    var promote = bar.dataset.promote || '';
+    var unlocked = bar.dataset.unlocked || '';
+    var threshold = parseInt(bar.dataset.threshold, 10) || 0;
+ 
+    return theme.cart.getCart().then(function (cart) {
       if (!cart || typeof cart.total_price === 'undefined') return;
-
-      var val_left = threshold - cart.total_price;
-      var val_left_money = theme.Currency.formatMoney(
-        Math.max(val_left, 0),
-        theme.settings.moneyFormat
-      );
-
-      if (val_left <= 0) {
-        bar.innerHTML =
-          '<span class="shipping-bar__text text--small unlockedjs unlocked">' +
-          unlocked_txt +
-          '</span>';
+ 
+      // no items: hide the bar, items: show it
+      wrap.hidden = cart.item_count === 0;
+ 
+      var left = threshold - cart.total_price;
+      var below = wrap.querySelector('.text_below');
+ 
+      if (left <= 0) {
+        bar.innerHTML = '<span class="shipping-bar__text text--small unlockedjs unlocked">' + unlocked + '</span>';
+        if (below) below.hidden = false;
       } else {
-        bar.innerHTML =
-          '<span class="shipping-bar__text text--small promojs">' +
-          promote_txt.replace('[value]', val_left_money) +
-          '</span>';
+        bar.innerHTML = '<span class="shipping-bar__text text--small promojs">' + promote.replace('[value]', money(left)) + '</span>';
+        if (below) below.hidden = true;
       }
-
-      progressbar.style.setProperty(
-        '--progress',
-        Math.min(cart.total_price / threshold, 1)
-      );
-    });
+ 
+      wrap.style.setProperty('--progress', threshold ? Math.min(cart.total_price / threshold, 1) : 1);
+    }).catch(function () {});
   }
-
+ 
   return { update: update };
-
+ 
 })();
 
 
