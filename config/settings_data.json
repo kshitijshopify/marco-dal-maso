@@ -70,7 +70,7 @@
     "cart_terms_conditions_enable": false,
     "cart_show_free_shipping_threshold": true,
     "cart_free_shipping_threshold": "250",
-    "free_shipping": "You are eligible for free shipping.",
+    "free_shipping": "Complimentary express shipping unlocked",
     "free_shipping_remaining_html": "Spend [value] more and get free shipping.",
     "cart_drawer_collection": "mens-best-sellers",
     "product_complementary_heading": "Complete your look",
