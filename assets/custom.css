@@ -6788,6 +6788,12 @@ span.shipping-bar__text.text--small.text_below {
     text-transform: uppercase;
     padding-top: 10px;
 }
+.cart__item-subtotalshippingtext small {
+    font-size: 12px;
+    color: #000;
+    opacity: .8;
+    line-height: 16px;
+}
 .drawer_trustpilot ul {
     margin: auto;
     font-size: 10px;
