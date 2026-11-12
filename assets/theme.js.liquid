@@ -2070,6 +2070,10 @@ theme.recentlyViewed = {
       },
   
       updateCount: function(count) {
+          // cart drawer title: "N Piece(s)"
+        document.querySelectorAll('[data-cart-drawer-count]').forEach(function(el) {
+          el.textContent = count + ' ' + (parseInt(count, 10) === 1 ? 'Piece' : 'Pieces');
+        });
         var countEls = document.querySelectorAll('.cart-link__bubble-num');
   
         if (countEls.length) {
