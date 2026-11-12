@@ -149,27 +149,6 @@
         "mobile_text_align": "center"
       }
     },
-    "featured_collection_hmrRFp": {
-      "type": "featured-collection",
-      "custom_css": [
-        "@media (max-width: 768px) {.p-carousel {margin-left: -15px; } .custom-feature-product button.flickity-button.next {right: 5px; } .custom-feature-product button.flickity-button.previous {left: 5px; }}",
-        ".grid-product {margin-bottom: 0;}",
-        ".custom-feature-product {margin-bottom: 0px;}"
-      ],
-      "settings": {
-        "title": "Discover What's Trending",
-        "enlarge_text": true,
-        "text": "",
-        "home_featured_products": "homepage",
-        "per_row": 4,
-        "rows": 5,
-        "mobile_scrollable": true,
-        "carousel": true,
-        "slider_flow": false,
-        "view_all": false,
-        "divider": false
-      }
-    },
     "tabbed_collections_XDcYhH": {
       "type": "tabbed-collections",
       "blocks": {
@@ -335,6 +314,27 @@
         "ms": false
       }
     },
+    "featured_collection_hmrRFp": {
+      "type": "featured-collection",
+      "custom_css": [
+        "@media (max-width: 768px) {.p-carousel {margin-left: -15px; } .custom-feature-product button.flickity-button.next {right: 5px; } .custom-feature-product button.flickity-button.previous {left: 5px; }}",
+        ".grid-product {margin-bottom: 0;}",
+        ".custom-feature-product {margin-bottom: 0px;}"
+      ],
+      "settings": {
+        "title": "Discover What's Trending",
+        "enlarge_text": true,
+        "text": "",
+        "home_featured_products": "homepage",
+        "per_row": 4,
+        "rows": 5,
+        "mobile_scrollable": true,
+        "carousel": true,
+        "slider_flow": false,
+        "view_all": false,
+        "divider": false
+      }
+    },
     "promo_grid_6p8aYH": {
       "type": "promo-grid",
       "blocks": {
@@ -456,6 +456,7 @@
     },
     "featured_collection_PP8qRi": {
       "type": "featured-collection",
+      "disabled": true,
       "custom_css": [
         "@media (max-width: 768px) {.custom-feature-product {padding-bottom: 100px !important; } .grid__item--view-all {padding-top: 30px; } .grid-product {margin-bottom: 15px; }}",
         "@media (min-width: 769px) {.grid-product .variant-wrapper {text-align: left; min-height: 45px; } .btn {margin-bottom: 45px; }}"
@@ -571,10 +572,10 @@
         "@media (min-width: 769px) {.grid-product .variant-wrapper {text-align: left; min-height: 45px; }}"
       ],
       "settings": {
-        "title": "ICONIC NECKLACES",
+        "title": "ICONIC BRACELETS",
         "enlarge_text": true,
         "text": "",
-        "home_featured_products": "mens-necklaces",
+        "home_featured_products": "mens-bracelets",
         "per_row": 4,
         "rows": 1,
         "mobile_scrollable": false,
@@ -632,6 +633,7 @@
     },
     "blog_posts_bqGdG3": {
       "type": "blog-posts",
+      "disabled": true,
       "custom_css": [
         "@media (max-width: 768px) {.article__grid-meta {margin-bottom: 0; }}"
       ],
@@ -748,7 +750,6 @@
       "block_order": [
         "instafeed_app_block_zFWQrd"
       ],
-      "disabled": true,
       "custom_css": [
         ".custom__appsection {position: relative; z-index: 2; background: #fff;}",
         "#insta-feed {padding-top: 40px;}"
@@ -766,9 +767,9 @@
     "slideshow_withvideo_slide_LH4kX3",
     "slideshow_3RdW4n",
     "image_overlay_content_TajyxJ",
-    "featured_collection_hmrRFp",
     "tabbed_collections_XDcYhH",
     "promo_grid_8riEYW",
+    "featured_collection_hmrRFp",
     "promo_grid_6p8aYH",
     "background_image_text_9Yjtyj",
     "background_image_text_7EhP77",
