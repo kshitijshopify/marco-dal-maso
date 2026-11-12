@@ -26,7 +26,7 @@
   </p>
   {%- if av > 1 -%}
     <div class="clook__select-wrap">
-      <span class="clook__add" data-label="{{ select_label | escape }}">{{ select_label | replace: 'bracelet', '' }}</span>
+      <span class="clook__add" data-label="{{ select_label | escape }}" dd="{% unless option.name contains 'Buy' %}{{ option.name }} {% endunless %} ">{{ select_label | replace: 'bracelet', '' }}</span>
       <select class="clook__select" aria-label="{{ select_label | escape }}: {{ p.title | escape }}">
         <option value="" selected disabled>{{ select_label }}</option>
         {%- for variant in p.variants -%}
