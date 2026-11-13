@@ -146,7 +146,9 @@
     <a
       class="bcg-tab"
       href="{{ routes.collections_url }}/best-sellers"
-    >Back to Best Sellers</a>
+    ><span class="bcg-tab__icon" aria-hidden="true">
+      {{- 'icon.chevron-left.svg' | inline_asset_content -}}
+    </span> Back to Best Sellers</a>
   {%- else -%}
     <a
       class="bcg-tab{% if is_best_sellers %} active{% endif %}"
