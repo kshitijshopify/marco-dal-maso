@@ -128,26 +128,35 @@
     {%- endfor -%}
   {%- endif -%}
 </nav> {% endcomment %}
+{%- assign c_handle = collection.handle | downcase -%}
+{%- assign c_title = collection.title | downcase -%}
+
+{%- assign is_best_sellers = false -%}
+{%- assign has_best = false -%}
+
+{%- if c_handle == 'best-sellers' -%}
+  {%- assign is_best_sellers = true -%}
+{%- elsif c_handle contains 'best' or c_title contains 'best' -%}
+  {%- assign has_best = true -%}
+{%- endif -%}
+
 <nav class="bcg-tabs" aria-label="Collections">
-  <a
-    class="bcg-tab"
-    href="{{ routes.collections_url }}/all?view={{ view }}"
-    data-bcg-back
-  >Back</a>
+  {%- if has_best -%}
+    <a
+      class="bcg-tab"
+      href="{{ routes.collections_url }}/best-sellers"
+    >Back to Best Sellers</a>
+  {%- else -%}
+    <a
+      class="bcg-tab{% if is_best_sellers %} active{% endif %}"
+      href="{{ routes.collections_url }}/all?view={{ view }}"
+      {% if is_best_sellers %}aria-current="page"{% endif %}
+      data-bcg-link
+    >All</a>
+  {%- endif -%}
 </nav>
 
-<script>
-  (function () {
-    var link = document.querySelector('[data-bcg-back]');
-    if (!link) return;
-    try {
-      var ref = document.referrer;
-      if (ref && new URL(ref).origin === location.origin && ref !== location.href) {
-        link.href = ref; // jis page se aya wahi
-      }
-    } catch (e) {}
-  })();
-</script>
+ 
 
 
 
