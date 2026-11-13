@@ -1,0 +1,621 @@
+
+{%- liquid
+  assign s = section.settings
+  assign view = s.view_suffix | default: 'broad-collections'
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign group_defs = 'Metal|Metal_;Stone|Stone_;Finish|Finish_;Enamel Color|Enamel_;Leather Color|Leather_' | split: ';'
+
+  assign any_active_tab = false
+  for block in section.blocks
+    if block.type == 'tab'
+      assign th = block.settings.handle | default: 'all'
+      if th == collection.handle
+        assign any_active_tab = true
+      endif
+    endif
+    if block.type == 'promo'
+      assign promo = block
+    endif
+  endfor
+
+  assign has_active = false
+  for f in collection.filters
+    if f.active_values.size > 0
+      assign has_active = true
+    endif
+    if f.type == 'price_range'
+      if f.min_value.value != blank or f.max_value.value != blank
+        assign has_active = true
+      endif
+    endif
+  endfor
+-%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .bcg {
+    --bcg-bg: {{ s.color_background }};
+    --bcg-ink: {{ s.color_text }};
+    --bcg-muted: {{ s.color_muted }};
+    --bcg-line: {{ s.color_line }};
+    --bcg-hair: {{ s.color_hair }};
+    --bcg-cols: {{ s.columns_desktop }};
+    --bcg-top: {{ s.sticky_offset }}px;
+  }
+{% endstyle %}
+
+{%- paginate collection.products by s.products_per_page -%}
+  {%- assign shown = paginate.current_offset | plus: collection.products.size -%}
+
+  <section class="bcg bcg--{{ s.filter_style | default: 'drawer' }} bcg--{{ s.drawer_side | default: 'right' }}" data-bcg data-section-id="{{ section.id }}" data-view="{{ view }}" data-url="{{ collection.url }}">
+    <div class="bcg__wrap">
+
+      <div class="bcg-bar">
+        <div class="bcg-bar__in">
+          {% comment %} <nav class="bcg-tabs" aria-label="Collections">
+            {%- assign tab_i = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'tab' -%}
+                {%- assign tab_i = tab_i | plus: 1 -%}
+                {%- assign th = block.settings.handle | default: 'all' -%}
+                {%- assign is_active = false -%}
+                {%- if th == collection.handle -%}
+                  {%- assign is_active = true -%}
+                {%- elsif any_active_tab == false and tab_i == 1 -%}
+                  {%- assign is_active = true -%}
+                {%- endif -%}
+                <a class="bcg-tab" href="{{ routes.collections_url }}/{{ th }}?view={{ view }}" data-bcg-link{% if is_active %} aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          </nav> {% endcomment %}
+          
+{% comment %} <nav class="bcg-tabs" aria-label="Collections">
+  {%- assign broadc_cards = collection.metafields.custom.broadc_header_cards.value -%}
+
+  {%- if broadc_cards.size > 0 -%}
+    {%- assign tab_i = 0 -%}
+
+    <a
+      class="bcg-tab"
+      href="{{ routes.collections_url }}/all?view={{ view }}"
+      data-bcg-link
+    >All</a>
+
+    {%- for card in broadc_cards -%}
+      {%- assign broadc_col = card.collection.value -%}
+
+      {%- if broadc_col != blank -%}
+        {%- assign tab_i = tab_i | plus: 1 -%}
+        {%- assign th = broadc_col.handle -%}
+        {%- assign tab_label = card.heading.value | default: broadc_col.title -%}
+        {%- assign is_active = false -%}
+
+        {%- if th == collection.handle -%}
+          {%- assign is_active = true -%}
+        {%- endif -%}
+
+        <a
+          class="bcg-tab"
+          href="{{ routes.collections_url }}/{{ th }}?view={{ view }}"
+          data-bcg-link
+          {% if is_active %}aria-current="page"{% endif %}
+        >{{ tab_label }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+
+  {%- else -%}
+    {%- assign tab_i = 0 -%}
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'tab' -%}
+        {%- assign tab_i = tab_i | plus: 1 -%}
+        {%- assign th = block.settings.handle | default: 'all' -%}
+        {%- assign is_active = false -%}
+
+        {%- if th == collection.handle -%}
+          {%- assign is_active = true -%}
+        {%- elsif any_active_tab == false and tab_i == 1 -%}
+          {%- assign is_active = true -%}
+        {%- endif -%}
+
+        <a
+          class="bcg-tab"
+          href="{{ routes.collections_url }}/{{ th }}?view={{ view }}"
+          data-bcg-link
+          {% if is_active %}aria-current="page"{% endif %}
+          {{ block.shopify_attributes }}
+        >{{ block.settings.label }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+</nav> {% endcomment %}
+<nav class="bcg-tabs" aria-label="Collections">
+  <a
+    class="bcg-tab"
+    href="{{ routes.collections_url }}/all?view={{ view }}"
+    data-bcg-back
+  >Back</a>
+</nav>
+
+<script>
+  (function () {
+    var link = document.querySelector('[data-bcg-back]');
+    if (!link) return;
+    try {
+      var ref = document.referrer;
+      if (ref && new URL(ref).origin === location.origin && ref !== location.href) {
+        link.href = ref; // jis page se aya wahi
+      }
+    } catch (e) {}
+  })();
+</script>
+
+
+
+          <div class="bcg-ctrl">
+            <span class="bcg-small bcg-count">{{ paginate.items }} {{ s.count_label }}</span>
+            <button type="button" class="bcg-btn" data-bcg-main aria-expanded="false">Filter</button>
+           <label>
+  Sort
+  <select data-bcg-sort>
+    <option value="relevance"{% if sort_by == 'relevance' %} selected{% endif %}>
+      Most relevant
+    </option>
+    <option value="best-selling"{% if sort_by == 'best-selling' %} selected{% endif %}>
+      Best selling
+    </option>
+    <option value="price-ascending"{% if sort_by == 'price-ascending' %} selected{% endif %}>
+      Price, low to high
+    </option>
+    <option value="price-descending"{% if sort_by == 'price-descending' %} selected{% endif %}>
+      Price, high to low
+    </option>
+    <option value="created-descending"{% if sort_by == 'created-descending' %} selected{% endif %}>
+      New in
+    </option>
+  </select>
+</label>
+          </div>
+        </div>
+
+        <form class="bcg-panel" data-bcg-panel data-bcg-form onsubmit="return false">
+          <div class="bcg-panel__head">
+            <span class="bcg-small">Filters</span>
+            <button type="button" class="bcg-panel__x" data-bcg-close aria-label="Close filters">×</button>
+          </div>
+          {%- comment -%} 1. Tag filter, split into Metal / Stone / Finish / Enamel Color / Leather Color {%- endcomment -%}
+          {%- for f in collection.filters -%}
+            {%- if f.param_name contains 'p.tag' or f.label == s.grouped_filter_label -%}
+              {%- for d in group_defs -%}
+                {%- assign parts = d | split: '|' -%}
+                {%- assign prefix = parts[1] -%}
+                {%- assign prefix_lower = prefix | downcase -%}
+                {%- capture chips -%}
+                  {%- for v in f.values -%}
+                    {%- if v.value contains prefix -%}
+                      {%- assign show = true -%}
+                      {%- if prefix == 'Metal_' and v.value contains 'namel' -%}{%- assign show = false -%}{%- endif -%}
+                      {%- if v.count == 0 and v.active == false -%}{%- assign show = false -%}{%- endif -%}
+                      {%- if show -%}
+                        {%- assign chip_text = v.label | remove: prefix | remove: prefix_lower -%}
+                        {%- render 'broad-filter-chip', v: v, text: chip_text -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endcapture -%}
+                {%- if chips != blank -%}
+                  {%- render 'broad-filter-group', title: parts[0], content: chips -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- comment -%} 2. Other list filters (for example Size) {%- endcomment -%}
+          {%- for f in collection.filters -%}
+            {%- if f.type == 'list' or f.type == 'boolean' -%}
+              {%- unless f.param_name contains 'p.tag' or f.param_name contains 'product_type' or f.label == s.grouped_filter_label -%}
+              {%- capture chips -%}
+                {%- for v in f.values -%}
+                  {%- if v.count > 0 or v.active -%}
+                    {%- render 'broad-filter-chip', v: v, text: v.label -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endcapture -%}
+              {%- if chips != blank -%}
+                {%- render 'broad-filter-group', title: f.label, content: chips -%}
+              {%- endif -%}
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- comment -%} 3. Product type {%- endcomment -%}
+          {%- for f in collection.filters -%}
+            {%- if f.param_name contains 'product_type' -%}
+              {%- capture chips -%}
+                {%- for v in f.values -%}
+                  {%- if v.count > 0 or v.active -%}
+                    {%- render 'broad-filter-chip', v: v, text: v.label -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endcapture -%}
+              {%- if chips != blank -%}
+                {%- render 'broad-filter-group', title: s.type_label, content: chips -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- comment -%} 4. Price bands {%- endcomment -%}
+          {%- for f in collection.filters -%}
+            {%- if f.type == 'price_range' -%}
+              {%- liquid
+                assign b1 = s.price_split_1 | times: 100
+                assign b2 = s.price_split_2 | times: 100
+                assign has_min = false
+                assign has_max = false
+                assign min_n = 0
+                assign max_n = 0
+                if f.min_value.value != blank
+                  assign has_min = true
+                  assign min_n = f.min_value.value | plus: 0
+                endif
+                if f.max_value.value != blank
+                  assign has_max = true
+                  assign max_n = f.max_value.value | plus: 0
+                endif
+                assign on1 = false
+                assign on2 = false
+                assign on3 = false
+                if has_min == false and has_max and max_n == b1
+                  assign on1 = true
+                endif
+                if has_min and has_max and min_n == b1 and max_n == b2
+                  assign on2 = true
+                endif
+                if has_min and has_max == false and min_n == b2
+                  assign on3 = true
+                endif
+              -%}
+              {%- capture lbl1 -%}Under {{ b1 | money_without_trailing_zeros }}{%- endcapture -%}
+              {%- capture lbl2 -%}{{ b1 | money_without_trailing_zeros }} – {{ b2 | money_without_trailing_zeros }}{%- endcapture -%}
+              {%- capture lbl3 -%}Over {{ b2 | money_without_trailing_zeros }}{%- endcapture -%}
+              {%- if on1 -%}{%- assign price_active_label = lbl1 -%}{%- elsif on2 -%}{%- assign price_active_label = lbl2 -%}{%- elsif on3 -%}{%- assign price_active_label = lbl3 -%}{%- elsif has_min or has_max -%}{%- assign price_active_label = f.label -%}{%- endif -%}
+              {%- capture price_chips -%}
+                  <input type="hidden" name="{{ f.min_value.param_name }}" data-bcg-min{% if has_min %} value="{{ min_n | divided_by: 100.0 | round }}"{% endif %}>
+                  <input type="hidden" name="{{ f.max_value.param_name }}" data-bcg-max{% if has_max %} value="{{ max_n | divided_by: 100.0 | round }}"{% endif %}>
+                  <button type="button" class="bcg-chip{% if on1 %} is-on{% endif %}" data-bcg-price data-min="" data-max="{{ s.price_split_1 }}">{{ lbl1 }}</button>
+                  <button type="button" class="bcg-chip{% if on2 %} is-on{% endif %}" data-bcg-price data-min="{{ s.price_split_1 }}" data-max="{{ s.price_split_2 }}">{{ lbl2 }}</button>
+                  <button type="button" class="bcg-chip{% if on3 %} is-on{% endif %}" data-bcg-price data-min="{{ s.price_split_2 }}" data-max="">{{ lbl3 }}</button>
+              {%- endcapture -%}
+              {%- render 'broad-filter-group', title: f.label, content: price_chips -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <div class="bcg-panel__foot">
+            {%- if has_active -%}
+              <a class="bcg-clear" href="{{ collection.url }}" data-bcg-link>Clear all</a>
+            {%- endif -%}
+            <button type="button" class="bcg-btn bcg-btn--solid bcg-panel__show" data-bcg-close>Show {{ paginate.items }} {{ s.count_label }}</button>
+          </div>
+        </form>
+        <div class="bcg-overlay" data-bcg-close></div>
+      </div>
+
+      {%- if has_active -%}
+        <div class="bcg-active">
+          {%- for f in collection.filters -%}
+            {%- for v in f.active_values -%}
+              <a class="bcg-active__chip" href="{{ v.url_to_remove }}" data-bcg-link>{{ v.label | remove: 'Metal_' | remove: 'Stone_' | remove: 'Finish_' | remove: 'Enamel_' | remove: 'Leather_' }} <span aria-hidden="true">×</span></a>
+            {%- endfor -%}
+          {%- endfor -%}
+          {%- if price_active_label != blank -%}
+            <button type="button" class="bcg-active__chip" data-bcg-clear-price>{{ price_active_label }} <span aria-hidden="true">×</span></button>
+          {%- endif -%}
+          <a class="bcg-clear" href="{{ collection.url }}" data-bcg-link>Clear all</a>
+        </div>
+      {%- endif -%}
+
+      <div class="bcg-grid" data-bcg-grid>
+        {%- for product in collection.products -%}
+          {%- render 'product-grid-item', product: product, per_row: s.columns_desktop, collection: collection -%}
+          {%- if promo != blank and forloop.index == promo.settings.position and paginate.current_page == 1 -%}
+            <div class="bcg-promo" {{ promo.shopify_attributes }}>
+              <span class="bcg-small bcg-promo__k">{{ promo.settings.label }}</span>
+              <div>
+                <p class="bcg-promo__h">{{ promo.settings.heading }}</p>
+                <p class="bcg-promo__t">{{ promo.settings.text }}</p>
+                {%- if promo.settings.link != blank and promo.settings.link_text != blank -%}
+                  <a class="bcg-promo__a" href="{{ promo.settings.link }}">{{ promo.settings.link_text }}</a>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          <p class="bcg-empty">No pieces match these filters. Clear a filter to see more.</p>
+        {%- endfor -%}
+      </div>
+
+      <div class="bcg-foot" data-bcg-foot data-next="{{ paginate.next.url }}">
+        <div class="bcg-small">Showing {{ shown }} of {{ paginate.items }}</div>
+        {%- if paginate.next -%}
+          <button type="button" class="bcg-btn bcg-btn--solid" data-bcg-more>Load more</button>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </section>
+{%- endpaginate -%}
+
+<script>
+  (function () {
+    if (window.__bcgReady) return;
+    window.__bcgReady = true;
+    var $ = function (r, q) { return r.querySelector(q); };
+    var timer;
+
+    var isMobile = function () { return window.matchMedia('(max-width: 900px)').matches; };
+
+    // Filters open as a side drawer (always on mobile; on desktop when Filter style = Drawer), or inline on desktop.
+    function setOpen(root, on) {
+      $(root, '[data-bcg-panel]').classList.toggle('is-open', on);
+      var drawer = on && (isMobile() || root.classList.contains('bcg--drawer'));
+      root.classList.toggle('is-drawer', drawer);
+      document.documentElement.classList.toggle('bcg-lock', drawer);
+      var b = $(root, '[data-bcg-main]');
+      if (b) { b.setAttribute('aria-expanded', on); b.textContent = on ? 'Close filters' : 'Filter'; }
+    }
+
+    function load(root, url, append) {
+      var u = new URL(url, location.origin);
+      u.searchParams.set('view', root.dataset.view);
+      var f = new URL(u.href);
+      f.searchParams.set('section_id', root.dataset.sectionId);
+      root.classList.add('is-loading');
+      fetch(f.href)
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+        .then(function (html) {
+          var next = $(new DOMParser().parseFromString(html, 'text/html'), '[data-bcg]');
+          if (!next) throw new Error('section missing');
+          if (append) {
+            var grid = $(root, '[data-bcg-grid]');
+            next.querySelectorAll('[data-bcg-grid] > *').forEach(function (n) { grid.appendChild(document.importNode(n, true)); });
+            $(root, '[data-bcg-foot]').replaceWith(document.importNode($(next, '[data-bcg-foot]'), true));
+            root.classList.remove('is-loading');
+          } else {
+            var open = $(root, '[data-bcg-panel]').classList.contains('is-open');
+            var openGroups = [].map.call(root.querySelectorAll('details.bcg-group[open]'), function (d) { return d.dataset.group; });
+            var fresh = document.importNode(next, true);
+            fresh.querySelectorAll('details.bcg-group').forEach(function (d) { if (openGroups.indexOf(d.dataset.group) > -1) d.open = true; });
+            if (open) setOpen(fresh, true);
+            root.replaceWith(fresh);
+            history.pushState({}, '', u.href);
+          }
+        })
+        .catch(function () { location.href = u.href; });
+    }
+
+    function apply(root) {
+      var p = new URLSearchParams();
+      new FormData($(root, '[data-bcg-form]')).forEach(function (v, k) { if (v !== '') p.append(k, v); });
+      var s = $(root, '[data-bcg-sort]');
+      if (s && s.value) p.set('sort_by', s.value);
+      load(root, root.dataset.url + '?' + p.toString());
+    }
+
+    document.addEventListener('click', function (e) {
+      var root = e.target.closest('[data-bcg]');
+      if (!root) return;
+      var pb = e.target.closest('[data-bcg-price], [data-bcg-clear-price]');
+      if (pb) {
+        var form = $(root, '[data-bcg-form]');
+        var mn = $(form, '[data-bcg-min]'), mx = $(form, '[data-bcg-max]');
+        var clear = pb.hasAttribute('data-bcg-clear-price') || pb.classList.contains('is-on');
+        if (mn) mn.value = clear ? '' : pb.dataset.min;
+        if (mx) mx.value = clear ? '' : pb.dataset.max;
+        apply(root);
+        return;
+      }
+      var a = e.target.closest('a[data-bcg-link]');
+      if (a) { e.preventDefault(); load(root, a.href); return; }
+      if (e.target.closest('[data-bcg-more]')) {
+        e.preventDefault();
+        var next = $(root, '[data-bcg-foot]').dataset.next;
+        if (next) load(root, next, true);
+        return;
+      }
+      if (e.target.closest('[data-bcg-main]')) {
+        setOpen(root, !$(root, '[data-bcg-panel]').classList.contains('is-open'));
+        return;
+      }
+      if (e.target.closest('[data-bcg-close]')) setOpen(root, false);
+    });
+
+    document.addEventListener('change', function (e) {
+      var root = e.target.closest('[data-bcg]');
+      if (!root) return;
+      if (e.target.closest('[data-bcg-form]') || e.target.matches('[data-bcg-sort]')) {
+        clearTimeout(timer);
+        timer = setTimeout(function () { apply(root); }, 250);
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('[data-bcg-panel].is-open').forEach(function (p) { setOpen(p.closest('[data-bcg]'), false); });
+    });
+
+    window.addEventListener('popstate', function () { location.reload(); });
+  })();
+</script>
+
+{% stylesheet %}
+  .bcg { background: var(--bcg-bg, #FBFAF8); color: var(--bcg-ink, #000); font-family: var(--typeBasePrimary),var(--typeBaseFallback);font-weight: 500; font-size: 14px; line-height: 1.5; }
+  .bcg *, .bcg *::before, .bcg *::after { box-sizing: border-box; }
+  .bcg__wrap { max-width: 1360px; margin: 0 auto; }
+  .bcg a { color: inherit; text-decoration: none; }
+  .bcg-small { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--bcg-muted, #6B6762); margin: 0; }
+  .bcg-bar { position: sticky; top: var(--bcg-top, 0px); z-index: 5; background: var(--bcg-bg, #FBFAF8); border-top: 1px solid var(--bcg-line, #DAD6CF); border-bottom: 1px solid var(--bcg-line, #DAD6CF); padding: 0 40px; margin-top: 64px; }
+  .bcg-bar__in { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 62px; flex-wrap: wrap; }
+  .bcg-tabs { display: flex; gap: 28px; }
+  .bcg-tab { display: flex; align-items: center; height: 62px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--bcg-muted, #6B6762); }
+  .bcg-tab:hover { color: var(--bcg-ink, #000); }
+  .bcg-tab[aria-current="page"] { color: var(--bcg-ink, #000); box-shadow: inset 0 -2px 0 var(--bcg-ink, #000); }
+  .bcg-ctrl { display: flex; align-items: center; gap: 24px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--bcg-muted, #6B6762); }
+  .bcg-ctrl label { font: 12px / 1.5 'Helvetica Neue', Helvetica, Arial, sans-serif !important; margin-bottom: 0; letter-spacing: .1em !important; }
+  .bcg-ctrl select { border: 1px solid #E8E8E1); background: var(--bcg-bg, #FBFAF8); color: #000; padding: 9px 12px; letter-spacing: .1em; text-transform: uppercase; font: 12px/1.5 'Helvetica Neue', Helvetica, Arial, sans-serif !important; margin-left: 10px; }
+  .bcg-btn { border: 1px solid var(--bcg-line, #DAD6CF); background: none; color: inherit; padding: 10px 18px; cursor: pointer; font: inherit; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+  .bcg-btn:hover { border-color: var(--bcg-ink, #000); }
+  .bcg-btn--solid { border-color: var(--bcg-ink, #000); color: var(--bcg-ink, #000); padding: 16px 40px; }
+  .bcg-btn--solid:hover { background: var(--bcg-ink, #000); color: var(--bcg-bg, #FBFAF8); }
+
+  /* ---- filter panel: side drawer by default (all screen sizes) ---- */
+  html.bcg-lock { overflow: hidden; }
+  .bcg.is-drawer .bcg-bar { z-index: 100000; }
+  .bcg-panel { display: flex; flex-direction: column; position: fixed; top: 0; right: 0; bottom: 0; width: min(92vw, 420px); margin: 0; padding: 0; overflow-y: auto; overscroll-behavior: contain; background: var(--bcg-bg, #FBFAF8); border: 0; border-left: 1px solid var(--bcg-line, #DAD6CF); z-index: 2; transform: translateX(100%); visibility: hidden; transition: transform .3s ease, visibility .3s; }
+  .bcg-panel.is-open { transform: none; visibility: visible; }
+  .bcg--left .bcg-panel { right: auto; left: 0; border-left: 0; border-right: 1px solid var(--bcg-line, #DAD6CF); transform: translateX(-100%); }
+  .bcg--left .bcg-panel.is-open { transform: none; }
+  .bcg-panel__head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; position: sticky; top: 0; z-index: 1; background: var(--bcg-bg, #FBFAF8); border-bottom: 1px solid var(--bcg-hair, #EAE7E1); }
+  .bcg-panel__x { border: 0; background: none; color: inherit; font-size: 28px; line-height: 1; padding: 0 4px; cursor: pointer; }
+  .bcg-panel__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; position: sticky; bottom: 0; padding: 14px 20px calc(14px + env(safe-area-inset-bottom, 0px)); background: var(--bcg-bg, #FBFAF8); border-top: 1px solid var(--bcg-line, #DAD6CF); }
+  .bcg-panel__show { display: inline-block; flex: 1; padding: 14px 16px; text-align: center; }
+  .bcg-panel__foot .bcg-clear { flex: none; padding-top: 0; align-self: center; }
+  .bcg-overlay { display: block; position: fixed; inset: 0; z-index: 1; background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s; }
+  .bcg-panel.is-open ~ .bcg-overlay { opacity: 1; visibility: visible; }
+
+  /* accordion groups */
+  .bcg-group { width: 100%; border-bottom: 1px solid var(--bcg-hair, #EAE7E1); }
+  .bcg-group > summary { display: flex; align-items: center; gap: 10px; padding: 18px 20px; cursor: pointer; list-style: none; }
+  .bcg-group > summary::-webkit-details-marker { display: none; }
+  .bcg-group > summary:hover .bcg-small { color: var(--bcg-ink, #000); }
+  .bcg-group > summary:focus-visible { outline: 2px solid var(--bcg-ink, #000); outline-offset: 2px; }
+  .bcg-n { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--bcg-ink, #000); color: var(--bcg-bg, #FBFAF8); font-size: 10px; letter-spacing: 0; }
+  .bcg-ico { position: relative; width: 10px; height: 10px; margin-left: auto; }
+  .bcg-ico::before, .bcg-ico::after { content: ''; position: absolute; left: 0; top: 50%; width: 100%; height: 1px; background: currentColor; }
+  .bcg-ico::after { transform: rotate(90deg); transition: transform .2s; }
+  .bcg-group[open] .bcg-ico::after { transform: rotate(0deg); }
+  .bcg-group > .bcg-chips { padding: 0 20px 20px; }
+
+  /* chips */
+  .bcg-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .bcg-chip { position: relative; border: 1px solid var(--bcg-line, #DAD6CF); padding: 9px 16px; cursor: pointer; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+  button.bcg-chip, button.bcg-active__chip { background: none; color: inherit; font-family: inherit; cursor: pointer; }
+  .bcg-bar .bcg-group .bcg-chip {margin: 0; position: relative; border: 1px solid var(--bcg-line, #DAD6CF); padding: 4px 10px; cursor: pointer; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+  .bcg-bar .bcg-group .bcg-chip:hover, .bcg-bar .bcg-group .bcg-chip.is-on, .bcg-bar .bcg-group .bcg-chip:has(input:checked) { border-color: var(--bcg-ink, #000); }
+  .bcg-chip input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .bcg-chip:hover { border-color: var(--bcg-ink, #000); }
+  .bcg-chip.is-on, .bcg-chip:has(input:checked) { background: var(--bcg-ink, #000); color: var(--bcg-bg, #FBFAF8); border-color: var(--bcg-ink, #000); }
+  .bcg-chip:focus-within { outline: 2px solid var(--bcg-ink, #000); outline-offset: 2px; }
+  .bcg-price { display: flex; align-items: center; gap: 8px; }
+  .bcg-price input { width: 96px; border: 1px solid var(--bcg-line, #DAD6CF); background: transparent; color: inherit; padding: 9px 10px; font: inherit; }
+  .bcg-clear { align-self: flex-end; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--bcg-muted, #6B6762); }
+  .bcg-clear:hover { color: var(--bcg-ink, #000); }
+  .bcg-active { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 24px 40px 0; }
+  .bcg-active__chip { border: 1px solid var(--bcg-ink, #000); padding: 9px 15px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+
+  /* grid */
+  .bcg-grid { display: grid; grid-template-columns: repeat(var(--bcg-cols, 4), 1fr); gap: 44px 28px; padding: 40px 40px 0; transition: opacity .2s; }
+  .bcg.is-loading .bcg-grid { opacity: .45; pointer-events: none; }
+  /* neutralise the theme's own grid-item sizing and scroll animation inside our grid */
+  .bcg-grid > .grid__item { float: none; width: auto !important; max-width: none; padding: 0 !important; margin: 0 !important; }
+  .bcg [data-aos] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .bcg-empty { grid-column: 1 / -1; padding: 40px 0; color: var(--bcg-ink, #000); margin: 0; }
+  .bcg-promo { background: var(--bcg-ink, #000); color: var(--bcg-bg, #FBFAF8); padding: 34px; display: flex; flex-direction: column; justify-content: space-between; min-height: 340px; }
+  .bcg-promo__k { color: #A8A29A; letter-spacing: .2em; }
+  .bcg-promo__h { font-family: Nevis !important; font-size: 32px; line-height: 1.12; margin: 0; }
+  .bcg-promo__t { font-size: 14px; line-height: 1.6; opacity: .85; margin: 12px 0 20px; }
+  .bcg-promo__a { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; border-bottom: 1px solid currentColor; padding-bottom: 4px; }
+  .bcg-foot { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 56px 40px 64px; }
+
+  /* ---- desktop only: "Inline panel" filter style (overrides the drawer above) ---- */
+  @media (min-width: 901px) {
+    .bcg--inline .bcg-panel { display: none; position: static; width: auto; flex-direction: row; flex-wrap: wrap; gap: 0 48px; padding: 8px 0 18px; overflow: visible; background: none; border: 0; border-top: 1px solid var(--bcg-hair, #EAE7E1); z-index: auto; transform: none; visibility: visible; transition: none; }
+    .bcg--inline .bcg-panel.is-open { display: flex; align-items: flex-start; max-height: min(70vh, 640px); overflow-y: auto; }
+    .bcg--inline .bcg-panel__head, .bcg--inline .bcg-overlay, .bcg--inline .bcg-panel__show { display: none; }
+    .bcg--inline .bcg-panel__foot { display: contents; }
+    .bcg--inline .bcg-panel .bcg-clear { flex: 0 0 100%; padding-top: 14px; }
+    .bcg--inline .bcg-group { flex: 1 1 calc(50% - 24px); width: auto; min-width: 280px; }
+    .bcg--inline .bcg-group > summary { padding: 16px 0; }
+    .bcg--inline .bcg-group > .bcg-chips { padding: 0 0 18px; }
+  }
+
+  @media (max-width: 900px) {
+    .bcg-bar { padding: 0 16px; margin-top: 36px; }
+    .bcg-bar__in { gap: 0; }
+    .bcg-tabs { gap: 20px; width: 100%; border-bottom: 1px solid var(--bcg-hair, #EAE7E1); }
+    .bcg-tab { height: 48px; font-size: 11px; }
+    .bcg-ctrl { width: 100%; justify-content: space-between; gap: 10px; padding: 8px 0; }
+    .bcg-count { display: none; }
+    .bcg-active { padding: 18px 16px 0; }
+    .bcg-grid { grid-template-columns: 1fr 1fr; gap: 26px 14px; padding: 22px 16px 0; }
+    .bcg-promo { grid-column: span 2; min-height: 0; padding: 24px; gap: 16px; }
+    .bcg-foot { padding: 36px 16px 44px; }
+    .bcg-ctrl label { display: flex; align-items: center; flex: 1; }
+    .bcg-ctrl select { width: 100%; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Broad Collection grid",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "header", "content": "Grid" },
+    { "type": "range", "id": "products_per_page", "label": "Products per load", "min": 4, "max": 48, "step": 4, "default": 12 },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "text", "id": "count_label", "label": "Count label", "default": "products" },
+    { "type": "range", "id": "sticky_offset", "label": "Sticky bar offset", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0, "info": "Set to the height of the theme's sticky header so the bar sits under it." },
+
+    { "type": "header", "content": "Filters" },
+    { "type": "select", "id": "filter_style", "label": "Filter style (desktop)", "options": [
+      { "value": "drawer", "label": "Side drawer" },
+      { "value": "inline", "label": "Inline panel under the bar" }
+    ], "default": "drawer", "info": "On mobile the filters always open as a side drawer." },
+    { "type": "select", "id": "drawer_side", "label": "Drawer opens from", "options": [
+      { "value": "right", "label": "Right" },
+      { "value": "left", "label": "Left" }
+    ], "default": "right" },
+    { "type": "text", "id": "grouped_filter_label", "label": "Grouped filter name", "default": "More filters", "info": "Name of the tag filter in Search & Discovery that is split into Metal, Stone, Finish, Enamel Color and Leather Color." },
+    { "type": "text", "id": "type_label", "label": "Type filter title", "default": "Product type", "info": "Shows the product types as chips." },
+    { "type": "range", "id": "price_split_1", "label": "Price band: first limit", "min": 50, "max": 2000, "step": 50, "default": 500, "info": "Creates: Under this amount." },
+    { "type": "range", "id": "price_split_2", "label": "Price band: second limit", "min": 100, "max": 5000, "step": 50, "default": 1000, "info": "Creates: between the two limits, and Over this amount." },
+
+    { "type": "header", "content": "Advanced" },
+    { "type": "text", "id": "view_suffix", "label": "Template name", "default": "broad-collections", "info": "Name of the collection template this section lives in (collection.broad-collections.json). Tabs use it to load other collections in the same layout." },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "color_background", "label": "Background", "default": "#FBFAF8" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#000" },
+    { "type": "color", "id": "color_muted", "label": "Small labels", "default": "#6B6762" },
+    { "type": "color", "id": "color_line", "label": "Lines", "default": "#DAD6CF" },
+    { "type": "color", "id": "color_hair", "label": "Light lines", "default": "#EAE7E1" }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "All pieces" },
+        { "type": "text", "id": "handle", "label": "Collection handle", "default": "all", "info": "The end of the collection URL, for example: all, mens, womens." }
+      ]
+    },
+    {
+      "type": "promo",
+      "name": "Promo tile",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Small label", "default": "Included" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Engraving on ID pieces, at no cost" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "A name or a date, cut by hand in the atelier. Add it at checkout." },
+        { "type": "text", "id": "link_text", "label": "Link text", "default": "How it works" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "range", "id": "position", "label": "Show after product number", "min": 1, "max": 24, "step": 1, "default": 8 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Broad Collection grid",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "All pieces", "handle": "all" } },
+        { "type": "tab", "settings": { "label": "Men", "handle": "mens" } },
+        { "type": "tab", "settings": { "label": "Women", "handle": "womens" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
