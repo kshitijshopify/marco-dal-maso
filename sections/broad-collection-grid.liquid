@@ -154,7 +154,7 @@
   {%- else -%}
     <a
       class="bcg-tab{% if is_best_sellers %} active{% endif %}"
-      href="{{ routes.collections_url }}/{{bball}}?view={{ view }}"
+      href="{{ routes.collections_url }}/{% if is_best_sellers %}{{bball}}{% endif %}{{c_handle}}?view={{ view }}"
       {% if is_best_sellers %}aria-current="page"{% endif %}
       data-bcg-link
     >All</a>
