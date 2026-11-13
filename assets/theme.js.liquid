@@ -1961,6 +1961,10 @@ theme.recentlyViewed = {
         this.subtotal.innerHTML = theme.Currency.formatMoney(subtotal, theme.settings.moneyFormat);
   
         this.reInit();
+
+        if (theme.ShippingBar && typeof theme.ShippingBar.update === 'function') {
+  theme.ShippingBar.update();
+}
   
         if (window.AOS) { AOS.refreshHard() }
   
