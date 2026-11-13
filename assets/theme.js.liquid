@@ -8748,53 +8748,55 @@ theme.recentlyViewed = {
 
 theme.ShippingBar = (function () {
 
-  var bar = document.querySelector('.free-shipping-bar');
-  var progressbar = document.querySelector('.shipping-bar');
-
-  if (!bar || !progressbar) {
-    return {
-      update: function () {
-        // do nothing safely
-      }
-    };
-  }
-
-  var promote_txt  = bar.dataset.promote || '';
-  var unlocked_txt = bar.dataset.unlocked || '';
-  var threshold    = parseInt(bar.dataset.threshold, 10) || 0;
-
   function update() {
-    return $.getJSON('/cart.js').then(function (cart) {
+    // har baar fresh elements lo (cart drawer re-render ho sakta hai)
+    var bar = document.querySelector('.free-shipping-bar');
+    var progressbar = document.querySelector('.shipping-bar');
+    if (!bar || !progressbar) return;
 
-      if (!cart || typeof cart.total_price === 'undefined') return;
+    var promote_txt  = bar.dataset.promote || '';
+    var unlocked_txt = bar.dataset.unlocked || '';
+    var threshold    = parseInt(bar.dataset.threshold, 10) || 0;
+    if (!threshold) return;
 
-      var val_left = threshold - cart.total_price;
-      var val_left_money = theme.Currency.formatMoney(
-        Math.max(val_left, 0),
-        theme.settings.moneyFormat
-      );
+    return fetch('/cart.js?t=' + Date.now(), { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (cart) {
+        if (!cart || typeof cart.total_price === 'undefined') return;
 
-      if (val_left <= 0) {
-        bar.innerHTML =
-          '<span class="shipping-bar__text text--small unlockedjs unlocked">' +
-          unlocked_txt +
-          '</span>';
-      } else {
-        bar.innerHTML =
-          '<span class="shipping-bar__text text--small promojs">' +
-          promote_txt.replace('[value]', val_left_money) +
-          '</span>';
-      }
+        var val_left = threshold - cart.total_price;
+        var val_left_money = theme.Currency.formatMoney(
+          Math.max(val_left, 0),
+          theme.settings.moneyFormat
+        );
 
-      progressbar.style.setProperty(
-        '--progress',
-        Math.min(cart.total_price / threshold, 1)
-      );
-    });
+        // data-promote Liquid mein escape hota hai, isliye decode karo
+        var tmp = document.createElement('textarea');
+        tmp.innerHTML = promote_txt;
+        var promo = tmp.value;
+        tmp.innerHTML = unlocked_txt;
+        var unlocked = tmp.value;
+
+        if (val_left <= 0) {
+          bar.innerHTML = '<span class="shipping-bar__text text--small unlockedjs unlocked">' + unlocked + '</span>';
+        } else {
+          bar.innerHTML = '<span class="shipping-bar__text text--small promojs">' + promo.replace('[value]', val_left_money) + '</span>';
+        }
+
+        progressbar.style.setProperty(
+          '--progress',
+          Math.min(cart.total_price / threshold, 1)
+        );
+      });
   }
+
+  // Cart kisi bhi tareeqe se change ho to update chalao
+  document.addEventListener('cart:updated', update);
+  document.addEventListener('ajaxProduct:added', function () {
+    setTimeout(update, 300); // buildCart ke baad
+  });
 
   return { update: update };
-
 })();
 
 
