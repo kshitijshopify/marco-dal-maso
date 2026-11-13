@@ -33,7 +33,7 @@
         </div>
  
         {%- if section.settings.cart_show_free_shipping_threshold
-          and section.settings.cart_free_shipping_threshold != '' and cart.item_count > 0
+          and section.settings.cart_free_shipping_threshold != ''
         -%}
           {%- assign free_shipping_thresholds = section.settings.cart_free_shipping_threshold | remove: ' ' | split: ',' -%}
           {%- assign has_found_matching_threshold = false -%}
