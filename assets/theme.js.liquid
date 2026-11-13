@@ -8749,7 +8749,7 @@ theme.recentlyViewed = {
 theme.ShippingBar = (function () {
 
   function update() {
-    // har baar fresh elements lo (cart drawer re-render ho sakta hai)
+     
     var bar = document.querySelector('.free-shipping-bar');
     var progressbar = document.querySelector('.shipping-bar');
     if (!bar || !progressbar) return;
@@ -8770,7 +8770,7 @@ theme.ShippingBar = (function () {
           theme.settings.moneyFormat
         );
 
-        // data-promote Liquid mein escape hota hai, isliye decode karo
+        
         var tmp = document.createElement('textarea');
         tmp.innerHTML = promote_txt;
         var promo = tmp.value;
@@ -8790,10 +8790,10 @@ theme.ShippingBar = (function () {
       });
   }
 
-  // Cart kisi bhi tareeqe se change ho to update chalao
+   
   document.addEventListener('cart:updated', update);
   document.addEventListener('ajaxProduct:added', function () {
-    setTimeout(update, 300); // buildCart ke baad
+    setTimeout(update, 300);  
   });
 
   return { update: update };
