@@ -133,9 +133,10 @@
 
 {%- assign is_best_sellers = false -%}
 {%- assign has_best = false -%}
-{{c_handle }}
+
 {%- if c_handle == 'best-sellers' -%}
   {%- assign is_best_sellers = true -%}
+  {%- assign bball = c_handle -%}
 {%- elsif c_handle contains 'best' or c_title contains 'best' -%}
   {%- assign has_best = true -%}
 {%- endif -%}
@@ -149,7 +150,7 @@
   {%- else -%}
     <a
       class="bcg-tab{% if is_best_sellers %} active{% endif %}"
-      href="{{ routes.collections_url }}/all?view={{ view }}"
+      href="{{ routes.collections_url }}/{{bball}}?view={{ view }}"
       {% if is_best_sellers %}aria-current="page"{% endif %}
       data-bcg-link
     >All</a>
