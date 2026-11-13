@@ -1326,7 +1326,9 @@ li.mobile-nav__item.at_bottom.fixedmenuitems {
     }
 }
 
-
+#CartDrawer.is-empty free-shipping-bar {
+    display: none !important;
+}
 /* Cart Drawer */
 [data-section-id="cart-drawer"] {
     --drawer-gutter:20px;
